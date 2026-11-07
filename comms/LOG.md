@@ -74,3 +74,9 @@
   PRACTICALLY significant impossibility for GTPL is NOT established. Open loopholes: exact-only-on-F for min-fuel; rotating
   frame (⇔ Lemma S). Coning closes the dent at long horizons with tilt cap (small-angle evidence). Discretized LCvx not exact
   either ⇒ statements in continuous time. Machine load ~180/10 cores ⇒ compute budget imposed.
+- 23:54 redteam-lift DONE. RETRACTED its "Shor lossy" claim (solver artifacts from killing Slater). New Conjecture CSD2:
+  degree-2 Shor/Hilbert-sphere SDP lift is numerically EXACT (≤1e-6 rel, ~35 targets) for FIXED-THRUST 5DOF min-landing-error;
+  certifies θ_M unreachable. Tractable "possible" outside A/D scope (data only in objective; moment cost). Not covered:
+  throttle, glide slope, proof. Also: theorem must state affine/separable-monotone data entry (δ_θ lifts convexify anything);
+  Theorem A-opt + Prop T (no relaxation lossless for all convex costs even on F). Free tf: θ_M reachable at tf+Δt for GTPL ⇒
+  free-tf impossibility needs a time window. Launched verifier-sdp (independent impl., adversarial) + proof-sdp (prove CSD2).

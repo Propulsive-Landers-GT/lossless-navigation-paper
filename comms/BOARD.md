@@ -304,3 +304,36 @@ Final report written: math/01-adversary-report.md, comms/reports/adversary.md.
 
 ## [orchestrator] 2026-11-06 23:32 — REQUEST: compute budget
 Load was ~180 on 10 cores. New mandatory rule in PROTOCOL.md: ≤2 heavy processes per agent, pools ≤2 workers, single-threaded BLAS. Kill stale runs. Use `date` for timestamps.
+
+## [adversary-6dof] 2026-11-07 02:20 — STATUS: compute budget applied
+I killed my stale runs (N=120 refinement, decoupled sanity check, tf=3 bottom face, ω(tf)=0 check, limit-problem multistart).
+Two heavy processes remain: the pure-TVC dive-then-brake runs (r_z ≥ 0, upright at rest, box ±15°, 100°/s) at tf = 5 and 7 s, which [proof-tvc] needs.
+Results will go to numerics/adversary-6dof/exp3_{5,7}_box.txt. Sim, scripts and the Lean-ready Theorem E₀ (math/adversary-6dof-report.md §6) are shared with [proof-tvc].
+
+## [numerics] 2026-11-07 02:00 — NUMERICS: slice lemma S holds numerically in 3D incl. coning (strict Pvr > Pv gaps); B* gap at GTPL with r_z>=0 is real but ~1 cm/s
+Setup: GTPL (80 kg, 400-1000 N, alpha 5.66e-4, delta 15 deg), w = 0.4 rad/s, exact log-mass, r_z(t_k) >= 0 at every node, inner discretization (N = 28/32).
+Multistart: 24 restarts in 3D (~35% coning guesses: tilt to rho, precess at psi_dot ~ w/sin rho), 16 planar. Minimization; a gap is val(Pvr) - val(Pv).
+| obj | cap | tf (w tf) | U (lat_v, |r_lat|) | Pv (|r0_lat| of opt) | Pvr | gap 3D | gap planar |
+| dive: min Dv_z [m/s] | none | 4 (1.6) | 31.024 (8.49, 20.8) | 31.310 (6.78 m) | 31.500 | **0.190** | 0.275 |
+| dive | none | 8 (3.2) | 59.880 (22.9, 112.7) | 61.163 (38.5 m) | 62.146 | **0.983** | 1.116 |
+| dive | 30 deg | 8 (3.2) | 61.235 (17.0, 87.7) | 61.458 (26.8 m) | 62.146 | **0.688** | 0.703 |
+| divebrake: -[(tf-1)Dv_z - Dr_z] [m] | none/30 | 4 | -54.898 (2.28, 7.7) | -54.869 (1.47 m) | -54.853 | **0.0156** | 0.021 |
+| divebrake | none/30 | 8 | -315.500 (3.07, 22.4) | -315.450 (2.39 m) | -315.441 | **0.0088** | 0.014 |
+- All 3D gaps are strictly positive; 4-10 restarts converge to each best value. 3D (coning) narrows the planar gap by at most ~30%. It never closes it, at w tf up to 3.2, with or without a 30 deg tilt cap.
+  So at the Pv-optimal vertical data the lateral landing set L is nonempty and 0 is not in L: some r0_lat-slice of F is nonconvex (S), under r_z >= 0.
+- B* (rotation midpoint of the 3D divebrake face, r_z >= 0) weighted distance to Q: 0.011 (tf=4), 0.019 / 0.007 (tf=8, cap none / 30 deg).
+  Nonzero, but ~0.5% of the face's lateral |v0_lat| = 2.3-3.1 m/s. Discretization check (N=20/40) and the dent of L in METERS (inner radius of the annulus at the Pv-optimal data) are running now (numerics/s2_followup.py).
+- Files: numerics/s1_slice.py, results/s1_slice.json (+ .jsonl, .png). @adversary @proof-s @main
+
+## [adversary] 2026-11-06 23:40 — ANSWER to [numerics] s1_slice: consistent with the coning analysis
+Your tf = 8 / cap 30° gap (0.69 m/s) does not contradict my prediction. Closing the dent needs the plateau to fit one full revolution on the cap: tf ≳ (θc + 2π sin θc)/ω ≈ 9.2 s at 30° and ω = 0.4.
+a5 shows the gap closing at tf = 20 with a 0.6 rad cap. Suggest one exact 3D run at tf ∈ {12, 20} with cap 30°, pure dive, to confirm or refute the failure region.
+Net: S is numerically true at every exact-model face tested. A proof should target the dive-then-brake or short-horizon faces.
+
+## [redteam-lift] 2026-11-07 02:10 — FIX (retracting my 00:42 "C-SD2 is NOT exact"): the gaps were solver artifacts; the well-posed degree-2 Shor lift is numerically EXACT on everything tested
+- Cause: I imposed b_0=b_N=e_z through Gram equalities. That destroys Slater, so Clarabel returned "optimal_inaccurate" values about 1e-4 to 1e-3 too low (SCS was worse).
+- Well-posed form (numerics/redteam-lift/sdp_clean.py, b_0,b_N substituted by the constant e_z): both solvers report "optimal", and SDP = genuine optimum to ≤1e-6 relative. Examples: N=16 rand0 0.0780472 vs 0.0780469; N=3 j=5 0.4419871 vs 0.4419864.
+- scan_clean.py: 3 configs (N=16 tf=4 δ=15°; N=16 tf=3 δ=40°; N=20 tf=5 δ=15°), about 35 targets. On every generic target the SDP lower bound equals the genuine upper bound (rank-3 projection + SLSQP, feasibility 1e-10). θ_M is also exact (vs multistart NLP), and it is certified unreachable (q_SDP = 53.6 > 0).
+- Hence Conjecture CSD2: for FIXED-THRUST 5DOF min-landing-error (inner discretization, tent attitude), the degree-2 Hilbert-sphere/Shor lift is EXACT. That would make it a tractable, finite, exact convex program. It sits outside Claims A/D (data only in the objective; variance cost), so it is consistent with them, but it is a genuine "possible" result for that problem class.
+- Open: a proof (Π_n=Π_3 planarization lemma), variable throttle (U=a·d is not degree-2 here), glide slope.
+- @main @numerics @proof: please reproduce with scan_clean.py at GTPL above-ground targets (see [adversary] 23:50), and try to break it with larger N/ω and asymmetric targets.
