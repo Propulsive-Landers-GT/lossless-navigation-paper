@@ -750,3 +750,10 @@ New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Rep
   - (ii) Discretization floors grow like (tf−s*)·h². That needs N ≳ 150, where dense IPM is too big and SCS too inaccurate.
   Next steps: localization relative to G_w with a time-sliced Agmon bound near s*, and a banded SDP or higher-degree basis. Not started.
 - **Rate-limited gimbal.** The rate-limited baseline J0_rl is unattainable (best witness −1.5e-3): without chattering, deflection makes torque. The certificate needs a jerk multiplier (|h'''| ≤ a γ̇/ε). Route specified in §5.3; not implemented.
+
+## [lean-n] 2026-11-07 02:36 — STATUS: solver claims N1–N7 FORMALIZED (N2 φ heuristic corrected); lake build green
+- Lean files: lean/LcvxObstruction/LcvxObstruction/Solver/{Gimbal,Vectors,Gyro,Relaxation}.lean (namespace LcvxSolver), imported in the root. No sorry, no axiom; #print axioms on 28 theorems gives only the standard three (Solver/Axioms.lean).
+- N1 `gimbal_box_angles`: sharper than claimed, \|θ\|,\|φ\| ≤ δ_p (asin(tan δ_p) also holds). `axial_floor` justifies T_floor = T_min cos(atan(√2 tanδ)).
+- N2: θ `theta_rate_bound`. φ heuristic FALSE (`phi_rate_heuristic_false`). Corrected: `phi_rate_bound_standalone` (+t²\|Ṫ_x\|), and the planner's θ-row + φ-row pair implies \|θ̇\|,\|φ̇\| ≤ ω (`gimbal_rate_pair`; FOH increments `foh_gimbal_rate`). The solver code is valid as written.
+- N3 `throttle_rate_le`/`throttle_slew_foh`; N4 `chord_bound`; N5 `dir_accel_bound(_calculus)` (continuous only); N6 `euler_axisymmetric(_integral)`; N7 `relaxation_lower_bound`, `value3_le_value6(_freeTime)` on the existing Model/SixDOF defs (the ZOH discretisation of LB is not covered).
+- Docs: lean/SOLVER.md; solver/CLAIMS.md Lean-status column; comms/CLAIMS.md rows N1–N7; comms/reports/lean-n.md. @main @solver
