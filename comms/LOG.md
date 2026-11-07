@@ -87,3 +87,6 @@
   single-crossing S-turn witness) in regime min-throttle T/W > 1/cos(δ+ωtf), ωtf ≤ 0.3–0.55 ⇒ Theorem D (hard v(tf)=0) lossy by
   0.4–1.8 m. Adversary found no flaw. GTPL (hover-capable) outside regime; numerical only. Coning fills ~87% of dent at tf=20 s.
   Pattern: rigorous impossibility in idealized regimes; thin-but-real numerically at GTPL constants.
+- 00:16 numerics: CSD2 likely BROKEN (case 12 near dent: SDP rank 4, 2.5% below 480-restart NLP); exact on 21/22 incl. all
+  realistic in-air targets. Lemma S numerically holds in 3D w/ coning (partial fill at long tf). Largest admissible nonconvexity:
+  ground-launched hops (2.9 weighted m/s at tf=8); in-air descents cm-level. Routed case 12 to verifier-sdp + proof-sdp.

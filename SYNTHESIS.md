@@ -43,7 +43,8 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | P0-R | ρ1 = 0: velocity set R convex iff δ+ωtf ≤ π/2 | M1 | PROVED | math/possibility-rho0.md |
 | P0-F | ρ1 = 0 still gives nonconvex F_tf (coast-while-rotating; thrust on/off kink) ⇒ no 'possible iff ρ1=0' dichotomy | M1, α=0, δ<π/4, ωtf<π/2−2δ | PROVED | math/possibility-rho0.md |
 | P0-X | ρ1 = 0 with r_z ≥ 0: nonconvex for T/W ≳ 2.1 (numerics ≳1.7); GTPL T/W 1.27 open | M1 | PROVED (regime) | math/possibility-rho0.md |
-| CSD2 | Degree-2 SDP lift exact for fixed-thrust min-landing-error | M1, fixed thrust | NUMERICAL (verifier-sdp, proof-sdp running) | math/redteam-lift.md, math/08 (pending) |
+| CSD2 | Degree-2 SDP lift exact for fixed-thrust min-landing-error | M1, fixed thrust | LIKELY FALSE in general: numerics case 12 (near dent) gives rank-4 SDP optimum, 2.5% below best of 480 NLP restarts; exact on 21/22 incl. all realistic in-air targets ⇒ useful certificate. Independent check + subclass proof running | math/redteam-lift.md, BOARD 03:20, math/08 (pending) |
+| HOP | Largest physically admissible nonconvexity under r_z ≥ 0: ground-launched hop data (r0z=0, v0z>0): rotation-midpoint gaps 0.65 (tf=4) / 2.9 (tf=8) weighted m/s; in-air descents: cm-level or none | M1 | NUMERICAL | numerics/README.md (pending) |
 
 ## What breaks LCvx, in one paragraph
 LCvx works for 3DOF because the thrust direction is a free control. The relaxed (filled-in) thrust set is achievable

@@ -408,3 +408,29 @@ Pure dive (min Dv_z), 30 deg cap, GTPL, w=0.4, r_z >= 0. 3D: 32 restarts, 60% co
 - attack_S.py (3D NLP): the master inequality holds. Best Pvr gains: 0.0254 (δ=0) and 0.440 (δ=10°), against witness gains 0.0776 and 0.539.
 - sproc_pure.py (discretized Shor SDP, numerical only): δ=0 bound 0.028 (analytic 0.064). δ=15°, Ω=0.3: bound 1.111 < witness 1.206 (8% margin). A rigorous continuous-time multiplier certificate is the next step.
 - Verdict to @main: S TRUE, proved in the regime (min T/W > 1, short ωtf, δ ≤ 10° analytic). GTPL: numerical only, thin in ℓ. Long horizons: no failure found.
+
+## [numerics] 2026-11-07 03:20 — BREAK (Conjecture CSD2 / CLAIMS L-SD2): the degree-2 Shor lift is NOT exact on an instance near the dent; its SDP optimum is rank 4
+- Independent test of [redteam-lift]'s well-posed lift: their `sdp_clean.build`, unchanged, against my ReachM1 NLP with the IDENTICAL discretization.
+  Fixed thrust a=11, alpha=0, tent b0=bN=e_z, d within delta of b_k and b_{k+1}, cost |Dv-wv|^2+|Dr-wr|^2. 22 instances in numerics/c1_csd2_check.py, results/c1_csd2.json.
+- 20/22 are exact to SDP tolerance (|rel gap| <= 2e-5). These include all 10 GTPL-realistic above-ground targets (A), N up to 40, and w up to 90 deg/s (C).
+  One apparent gap (case 13) was my multistart missing the optimum. Polishing from the SDP's rank-3 factor gives NLP = 2.324437 against SDP = 2.324480, so that case is exact.
+- **Case 12 (set B: asymmetric target near a mixture of rotated tent extreme arcs, N=16, tf=4, w=30 deg/s, delta=15 deg):**
+  - SDP: 0.0275287. Clarabel at tol 1e-10 reports optimal, max constraint violation 9e-14, min eigenvalue -3e-11. SCS gives 0.0275255.
+  - Eigenvalues: 27.72, 4.725, 1.475, **0.0781**, 0, ... So the optimum is a genuinely 4D Hilbert-sphere configuration.
+  - Genuine 3D NLP: 0.0282306, over 480 restarts (coning share 0 / 0.35 / 0.8). More than 25% of successful runs hit the same value. Polishing from the SDP's rank-3 projection gives 0.02979, which is worse.
+  - Gap 7.0e-4 absolute, **2.5% relative**. The SDP relaxation is lossy here.
+  - Target (my x,y,z order): wv = (5.0939, 21.9914, 32.1819), wr = (8.2825, 44.1701, 64.908). Scripts: c2_polish.py, c3_case12.py, c4_case12_sdp.py.
+- Interpretation: the lift lets the attitude tilt into a 4th dimension. Near the dent, where the target is close to conv(Q) \ Q, that buys a small error reduction that no 3D path achieves.
+  This fits L-SD2's own "Hilbert-sphere" description: it is exact when the optimum planarizes into R^3, not in general.
+  On realistic in-air targets (set A) it was exact every time, so it is still a useful a-posteriori certificate (rank-3 optimum => certified global optimum).
+- Caveat: an NLP cannot certify a global optimum. The gap is an SDP value strictly below the best of 480 restarts. @redteam-lift @main
+
+## [lean] 2026-11-07 03:30 — STATUS: Theorem B* (altitude + glide-slope constrained, every tf) machine-checked; abstract Theorem D done
+`lake build` passes. No sorry, no axioms beyond [propext, Classical.choice, Quot.sound].
+- DiveBrake.lean: `not_convex_constrainedLandingSet`. F^X is nonconvex for every X ⊇ {r_z ≥ 0, tanγ‖r_h‖ ≤ r_z}. Hypotheses: constant accel. bounds 0<a_min≤a_max (α=0), g0 ≤ a_max, ω>0, ωs* ≤ δ, δ+ωs* ≤ π/2, and (a_max+2tanγ·a_min)s*² ≤ (a_max−g0)(tf−s*)². That last condition is a simpler sufficient replacement for (S2)/(S3); `exists_switchTime` shows it can always be met for every tf>0, 0<δ<π/2, g0<a_max.
+  Proof route: math/02 Step 6 (qualitative). Lemma 10.1 (`lambda_identity`), backward trajectory form (`position_eq_tail`), the pointwise maximizer h*, V*·ez ∉ WSet (equality a.e., then d=ez on the brake and rigidity on the dive), witnesses admissible, and witness state constraints checked for all t.
+- Main.lean: `no_lossless_relaxation_constrained_5dof` (+ LCvx/cost form, + `constrainedLandingSet_nonempty`).
+- TheoremD.lean: abstract Theorem D with the D6 class (convex penalty, affine readout) and Cor. D.1 abstract form.
+- Model change: position/velocity are now closed-form (Cauchy formula), per blueprint D7.
+Gaps (lean/MODEL.md §6): B* with mass depletion α>0, the upright variant T', free tf, quantitative bounds, 6DOF. Next: FreeTime.lean (RR-LS), then K3 / 6DOF.
+CLAIMS rows P-B*, B*, D updated. Faithfulness map: lean/MODEL.md.
