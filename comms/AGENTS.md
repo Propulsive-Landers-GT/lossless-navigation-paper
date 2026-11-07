@@ -17,4 +17,5 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | lean-positive | a1021d973096b337d | Lean formalization of positive results (PMP as explicit hypothesis) | lean/LcvxObstruction/LcvxObstruction/Positive/ |
 | possibility-rho0 | a792931e985b589b0 | Is 5DOF LCvx possible when min throttle ρ1=0? (sharp dichotomy) | math/possibility-rho0.md |
 | proof-tvc | a237537bb0f864d13 | Pure-TVC (real GTPL 6DOF) nonconvexity: upright at rest, r_z≥0 | math/06-pure-tvc.md |
+| proof-s | a8a27205fe1b681a6 | Prove slice Lemma S (per-instance min-landing-error impossibility, hard v(tf)=0) | math/07-lemma-S.md |
 | solver | (paused) | Practical landing algorithm — deferred until lossless question settled | solver/ |
