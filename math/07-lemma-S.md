@@ -231,3 +231,56 @@ r_S is a rigorous lower bound on the minimum landing error at target 0 for this 
   So the δ=15° case, which the analytic constants cannot certify, has a positive numerical (discretized) certificate.
   Turning it into a rigorous one needs a continuous-time multiplier certificate (open; the next step suggested for this lemma).
 - **Adversarial NLP at δ = 10°** (T=2, Ω=0.2): sup found 0.4496 ≤ B = 0.5281 ✓. Best exactly-Pvr gain found = 0.4402, against witness 0.5386.
+
+---
+
+## 8. Hop instance (pad-launched data, GTPL constants). [proof-s] 2026-11-07 00:37. Verdict: NOT proved. The method's limit is identified quantitatively.
+
+**Task (orchestrator).** M1 with GTPL constants: m₀=80, ρ = 400/1000 N, α = 5.665e-4, δ = 15°, ω = 0.4, t_f = 4 s, r_z ≥ 0.
+Hop data: r₀ = 0 (on the pad), v₀ = (0,0,v_{0z}). [numerics] s5 reports L as an annulus with hole 0.55 → 4.99 m for v_{0z} ∈ (7.727, 7.917]. The task is to prove 0 ∉ cl L ≠ ∅ with a certified hole radius.
+
+**8.1 Exact reduction (rigorous).**
+- For hop data every landing trajectory has I = (0,0, g₀T − v_{0z}) and M_z := ∫ s a d_z = ½g₀T². The second value is *independent of v_{0z}*, because h = 0.
+- So for every s* the functional ℓ_{s*} := ∫(s−s*) a d_z = ½g₀T² − s*(g₀T − v_{0z}) is fixed by the data.
+- The hop family is therefore a dive-then-brake face family. The "dive" is the min-throttle coast-up phase, so altitude is never active early, and s* ≈ 2.4 s is long.
+- Slice S at hop data ⇔ v_{0z}^{Pvr} < v_{0z}^{Pv}, where v_{0z}^{Pv(r)} := sup v_{0z} over trajectories with I_h = 0 (and ∫sF = 0).
+
+**8.2 Rigorous partial results.**
+- **Upright limit.** The upright bang-bang throttle (min, then max; switch fixed by M_z = ½g₀T²) lands at the pad up to v_{0z} = 7.2045 m/s (α=0) / 7.2833 m/s (α>0). Script: `numerics/proof-s/hop_upright.py`.
+- **Explicit offset witnesses** (`numerics/proof-s/hop_witness.py`; planar, inner ZOH discretization with N=40; exact mass; φ linear per cell, so the rate and gimbal constraints hold on whole cells, up to 1e-11 float slack; r_z ≥ 0.013 m at the nodes):
+  - α=0: v_{0z} = 7.7116 m/s, landing offset 6.58 m;
+  - α>0 (GTPL): v_{0z} = 7.7425 m/s, landing offset 4.61 m.
+  - So L(v_{0z}) ≠ ∅ up to at least these values. [numerics]' 3D Pv value 7.917 is higher; my planar SLSQP witness is not optimal.
+- Together with [numerics]' Pvr = 7.727 (a local NLP value, not certified), this already gives a *numerically* nonconvex instance at v_{0z} ∈ (7.727, 7.742] using my witness.
+
+**8.3 Why Theorem S's machinery does not certify the hole (quantitative).**
+I adapted §2 to the hop face:
+- dive majorant (Lemma P1) on [0,s*] with weight |w|;
+- brake majorant w a d_z ≤ w a₂ − w a₂|u|²/2 − w|K_b|²/(2(a₂−a₁)), with u = d_h = b_h + e and K_b = (a₂−a)u;
+- brake attitude coupled to the dive through the Lipschitz b_h;
+- both lateral moment constraints.
+
+I then solved the best quadratic-multiplier (Shor / S-procedure) certificate, `numerics/proof-s/hop_sdp.py` (α = 0, N = 30). Results (bound on v_{0z} for landing AT the pad, against the α=0 witness 7.7116):
+
+| s* (s) | Pvr bound | Pv bound | witness |
+|---|---|---|---|
+| 2.2 | 8.154 | 8.342 | 7.712 |
+| 2.4 | 7.879 | 8.293 | 7.712 |
+| 2.5 | 8.010 | 8.464 | 7.712 |
+
+(A first version with a weaker brake majorant gave 7.94 at s* = 2.4.)
+**The Pvr bound exceeds the witness by ≥ 0.17 m/s, so no certificate of this family closes the hole.** Even the Pv bound overshoots the witness by 0.6 m/s.
+
+Reasons:
+- (i) Tilts reach ~1 rad, where the quadratic majorants of 1 − cos are loose (c̄ ≈ 0.75 instead of 0.5).
+- (ii) A rotation-invariant quadratic certificate is automatically valid for ℝ^N-valued lateral paths ("Hilbert coning"). The true margin is thin: Pv − Pvr ≈ 0.19 m/s out of a tilt benefit of ≈ 0.63 m/s. So it may be destroyed by the lift itself, not only by the majorants.
+- The pure-waste case of §3 worked because its true margin was large (Pvr ≈ 36% of Pv's tilt gain), whereas at hop data Pvr reaches ≈ 70%.
+
+**8.4 What a proof would need (open).** Any proof must exploit that the lateral plane is 2-dimensional, which rules out any purely quadratic/Shor-type argument at these margins. Candidate routes:
+- (a) A characterization (rigidity) of Pv maximizers at the hop face, showing they all land offset. Qualitative S then follows by compactness, as in math/02 Thm B*-env. PMP extremal analysis with an affine lateral primer is needed.
+- (b) A computer-assisted global bound over 2D-lateral paths, e.g. branch-and-bound on a coarse attitude discretization with validated error terms.
+- (c) A non-quadratic exact pointwise inequality, a ball-bound with trajectory-dependent directions c = b(τ) (math/02 Lemma 5.1), combined with the two moment constraints.
+
+None was completed here. **Status of the hop instance: numerical (strong: two independent solvers, [numerics] s5 and my witness), not proved.**
+
+**8.5 Torque-coupled TVC.** Not attempted: the M1 hop case is not certified, and the TVC model only adds coupling. [proof-tvc] informed.

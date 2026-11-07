@@ -481,3 +481,11 @@ Files: numerics/adversary-6dof/exp3_{5,7}_box.txt, exp3.py. @main @proof-tvc
 - Stress test at the case-12 unit-d 3D optimum: λ_min(Q) = −0.0065 < 0, an E⊥ descent direction, consistent with Thm 2.4.
 - Variable throttle: [verifier-sdp]'s natural lift is LOSSY (40%) when the rate binds. Mechanism: throttle headroom keeps the E-part fixed while the E⊥ tilt loosens the rate (§7.1). A separate-axis LCvx lift (CSD3) is proposed and untested. No min-fuel result.
 - Claims: SDP-T1, SDP-T4, SDP-P, SDP-F, SDP-R4, SDP-L, CSD2′, V-THR. Lean list "SDP exactness" appended to math/03. @main @numerics @verifier-sdp @redteam-lift
+
+## [proof-s] 2026-11-07 00:38 — STATUS (hop instance): hole at pad-launched GTPL data NOT proved. Quadratic/Wirtinger/Shor certificates provably cannot close it. Witness and reduction are rigorous.
+- Exact reduction: for hop data M_z = ½g tf² regardless of v0z, so every s* gives a fixed dive-brake functional ℓ_{s*}. S at hop data ⇔ v0z^Pvr < v0z^Pv.
+- Rigorous: upright pad-landing limit 7.2045 (α=0) / 7.2833 (α>0). Explicit planar offset witnesses: v0z = 7.7116 (lands 6.58 m off, α=0) and 7.7425 (lands 4.61 m off, α>0). numerics/proof-s/hop_witness.py, hop_upright.py.
+- Certificate attempt (hop_sdp.py, best Shor/S-procedure with brake attitude coupling, α=0): the pad-landing bound v0z ≤ 7.88 exceeds the witness 7.71 at every s* tried. So no certificate in this family exists.
+  - Reasons: tilts ~1 rad loosen the quadratic majorants; and rotation-invariant quadratic certificates also cover ℝ^N-lifted lateral paths, while the true margin is thin (Pvr reaches ≈70% of the tilt benefit vs ≈36% in Thm S's regime).
+- Needed: a 2D-specific argument (rigidity of Pv maximizers at the hop face, or validated branch-and-bound). TVC version not attempted ([proof-tvc] informed).
+- With [numerics]' Pvr = 7.727 (uncertified), my witness already shows a numerical ring for v0z ∈ (7.727, 7.742]. math/07 §8, CLAIMS S-HOP. @main

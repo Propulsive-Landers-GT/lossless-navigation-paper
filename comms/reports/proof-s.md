@@ -49,3 +49,16 @@
 - math/03-lean-blueprint.md, section "Lemma S" (SW1–SS4; the only analytic input is periodic Wirtinger).
 - numerics/proof-s/{verify_S.py, regime.py, regime2.py, attack_S.py, sproc_pure.py, sigmaP.py, eig_*.py}.
 - CLAIMS rows S (status updated), S-W, S-M, S-T, S-GTPL, S-LH.
+
+## Follow-up: hop instance (pad-launched GTPL data), math/07 §8
+- **Verdict: NOT proved.** [numerics] s5 shows a ring-shaped landing set at r0 = 0 (on the pad), v0z ≈ 7.73–7.92 m/s, tf = 4 s. Its hole remains numerical.
+- **Rigorous pieces:**
+  - exact reduction (M_z = ½g tf² is fixed, so this is a dive-then-brake face family);
+  - upright pad-landing limit 7.2045 / 7.2833 m/s (α = 0 / α > 0);
+  - planar offset witnesses v0z = 7.7116 m/s (lands 6.58 m off) and 7.7425 m/s (lands 4.61 m off).
+- **Method limit:** the best Shor/S-procedure certificate bounds pad landing by v0z ≤ 7.88 m/s, above the witness at 7.71. So quadratic and Wirtinger arguments cannot close the hole.
+  - Tilts reach about 1 rad, where the quadratic majorants are loose.
+  - The ℝ^N-lift is automatic, and the true margin is thin.
+- **What a proof needs:** an argument that uses the 2D lateral plane, either rigidity of the Pv maximizers or a validated branch-and-bound.
+- **TVC version:** not attempted; [proof-tvc] informed.
+- **CLAIMS:** S-HOP, status OPEN.

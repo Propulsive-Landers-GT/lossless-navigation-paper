@@ -189,3 +189,10 @@ All finite-dimensional linear algebra. X is a real inner-product space (`InnerPr
 - SE-7 (lens hull, Prop 6.1). For b, b′ ∈ E and dim X > dim E: {P_E d : ‖d‖ = 1, ⟪d,b⟫ ≥ c, ⟪d,b′⟫ ≥ c} = {x ∈ E : ‖x‖ ≤ 1, ⟪x,b⟫ ≥ c, ⟪x,b′⟫ ≥ c}. The ⊇ direction uses d = x + √(1−‖x‖²) • n.
 - SE-8 (KKT recursion, Prop 5.1). Linear algebra: if ν ≠ 0, μ ≠ 0, 1 + λλ′/(2μν) ≠ 0, and all right-hand sides lie in a subspace W, then the solution (b_{k+1}, d_k) of the 2-vector linear system lies in W. Induction on k.
 Recommended order: SE-5, SE-2, SE-3, SE-4, SE-6, SE-7, SE-8. SE-1 is only needed to identify the SDP with the vector problem; it can be stated as the definition of the lifted problem.
+
+### Lemma S: hop instance (math/07 §8). No formal target yet.
+The hop hole is **not proved**. Only the following pieces are formalizable now:
+- **SH1 (reduction).** For hop data, `∫ s * a s * (d s).z = g₀ T²/2` and `ℓ_{s*} = g₀T²/2 − s*(g₀T − v₀z)` for every competitor (D4 algebra).
+- **SH2 (witness).** An explicit piecewise-linear-tilt planar trajectory lands offset. This is an instance of SS1-style checking with the numerical data in numerics/proof-s/hop_witness_alpha*.json, rationalized and with a small rate/gimbal margin.
+
+Do not start a formal proof of the hole until a mathematical proof exists. Quadratic certificates provably fail at these margins (math/07 §8.3).
