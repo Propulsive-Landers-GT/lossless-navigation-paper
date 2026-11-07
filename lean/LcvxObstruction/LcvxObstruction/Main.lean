@@ -122,7 +122,7 @@ theorem no_lossless_relaxation_constrained_5dof {Y : Type*} [AddCommGroup Y] [Mo
     (R : UniformConvexRelaxation (E3 × E3) Y) :
     ¬ R.IsLossless
       (constrainedLandingSet (AccBox tf (fun _ => amin) (fun _ => amax)) tf ω δ (-(g₀ • ez)) X) := by
-  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS⟩ :=
+  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS, -⟩ :=
     exists_switchTime (amin := amin) (tanγ := tanγ) htf hω hδ hδ2 hg
   exact not_isLossless_of_not_convex
     (not_convex_constrainedLandingSet hsS hsStf hω hωs hreg hamin h hg.le htan hS
@@ -146,7 +146,7 @@ theorem constrainedLandingSet_nonempty {tf ω δ amin amax g₀ tanγ : ℝ} (ht
     (hg : g₀ < amax) (htan : 0 ≤ tanγ) :
     (constrainedLandingSet (AccBox tf (fun _ => amin) (fun _ => amax)) tf ω δ (-(g₀ • ez))
       (glideSlopeSet tanγ)).Nonempty := by
-  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS⟩ :=
+  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS, -⟩ :=
     exists_switchTime (amin := amin) (tanγ := tanγ) htf hω hδ hδ2 hg
   have hδπ : δ ≤ π := by linarith [Real.pi_pos]
   exact ⟨_, _, _, _, aW_mem_accBox h,

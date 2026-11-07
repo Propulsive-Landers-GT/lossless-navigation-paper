@@ -649,7 +649,7 @@ theorem not_convex_constrainedLandingSet {Acc : Set (ℝ → ℝ)} {tf ω δ sS 
 theorem exists_switchTime {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf) (hω : 0 < ω)
     (hδ : 0 < δ) (hδ2 : δ < π / 2) (hg : g₀ < amax) :
     ∃ sS, 0 < sS ∧ sS < tf ∧ ω * sS ≤ δ ∧ δ + ω * sS ≤ π / 2 ∧
-      (amax + 2 * tanγ * amin) * sS ^ 2 ≤ (amax - g₀) * (tf - sS) ^ 2 := by
+      (amax + 2 * tanγ * amin) * sS ^ 2 ≤ (amax - g₀) * (tf - sS) ^ 2 ∧ 2 * sS ≤ tf := by
   set K := amax + 2 * tanγ * amin
   set D := amax - g₀ with hD
   have hD0 : 0 < D := by linarith
@@ -663,7 +663,7 @@ theorem exists_switchTime {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf) (
   have h4 : sS ≤ ε := (min_le_right _ _).trans (min_le_right _ _)
   have h0 : 0 < sS := lt_min (lt_min (by positivity) (by positivity))
     (lt_min (div_pos (by linarith) hω) hε)
-  refine ⟨sS, h0, by linarith, ?_, ?_, ?_⟩
+  refine ⟨sS, h0, by linarith, ?_, ?_, ?_, by linarith⟩
   · have := (le_div_iff₀ hω).1 h2; linarith
   · have := (le_div_iff₀ hω).1 h3; linarith
   · have e1 : |K| * ε ≤ D * tf / 4 := by

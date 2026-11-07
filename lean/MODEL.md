@@ -155,6 +155,18 @@ free-final-time theorem is therefore not machine-checked; only the abstract kill
 | `not_convex_landingSet6` | Theorem B for 6DOF, any attitude class `Att` containing the two rotation paths | **Theorem B, 6DOF** |
 | `not_convex_constrainedLandingSet6` | Theorem B* for 6DOF | **Theorem B*, 6DOF** |
 
+| `det_rotY`, `rotY_path_mem_proper` | `det (rotY φ) = 1`, so the witness attitudes are proper rotations | witnesses lie in SO(3) |
+| `no_lossless_relaxation_constrained_6dof` (`Upright.lean`) | headline: no lossless uniform convex relaxation of the 6DOF (proper rotations) altitude/glide-slope-constrained landing set, every `tf > 0` | **Main theorem, 6DOF, constrained** |
+
+## 5c. Upright landing `b(t_f) = e_z` (`Upright.lean`, variant T')
+
+| Lean | Formal content | Mathematics |
+|---|---|---|
+| `constrainedLandingSetUp`, `constrainedLandingSet6Up` | as `constrainedLandingSet(6)` plus `b tf = ez` (resp. `A tf ez = ez`) | upright terminal attitude |
+| `phiUp`, `bWU`, `witness_admissible_upright` | tilt `ω·max(0, min(s, 2s*−s))`: up until s*, back down along the same meridian, upright after 2s* | the T' witness (math/02 §10 Step 2) |
+| `not_convex_constrainedLandingSetUp`, `not_convex_constrainedLandingSet6Up` | Theorem B* with upright landing, needs `2 s* ≤ tf` | **Theorem B*, variant T'** |
+| `no_lossless_relaxation_constrained_upright_5dof`, `…_upright_6dof` | headlines for every `tf > 0` (`exists_switchTime` also gives `2 s* ≤ tf`) | **Main theorem, upright landing** |
+
 Scope: this is *kinematic* 6DOF (angular velocity bounded, no torque/inertia dynamics). The
 torque-limited (M3a/M4-dyn) and gimbal-torque-coupled pure-TVC (M3b) models are not formalized.
 
@@ -168,7 +180,8 @@ torque-limited (M3a/M4-dyn) and gimbal-torque-coupled pure-TVC (M3b) models are 
   acceleration, and math/02 Step 3 needs a separate comparison argument that is not formalized.
   Theorem B (unconstrained) does cover α > 0, including the derivation of a ≥ a₁ from the mass
   model (`MassModel.lean`).
-* **Terminal attitude** b(t_f) = e_z (variant T / T') is not formalized. b(t_f) is free in all theorems.
+* **Terminal attitude**: b(t_f) = e_z is formalized for B* (variant T', §5c). It is not formalized for the
+  unconstrained tent variant T of Theorem B.
 * **Free final time** (Cor. 10.4) and the **quantitative gaps** (ball bound Thm Q, ε-lossless
   Cor. 5.2) are not formalized.
 * **6DOF**: only the kinematic rate-limited model (§5b). The M3a/M4 torque envelopes, the TVC flat

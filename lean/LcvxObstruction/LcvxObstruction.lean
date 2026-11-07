@@ -9,6 +9,7 @@ import LcvxObstruction.SixDOF
 import LcvxObstruction.Main
 import LcvxObstruction.Trajectory
 import LcvxObstruction.MassModel
+import LcvxObstruction.Upright
 import LcvxObstruction.Positive.Cap
 import LcvxObstruction.Positive.Primer
 import LcvxObstruction.Positive.PMP
