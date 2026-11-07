@@ -150,7 +150,7 @@ def moment_term(D, rho, d=0.0):
     Dmax = a2 - a1*np.cos(de) + eps*vb.max()**2
     om = np.where(E, xi*np.cos(D['phibar'](sg)), zeta)
     w = np.abs(sg-ss)
-    etas = np.geomspace(1e-6, tf, 500)
+    etas = np.geomspace(1e-6, 0.999*w.max(), 500)
     I = [np.array([rs(np.where(w < e+ds, sg**j*sph, 0)) for e in etas]) for j in (0, 1)]
     Z = [np.array([np.max((sg**j*sph/om)[w >= e-ds]) for e in etas]) for j in (0, 1)]
     Utriv = [rs(sg**j*sph*Dmax) for j in (0, 1)]
@@ -186,6 +186,7 @@ if __name__ == "__main__":
             c = solve_cert(D, rho, rhoc)
             if c is None:
                 print(f"  rho={rho:g} rhoc={rhoc:g}: no certificate", flush=True); continue
+            print(f"  rho={rho:g} rhoc={rhoc:g}: SDP part={c['val']:.5e}", flush=True)
             mt = moment_term(D, rho)
             U = c['val'] + mt
             print(f"  rho={rho:g} rhoc={rhoc:g}: SDP={c['val']:.5e} topeig={c['topeig']:.1e} moment={mt:.3e} U_total={U:.5e}  G_w/U={ev['G']/U:.4f}", flush=True)

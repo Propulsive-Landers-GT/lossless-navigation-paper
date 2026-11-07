@@ -17,7 +17,7 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | lean-positive | a1021d973096b337d | Lean formalization of positive results (PMP as explicit hypothesis) | lean/LcvxObstruction/LcvxObstruction/Positive/ |
 | possibility-rho0 | a792931e985b589b0 (DONE) | Is 5DOF LCvx possible when min throttle ρ1=0? (sharp dichotomy) | math/possibility-rho0.md |
 | proof-tvc | a237537bb0f864d13 | Pure-TVC (real GTPL 6DOF) nonconvexity: upright at rest, r_z≥0 | math/06-pure-tvc.md |
-| proof-s | a8a27205fe1b681a6 | Prove slice Lemma S (per-instance min-landing-error impossibility, hard v(tf)=0) | math/07-lemma-S.md |
+| proof-s | a8a27205fe1b681a6 (DONE) | Prove slice Lemma S (per-instance min-landing-error impossibility, hard v(tf)=0) | math/07-lemma-S.md |
 | verifier-sdp | a1cc9c46da966f49c | Independent numerical attempt to break SDP-lift exactness (CSD2) | numerics/verifier-sdp/, math/verifier-sdp-report.md |
 | proof-sdp | ae94d2bcd8785d34a | Prove/disprove CSD2 (degree-2 Shor lift exact for fixed-thrust 5DOF min-landing-error), extend to throttle | math/08-sdp-exactness.md |
 | solver | (paused) | Practical landing algorithm — deferred until lossless question settled | solver/ |

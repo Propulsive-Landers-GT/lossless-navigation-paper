@@ -1,15 +1,4 @@
 [cone delta=15.00] tf=1.0 s*=0.25: witness G_w=7.269373e-05, max tilt 0.451 deg, max v_z(t<tf)=-6.780e-05 (<0 => r_z>0 on [0,tf)), min r_z/|r_h|=1.163e+02, r0=[0.00781548 1.11581799], v0=[-0.02193461 -0.79061631]
-Traceback (most recent call last):
-  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate.py", line 179, in <module>
-    f"max v_z(t<tf)={ev['maxvz']:.3e} (<0 => r_z>0 on [0,tf)), min r_z/|r_h|={ev['rzrel']:.3e}, r0={ev['r0']}, v0={ev['v0']}", flush=True)
-           ^^^^^^^^^^^^^^^^^^^
-  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate.py", line 147, in moment_term
-    E = sg <= ss
-    
-  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/.venv/lib/python3.14/site-packages/numpy/_core/fromnumeric.py", line 3161, in max
-    return _wrapreduction(a, np.maximum, 'max', axis, None, out,
-                          keepdims=keepdims, initial=initial, where=where)
-  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/.venv/lib/python3.14/site-packages/numpy/_core/fromnumeric.py", line 83, in _wrapreduction
-    return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
-           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: zero-size array to reduction operation maximum which has no identity
+  roll-rate competitors allowed: False
+  rho=0.001 rhoc=0.01: SDP part=1.80421e-04
+  rho=0.001 rhoc=0.01: SDP=1.80421e-04 topeig=-2.4e-13 moment=3.731e-09 U_total=1.80425e-04  G_w/U=0.4029

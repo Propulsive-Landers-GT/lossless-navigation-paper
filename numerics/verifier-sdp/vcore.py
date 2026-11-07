@@ -134,8 +134,7 @@ def build_sdp(P, extra=None):
     for l in range(P.p):
         g = gF[:, l]
         d = yfix[l] - Qp[l]           # affine in parameter
-        obj = obj + P.mu[l] * (cp.quad_form(g, G, assume_PSD=True) if False else g @ G @ g
-                               + 2 * g @ X @ d + cp.sum_squares(d))
+        obj = obj + P.mu[l] * (g @ G @ g + 2 * g @ X @ d + cp.sum_squares(d))
     if extra is not None:
         cons += extra(P, Z, X, G, inner)
     prob = cp.Problem(cp.Minimize(obj), cons)
@@ -143,23 +142,28 @@ def build_sdp(P, extra=None):
 
 
 def solve_sdp(P, Q, solver="CLARABEL", tight=True, built=None, extra=None):
+    """Clarabel: tol 1e-9 (1e-10 is below its attainable accuracy here -> 'inaccurate'); falls back
+    to 1e-8 if needed.  Status is returned verbatim; callers only accept 'optimal'."""
     prob, Z, Qp = built if built is not None else build_sdp(P, extra)
     Qp.value = np.asarray(Q, float).reshape(P.p, 3)
-    kw = {}
-    if solver == "CLARABEL":
-        if tight:
-            kw = dict(tol_gap_abs=1e-10, tol_gap_rel=1e-10, tol_feas=1e-10, tol_ktratio=1e-8,
-                      max_iter=400)
-    elif solver == "SCS":
-        kw = dict(eps_abs=1e-9 if tight else 1e-6, eps_rel=1e-9 if tight else 1e-6,
-                  max_iters=200000, acceleration_lookback=10)
-    try:
-        prob.solve(solver=solver, **kw)
-    except cp.error.SolverError as e:
-        return dict(status="error:" + str(e)[:60], val=np.nan, Z=None)
-    Zv = Z.value
-    return dict(status=prob.status, val=float(prob.value) if prob.value is not None else np.nan, Z=Zv,
-                built=(prob, Z, Qp))
+    ladder = [1e-9, 1e-8] if tight else [1e-7, 1e-6]
+    st, val = None, np.nan
+    for tol in ladder:
+        if solver == "CLARABEL":
+            kw = dict(tol_gap_abs=tol, tol_gap_rel=tol, tol_feas=tol, max_iter=500)
+        elif solver == "SCS":
+            kw = dict(eps_abs=tol, eps_rel=tol, max_iters=300000)
+        else:
+            kw = {}
+        try:
+            prob.solve(solver=solver, **kw)
+        except cp.error.SolverError as e:
+            st = "error"; continue
+        st = prob.status
+        if st == "optimal":
+            break
+    val = float(prob.value) if prob.value is not None else np.nan
+    return dict(status=st, val=val, Z=Z.value, built=(prob, Z, Qp), tol=tol)
 
 
 def sdp_diag(P, Zv, tol=1e-6):

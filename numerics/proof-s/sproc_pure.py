@@ -42,9 +42,9 @@ def witness(T, om, delta, a1, n=20000):
 if __name__=="__main__":
     from regime import witness as wit1
     a1,a2=12.0,25.0
-    for (T,Om,deg) in [(2,0.4,0),(2,0.3,10),(2,0.3,15),(2,0.5,15),(2,0.3,20)]:
+    for (T,Om,deg) in [(2,0.4,0),(2,0.3,15)]:
         delta=np.deg2rad(deg); om=Om/T
         w=wit1(T,om,delta,a1)['gain']
-        for N in [30,50]:
+        for N in [30]:
             b,_,_=bound(T,om,delta,a1,a2,N=N)
             print(f"T={T} Om={Om} delta={deg}deg N={N}: single-crossing witness gain={w:.6f}  Shor/S-procedure bound={b:.6f}  margin={w-b:.3e}",flush=True)

@@ -1,0 +1,2 @@
+T=2.0 om=0.2 delta=0: sup[gain-Cm|pi|^2] found=0.03377 <= Bnd=0.06370? True;  best Pvr gain found=0.02542;  Pv witness gain=0.07758
+T=2.0 om=0.1 delta=10: sup[gain-Cm|pi|^2] found=0.44960 <= Bnd=0.52809? True;  best Pvr gain found=0.44018;  Pv witness gain=0.53864

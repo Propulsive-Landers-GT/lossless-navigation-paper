@@ -24,7 +24,9 @@ from runner import run_batch, run_many
 SCEN = {"S1": dict(r0=[0, 0, 50.0], v0=[0, 0, -5.0], tf=7.0),
         "S2": dict(r0=[0, 0, 50.0], v0=[4.0, 0, -5.0], tf=7.0),
         "S3": dict(r0=[0, 0, 30.0], v0=[3.0, 0, -8.0], tf=6.0),
-        "S4": dict(r0=[0, 0, 50.0], v0=[0, 0, -5.0], tf=9.0)}
+        "S4": dict(r0=[0, 0, 50.0], v0=[0, 0, -5.0], tf=9.0),
+        "S5": dict(r0=[0, 0, 0.0], v0=[0, 0, 8.0], tf=4.0),     # ground-launched hop (near the pure-dive face)
+        "S6": dict(r0=[0, 0, 0.0], v0=[0, 0, 7.0], tf=4.0)}
 
 
 def make_spec(model, P, tf, quick):
@@ -54,9 +56,16 @@ def main():
     spec = make_spec(model, P, tf, quick)
     base = r0[:2] + v0[:2] * tf
     t0 = time.time()
+    # stage 0: feasible seeds -- reach the boundary data without hard equalities, then polish with them
+    spec0 = (spec[0], spec[1], {k: v for k, v in spec[2].items() if k != "eq_idx"})
+    W0 = [1, 1, 1, 0, 0, 1.0 / tf ** 2]
+    tgt0 = [dv[0], dv[1], dv[2], 0, 0, drz]
+    seeds = run_batch([(spec0, dict(mode="dist", target=tgt0, W=W0))] * 4, 8)
+    x0s = [s["x"] for s in seeds if s["x"] is not None and s["f"] < 1e-6]
+    print(model, scen, "seeds:", len(x0s), "best residual", min(s["f"] for s in seeds), flush=True)
     nang = 16 if quick else 32
     th = np.linspace(0, 2 * np.pi, nang, endpoint=False)
-    sup = run_batch([(spec, dict(mode="lin", c=[0, 0, 0, -np.cos(t), -np.sin(t), 0], eq_val=eqv)) for t in th],
+    sup = run_batch([(spec, dict(mode="lin", c=[0, 0, 0, -np.cos(t), -np.sin(t), 0], eq_val=eqv, x0s=x0s[:2])) for t in th],
                     8 if quick else 16, chunk=8)
     h = np.array([-s["f"] for s in sup])
     if not np.all(np.isfinite(h)):
@@ -72,12 +81,12 @@ def main():
     inside = np.all(Q @ C.T <= h[None, :] - 1e-6, axis=1)
     Qi = Q[inside]
     W = [0, 0, 0, 1, 1, 0]
-    res = run_batch([(spec, dict(mode="dist", target=[0, 0, 0, q[0], q[1], 0], W=W, eq_val=eqv)) for q in Qi],
+    res = run_batch([(spec, dict(mode="dist", target=[0, 0, 0, q[0], q[1], 0], W=W, eq_val=eqv, x0s=x0s[:1])) for q in Qi],
                     4 if quick else 8, chunk=4 if quick else 8)
     dist = np.sqrt(np.array([r["f"] for r in res]))
     # confirm the worst points with heavy multistart
     order = np.argsort(-dist)[:5]
-    conf = run_batch([(spec, dict(mode="dist", target=[0, 0, 0, Qi[i][0], Qi[i][1], 0], W=W, eq_val=eqv)) for i in order],
+    conf = run_batch([(spec, dict(mode="dist", target=[0, 0, 0, Qi[i][0], Qi[i][1], 0], W=W, eq_val=eqv, x0s=x0s)) for i in order],
                      16 if quick else 48, chunk=8)
     for k, i in enumerate(order):
         dist[i] = min(dist[i], np.sqrt(conf[k]["f"]))

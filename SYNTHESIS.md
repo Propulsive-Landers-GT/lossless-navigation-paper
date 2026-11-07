@@ -32,7 +32,8 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | RR-LS | Line search over tf cannot rescue LCvx (needs B*'s braking condition / time window) | M1 | PROVED (Lean pending) | math/redteam-reform.md §4 |
 | A-opt, T | Value-lossless on F ⇒ V = V** on F; cost ∫b·e_z violates it | abstract / M1 | PROVED | math/redteam-lift.md §7 |
 | D | Per-instance min-landing-error: state-linear relaxations lossy | M1 | PROVED for terminal-error cost; hard-v(tf)=0 version needs Lemma S | math/02, threads/theorem-D.md |
-| S | Straight-below landing infeasible, offset feasible (vertical instance) | M1, r_z ≥ 0 | OPEN (proof-s) | math/07 (pending) |
+| S | Straight-below landing infeasible, offset feasible (vertical instance) ⇒ Theorem D with hard v(tf)=0 lossy by ≥ r_S (0.4–1.8 m) | M1; δ+ωtf<π/2; min-throttle T/W > 1/cos(δ+ωtf); certified ωtf ≤ 0.55 (δ=0) … 0.30 (δ=10°). Handles coning (Wirtinger lemma) | PROVED (adversary: no flaw) | math/07-lemma-S.md |
+| S-GTPL | Lemma S at GTPL constants (hovering possible at min throttle) | M1 | NUMERICAL (gap ≈1 cm in ℓ; optimizers land 1.5–2.4 m off-axis) | math/07, numerics s1 |
 | FLAT | Centre-of-percussion identity: pure TVC ≡ zero-gimbal, torque-limited point thrust along b | pure TVC, ω3 ≡ 0, ε const | identity verified numerically (5e-15) | math/checks/flat_output_tvc.py |
 | B6-TVC | Pure-TVC F nonconvex | terminal r=v=0, ω⊥(tf)=0, tilt free | PROVED (adversary-6dof) | math/adversary-6dof-report.md |
 | B6-TVC-up | Pure-TVC F nonconvex, upright at rest + r_z ≥ 0 (**the real GTPL case**) | pure TVC | OPEN (proof-tvc) | math/06 (pending) |

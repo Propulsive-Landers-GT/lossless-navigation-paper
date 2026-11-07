@@ -1,1 +1,3 @@
+tf=1.0 s*=0.25 gimbal rate 100000 deg/s: G_rl=-3.8751e-04
+tf=1.0 s*=0.25 gimbal rate 1000 deg/s: G_rl=-8.9379e-04
 tf=1.0 s*=0.25 gimbal rate 100 deg/s: G_rl=-4.8422e-03

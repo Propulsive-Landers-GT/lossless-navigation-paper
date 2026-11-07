@@ -19,3 +19,29 @@
 [  212s] face tf=8.0 phi=  180: lat_v=0.000 lat_r=0.004 v0z=-24.49 r0z=101.96
 [  234s] face tf=8.0 phi=  210: lat_v=0.002 lat_r=0.005 v0z=-24.49 r0z=101.96
 [  235s] face tf=8.0 phi=  240: lat_v=17.447 lat_r=28.082 v0z=-13.43 r0z=31.78
+[  245s] face tf=8.0 phi=  270: lat_v=39.290 lat_r=151.683 v0z=8.09 r0z=-0.00
+[  272s] face tf=8.0 phi=  300: lat_v=23.320 lat_r=113.089 v0z=18.46 r0z=0.02
+[  284s] face tf=8.0 phi=  330: lat_v=22.868 lat_r=112.418 v0z=18.57 r0z=-0.00
+gap tf=4.0 phi=   30: weighted dist of rotation midpoint = 0.6527 (lat_v 8.49, lat_r 20.80, v0z 8.20, r0z -0.00)
+gap tf=4.0 phi=    0: weighted dist of rotation midpoint = 0.6527 (lat_v 8.49, lat_r 20.80, v0z 8.20, r0z -0.00)
+gap tf=4.0 phi=  150: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -11.50, r0z 23.48)
+gap tf=4.0 phi=   60: weighted dist of rotation midpoint = 0.6527 (lat_v 8.49, lat_r 20.80, v0z 8.20, r0z -0.00)
+gap tf=4.0 phi=  120: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -11.50, r0z 23.48)
+gap tf=4.0 phi=  180: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -11.50, r0z 23.48)
+gap tf=4.0 phi=  210: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -11.50, r0z 23.48)
+gap tf=4.0 phi=  270: weighted dist of rotation midpoint = 0.0000 (lat_v 17.12, lat_r 31.97, v0z 3.71, r0z -0.00)
+gap tf=4.0 phi=  240: weighted dist of rotation midpoint = 0.0000 (lat_v 7.43, lat_r 5.83, v0z -6.60, r0z 7.87)
+gap tf=4.0 phi=  300: weighted dist of rotation midpoint = 0.6527 (lat_v 8.49, lat_r 20.80, v0z 8.20, r0z -0.00)
+gap tf=4.0 phi=  330: weighted dist of rotation midpoint = 0.6527 (lat_v 8.49, lat_r 20.80, v0z 8.20, r0z -0.00)
+gap tf=8.0 phi=    0: weighted dist of rotation midpoint = 2.9415 (lat_v 22.87, lat_r 112.42, v0z 18.57, r0z -0.00)
+gap tf=8.0 phi=   30: weighted dist of rotation midpoint = 2.8794 (lat_v 23.41, lat_r 113.37, v0z 18.52, r0z 0.01)
+gap tf=8.0 phi=   60: weighted dist of rotation midpoint = 2.6281 (lat_v 24.30, lat_r 113.42, v0z 18.33, r0z 0.03)
+gap tf=8.0 phi=  150: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -24.49, r0z 101.96)
+gap tf=8.0 phi=  180: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -24.49, r0z 101.96)
+gap tf=8.0 phi=  210: weighted dist of rotation midpoint = 0.0000 (lat_v 0.00, lat_r 0.00, v0z -24.49, r0z 101.96)
+gap tf=8.0 phi=  270: weighted dist of rotation midpoint = 0.0000 (lat_v 39.29, lat_r 151.68, v0z 8.09, r0z -0.00)
+gap tf=8.0 phi=  240: weighted dist of rotation midpoint = 0.0000 (lat_v 17.45, lat_r 28.08, v0z -13.43, r0z 31.78)
+gap tf=8.0 phi=  300: weighted dist of rotation midpoint = 2.7997 (lat_v 23.32, lat_r 113.09, v0z 18.46, r0z 0.02)
+gap tf=4.0 phi=   -1: weighted dist of rotation midpoint = 0.2609 (lat_v 0.00, lat_r 6.78, v0z 7.92, r0z -0.00)
+gap tf=8.0 phi=  330: weighted dist of rotation midpoint = 2.9415 (lat_v 22.87, lat_r 112.42, v0z 18.57, r0z -0.00)
+gap tf=8.0 phi=   -1: weighted dist of rotation midpoint = 1.2765 (lat_v 0.00, lat_r 38.50, v0z 17.29, r0z -0.00)

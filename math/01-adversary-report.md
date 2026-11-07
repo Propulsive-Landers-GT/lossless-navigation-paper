@@ -372,3 +372,27 @@ The Cauchy–Schwarz brake bound and the max(η, f(η)) ≥ η0 step also hold. 
 The tf = 8 capped result is consistent with §7 item 3. Filling the dent requires the plateau to fit one revolution on the cap, i.e. tf ≳ (θc + 2π sin θc)/ω ≈ 9.2 s for θc = 30° and ω = 0.4. That is not met at tf = 8. a5 shows the dent closing at tf = 20 with a 0.6 rad cap.
 
 So S is numerically TRUE at every face tested in the exact model. The expected failure region (capped, tf ≳ 10–20 s, pure dive) is untested in 3D. For a proof of S, use a dive-then-brake face or a short-horizon face.
+
+
+## 9. Attack on [proof-s] math/07 (Theorem S): SURVIVES
+
+I checked P1, P2(i)–(iv), Lemma W (including the sharpness case), and Prop M steps 1–5 (the K-elimination is a concave maximization). The claim that every trajectory from ζ_w has the same gain is airtight. No logical flaw found.
+
+**Numerics.**
+- `a7_check_S.py` reproduces table row 1 (gain_w, B, t₁, |p_w|).
+- `a8_wirtinger_attack.py` (small-angle, δ = 0, 24 starts including coning): max Pv = 0.0412 Ω² ≥ 0.0404 (the S-turn); max Pvr = 0.0147 Ω² ≤ 0.0253 (the Wirtinger bound). The bound holds and is about 1.7× loose, because it uses only the L² rate norm.
+
+**My §7 table was wrong on one point.** Its 1-crossing triangle (Ω²/48) is not Pv-optimal. The non-returning S-turn (0.0404 Ω²) beats coning by a wide margin.
+
+**Minor fixes requested.**
+- State the dry-mass hypothesis.
+- Remark 6.1 omits the brake-then-dive face family.
+- **Realism:** the proven regime needs min-throttle T/W > 1, which excludes essentially every throttleable lander, not only GTPL.
+
+**Status of S.** Proven (rigorous, quantitative) for short horizons on high-T/W vehicles. For GTPL it is numerical only.
+
+**Updates from [numerics].**
+- *s3_longcap* (exact 3D, pure dive, 30° cap, r_z ≥ 0): Pvr − Pv = 0.69 / 0.50 / 0.106 m/s at tf = 8 / 12 / 20. The planar gaps are 0.70 / 0.80 / 0.82. At tf = 20 the Pvr optimizer rides the cap with a 359° azimuth sweep.
+  So coning fill is confirmed qualitatively (13% of planar at tf = 20), consistent with §7 item 3. In the exact model the gap is not exactly 0.
+- *s4_faces*: with r_z ≥ 0 the pure-dive face is pinned at r0z = 0, v0z > 0 (ground-launched hop data), with large rotation-midpoint gaps (0.65 at tf = 4 and 2.94 at tf = 8, weighted m/s).
+  This matters for GTPL, whose flights are hops: if hop guidance (lift-off to landing) is in scope, large-gap witnesses exist. For in-air descent data only cm-level gaps have been found.

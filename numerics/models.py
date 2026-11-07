@@ -142,10 +142,13 @@ class NLP:
                     ok=st["success"] or st["return_status"] in ("Solve_Succeeded", "Solved_To_Acceptable_Level"),
                     status=st["return_status"], viol=viol)
 
-    def multistart(self, n, rng, accept_viol=1e-7, **kw):
+    def multistart(self, n, rng, accept_viol=1e-7, x0s=None, **kw):
+        """x0s: optional list of initial points tried first (counted within n)."""
         best, allr = None, []
-        for _ in range(n):
-            r = self.solve(self.random_x0(rng), **kw)
+        x0s = list(x0s) if x0s is not None else []
+        for i in range(n):
+            x0 = np.asarray(x0s[i], float) if i < len(x0s) else self.random_x0(rng)
+            r = self.solve(x0, **kw)
             if r["viol"] < accept_viol:
                 allr.append(r)
                 if best is None or r["f"] < best["f"]:

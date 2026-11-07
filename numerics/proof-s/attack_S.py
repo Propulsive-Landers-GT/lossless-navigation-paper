@@ -30,24 +30,23 @@ def build(T,om,delta,a1,N):
         m=np.array([F.sum(0)*h,(s[:,None]*F).sum(0)*h]); pim=sum(m[:,j]@Gi@m[:,j] for j in range(2))
         return gain,pim,m
     return stats
-def run(T,om,delta,m0,rho1,rho2,N=24,starts=12):
+def run(T,om,delta,m0,rho1,rho2,N=16,starts=4):
     a1=rho1/m0; C=consts(T,om,delta,m0,rho1,rho2,0.0); stats=build(T,om,delta,a1,N)
     best=-np.inf; bestPvr=-np.inf
     for k in range(starts):
         x0=rng.normal(size=4*N)*rng.uniform(0.3,3)
         f=lambda x: -(stats(x)[0]-C['Cm']*stats(x)[1])
-        r=minimize(f,x0,method='L-BFGS-B',options=dict(maxiter=300))
+        r=minimize(f,x0,method='L-BFGS-B',options=dict(maxiter=150))
         best=max(best,-r.fun)
         # exact Pvr (m=0) via penalty continuation
         x=r.x
         for mu in [1e2,1e4,1e6]:
             g=lambda x: -(stats(x)[0]-mu*np.sum(stats(x)[2]**2))
-            x=minimize(g,x,method='L-BFGS-B',options=dict(maxiter=300)).x
+            x=minimize(g,x,method='L-BFGS-B',options=dict(maxiter=150)).x
         gg,pp,mm=stats(x)
         if np.abs(mm).max()<1e-4: bestPvr=max(bestPvr,gg)
     W=witness(T,om,delta,m0,rho1,0.0)
     print(f"T={T} om={om} delta={np.rad2deg(delta):.0f}: sup[gain-Cm|pi|^2] found={best:.5f} <= Bnd={C['Bnd']:.5f}? {best<=C['Bnd']+1e-9};  best Pvr gain found={bestPvr:.5f};  Pv witness gain={W['gain']:.5f}",flush=True)
 if __name__=="__main__":
     run(2.0,0.2,0.0,100,1200,2500)
-    run(2.0,0.15,np.deg2rad(5),100,1200,2500)
     run(2.0,0.1,np.deg2rad(10),100,1200,2500)

@@ -1,0 +1,193 @@
+"""[proof-tvc] Certificate v2 for Theorem TVC-1 (math/06-pure-tvc.md §4): piecewise-LINEAR cell basis.
+Same inequality chain as certificate.py, with three changes:
+ * discrete space = cellwise polynomials of degree 1 (2N dof); remainder n'' is orthogonal to {1,t} on each cell,
+   so xdot'' and x'' are cell-local and  |xdot''|^2_cell <= (h/2pi)^2 |n''|^2_cell,  |x''|^2_inf <= h^3/(4pi^2)|n''|^2_cell,
+   |int g n''| <= sup|g''| h^2/8 sqrt(tf) |n''|  (Lemma 4.6');
+ * node-wise splitting parameter theta(s) for the late torque cost (Sec. 4.3), chosen so that the homogeneous
+   remainder removes at most a fraction r_theta of A2;
+ * defaults tau = tau' = 0.01, zeta = xi = 0.05.
+"""
+import os, sys
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+import numpy as np, cvxpy as cp
+from witness_nl import gtpl, J0, optimize, evaluate
+import certificate as C1
+
+GL_x, GL_w = np.polynomial.legendre.leggauss(6)     # exact for degree <= 11 (cubic x times cubic x times linear w)
+PAR = dict(roll=False, Ja=3.74, Jt=63.6, tau_roll=3.0, gyro_gamma=1.0, zeta=0.05, xi=0.05, r_theta=0.2,
+           kap=0.01, eta1_cells=2, tau=0.01, taup=0.01, lam_max=1e-2, nsub=3)
+
+def setup(P, tf, ss, N, par=PAR, loc=None):
+    a1, a2, de, eps = P['a1'], P['a2'], P['de'], P['eps']
+    zeta, xi, kap, lam_max = par['zeta'], par['xi'], par['kap'], par['lam_max']
+    K1 = a1*np.sin(de)/eps; K2 = a2*np.sin(de)/eps
+    h = tf/N; kss = int(round(ss/h)); assert abs(kss*h-ss) < 1e-12 and ss <= tf/2
+    tk = np.arange(N+1)*h; ck = (tk[:-1]+tk[1:])/2
+    phib0 = lambda s: K2*np.minimum(s, tf-s)**2/2
+    vb0 = lambda s: K2*np.minimum(s, tf-s)
+    if loc is None:
+        phibar, vbar = phib0, vb0
+    else:   # localized bounds (Lemma 4.0), valid for competitors with gain >= 0
+        vbar, phibar = loc
+    om3 = (lambda s: par['tau_roll']/par['Ja']*s) if par['roll'] else (lambda s: 0.0*s)
+    rJ = par['Ja']/par['Jt']
+    assert phib0(tf/2) < np.pi/2 - 0.05, "(A1) fails"
+    assert a1*np.cos(de) - eps*vb0(tf/2)**2 > 0, "(A2) fails"
+    cellmax = lambda fun, lo, hi: float(np.max(fun(np.linspace(lo, hi, 9))))   # bounds are padded piecewise-linear interpolants
+    def theta_of(vb, cq3):
+        er = 2*eps**2*(vb**4)/a2**2          # remainder per unit (1/theta-1), relative to A2=a2/2
+        if er <= 0: return 1e-3
+        return float(np.clip(1/(1+par['r_theta']/er), 1e-3, 0.9))
+    rows = []
+    for k in range(N):
+        for j in range(par['nsub']):
+            lo = tk[k]+j*h/par['nsub']; hi = lo+h/par['nsub']
+            ph = cellmax(phibar, lo, hi); vb = cellmax(vbar, lo, hi); o3 = float(om3(hi))
+            cg3 = eps*rJ*o3; cq3 = rJ*o3/np.cos(ph); gg = par['gyro_gamma']
+            early = hi <= ss+1e-15
+            th = theta_of(vb, cq3)
+            for x, w in zip(GL_x, GL_w):
+                s = (lo+hi)/2+(hi-lo)/2*x; ws = w*(hi-lo)/2
+                cL = 2*(1+1/kap)*vb**4; cLd = 2*(1+1/kap)*cq3**2
+                if early:
+                    cA = (ss-s)*(a1*np.cos(de)/(1+np.cos(ph)) + cg3*gg/2); cB = (ss-s)*(eps/np.cos(ph)**2 + cg3/(2*gg)); sd = 1
+                    c2 = 0.0
+                else:
+                    A2e = a2/2 - (1/th-1)*eps**2*2*vb**4/(2*a2)
+                    B2e = eps*np.cos(ph) - (1/th-1)*eps**2*2*cq3**2/(2*a2)
+                    cA = -(s-ss)*((1-zeta)*A2e - cg3*gg/2); cB = -(s-ss)*((1-zeta)*B2e - cg3/(2*gg)); sd = -1
+                    c2 = (1-zeta)*(s-ss)*(1-th)*eps**2*np.cos(ph)**2/(2*a2)   # torque-cost multiplier of n^2
+                rows.append((k, s, ws, cA, cB, cL, cLd, sd, c2))
+    R = np.array(rows); cell = R[:, 0].astype(int); s = R[:, 1]; wq = R[:, 2]
+    cA, cB, cL, cLd, side, c2 = R[:, 3], R[:, 4], R[:, 5], R[:, 6], R[:, 7], R[:, 8]
+    # basis: for cell k, phi_{k,0} = 1, phi_{k,1} = (t-c_k)  (on the cell). Exact x, xdot at nodes.
+    S = s[:, None]; T0 = tk[:-1][None, :]; T1 = tk[1:][None, :]
+    sig = np.clip(S-T0, 0, h); inside = (S > T0) & (S <= T1); after = S > T1
+    Xd0 = sig; X0 = np.where(S <= T0, 0, np.where(inside, sig**2/2, h*(S-(T0+T1)/2)))
+    Xd1 = np.where(inside, sig**2/2 - (h/2)*sig, 0.0)
+    X1 = np.where(inside, sig**3/6 - (h/2)*sig**2/2, np.where(after, -h**3/12, 0.0))
+    X = np.hstack([X0, X1]); Xd = np.hstack([Xd0, Xd1])          # columns: N constants, then N slopes
+    pos = side > 0
+    form = lambda m, cx, cv: (X[m].T*(wq*cx)[m])@X[m] + (Xd[m].T*(wq*cv)[m])@Xd[m]
+    Kp = form(pos, cA, cB); Km = form(~pos, cA, cB)
+    Lk = [form(cell == k, cL, cLd) for k in range(N)]
+    # mass matrix of int n^2 on cell k: h for constant, h^3/12 for slope
+    Wdiag = np.concatenate([np.full(N, h), np.full(N, h**3/12)])
+    # late torque multiplier: cellwise min of c2 (a lower bound, piecewise constant)
+    Mlate = np.array([c2[cell == k].min() if k >= kss else 0.0 for k in range(N)])
+    Mlate = np.maximum(Mlate - 0.0, 0.0)
+    # (endpoint check: c2 is increasing in s on each late cell near s*; nodes don't include the left end, use t_k)
+    for k in range(kss, N):
+        thk = theta_of(cellmax(vbar, tk[k], tk[k+1]), 0.0)
+        Mlate[k] = min(Mlate[k], (1-zeta)*(tk[k]-ss)*(1-thk)*eps**2*np.cos(cellmax(phibar, tk[k], tk[k+1]))**2/(2*a2)) if tk[k] > ss else 0.0
+    f0 = np.where(s <= ss, a1*np.cos(de), a2)
+    G = np.vstack([(wq*f0)@X, (wq*s*f0)@X])
+    Cc = np.vstack([np.concatenate([h*np.ones(N), np.zeros(N)]),
+                    np.concatenate([h*(tf-ck), -np.full(N, h**3/12)])])   # xdot(tf), x(tf) = int (tf-t) n
+    Nb2 = np.zeros(N); lam_ub = np.full(N, lam_max)
+    kappa_D = 2*K1*np.tan(de)/eps + (a2-a1*np.cos(de))*np.tan(de)**2/eps**2
+    for k in range(N):
+        if k < kss-par['eta1_cells']:
+            Nb2[k] = (1+kap)*K1**2
+            lam_ub[k] = min(lam_max, (1-xi)*(ss-tk[k+1])*np.cos(phibar(tk[k+1]))/((1+kap)*kappa_D))
+        else:
+            Nb2[k] = (1+kap)*K2**2
+    return dict(P=P, tf=tf, ss=ss, N=N, h=h, kss=kss, tk=tk, Kp=Kp, Km=Km, Lk=Lk, G=G, C=Cc, Mlate=Mlate,
+                Wdiag=Wdiag, Nb2=Nb2, lam_ub=lam_ub, K1=K1, K2=K2, par=par, phibar=phibar, vbar=vbar,
+                s=s, wq=wq, cA=cA, cB=cB, cL=cL, cLd=cLd, side=side, cell=cell, om3=om3, rJ=rJ)
+
+def remainder_constants(D, rho):
+    h, tf, N = D['h'], D['tf'], D['N']; par = D['par']
+    tau, taup, lam_max = par['tau'], par['taup'], par['lam_max']
+    cA, cB, cL, cLd, side, cell = D['cA'], D['cB'], D['cL'], D['cLd'], D['side'], D['cell']
+    fac = np.where(side > 0, 1+1/tau, 1/taup-1)
+    c_loc = np.zeros(N)
+    for k in range(N):
+        m = cell == k
+        cv = np.max(fac[m]*np.abs(cB[m])) + (1+1/tau)*lam_max*np.max(cLd[m])
+        cx = np.max(fac[m]*np.abs(cA[m])) + (1+1/tau)*lam_max*np.max(cL[m])
+        c_loc[k] = cv*(h/(2*np.pi))**2 + cx*h*h**3/(4*np.pi**2)
+    a2 = D['P']['a2']
+    cg = (1/taup-1)*rho*sum((tf**j*a2)**2 for j in (0, 1))*h**4*tf/64   # clamps: g linear => 0
+    return c_loc, cg
+
+def solve_cert(D, rho, rhoc):
+    N, h, par = D['N'], D['h'], D['par']; tau, taup = par['tau'], par['taup']
+    c_loc, cg = remainder_constants(D, rho)
+    lam_lb = np.maximum(c_loc+cg-D['Mlate'], 0.0)*1.02
+    if np.any(lam_lb > D['lam_ub']): return None
+    A = (1+tau)*D['Kp'] + (1-taup)*D['Km'] - (1-taup)*rho*D['G'].T@D['G'] - (1-taup)*rhoc*D['C'].T@D['C']
+    A = (A+A.T)/2
+    Wd = D['Wdiag']
+    lam = cp.Variable(N)
+    lam2 = cp.hstack([lam, lam]); M2 = np.concatenate([D['Mlate'], D['Mlate']])
+    LK = sum(lam[k]*((1+tau)*D['Lk'][k]) for k in range(N))
+    Mx = A + LK - cp.diag(cp.multiply(Wd, lam2 + M2))
+    prob = cp.Problem(cp.Minimize(h*cp.sum(cp.multiply(lam, D['Nb2']))),
+                      [lam >= lam_lb, lam <= D['lam_ub'], (Mx+Mx.T)/2 << 0])
+    try: prob.solve(solver='CLARABEL')
+    except Exception as e:
+        print("solver error", e); return None
+    if lam.value is None: return None
+    lv = np.clip(lam.value, lam_lb, D['lam_ub'])
+    def top(lv):
+        Mv = A + (1+tau)*sum(lv[k]*D['Lk'][k] for k in range(N)) - np.diag(Wd*np.concatenate([lv+D['Mlate']]*2))
+        # scale-invariant check: symmetric diagonal scaling by Wd^{-1/2}
+        Sc = 1/np.sqrt(Wd); Mv = (Mv+Mv.T)/2*Sc[:, None]*Sc[None, :]
+        return np.linalg.eigvalsh(Mv).max()
+    t = top(lv); it = 0
+    while t > 0 and it < 30:
+        lv = lv + 1.2*t; it += 1
+        if np.any(lv > D['lam_ub']): return None
+        t = top(lv)
+    if t > 0: return None
+    return dict(val=h*np.sum(lv*D['Nb2']), lam=lv, topeig=t, lam_lb=lam_lb,
+                lbpart=h*np.sum(lam_lb*D['Nb2']))
+
+def moment_term(D, rho, d=0.0):
+    return C1.moment_term(D, rho, d)
+
+if __name__ == "__main__":
+    tf = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
+    ss = float(sys.argv[2]) if len(sys.argv) > 2 else 0.25
+    N = int(sys.argv[3]) if len(sys.argv) > 3 else 80
+    gim = sys.argv[4] if len(sys.argv) > 4 else 'cone'
+    deg = 15.0 if gim == 'cone' else np.degrees(np.arccos(np.cos(np.deg2rad(15))**2))
+    P = gtpl(deg=deg)
+    wfile = f"witness_{gim}_{tf}_{ss}.npy"
+    if os.path.exists(wfile): nv = np.load(wfile)
+    else:
+        nv = optimize(P, tf, ss, N=100, starts=6)[1]; np.save(wfile, nv)
+    ev = evaluate(P, tf, ss, nv)
+    par = dict(PAR); par['roll'] = os.environ.get("ROLL", "0") == "1"
+    print(f"[{gim} delta={deg:.2f}] tf={tf} s*={ss} N={N} roll-competitors={par['roll']}: witness G_w={ev['G']:.6e}, "
+          f"max tilt {np.degrees(ev['maxtilt']):.3f} deg, max v_z(t<tf)={ev['maxvz']:.3e}, min r_z/|r_h|={ev['rzrel']:.3e}, "
+          f"r0={ev['r0']}, v0={ev['v0']}", flush=True)
+    loc = None
+    if os.environ.get("LOC", "1") == "1":
+        from localize import localize
+        vf, pf, info, _ = localize(P, tf, ss)
+        print("  localization (Lemma 4.0):", {k: float(v) for k, v in info.items()}, flush=True)
+        loc = (vf, pf)
+    D = setup(P, tf, ss, N, par, loc=loc)
+    best = None
+    for rho in [float(x) for x in os.environ.get("RHOS", "1e-3,3e-3").split(",")]:
+        for rhoc in [float(x) for x in os.environ.get("RHOCS", "1e-1").split(",")]:
+            c = solve_cert(D, rho, rhoc)
+            if c is None:
+                print(f"  rho={rho:g} rhoc={rhoc:g}: no certificate", flush=True); continue
+            mt = moment_term(D, rho); U = c['val']+mt
+            print(f"  rho={rho:g} rhoc={rhoc:g}: SDP={c['val']:.5e} (remainder floor {c['lbpart']:.2e}) topeig={c['topeig']:.1e} "
+                  f"moment={mt:.3e} U_total={U:.5e}  G_w/U={ev['G']/U:.4f}", flush=True)
+            if best is None or U < best[0]: best = (U, rho, rhoc, c)
+    if best:
+        U, rho, rhoc, c = best
+        ok = ev['G'] > U
+        dlo, dhi = 0.0, 1.0
+        for _ in range(50):
+            dm = (dlo+dhi)/2
+            if ev['G']-dm*np.sqrt(1+ss**2) > c['val']+moment_term(D, rho, dm): dlo = dm
+            else: dhi = dm
+        print(f"RESULT tf={tf} s*={ss} N={N} {gim} roll={par['roll']}: G_w={ev['G']:.5e}  U_total={U:.5e}  margin={(ev['G']-U):.3e} "
+              f"({(ev['G']-U)/ev['G']*100:.1f}%)  dist(theta_m,F) >= {dlo:.3e}  certificate={'PASS' if ok else 'FAIL'}", flush=True)
+        np.savez(f"cert2_{gim}_{tf}_{ss}_{N}_roll{int(par['roll'])}.npz", lam=c['lam'], U=U, Gw=ev['G'], rho=rho, rhoc=rhoc, dist=dlo)

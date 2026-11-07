@@ -6,7 +6,7 @@ import os, sys
 os.environ.setdefault("OMP_NUM_THREADS","1")
 import numpy as np, casadi as ca
 from witness_nl import gtpl, J0
-def solve(P,tf,ss,gdot_deg=100.,N=100,starts=6,seed=0):
+def solve(P,tf,ss,gdot_deg=100.,N=100,starts=6,seed=0,nw=None):
     a1,a2,de,eps=P['a1'],P['a2'],P['de'],P['eps']; gd=np.deg2rad(gdot_deg); h=tf/N
     rng=np.random.default_rng(seed); best=None
     for st in range(starts):
@@ -25,7 +25,14 @@ def solve(P,tf,ss,gdot_deg=100.,N=100,starts=6,seed=0):
                 W+=h*wt*(s-ss)*(uk[0]*ca.cos(xm[2])-eps*xm[1]**2)*ca.cos(xm[0])
         o.subject_to(o.bounded(a1,U[0,:],a2)); o.subject_to(o.bounded(-gd,U[1,:],gd)); o.subject_to(o.bounded(-de,X[2,:],de))
         o.minimize(-W)
-        o.set_initial(U[0,:],np.where((np.arange(N)+.5)*h<ss,a1,a2)); o.set_initial(U[1,:],rng.uniform(-1,1,N)*gd*0.3)
+        aa=np.where((np.arange(N)+.5)*h<ss,a1,a2); o.set_initial(U[0,:],aa)
+        if nw is not None and st==0:
+            mu=np.arcsin(np.clip(eps*nw/aa,-np.sin(de),np.sin(de))); mu=np.clip(mu,-de,de)
+            # rate-limited tracking of mu from 0
+            mut=np.zeros(N+1); 
+            for k in range(N): mut[k+1]=mut[k]+np.clip(mu[k]-mut[k],-gd*h,gd*h)
+            o.set_initial(X[2,:],mut); o.set_initial(U[1,:],np.diff(mut)/h)
+        else: o.set_initial(U[1,:],rng.uniform(-1,1,N)*gd*0.3)
         o.solver('ipopt',{'ipopt.print_level':0,'print_time':0,'ipopt.sb':'yes','ipopt.max_iter':3000})
         try: sol=o.solve()
         except RuntimeError: continue
@@ -34,6 +41,6 @@ def solve(P,tf,ss,gdot_deg=100.,N=100,starts=6,seed=0):
     return best-J0(P,tf,ss)
 if __name__=="__main__":
     P=gtpl()
-    for tf,ss in [(1.0,0.25),(1.0,0.35)]:
-        for gd in [100.,1000.,1e5]:
-            print(f"tf={tf} s*={ss} gimbal rate {gd:g} deg/s: G_rl={solve(P,tf,ss,gd):.4e}",flush=True)
+    nw=np.load('witness_cone_1.0_0.25.npy')
+    for gd in [1e5,1000.,100.]:
+        print(f"tf=1.0 s*=0.25 gimbal rate {gd:g} deg/s: G_rl={solve(P,1.0,0.25,gd,nw=nw):.4e}",flush=True)

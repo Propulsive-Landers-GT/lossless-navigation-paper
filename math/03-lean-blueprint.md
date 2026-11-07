@@ -102,3 +102,71 @@ A4 + Corollary D.1. D.1 needs B6 and the affine map `A'(Δr,Δv) = (Δr + tf•�
 
 ## 6. Suggested file plan
 `Abstract.lean` (A1–A5, D5, D6), `Sphere.lean` (S1–S5), `Calc.lean` (R1–R5), `Model.lean` (D1–D4, M1–M5), `BallBound.lean` (Q1–Q3), `Rigidity.lean` (Route R), `DiveBrake.lean` (B1–B6), `TheoremD.lean`, `Percussion.lean` (K3). Main statement for the paper: `theorem no_lossless_uniform_relaxation_constrained` (from B6 + A1), plus the unconstrained `…_ballBound` (Q3).
+
+---
+
+## Lemma S (per-instance slice nonconvexity, hard soft landing), [proof-s], math/07-lemma-S.md
+
+The target is Theorem S (math/07 §3): an explicit instance with 0 ∉ cl L ≠ ∅. Everything below is real analysis on `L²((0,T); ℝ²)` plus one Fourier fact. **No PMP, no rigidity, no compactness.** Coning is handled automatically because every estimate is componentwise.
+Suggested file: `LemmaS.lean`. Start with α = 0 and ρ₁ = ρ₂ (then K ≡ 0, ε_m = 0, C_m = A'). Add K and α afterwards.
+
+- **SW1 (affine projection).** `P : L²(0,T;ℝ²) →L[ℝ] L²` is the orthogonal projection onto `span{1, s}` (componentwise). The facts needed are:
+  - `P f` depends only on `m f := (∫ f, ∫ s • f)`, with `‖P f‖² = m fᵀ G⁻¹ m f`;
+  - `G⁻¹₂₂ = 12/T³`, so `‖π_{(0,q)}‖² = 12‖q‖²/T³`;
+  - `‖P^⊥ f‖ ≤ ‖f − c‖` for every constant `c`.
+  Use `orthogonalProjection` onto a finite-dimensional submodule, or work directly with the explicit 2×2 Gram matrix. Elementary.
+- **SW2 (periodic Wirtinger).** For `g ∈ H¹` (or `C¹`, enough for the witness side, but the competitor side needs Lipschitz `g`) with `g 0 = g T`: `‖g − mean g‖² ≤ (T/(2π))² ‖g'‖²`.
+  Mathlib route: transfer to `AddCircle T` and use Parseval (`tsum_sq_fourierCoeff`) together with `fourierCoeff` of the derivative (`fourierCoeffOn_of_hasDerivAt` exists for intervals). For Lipschitz `g`, use absolute continuity (`LipschitzWith` → a.e. derivative, FTC `integral_eq_sub_of_hasDerivAt_of_le` or `LipschitzOnWith.ae_differentiableWithinAt`).
+  **This is the only nontrivial analytic input.** Fallback: prove it for piecewise-C¹ `g` and state Lipschitz attitude paths through a density argument, or assume SW2 as a hypothesis lemma first.
+- **SW3 (Lemma W).** `‖P^⊥ f‖² ≤ (T/(2π))² ‖f'‖²`. From SW1 (affine invariance + constant comparison) and SW2 applied to `f̃ = f − f 0 − (s/T)(f T − f 0)`, using `‖f̃'‖² = ‖f'‖² − ‖f T − f 0‖²/T ≤ ‖f'‖²`. Componentwise, so any `EuclideanSpace ℝ (Fin N)`.
+- **SP1 (pointwise majorant, Lemma P1).** For `a ≥ a₁ > 0`, unit `d` with `cos τ ≤ d_z`, `0 < cos τ`: `−a d_z ≤ −a₁ + a₁ ‖d_h‖²/(1 + cos τ) − (a − a₁) cos τ`. Pure algebra using `‖d_h‖² + d_z² = 1`.
+- **SP2 (kinematics, Lemma P2).**
+  - (ii) `cos(δ+ωs) ≤ (d s)_z` from S-series spherical triangle lemmas (existing `Sphere.lean`) with (AL) at `s, 0`.
+  - (iii) `b_h` is `ω`-Lipschitz (from (AL): `‖b s − b s'‖ = 2 sin(∠/2) ≤ ω|s − s'|`, and the projection is 1-Lipschitz).
+  - (iv) `‖d_h − b_h‖ ≤ ‖d − b‖ ≤ 2 sin(δ/2)` (from `⟪d,b⟫ ≥ cos δ`: `‖d−b‖² = 2 − 2⟪d,b⟫`).
+- **SP3 (throttle split).** With `K := (a − a₁) • d_h`: `‖K‖ ≤ (a₂ − a₁₀) sin τ̄` and `(a − a₁) cos τ̄ ≥ κ₀ ‖K‖²`. Scalar inequalities.
+- **SM (Prop. M, master inequality).** `gain ≤ B + C_m ‖π_{m F}‖²`. Integrate SP1 (`integral_mono`), split `v = β + ẽ`, then:
+  - triangle inequality in L²;
+  - SW3 for β with `‖β'‖² ≤ ω² T`;
+  - `‖ẽ‖² ≤ δ_e² T`;
+  - eliminate `K` by the concave quadratic maximization `A'‖x‖² − κ₀‖x − π‖² ≤ (A'κ₀/(κ₀−A'))‖π‖²` (complete the square).
+- **SS1 (witness).** Explicit planar trajectory (existing `M4`-style meridional constructions): φ piecewise linear, outward gimbal, `t₁` from IVT (`intermediate_value_Icc`) applied to the continuous map `t₁ ↦ ∫ a₁ sin χ_{t₁}`.
+  `gain_w` has a closed form for α = 0 (integrals of `cos` of affine functions). The **numerical** inequality `gain_w > B` for a concrete parameter set is checked by `norm_num` on rational bounds of `sin`/`cos` (Mathlib `Real.sin_bound`, `Real.cos_bound`, or `interval_cases`-free Taylor bounds).
+- **SS2 (altitude of the witness).** `v̇_z ≥ a₁₀ cos χ_max − g₀ > 0` ⇒ `r_z ≥ 0` (monotonicity, FTC).
+- **SS3 (Theorem S).** For any trajectory from `ζ_w` landing at `(p, 0)`: `gain = gain_w`, `m F = (0, −p)` (from D4 algebra). So `‖p‖² ≥ M T³/(12 C_m)`. Then `0 ∉ closure L` (closed ball argument), and `L` is not convex (rotation by π, `A5`-style midpoint).
+- **SS4 (Theorem D hard).** Combine SS3 with existing D6/`TheoremD`: relaxed value `0` at target `0`, original `≥ r_S`.
+
+Recommended order: SP1, SP2, SP3 (algebra) → SW1 → SW3 assuming SW2 → SM → SS1–SS4 for one concrete row of math/07 §4 (δ = 0, T = 2, ω = 0.2, ρ₁ = ρ₂ variant is the cheapest: then `C_m = A'`). Discharge SW2 last.
+
+---
+
+## Pure TVC (gimbal-only pitch/yaw torque; math/06-pure-tvc.md, Theorem TVC-1) — added by [proof-tvc]
+
+Scope: constant mass, constant ε = J_t/(mL), axisymmetric J, relaxed thrust-acceleration control u ∈ C(b), landing upright at rest. The theorem is **computer-assisted**: one finite-dimensional matrix inequality (an SDP certificate, 2N×2N) is checked numerically. Everything else is elementary real analysis and ℝ³ algebra. Suggested file: `PureTVC.lean`.
+
+**Definitions**
+- PT-D1 `TVCAdmissible`: b ∈ C¹([0,tf]; S²), ḃ absolutely continuous. u measurable with u(s) ∈ C(b(s)) := {u : ⟪u,b⟫ ≥ a₁cos δ, ‖u‖ ≤ a₂, ‖Π_b u‖ ≤ ⟪u,b⟫ tan δ}. Coupling ε∇ḃ = −Π_b u (+ gyro term in variant R1). Boundary conditions b(0)=b(tf)=e_z, ḃ(0)=ḃ(tf)=0.
+- PT-D2 Landing in integral form: v₀ = g₀ tf e_z − ∫ (f b + γ₃) and r₀ = ∫ s (f b + γ₃) − ½ g₀ tf² e_z, with f = ⟪u,b⟫ − ε‖ḃ‖². (Taking these as the definition of F avoids the ODE; equivalence with the ODE is TVC-K1.)
+- PT-D3 `Lambda θ := r₀ + s*•v₀`, `W_z`, `J0`, gain `W_z − J0`.
+
+**Lemmas (all elementary)**
+- TVC-K1 (= blueprint K3 plus derivation). Given ε∇ḃ = −Π_b u, the centre of percussion satisfies ÿ = f b + γ₃ − g₀e_z. Pure ℝ³ algebra: `cross_cross`, and ⟪b,b̈⟫ = −‖ḃ‖² from ‖b‖ = 1.
+- TVC-L1 (speed lemma). d/dt‖ḃ‖ ≤ ‖Π_b u‖/ε ≤ a₂ sin δ/ε a.e. Hence ‖ḃ(s)‖ ≤ K₂ min(s, tf−s) and angle(b(s), e_z) ≤ K₂ min(s,tf−s)²/2. Uses `norm_sub_le` and an integral comparison; ⟪γ₃, ḃ⟫ = 0.
+- TVC-L2 (landing identity). Λ(θ) = ∫ (s − s*)(f b + γ₃) + κ e_z. Same algebra as blueprint B1.
+- TVC-L3 (midpoint). F is R_π-invariant, so θ_m := ½(θ + R_πθ) has r₀ₕ = v₀ₕ = 0 and ℓ(θ_m) = ℓ(θ). Reuse A5.
+- TVC-P1 (pointwise, early). For unit b with b_z ≥ c > 0 and h = b_h: 1 − b_z = ‖h‖²/(1+b_z), and ‖ḃ‖² ≤ ‖ḣ‖²/b_z² (since ḃ_z = −⟪h,ḣ⟫/b_z).
+- TVC-P2 (pointwise, late). For 0 ≤ p ≤ √(a₂² − |q|²) and 0 ≤ b_z = √(1−|h|²): a₂ − p b_z ≥ (|q|² b_z² + a₂²|h|²)/(2a₂). Uses `Real.sqrt_le_sqrt` and a₂ − √Y ≥ (a₂² − Y)/(2a₂).
+- TVC-P3. If f ≥ 0 then a₂ − f b_z ≥ |a₂ − f|.
+- TVC-P4 (torque in tilt coordinates). ḧ = −q_h/ε + (J_a/J_t)ω₃(b×ḃ)_h − ‖ḃ‖²h, so |‖ḧ‖ − ‖q_h‖/ε| ≤ v̄²‖h‖ + c₃‖ḣ‖. Then (x+y)² ≤ (1+κ)x² + (1+1/κ)y², and (x−y)₊² ≥ (1−ϑ)x² − (1/ϑ − 1)y².
+- TVC-P5 (gyro, R1). |(h×ḣ)_z| ≤ ‖h‖‖ḣ‖ ≤ ½(g‖h‖² + ‖ḣ‖²/g).
+- TVC-Q1 (separability). If a scalar quadratic inequality (C) holds for all x = I²n with n ∈ L², then it holds for ℝ²-valued h componentwise, and summing gives the vector inequality. Uses `EuclideanSpace` norms as sums of squares.
+- TVC-Q2 (moment shift). For D ≥ 0 with D ≤ D_max and any η > 0: ∫ s^j σ D ≤ D_max ∫_{|w|<η} s^j σ + η⁻¹ sup_{|w|≥η}(s^j σ/ω_D) · ∫ ω_D |w| D. Split the integral and apply `integral_mono`.
+- TVC-Q3 (discretization remainder; piecewise-linear version used by certificate2.py). Let n'' be orthogonal to {1, t} on each cell of length h. Then İ n'' and I²n'' are cell-local, ‖İn''‖²_cell ≤ (h/2π)²‖n''‖²_cell (Wirtinger with zero mean and zero endpoints), ‖I²n''‖²_∞,cell ≤ h³/(4π²)‖n''‖²_cell, and |∫ g n''| ≤ sup|g''| (h²/8)√tf ‖n''‖. The Wirtinger step is the only nontrivial analytic input; it can be replaced by the weaker constant h²/2 (Cauchy–Schwarz) at the cost of a larger N.
+- TVC-Q4 (splitting). If S ⪰ 0 then S(a+b) ≤ (1+τ)S(a) + (1+1/τ)S(b), and −S(a+b) ≤ −(1−τ')S(a) + (1/τ' − 1)S(b).
+- TVC-C (certificate, NUMERICAL). The 2N×2N matrix inequality
+  (1+τ)K₊ + (1−τ')K₋ − (1−τ')ρGᵀG − (1−τ')ρ_cCᵀC + (1+τ)Σλ_kL_k ⪯ diag(W(λ + M_late))
+  holds for the stored λ (`numerics/proof-tvc/cert2_*.npz`). In Lean this is an axiom-free `decide`-style check only if entries are rationalized and an LDLᵀ certificate with rational arithmetic is supplied. Interim: treat it as an explicit hypothesis `CertHolds`, like `PMPData` in the positive blueprint.
+- TVC-W (witness). The explicit planar control has gain G_w and satisfies r_z > 0 and the glide slope. A closed-form piecewise-quadratic ψ makes this a finite computation, but its integrand is transcendental (cos ψ), so interval bounds are needed. Interim: explicit hypothesis.
+- TVC-Main. CertHolds ∧ G_w > U_tot ⇒ θ_m ∉ F ⇒ ¬Convex F^X ⇒ no lossless uniform relaxation (A1).
+
+Recommended order: K1, L2, L3, P1–P5, Q1, Q2, Q4 (pure inequalities) first; Q3 next; C and W as hypotheses.

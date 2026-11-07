@@ -1,0 +1,3 @@
+Pv: max mean-square tilt / Omega^2 = 0.04119
+Pvr: max mean-square tilt / Omega^2 = 0.01469
+claims: Pv >= 0.04044 (S-turn), Pvr <= 0.02533 (Wirtinger)

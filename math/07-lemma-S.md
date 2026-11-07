@@ -33,6 +33,8 @@ This inequality is **componentwise and rotation-invariant**. It therefore bounds
 **Regime (explicit, checkable):** δ+ωt_f < π/2; (ρ₁/m₀) cos(δ+ωt_f) > g₀ (altitude automatic); the K-condition κ₀ > A' (automatic if ρ₁=ρ₂); and M > 0.
 With the constants of §2, M > 0 holds e.g. for ωt_f ≤ 0.55 rad at δ=0, ωt_f ≤ 0.45 rad at δ=5°, ωt_f ≤ 0.30 rad at δ=10°. The analytic constants fail at δ ≥ 15° (see §5 for why and what the S-procedure SDP gives).
 
+**Realism caveat ([adversary]).** The regime needs min-throttle T/W > 1/cos(δ+Ω) > 1, i.e. a vehicle that **cannot hover at minimum throttle**. That excludes essentially every deep-throttling lander, not just GTPL. The theorem settles S as a mathematical statement about M1 and gives certified lossy instances for Theorem D. It does not give a realistic powered-descent instance.
+
 **GTPL (task 2): no instance in the proven regime.** ρ₁/m₀ = 5.0 m/s² (wet) to 7.2 m/s² (dry), always < g₀ = 9.81.
 - So the pure-waste face starts underground (same mechanism as [adversary]'s BREAK of Thm B).
 - For GTPL, S must use dive-then-brake faces. [numerics] s1_slice (exact 3D, coning starts, r_z ≥ 0, 24 restarts) finds strict gaps opt(Pvr) − opt(Pv) = 0.0156 m (t_f=4 s) and 0.0088 m (t_f=8 s), with Pv optimizers landing 1.47 m / 2.39 m off-axis. So S holds numerically for GTPL, with the gap thin in the vertical functional ℓ.
@@ -41,7 +43,7 @@ With the constants of §2, M > 0 holds e.g. for ωt_f ≤ 0.55 rad at δ=0, ωt_
 **Long horizons (task 3): S does not fail; coning fills the dent only on capped plateau faces.**
 - Our certificate is short-horizon: the quadratic majorant degrades with tilt.
 - Numerically, strict gaps persist at ωt_f = 1.6 and 3.2 rad ([numerics] s1, dive faces, cap none/30°).
-- Coning can close the gap only at faces where the maximizer has a long tilt-capped plateau (Remark 6.2, after [adversary] math/01 §7). Short-dive faces never reach the cap.
+- Coning can close the gap only at faces where the maximizer has a long tilt-capped plateau (Remark 6.2, after [adversary] math/01 §7). There it removes ~87% of it at t_f = 20 s ([adversary] s3), but not all of it. Short-dive faces never reach the cap.
 - Dents can exist only at throttle-saturated (face) data (Remark 6.1).
 
 ## 1. Setting and notation
@@ -126,7 +128,8 @@ Everything is componentwise, so the inequality holds verbatim for ℝ^N-valued f
 - (S0) τ̄ = δ + ωT < π/2;
 - (S1) (ρ₁/m₀) cos χ_max > g₀;
 - (S2) κ₀ > A' (automatic if ρ₁ = ρ₂);
-- (S3) M := gain_w − B > 0.
+- (S3) M := gain_w − B > 0;
+- (S4) if a dry-mass constraint m(T) ≥ m_dry is imposed: m₀ − αρ₁T ≥ m_dry (the witness burns at minimum throttle).
 
 Let ζ_w be the vertical data of the witness: v_{0z} = g₀T − I_z(w), h = ½g₀T² − v_{0z}T − J_z(w). Then:
 1. The witness lands from ζ_w at (p_w, 0) with v(T) = 0 and satisfies r_z(t) > 0 on [0,T). By rotation invariance, L(ζ_w) ⊇ {|p| = |p_w|}, so L(ζ_w) ≠ ∅.
@@ -176,18 +179,24 @@ r_S is a rigorous lower bound on the minimum landing error at target 0 for this 
 **Remark 6.1 (dents live only at throttle-saturated data; heuristic, not a claim).**
 - Suppose a trajectory from ζ lands at p ≠ 0 and has interior throttle (ρ₁ < T < ρ₂) on two windows, plus a window where b is within δ of its required lateral force direction.
 - Then gimbal-only lateral corrections can move p continuously toward 0, and the two throttle windows compensate the two vertical constraints (I_z, J_z).
-- Hence any ζ with 0 ∉ cl L(ζ) must be throttle-saturated: it lies on the boundary of the Pv-feasible vertical-data set K₁, i.e. on a face max ∫(α+βs) a d_z. Since the vertical data are 2D, the faces are exactly the pure-waste (β=0) and dive-then-brake (α<0<β) families.
-- For GTPL (ρ₁ < m g) the pure-waste face is underground, leaving only dive-then-brake.
+- Hence any ζ with 0 ∉ cl L(ζ) must be throttle-saturated: it lies on the boundary of the Pv-feasible vertical-data set K₁, i.e. on a face max ∫(α+βs) a d_z. Since the vertical data are 2D, the faces are max ∫(α+βs) a d_z. The sign patterns of w = α+βs are:
+  - w < 0 throughout: pure waste;
+  - w < 0 early, > 0 late: dive-then-brake;
+  - w > 0 early, < 0 late: brake-then-dive. This ends at minimum throttle, so it is above ground only for min-T/W > 1 vehicles (correction by [adversary]);
+  - w > 0 throughout: upright, lands at 0, degenerate.
+- For GTPL (ρ₁ < m g), descent data that start in the air leave only dive-then-brake. [adversary] s4 reports that the altitude-constrained pure-waste face ends at *hop* data (starting on the ground with upward velocity), where gaps are large (0.65 at t_f = 4 s, 2.94 at t_f = 8 s, weighted m/s). That is relevant if lift-off-to-landing guidance is in scope. Not covered by Theorem S.
 
 **Remark 6.2 (when coning fills the dent; after [adversary] math/01 §7).**
 - With a tilt cap θ_c, suppose a face maximizer has a plateau at tilt θ_c of length ≳ 2π sin θ_c/ω (one precession period) with outward gimbal.
 - The waste depends only on tilt, so the azimuth can be modulated (|ψ̇| ≤ ω/sin θ_c) to cancel both the lateral impulse and the lateral moment of the ramp at zero cost. Then Pv = Pvr at that face.
 - Short-dive faces (ωs* < θ_c) never reach the cap. So this mechanism does **not** refute S at long horizons.
-- [numerics] s1 at t_f = 8 s (cap 30°, plateau shorter than one period) still shows strict gaps.
+- Numerical confirmation ([adversary] s3, exact 3D, 30° cap, pure-dive face, gap opt(Pvr) − opt(Pv) in m/s): t_f = 8 s: 0.69 (planar-only 0.70); 12 s: 0.50 (0.80); 20 s: 0.106 (0.82).
+- At 20 s the Pvr optimizer rides the cap and sweeps 359° of azimuth. **So coning fills ~87% of the dent at long capped horizons, but not all of it** in the exact model.
 
 **Answer to task (3).**
 - No evidence that S fails at long horizons.
-- The dent closes only at capped faces with long plateaus.
+- At capped faces with long plateaus, coning shrinks the dent strongly (87% at t_f = 20 s), but a strict residual remains numerically.
+- Short-dive faces are unaffected.
 - Our rigorous certificate is limited to short horizons by the quadratic majorant, not by the physics.
 
 **Task (2), GTPL.** No instance in the proven regime. Numerical S at dive-then-brake faces with Pv offsets ~1.5–2.4 m, but an ℓ-gap of ~1 cm.
@@ -204,3 +213,21 @@ r_S is a rigorous lower bound on the minimum landing error at target 0 for this 
 
 ## Appendix: run log
 (filled below)
+- `sim_witness.py` independently forward-integrates the witness (RK45, rtol 1e-11) from vertical data with v0_lat = r0_lat = 0.
+  - δ=0, T=2, ω=0.2 (demo vehicle): ζ_w = (h, v_{0z}) = (4.280 m, −4.302 m/s). It lands at p_w = (0.9356, 0) m with v(T) = 0 and min r_z = 0 (attained only at T).
+  - δ=10°, T=2, ω=0.1: ζ_w = (3.794 m, −3.841 m/s), p_w = 2.595 m.
+  - GTPL parameters (models.gtpl): ρ1/m0 = 5.0 < g0, so (S1) fails.
+- Fixed-thrust variant (ρ1 = ρ2 = 1200 N, m0 = 100 kg, δ = 0; the cheapest Lean target, C_m = A'): T=2, ω=0.2 gives M = 1.39e-2 and r_S ≥ 0.471 m; T=4, ω=0.1 gives r_S ≥ 1.885 m.
+- **S-procedure (Shor) SDP**, `sproc_pure.py`. Discretized, so it is a numerical certificate only, not rigorous. Demo vehicle, δ=0, T=2, Ω=0.4:
+  - bound on the Pvr gain = 0.02774 (N=30) / 0.02803 (N=50);
+  - analytic B = 0.06370;
+  - witness = 0.07758.
+  So optimal time-varying multipliers cut the analytic bound by ~2.3×. The true margin is ~64% of the witness gain; the certified margin is 18%.
+  The analytic regime is conservative. (The discretized SDP restricts β to piecewise-linear paths, so it is not an upper bound for continuous paths. Its value 0.0146Ω² should not be compared literally with the ≈-feasible coning entry 0.0162Ω² of math/01 §7.)
+- **Adversarial NLP** (`attack_S.py`, δ=0, T=2, Ω=0.4, demo vehicle, 3D, 4 starts, N=16): sup found of gain − C_m‖π_m‖² = 0.0338 ≤ B = 0.0637 ✓. Best exactly-Pvr gain found = 0.0254, against witness 0.0776.
+  [adversary] a8 (small angle, 24 starts incl. coning): max Pvr = 0.0147Ω² ≤ 0.0253Ω² (Wirtinger), max Pv = 0.0412Ω² ≥ 0.0404Ω² (witness). The bound holds and is ~1.7× loose.
+- [adversary] reviewed §2–§3 (Lemma W, P2, K-elimination, same-gain claim, π-norm). **No flaw found: SURVIVES** (math/01 §9; a7_check_S.py reproduces table row 1).
+- **S-procedure at δ = 15°** (GTPL gimbal; demo vehicle, T=2, Ω=0.3, N=30): Shor bound = 1.1106 against witness gain 1.2062. Margin 0.096, i.e. 8%.
+  So the δ=15° case, which the analytic constants cannot certify, has a positive numerical (discretized) certificate.
+  Turning it into a rigorous one needs a continuous-time multiplier certificate (open; the next step suggested for this lemma).
+- **Adversarial NLP at δ = 10°** (T=2, Ω=0.2): sup found 0.4496 ≤ B = 0.5281 ✓. Best exactly-Pvr gain found = 0.4402, against witness 0.5386.

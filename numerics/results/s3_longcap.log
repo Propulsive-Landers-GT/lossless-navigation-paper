@@ -3,3 +3,10 @@
 [   144s] tf=12.0 planar Pv  val=91.7086 lat_v=7.646938637861922e-13 lat_r=84.88070891611686 nok=16 n@best=4 diag={}
 [   154s] tf=12.0 planar Pvr val=92.5062 lat_v=6.661338147750939e-16 lat_r=9.748452045599265e-13 nok=16 n@best=1 diag={}
 [   158s] tf=12.0 planar U   val=91.0501 lat_v=24.256681904799883 lat_r=197.25110361071265 nok=16 n@best=15 diag={}
+[   266s] tf=12.0 3d     U   val=91.0501 lat_v=24.207741455841195 lat_r=196.67331470184763 nok=29 n@best=2 diag={'tilt_max': 30.00000114509117, 'frac_on_cap': 0.4489795918367347, 'az_sweep_on_cap_deg': 1.3230827586076261e-08, 'az_total_var_deg': 0.0013667932037296233, 'T_mean': 650.0000018437646}
+[   399s] tf=20.0 3d     Pv  val=150.1834 lat_v=8.497670921141121e-16 lat_r=128.82405227387517 nok=29 n@best=4 diag={'tilt_max': 30.000001145371005, 'frac_on_cap': 0.5384615384615384, 'az_sweep_on_cap_deg': 247.98929257615387, 'az_total_var_deg': 270.7515453912357, 'T_mean': 643.7500016766522}
+[   489s] tf=20.0 3d     Pvr val=150.2898 lat_v=4.087991738572213e-14 lat_r=3.480174454367229e-13 nok=30 n@best=3 diag={'tilt_max': 30.00000114534738, 'frac_on_cap': 0.5230769230769231, 'az_sweep_on_cap_deg': 359.36051835799555, 'az_total_var_deg': 473.74030435921605, 'T_mean': 641.3933675383126}
+[   497s] tf=20.0 planar Pv  val=150.9821 lat_v=1.1878414918342628e-12 lat_r=212.77137574523908 nok=16 n@best=5 diag={}
+[   513s] tf=20.0 planar Pvr val=151.8049 lat_v=1.450950470882617e-12 lat_r=1.1954631728983145e-11 nok=16 n@best=5 diag={}
+[   523s] tf=20.0 planar U   val=150.1319 lat_v=46.86402271534836 lat_r=610.7501359802125 nok=16 n@best=13 diag={}
+[   713s] tf=20.0 3d     U   val=150.1319 lat_v=46.76835156037216 lat_r=608.8592972990771 nok=29 n@best=2 diag={'tilt_max': 30.00000114534168, 'frac_on_cap': 0.5384615384615384, 'az_sweep_on_cap_deg': 3.614382340015141e-11, 'az_total_var_deg': 0.0007868743865257953, 'T_mean': 643.559707241905}

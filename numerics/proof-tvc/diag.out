@@ -1,0 +1,6 @@
+{'taup': 0.05, 'tau': 0.05, 'zeta': 0.05} rho=0.003: SDP=8.8322e-04  (lam_lb part 8.832e-04)  moment=1.219e-08
+{'taup': 0.05, 'tau': 0.05, 'zeta': 0.05} rho=0.03: SDP=1.9253e-03  (lam_lb part 1.925e-03)  moment=1.096e-02
+{'taup': 0.05, 'tau': 0.05, 'zeta': 0.05} 0.3 none
+{'taup': 0.02, 'tau': 0.02, 'zeta': 0.02, 'xi': 0.3} rho=0.003: SDP=3.2262e-03  (lam_lb part 3.226e-03)  moment=1.516e-08
+{'taup': 0.02, 'tau': 0.02, 'zeta': 0.02, 'xi': 0.3} rho=0.03: SDP=8.4927e-03  (lam_lb part 8.493e-03)  moment=2.435e-02
+{'taup': 0.02, 'tau': 0.02, 'zeta': 0.02, 'xi': 0.3} 0.3 none

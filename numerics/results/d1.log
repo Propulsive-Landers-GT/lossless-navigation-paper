@@ -1,0 +1,14 @@
+=== M1 S5 quick 00:06:46
+infeasible directions: 16
+M1 S5 support done 19.5 h range -inf -inf
+M1 S5 dent=nan m at None; conv(L) width -inf m; #grid inside 0, #dist>1e-3: 0, time 20s
+=== MT S5 quick 00:07:06
+MT S5 support done 10.0 h range 10.101376720592855 10.10137672059778
+MT S5 dent=0.0000 m at [-8.418 -1.684]; conv(L) width 20.20 m; #grid inside 109, #dist>1e-3: 0, time 94s
+=== M1 S6 quick 00:08:41
+M1 S6 support done 105.8 h range 11.858260252238152 14.579006039476514
+M1 S6 dent=0.0095 m at [ 0.608 -4.86 ]; conv(L) width 29.16 m; #grid inside 92, #dist>1e-3: 7, time 212s
+=== MT S2 quick 00:12:16
+MT S2 support done 12.1 h range 34.88203680742264 68.29784679332408
+MT S2 dent=0.0000 m at [-31.7    25.938]; conv(L) width 103.75 m; #grid inside 109, #dist>1e-3: 0, time 44s
+=== M3w S5 quick 00:13:03
