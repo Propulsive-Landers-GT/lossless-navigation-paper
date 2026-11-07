@@ -1,0 +1,6 @@
+free 8.66714 vlat 0.5357 rlat 0.4783 maxtilt 5.31
+free 8.66714 vlat 0.5357 rlat 0.4783 maxtilt 5.31
+lat 8.65451 vlat 0.0 rlat 0.0 maxtilt 2.92
+lat 8.65449 vlat 0.0 rlat 0.0 maxtilt 2.93
+lat(continuation) 8.65449
+RESULT tf=3.0 N=60 s*=0.75 gim=box rate=True: max l free=8.66714 (|v0lat|=0.5357, |r0lat|=0.4783, r0z=10.60)  max l lat=0: 8.65451  gap=1.2628e-02

@@ -66,6 +66,7 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
                     c2 = (1-zeta)*(s-ss)*(1-th)*eps**2*np.cos(ph)**2/(2*a2)   # torque-cost multiplier of n^2
                 rows.append((k, s, ws, cA, cB, cL, cLd, sd, c2))
     R = np.array(rows); cell = R[:, 0].astype(int); s = R[:, 1]; wq = R[:, 2]
+    wabs = np.maximum(np.abs(R[:, 1]-ss), 1e-300)
     cA, cB, cL, cLd, side, c2 = R[:, 3], R[:, 4], R[:, 5], R[:, 6], R[:, 7], R[:, 8]
     # basis: for cell k, phi_{k,0} = 1, phi_{k,1} = (t-c_k)  (on the cell). Exact x, xdot at nodes.
     S = s[:, None]; T0 = tk[:-1][None, :]; T1 = tk[1:][None, :]
@@ -80,7 +81,11 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
     Lk = [form(cell == k, cL, cLd) for k in range(N)]
     # gyro lateral-force weight c(s) >= eps (Ja/Jt) om3bar / cos(phibar); Cauchy-Schwarz with weight c:
     # (int c|h'|)^2 <= (int c) (int c |h'|^2)
-    cnode = np.array([eps*rJ*float(om3(x))/np.cos(cellmax(phibar, x-1e-12, x+1e-12)) for x in s])
+    # W2 (verify-tvc): weight must be a pointwise UPPER bound integrated exactly: c_hat(s) = eps rJ om3(s)/cos(phibar_sub),
+    # with phibar_sub the sup over the quadrature sub-cell (constant) and om3 linear => polynomial integrand, Gauss-exact.
+    nsub = par['nsub']; hs = h/nsub
+    sub_lo = np.floor(s/hs)*hs
+    cnode = np.array([eps*rJ*float(om3(x))/np.cos(cellmax(phibar, lo, lo+hs)) for x, lo in zip(s, sub_lo)])
     Vall = (Xd.T*(wq*cnode))@Xd                           # int c xdot^2
     sgf = np.linspace(0, tf, 20001); dsf = sgf[1]-sgf[0]
     cgy = eps*rJ*np.maximum(om3(sgf[1:]), 0)/np.cos(np.array([cellmax(phibar, a, b) for a, b in zip(sgf[:-1], sgf[1:])]))
@@ -107,7 +112,7 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
             lam_ub[k] = min(lam_max, (1-xi)*(ss-tk[k+1])*np.cos(phibar(tk[k+1]))/((1+kap)*kappa_D))
         else:
             Nb2[k] = (1+kap)*K2**2
-    return dict(cmax=float(cnode.max()) if len(cnode) else 0.0, Vall=Vall, Cg0=Cg0, Cgw=Cgw, P=P, tf=tf, ss=ss, N=N, h=h, kss=kss, tk=tk, Kp=Kp, Km=Km, Lk=Lk, G=G, C=Cc, Mlate=Mlate,
+    return dict(wabs=wabs, cmax=float(cnode.max()) if len(cnode) else 0.0, Vall=Vall, Cg0=Cg0, Cgw=Cgw, P=P, tf=tf, ss=ss, N=N, h=h, kss=kss, tk=tk, Kp=Kp, Km=Km, Lk=Lk, G=G, C=Cc, Mlate=Mlate,
                 Wdiag=Wdiag, Nb2=Nb2, lam_ub=lam_ub, K1=K1, K2=K2, par=par, phibar=phibar, vbar=vbar,
                 s=s, wq=wq, cA=cA, cB=cB, cL=cL, cLd=cLd, side=side, cell=cell, om3=om3, rJ=rJ)
 
@@ -117,10 +122,12 @@ def remainder_constants(D, rho):
     cA, cB, cL, cLd, side, cell = D['cA'], D['cB'], D['cL'], D['cLd'], D['side'], D['cell']
     fac = np.where(side > 0, 1+1/tau, 1/taup-1)
     c_loc = np.zeros(N)
+    tk = D['tk']; ss = D['ss']; wabs = D['wabs']
     for k in range(N):
         m = cell == k
-        cv = np.max(fac[m]*np.abs(cB[m])) + (1+1/tau)*lam_max*np.max(cLd[m])
-        cx = np.max(fac[m]*np.abs(cA[m])) + (1+1/tau)*lam_max*np.max(cL[m])
+        wsup = max(abs(tk[k]-ss), abs(tk[k+1]-ss))            # W3: sup of |w| over the cell (endpoints)
+        cv = np.max(fac[m]*np.abs(cB[m])/wabs[m])*wsup + (1+1/tau)*lam_max*np.max(cLd[m])*1.0
+        cx = np.max(fac[m]*np.abs(cA[m])/wabs[m])*wsup + (1+1/tau)*lam_max*np.max(cL[m])
         c_loc[k] = cv*(h/(2*np.pi))**2 + cx*h*h**3/(4*np.pi**2)
     a2 = D['P']['a2']
     taur = par.get('taurho', 0.2)
@@ -154,7 +161,7 @@ def solve_cert(D, rho, rhoc):
     Sc = 1/np.sqrt(Wd)                      # well-conditioned (lambda-unit) scaling of the LMI
     As = (A*Sc[:, None]*Sc[None, :]); As = (As+As.T)/2
     if not isinstance(LK, int): LK = cp.multiply(LK, np.outer(Sc, Sc))
-    Mx = As + LK - cp.diag(lam2 + M2)
+    Mx = As + LK - cp.diag(lam2 + M2) + float(os.environ.get("ETA", "0"))*np.eye(2*N)   # strict-feasibility margin (lambda units)
     prob = cp.Problem(cp.Minimize(h*cp.sum(cp.multiply(lam, D['Nb2']))),
                       [lam >= lam_lb, lam <= D['lam_ub'], (Mx+Mx.T)/2 << 0])
     solver = os.environ.get("SOLVER", "CLARABEL")

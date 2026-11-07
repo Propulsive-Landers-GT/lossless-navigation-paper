@@ -1,0 +1,8 @@
+[cone delta=15.00] tf=2.0 s*=0.5 N=80 roll-competitors=False: witness G_w=1.356101e-03, max tilt 2.150 deg, max v_z(t<tf)=-6.780e-05, min r_z/|r_h|=3.783e+01, r0=[-0.11788311  4.45933617], v0=[ 0.18042027 -1.57123038]
+  localization (Lemma 4.0): {'lat_fac': 1.0, 'E0': 0.008470849794180032, 'PenE': 0.016941699588360063, 'c_abs': 0.5, 'vmax': 0.8338413057665887, 'phimax': 0.23133939001195292, 'v_late_max': 0.8338413057665887, 'phi_late_max': 0.23133939001195292}
+  Penmax=2.620e-03
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py:170: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  else: prob.solve(solver=solver, verbose=os.environ.get("VERB","0")=="1")
+    solver objective 1.25228e-03
+  rho=(0.3, 30.0) rhoc=0.1: SDP=1.25228e-03 (remainder floor 5.57e-04) topeig=-8.2e-07 moment=4.376e-03 U_total=5.62820e-03  G_w/U=0.2409
+RESULT tf=2.0 s*=0.5 N=80 cone roll=False: G_w=1.35610e-03  U_total=5.62820e-03  margin=-4.272e-03 (-315.0%)  dist(theta_m,F) >= 0.000e+00  certificate=FAIL

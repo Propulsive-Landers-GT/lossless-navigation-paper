@@ -66,7 +66,13 @@ In each case F^X_tf is NONCONVEX, so no uniform state-linear lossless convexific
 
 **Numerical only.** These use [adversary-6dof]'s full 6DOF model `m3tvc.py`: quaternion attitude, Euler equations, Cardan box gimbal rate-limited to 100°/s from centred, mass depletion, roll free, r_z ≥ 0 at every node, upright at rest. On the dive-then-brake face, the max of ℓ over zero-lateral data is below the free max:
 
-RATELIM_TABLE
+| gimbal (100°/s, centred) | tf (s) | s* (s) | free max ℓ (m) | zero-lateral max ℓ (m) | gap (m) | robustness | source |
+|---|---|---|---|---|---|---|---|
+| Cardan box | 3 | 0.75 | 8.66714 | 8.65451 | 1.26e-2 | zero-lateral starts agree to 2e-5 | proof-tvc run of `exp3.py` |
+| cone | 3 | 0.5 | 9.60118 | 9.59859 | 2.6e-3 | **weak**: zero-lateral starts spread 4e-3, free starts spread 4.5e-3 | proof-tvc run |
+| Cardan box | 5 | 0.5 | 31.01143 | 31.00658 | 4.8e-3 | one zero-lateral optimum + continuation | proof-tvc run |
+| Cardan box | 5 | 1.0 | 26.44276 | 26.41461 | 2.8e-2 | < 1e-5 | [adversary-6dof] |
+| Cardan box | 7 | 1.0 | 58.63996 | 58.60733 | 3.3e-2 | 6e-4 | [adversary-6dof] |
 
 So the realistic rate-limited, mass-depleting GTPL landing set is **nonconvex but unproved**, not "possibly convex on these faces". The free maximizers have nonzero lateral data. The NLPs are discretized, local and started from 2–3 initial guesses, so the gaps are evidence, not certificates. They are 100–300× larger than the certified tf = 1 gap.
 

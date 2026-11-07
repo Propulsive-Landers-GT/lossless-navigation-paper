@@ -186,3 +186,9 @@ cd numerics/verify-tvc            # own venv: .venv (numpy, scipy, mpmath, pytho
 .venv/bin/python competitor_nlp.py cone planar 8         # competitor lower bound
 ```
 Outputs: `exact_*.out`, `exact_*.npy`, `moment_*.npy`, `witness_ordinary_*.npz`. Running times are under one minute each, except the NLP.
+
+## 8. Follow-up (2026-11-07 02:12)
+[proof-tvc] applied W1–W3. I re-ran their updated `verify_cert.py`: all three PASS.
+- Their bang-bang witness (one symmetric pattern per early cell) gives G_w = 7.269086e-5 (cone) and 1.404329e-4 (box), the same as my rigorous M=1 value.
+- The multipliers λ did not change, so the exact checks above still hold.
+- With the M=1 witness, the certified margins become 9.96e-6 (cone), 7.57e-6 (box) and 2.90e-6 (R1).

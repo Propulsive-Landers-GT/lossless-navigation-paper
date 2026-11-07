@@ -1,0 +1,3 @@
+[cone delta=15.00] tf=2.0 s*=0.5 N=80 roll-competitors=False: witness G_w=1.356101e-03, max tilt 2.150 deg, max v_z(t<tf)=-6.780e-05, min r_z/|r_h|=3.783e+01, r0=[-0.11788311  4.45933617], v0=[ 0.18042027 -1.57123038]
+  localization (Lemma 4.0): {'lat_fac': 1.0, 'E0': 0.008862147770537678, 'PenE': 0.017724295541075356, 'c_abs': 0.5, 'vmax': 1.1343991489849876, 'phimax': 0.2676784573688863, 'v_late_max': 1.1343991489849876, 'phi_late_max': 0.2676784573688863}
+  Penmax=2.741e-03

@@ -10,7 +10,18 @@ Steps (all inequalities in math/06 §4.0):
 """
 import numpy as np
 
-def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0, theta_g=0.15, cap=None):
+def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0, theta_g=0.15, cap=None, iters=6):
+    """Bootstrap: a tilt bound phi1 proved for all competitors with gain>=0 may be used as a cap in the next pass."""
+    res = None; capk = cap
+    for _ in range(iters):
+        r = _localize1(P, tf, ss, kap, M, roll, Ja, Jt, tau_r, theta_g, capk)
+        newcap = min(r[2]['phimax'], capk if capk is not None else np.pi)
+        res = r
+        if capk is not None and newcap > capk - 1e-6: break
+        capk = newcap
+    return res
+
+def _localize1(P, tf, ss, kap, M, roll, Ja, Jt, tau_r, theta_g, cap):
     a1, a2, de, eps = P['a1'], P['a2'], P['de'], P['eps']
     K1 = a1*np.sin(de)/eps; K2 = a2*np.sin(de)/eps
     beta = np.tan(de)/eps; dpmax = a2-a1*np.cos(de)

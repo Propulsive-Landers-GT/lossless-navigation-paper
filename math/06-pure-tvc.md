@@ -9,13 +9,14 @@ Numerics: `numerics/proof-tvc/` (own venv; single-threaded). Companion Lean list
 
 | # | Statement | Status |
 |---|---|---|
-| TVC-1 | Pure TVC (gimbal is the only pitch/yaw torque), roll held ($\omega_3\equiv0$, as in the brief), constant mass, upright at rest at both ends, $r_z\ge0$ and glide slope. For the **GTPL wet constants** at $t_f=1$ s ($s^*=0.25$ s), $F^{\mathcal X}_{t_f}$ is **nonconvex**, with both a cone gimbal (15°) and the Cardan box (±15°). So no uniform state-linear lossless convexification exists for that problem class at that horizon. | **PROVED, computer-assisted** (§4). One finite-dimensional SDP certificate (2N×2N), re-verified in a fresh process by eigenvalue and Cholesky checks, plus explicit remainder lemmas. No planarity or rigidity is used. |
+| TVC-1 | Pure TVC (gimbal is the only pitch/yaw torque), roll held ($\omega_3\equiv0$, as in the brief), constant mass, upright at rest at both ends, $r_z\ge0$ and glide slope. For the **GTPL wet constants** at $t_f=1$ s ($s^*=0.25$ s), $F^{\mathcal X}_{t_f}$ is **nonconvex**, with both a cone gimbal (15°) and the Cardan box (±15°). So no uniform state-linear lossless convexification exists for that problem class at that horizon. | **PROVED, computer-assisted** (§4). One finite-dimensional SDP certificate (2N×2N) plus explicit remainder lemmas. **Certified in exact rational/interval arithmetic by [verify-tvc]**; [adversary-6dof] verdict SURVIVES. No planarity or rigidity is used. |
 | TVC-1q | Quantitative: $\operatorname{dist}(\theta_m,F_{t_f})\ge d_*$ (table §3). | proved with TVC-1 |
 | TVC-B | Box gimbal $\pm15^\circ$ (Cardan): same with $\delta$ replaced by the corner angle $\delta^*=21.09^\circ$, and $u$ along the corner azimuth. | **PROVED** (certificate, table §3) |
 | TVC-1R | Competitors that also use the roll RCS ($|\tau_3|\le3$ N m, $\omega_3$ free). All gyroscopic terms are in the certificate, including the lateral force, which goes in by weighted Cauchy–Schwarz: $(\int c|\dot h|)^2\le\int c\int c|\dot h|^2$. The localization lemma absorbs the gyro term into $\vartheta_g\Pi$. | **PROVED, computer-assisted** at $N=120$: margin 4.0%, re-verified ($N=60$ fails) |
-| TVC-R | Gimbal-rate limit (100°/s, gimbal centred at $t=0$): only the witness must change, because the competitor class shrinks. | **numerics only** (§5.3) |
+| TVC-R | Gimbal-rate limit (100°/s per axis, gimbal centred at $t=0$). | **Nonconvex numerically, unproved.** In the full 6DOF model ([adversary-6dof]'s `m3tvc.py`: Cardan box rate-limited, mass depletion, roll free, $r_z\ge0$, upright at rest), the dive-then-brake face has zero-lateral max < free max at every horizon tried; see §5.3 table. The certificate does not transfer: the rate-limited baseline is unattainable, so a jerk multiplier is needed (§5.3). |
 | TVC-F | Free final time on a window, via RR-LS. | conditional (§5.4) |
-| — | Mass depletion ($\alpha>0$, varying $\varepsilon(m)$), realistic horizons 5–8 s, wind. | **OPEN** (§6) |
+| TVC-L∞ | Long horizons $t_f\ge2$ s (uncapped up to 2.3 s, or with any tilt cap $<90^\circ$). | **OPEN as proof.** Tools are built ((A2) dropped; bootstrap localization), and the ideal ratio is 0.70 at $t_f=3$, but the rigorous runs fail (§5.6). Numerically nonconvex. |
+| — | Mass depletion ($\alpha>0$, varying $\varepsilon(m)$), wind. | **OPEN** as proof (§5.5). The numerics above include mass depletion and still show nonconvexity. |
 
 **Size.** The gap is genuinely thin. The certified distance from $\theta_m$ to $F$ is $\ge9.6\cdot10^{-6}$ m (cone) and $\ge7.3\cdot10^{-6}$ m (box). The gain of the best witness is about $10^{-4}$ m in $\ell=r_{0z}+s^*v_{0z}$ at $t_f=1$ s. The adversary's bottom-face numerics (0.08 m/s at 1 s, terminal attitude free or upright, altitude unconstrained) are consistent with this. With $r_z\ge0$ the only face we can certify is the dive-then-brake face, which is thin for the same reason as B\* (math/02 Rem. 10.2): a competitor can cancel lateral moments with small brake-phase tilts at quadratic cost.
 
@@ -81,7 +82,7 @@ Then $\theta_w,R_\pi\theta_w\in F^{\mathcal X}_{t_f}$ and $\theta_m\notin F_{t_f
 | cone 15° | R1 (roll free) | 60 | 7.269e-5 | 8.709e-5 | FAIL | — | (1, 15) | `cert2_R60_roll.out` |
 | cone 15° | R1 (roll free) | 120 (SCS + repair) | 7.2691e-5 | 6.9798e-5 | 4.0% | 2.8e-6 | (1, 30), $\kappa_g=0.3$ | `cert2_R120_roll.out` |
 
-Common parameters: $\zeta=\xi=0.1$, $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$, $\kappa=0.01$, $r_\vartheta=0.2$, $\lambda_{\max}=3\cdot10^{-3}$ (fixed PSD bound for the $\lambda$-weighted remainder terms), $\rho_c=0.1$, $\eta_1=2$ cells. The $N=120$ cone (R0, R1) and $N=60$ box certificates were **re-verified independently** by `verify_cert.py`: fresh process, all matrices rebuilt, no SDP solver; top eigenvalue $-3.0\cdot10^{-8}$ (cone, $N=120$), $-5.4\cdot10^{-8}$ (roll, $N=120$) and $-2.0\cdot10^{-11}$ (box), Cholesky of $-M$ succeeds, $U_{\rm tot}$ reproduced.
+Common parameters: $\zeta=\xi=0.1$, $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$, $\kappa=0.01$, $r_\vartheta=0.2$, $\lambda_{\max}=3\cdot10^{-3}$ (fixed PSD bound for the $\lambda$-weighted remainder terms), $\rho_c=0.1$, $\eta_1=2$ cells. The $N=120$ cone (R0, R1) and $N=60$ box certificates were **re-checked in floating point** by `verify_cert.py` (fresh process, matrices rebuilt, no SDP solver; float only). **They are also CERTIFIED IN EXACT ARITHMETIC by the independent auditor [verify-tvc]** (math/verify-tvc-report.md, numerics/verify-tvc/exact_cert.py). That check re-assembles every matrix by exact polynomial integration, with Arb balls for the transcendental coefficients, and decides $-M\succ0$ by exact integer Sylvester minors. It reproduces margins 13.70% / 5.40% / 3.99% and $d_*$ = 9.63e-6 / 7.34e-6 / 2.81e-6 m, after the auditor's repairs W1 (ordinary witness, §4.8) and W2 (R1 gyro weight). The float re-check gave top eigenvalue $-3.0\cdot10^{-8}$ (cone, $N=120$), $-5.4\cdot10^{-8}$ (roll, $N=120$) and $-2.0\cdot10^{-11}$ (box), Cholesky of $-M$ succeeds, $U_{\rm tot}$ reproduced.
 
 Witness ($t_f=1$, $s^*=0.25$, cone): $r_0=(0.0078,\,1.116)$ m, $v_0=(-0.022,\,-0.791)$ m/s, maximum tilt 0.45°. $v_z<0$ on $[0,t_f)$: $v_z$ decreases on $E$ and $v_z(0)<0$, while on $L$, $\dot v_z>0$ and $v_z(t_f)=0$. Hence $r_z>0$ on $[0,t_f)$. The glide slope holds for every $\tan\gamma_{gs}\le116$. Quadrature error of $G_w$: midpoint rule on 400 sub-steps per smooth piece, $\le t_f\,\Delta t^2/24\cdot\sup|\ddot g|\approx10^{-9}$, which is $\ll$ the margin.
 
@@ -165,7 +166,7 @@ So the $n'$ terms are $\le\sum_kc_{{\rm loc},k}\|n'\|_k^2+c_g\|n'\|^2$, of order
 *Weighted shift.* $\le c_w\mathrm{Pen}$ (§4.4).
 *A-priori penalty bound.* By Lemma 4.0, $\mathrm{Pen}\le\mathrm{Pen}_{\max}:=\big(\xi/(c_E(1-c_{\rm abs}))+\zeta\big)E_0$. Hence
 $$W_z-J_0\le U_{\rm tot}:=V_\lambda+\max_{0\le\mathrm{Pen}\le\mathrm{Pen}_{\max}}\Big[\rho_0\big(M^v_0+\mu_0^{\max}(\mathrm{Pen})\big)^2+\rho_w\big(M^v_w+c_w\mathrm{Pen}\big)^2-\mathrm{Pen}\Big].$$
-On a grid, the maximum is bounded by pairing right-endpoint shifts with the left-endpoint Pen. *Remainder (Lemma 4.6′):* the Finsler terms are split with their own parameter $\tau_\rho=0.2$. Since $|g_0''|\le a_2$ and $|g_w''|\le a_2\max(s^*,t_f-s^*)$, their contribution is $\le(1/\tau_\rho-1)\big(\rho_0g_0''^2+\rho_wg_w''^2\big)h_c^4t_f/64$.
+On a grid, the maximum is bounded by pairing right-endpoint shifts with the left-endpoint Pen. *Audit repairs.* (W2) For R1 the weight in $\int\hat c|\dot h|^2$ must be a pointwise upper bound integrated exactly. The code uses $\hat c(s)=\varepsilon\frac{J_a}{J_t}\frac{\tau_r}{J_a}s/\cos\bar\varphi_{\rm sub}$, which is linear on each quadrature sub-cell, so Gauss quadrature is exact. (W3) The remainder constants use the sup of $|w|$ at the cell endpoints, not the maximum over Gauss nodes. Both repairs are in `certificate2.py`; [verify-tvc] confirmed that the stored certificates pass with them. *Remainder (Lemma 4.6′):* the Finsler terms are split with their own parameter $\tau_\rho=0.2$. Since $|g_0''|\le a_2$ and $|g_w''|\le a_2\max(s^*,t_f-s^*)$, their contribution is $\le(1/\tau_\rho-1)\big(\rho_0g_0''^2+\rho_wg_w''^2\big)h_c^4t_f/64$.
 
 ### 4.8 The witness (planar dive-then-brake, ORDINARY control)
 Planar meridian $b=\cos\psi\,e_z+\sin\psi\,u$, landing with $\psi,\dot\psi=0$ at both ends.
@@ -188,6 +189,18 @@ The competitor class shrinks, so $U_{\rm tot}$ stays valid. The witness must be 
 
 *Rate-limited class: why a new certificate is needed (analysis).* Even against the rate-limited baseline $J_0^{\rm rl}=-\int_E(s^*-s)a_1\cos\delta(s)+a_2(t_f-s^*)^2/2$, with $\delta(s)=\min(\dot\gamma s,\delta)$, the best rate-limited witness has a **negative** gain: $-1.5\cdot10^{-3}$ ($t_f=1$, $s^*=0.25$) and $-7.4\cdot10^{-3}$ ($t_f=3$, $s^*=0.5$); see `witness_rl.py`. The reason is that without chattering, early deflection produces torque, so the deflection credit in $J_0^{\rm rl}$ is unattainable. The correct baseline is the vertical one, $J_0^{\rm vert}=-\int_E(s^*-s)a_1+a_2(t_f-s^*)^2/2$. The deflection credit $a_1-\sqrt{a_1^2-\varepsilon^2|\ddot h|^2}\le\varepsilon^2|\ddot h|^2/(a_1(1+\cos\delta))$ then enters $\mathcal Q$ as a gain term **quadratic in $\ddot h$**. With only $|\ddot h|\le K$, the S-procedure must pay for it pointwise: high-frequency $\ddot h$ yields this gain at no tilt cost, which is exactly chattering. So the rate limit itself has to enter the bound. **Route (open):** add the jerk constraint $|\dddot h|\lesssim a\dot\gamma/\varepsilon$, which comes from $|\dot\mu|\le\dot\gamma$, with its own S-procedure multiplier. Discretize with continuous piecewise-linear $\ddot h$; remainders become cell-local again. This is a genuine extension of the certificate and has not been done.
 
+*Numerics for the rate-limited GTPL model.* Full 6DOF ([adversary-6dof]'s `m3tvc.py` via `exp3.py`): quaternion attitude, Euler equations, gimbal angle as a state with 100°/s per axis from centred, **mass depletion**, roll free, $r_z\ge0$ at every node, upright at rest, $N=60$–80. Outputs: `numerics/proof-tvc/ratelim_numerics/`.
+
+| gimbal (100°/s, centred) | tf (s) | s* (s) | free max ℓ (m) | zero-lateral max ℓ (m) | gap (m) | robustness | source |
+|---|---|---|---|---|---|---|---|
+| Cardan box | 3 | 0.75 | 8.66714 | 8.65451 | 1.26e-2 | zero-lateral starts agree to 2e-5 | proof-tvc run of `exp3.py` |
+| cone | 3 | 0.5 | 9.60118 | 9.59859 | 2.6e-3 | **weak**: zero-lateral starts spread 4e-3, free starts spread 4.5e-3 | proof-tvc run |
+| Cardan box | 5 | 0.5 | 31.01143 | 31.00658 | 4.8e-3 | one zero-lateral optimum + continuation | proof-tvc run |
+| Cardan box | 5 | 1.0 | 26.44276 | 26.41461 | 2.8e-2 | < 1e-5 | [adversary-6dof] |
+| Cardan box | 7 | 1.0 | 58.63996 | 58.60733 | 3.3e-2 | 6e-4 | [adversary-6dof] |
+
+Verdict: the rate-limited GTPL landing set is **nonconvex but unproved** on the dive-then-brake face. It is not "possibly convex": every horizon tried shows a positive gap, with free maximizers that have nonzero lateral data. The NLPs are discretized and local (2–3 starts), so the gaps are evidence, not bounds; the cone $t_f=3$ entry is within optimizer spread.
+
 ### 5.4 Free final time
 By RR-LS (math/redteam-reform §4) it suffices that $\theta_m(t^\circ)\notin\bigcup_{t\in W}F_t$. Since $\Lambda$ does not depend on the horizon, a competitor at horizon $t$ satisfies $\ell(\theta)\le J_0(t)+\kappa(t)+U_{\rm tot}(t)$. Here $J_0(t)+\kappa(t)$ is increasing in $t$ (derivative $A_b(t-s^*)>0$). Taking $t^\circ=t_b$ gives a sufficient condition:
 $$G_w(t_b)>\max_{t\in[t_a,t_b]}\Big[U_{\rm tot}(t)-\tfrac{A_b}2\big((t_b-s^*)^2-(t-s^*)^2\big)\Big].$$
@@ -204,9 +217,25 @@ This needs certificates on a continuum of $t$. We have checked it only on a grid
 | $t_f$ | $s^*$ | $G_w$ (m) | ideal zero-lateral bound / $G_w$ | rigorous certificate |
 |---|---|---|---|---|
 | 1 | 0.25 | 7.27e-5 | 0.67 | PASS (§3) |
-| 3 | 0.5 | 1.358e-3 | 0.70 | T3_PLACEHOLDER |
+| 3 | 0.5 | 1.358e-3 | 0.70 | not certified (see below) |
 | 5 | 0.5 | 1.359e-3 | — | — |
 | 5 | 0.75 | 7.58e-3 | — | localization gives $\bar v=2.0$ rad/s, tilt bound reaches the cap |
+
+**Bootstrap localization.** A tilt bound $\varphi\le\varphi_1$ proved in one pass for *all* competitors with gain $\ge0$ may be used as $b_z\ge\cos\varphi_1$ in the next pass; iterate to a fixed point (`localize.py`). This is not circular, because each pass is rigorous for the whole class. With it, any cap $\theta_{\max}<90^\circ$ gives the same localized bounds as a 30° cap. At $t_f=3$, $s^*=0.5$ the bounds are tilt $\le0.23$ rad and $v\le0.83$ rad/s, for cap 30° or 80° alike. In the uncapped class at $t_f=2$, where (A1) holds a priori, the bounds are the same.
+
+**Rigorous attempts at $t_f\ge2$, none of which passes yet:**
+
+| run | SDP part | remainder floor | moment term | vs $G_w=1.356\cdot10^{-3}$ |
+|---|---|---|---|---|
+| $t_f=2$ uncapped, $N=80$ Clarabel, $(\rho_0,\rho_w)=(0.3,30)$ | 1.25e-3 | 5.6e-4 (inside SDP part) | 4.4e-3 | FAIL |
+| $t_f=2$ uncapped, $N=100$ SCS | solver obj. 9.6e-4 | — | — | SCS inaccurate; repair failed |
+| $t_f=3$ cap 30°, $N=150$ SCS | solver obj. 1.37e-3 | — | — | FAIL |
+
+**Obstacles, quantified.**
+- (i) The *moment-shift* term. The bathtub cap is $\rho_0\lesssim\omega_D/(4H^2D_{\max})$ with $H=\bar\varphi_{\rm loc}(s^*)$. Localization only gives $H\approx0.23$ rad, against a witness tilt of $0.04$ rad, so $\rho_0\lesssim0.05$, and $c_w\mathrm{Pen}_{\max}$ is large. A sharper localization is needed: energy relative to the gain threshold $G_w$ instead of $E_0\approx6G_w$, or a two-sided (time-sliced) Agmon bound near $s^*$.
+  *Why (i) is structural for this face.* On the face $\int(s-s^*)fb_z$, throttle near the switch time $s^*$ is first-order free, because the weight vanishes there. A zero-lateral competitor can shift $v_{0h}$ by $\mu\approx h(s^*)\,Y$, where $Y=\int_{|w|<\eta}D$, at cost $\approx Y^2/(4D_{\max})$. The true price of a moment shift is therefore $\approx1/(4D_{\max}h(s^*)^2)$, about 20 for witness-scale tilt. Our bound must replace $h(s^*)$ by an a-priori $H$ (0.23 rad, against 0.04) and the penalty by a fraction $\omega\approx0.1$. Together these lose a factor of about 300. Any product bound $h^2\mathrm{Pen}\le\theta H^2\mathrm{Pen}+(1-\theta)\mathrm{Pen}_{\max}h^2$ leaves either a large $\rho_0H^2$ or a large rank-one term $\propto\mathrm{Pen}_{\max}x(s^*)^2$. The fix needs a localization of $\mathrm{Pen}$ relative to $G_w$ (not $E_0\approx6G_w$), or a face whose weight does not vanish where the throttle switches.
+- (ii) The *discretization floor*, $\propto h_c^2\times$ the weights. These weights grow with $t_f$ because $|w|\le t_f-s^*$. That needs $N\gtrsim150$ on $[0,3]$, beyond accurate dense interior-point solves here (SCS is inaccurate at $2N=300$). The fix is a banded/sparse SDP formulation, since the form is a sum of cell-local and low-rank terms, or a higher-degree cell basis with an $(h/3\pi)^2$-type Wirtinger constant.
+- (iii) The ideal (no-remainder) ratio stays favourable: 0.70 at $t_f=3$. So the obstruction is in the rigorous overheads, not in the geometry. [adversary-6dof]'s full-6DOF numerics at $t_f=5,7$ (gaps $\approx3\cdot10^{-2}$ m with $s^*=1$) support the same conclusion.
 
 The witness gain depends on $s^*$ but not on $t_f$, once the brake phase is long enough to return upright. **Caveat:** the capped class is a different problem class. Nonconvexity of $F^{\rm cap}$ does not imply nonconvexity of the uncapped $F$, and vice versa.
 
@@ -214,6 +243,13 @@ The witness gain depends on $s^*$ but not on $t_f$, once the brake phase is long
 Not covered. With $\alpha>0$, $\varepsilon(m(t))$ gives $\ddot y$ the extra terms $2\dot\varepsilon\dot b+\ddot\varepsilon b$, and $\ddot\varepsilon$ contains $\dot T$, which is unbounded for relaxed throttle. The late baseline also moves by $\alpha\rho_2(\rho_2-\rho_1)s^*/m^2\cdot\int_Lw\approx4\cdot10^{-3}$ m, which is far larger than the gap. A certificate for the $\alpha>0$ class needs the competitor's own mass history inside Pen ([adversary-6dof] A2). **Open.** TVC-1 is a theorem about the constant-mass class. That class is the standard LCvx idealization, but it is not literally GTPL.
 
 ## 6. What remains open
+
+**Final state (2026-11-07 05:30).**
+- **Certified (exact arithmetic, independent audit):** TVC-1, TVC-B, TVC-1R and TVC-1q at GTPL $t_f=1$ s. Constant mass, unlimited gimbal rate, cone and Cardan box, roll held or roll free.
+- **Numerical only:** nonconvexity at realistic horizons. This holds in the full 6DOF GTPL model, with box gimbal rate-limited to 100°/s, mass depletion and roll free; see §5.3 table and [adversary-6dof] exp3. It also holds in our small-angle ideal bounds at $t_f=3$.
+- **Open:** all items below.
+
+**Recommended route for long horizons (not started).** Replace the dense $2N\times2N$ SDP by a **state-space (Riccati/dissipation) certificate**. Use the augmented state $z=(x,\dot x,\int f_0x,\int wf_0x)$ and a time-varying quadratic storage $z^\top P(t)z$ satisfying a pointwise LMI, i.e. a Riccati differential inequality; the Finsler terms become terminal costs. This scales linearly in $t_f$, removes the dense-SDP size wall, and can be validated with interval ODE enclosures. Combine it with the moment lemma $\mu_0\le|h(s^*)|\,Y+\bar v\int|w|D$. That lemma replaces the crude tilt $H$ at $s^*$ by the competitor's own $h(s^*)$, through a rank-one PSD term $\propto x(s^*)^2$, at the price $4\rho_0D_{\max}\mathrm{Pen}_{\max}/\omega$.
 1. **Realistic horizons (5–8 s), uncapped.** (A2) is removed (§5.6). (A1), i.e. $b_z>0$, fails for $t_f\gtrsim2.3$ s with the crude a-priori bounds of Lemma 2.2; the tilt-capped class (§5.6) avoids it. A localization lemma would extend the method: a competitor with gain $\ge0$ has small late tilt and rate, by an energy bound plus Lipschitz bootstrap. The certificate would also need to scale, roughly $N\propto t_f$, and the SDP cost grows with $N$.
 2. Mass depletion / varying $\varepsilon$ (§5.5).
 3. A rate-limited witness that beats $U_{\rm tot}$, or a bound tailored to the rate-limited class (§5.3).

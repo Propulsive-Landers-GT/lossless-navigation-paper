@@ -1,3 +1,7 @@
 [cone delta=15.00] tf=3.0 s*=0.5 N=150 roll-competitors=False: witness G_w=1.358444e-03, max tilt 2.157 deg, max v_z(t<tf)=-2.034e-04, min r_z/|r_h|=1.545e-04, r0=[-0.12970929 11.2395508 ], v0=[ 0.18802233 -4.28314229]
   localization (Lemma 4.0): {'lat_fac': 1.0, 'E0': 0.008862147770537678, 'PenE': 0.017724295541075356, 'c_abs': 0.5, 'vmax': 0.8642198002368193, 'phimax': 0.23553501712769795, 'v_late_max': 0.8642198002368193, 'phi_late_max': 0.23553501712769795}
   Penmax=2.741e-03
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py:162: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  As = (A*Sc[:, None]*Sc[None, :]); As = (As+As.T)/2
+    solver objective 1.36770e-03
+  rho=(0.3, 30.0) rhoc=0.1: no certificate

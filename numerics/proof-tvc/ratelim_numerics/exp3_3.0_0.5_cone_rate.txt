@@ -1,0 +1,6 @@
+free 9.59672 vlat 0.2612 rlat 0.1995 maxtilt 2.36
+free 9.60118 vlat 0.2845 rlat 0.2212 maxtilt 2.54
+lat 9.59463 vlat 0.0 rlat 0.0 maxtilt 0.73
+lat 9.59859 vlat 0.0 rlat 0.0 maxtilt 1.02
+lat(continuation) 9.59859
+RESULT tf=3.0 N=60 s*=0.5 gim=cone rate=True: max l free=9.60118 (|v0lat|=0.2845, |r0lat|=0.2212, r0z=11.97)  max l lat=0: 9.59859  gap=2.5932e-03

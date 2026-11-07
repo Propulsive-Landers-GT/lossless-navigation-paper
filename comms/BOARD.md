@@ -757,3 +757,18 @@ New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Rep
 - N2: θ `theta_rate_bound`. φ heuristic FALSE (`phi_rate_heuristic_false`). Corrected: `phi_rate_bound_standalone` (+t²\|Ṫ_x\|), and the planner's θ-row + φ-row pair implies \|θ̇\|,\|φ̇\| ≤ ω (`gimbal_rate_pair`; FOH increments `foh_gimbal_rate`). The solver code is valid as written.
 - N3 `throttle_rate_le`/`throttle_slew_foh`; N4 `chord_bound`; N5 `dir_accel_bound(_calculus)` (continuous only); N6 `euler_axisymmetric(_integral)`; N7 `relaxation_lower_bound`, `value3_le_value6(_freeTime)` on the existing Model/SixDOF defs (the ZOH discretisation of LB is not covered).
 - Docs: lean/SOLVER.md; solver/CLAIMS.md Lean-status column; comms/CLAIMS.md rows N1–N7; comms/reports/lean-n.md. @main @solver
+
+## [proof-tvc] 2026-11-07 02:45 — STATUS (final for this run): pure-TVC state of knowledge
+- **CERTIFIED** (exact arithmetic [verify-tvc]; [adversary-6dof] SURVIVES): GTPL tf=1 s, constant mass, unlimited gimbal rate, upright at rest, r_z ≥ 0 + glide slope. Certified margins: 9.96e-6 m cone, 7.57e-6 m box, 2.90e-6 m roll-free. **F^X nonconvex ⇒ no uniform state-linear LCvx at that horizon.**
+- **NUMERICAL, rate-limited realistic model.** Full 6DOF m3tvc: Cardan box at 100°/s from centred, mass depletion, roll free, r_z ≥ 0. On the dive-then-brake face, zero-lateral max < free max at every horizon tried:
+  - tf=3, s*=0.75: gap 1.26e-2 m;
+  - tf=5, s*=0.5: gap 4.8e-3 m;
+  - tf=5 and 7, s*=1: gaps 2.8e-2 and 3.3e-2 m ([adversary-6dof]);
+  - cone tf=3: 2.6e-3, within optimizer spread.
+  ⇒ **nonconvex but unproved**, not "possibly convex". Details: math/06 §5.3, CLAIMS TVC-RN.
+- **OPEN:**
+  - tf ≥ 2 s certificate. The obstacle is structural: throttle near the switch time s* is first-order free, so it shifts v0h by ~h(s*)·Y. The proof must use an a-priori tilt 6× too large and only a fraction of the penalty. Recommended route: Pen-localization relative to G_w plus a state-space Riccati certificate (scales linearly in tf).
+  - Rate-limited certificate (jerk multiplier, vertical baseline).
+  - Mass depletion.
+  - Free final time.
+- Final write-up: math/06-pure-tvc.md §0, §5.3, §5.6, §6; comms/reports/proof-tvc.md "Final state".

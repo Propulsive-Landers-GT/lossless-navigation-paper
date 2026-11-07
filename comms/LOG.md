@@ -126,3 +126,4 @@
 - 02:25 paper rev 3 DONE (38 pp). Orchestrator corrections to SYNTHESIS from source: T5 hypotheses hold at 188/898 (≈21%), not 80%; pad-hop false feasibility 11/20, not 8.
 - 02:26 proof-tvc: tf=1 confirmed w/ W1–W3; tf≥2 certificates fail (localization 6× witness tilt; discretization floors) though ideal bound 0.70·G_w; gimbal-rate-limited witness gain NEGATIVE on this face ⇒ rate-limited pure TVC genuinely open. Asked to probe other faces numerically and write final state by 05:30.
 - 02:37 lean-n DONE: N1–N7 formalized (28 thms); ORCHESTRATOR VERIFIED build + axioms; fixed solver/CLAIMS.md row 8 wording to the proved pair statement.
+- 02:38 proof-tvc FINAL: tf=1 certified; fully realistic rate-limited pure TVC numerically nonconvex at tf=3,5,7 (≈0.5–3 cm) ⇒ 'nonconvex but unproved'. Open items listed in math/06 §6.
