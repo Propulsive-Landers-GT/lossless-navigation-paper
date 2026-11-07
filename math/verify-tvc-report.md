@@ -192,3 +192,90 @@ Outputs: `exact_*.out`, `exact_*.npy`, `moment_*.npy`, `witness_ordinary_*.npz`.
 - Their bang-bang witness (one symmetric pattern per early cell) gives G_w = 7.269086e-5 (cone) and 1.404329e-4 (box), the same as my rigorous M=1 value.
 - The multipliers λ did not change, so the exact checks above still hold.
 - With the M=1 witness, the certified margins become 9.96e-6 (cone), 7.57e-6 (box) and 2.90e-6 (R1).
+
+## 9. Re-audit of TVC-2 (math/06 §5.7: $t_f=2$ s, no tilt cap, $s^*=0.5$, Riccati certificate, $N_f=600$), 2026-11-07 02:55
+
+**Verdict: CERTIFIED.**
+- Certified margin: $U_{\rm tot}\le1.246811\cdot10^{-3}<G_w\ge1.356101\cdot10^{-3}$, i.e. $1.093\cdot10^{-4}$ (8.06%).
+- $d_*\ge9.23\cdot10^{-5}$ m, with the $d$-part evaluated in float.
+- One minor text item: the witness does not land *exactly* upright. Fix W1′ below.
+
+The four requested points:
+- **(i) Riccati sufficiency: correct.**
+  - Write $F(u)=\sum_k w_k^\top\tilde S_kw_k+z_N^\top P_Nz_N$ with $w_k=(z_k,u_k)$, $z_{k+1}=T_kw_k$, $z_0=0$.
+  - If $H^{uu}_k\prec0$, completing the square gives $w_k^\top H_kw_k\le z_k^\top P_kz_k$ with $P_k=H^{zz}-H^{zu}(H^{uu})^{-1}H^{uz}$.
+  - By induction $F(u)\le z_0^\top P_0z_0=0$. Equality forces $u_k=-(H^{uu}_k)^{-1}H^{uz}_kz_k$, hence $u=0$.
+  - The state $(x,\dot x,m_0,m_w)$ is complete. The stage form on cell $k$ depends only on $(x_k,\dot x_k,a_k,b_k)$. The moments and clamps are linear in the terminal state. So $F$ is exactly the dense form.
+  - Numerically, a dense 1200×1200 eigen test of my own assembly gives top eigenvalue $-3.06\cdot10^{-5}$.
+- **(ii) Coefficient conventions: correct.** My independent stage data match `fine_data`: the moment rows to $1.8\cdot10^{-15}$, and $S_k,L_k$ to $\le1.5\cdot10^{-4}$ and $1.3\cdot10^{-3}$ (relative). Those two differences come only from which neighbouring localization cells the sub-cell max covers; both choices are valid upper bounds, and mine is the more conservative at the worst cell.
+  - Signs, $(1+\tau)/(1-\tau')$ factors, $(1+\tau)\lambda_kL_k$, $M_{\rm late}$, clamp and Finsler terminal, and floors all agree with certificate2's conventions and with math/06 §4.
+  - Dropping (A2) is valid: $\Pi\ge b_z\lvert a_2-f\rvert$ in both sign cases, and $f\ge0$ is used nowhere else.
+  - (A1) holds a priori: $K_2t_f^2/8=1.198<\pi/2$.
+- **(iii) Bootstrap localization: logically sound.** Each pass is rigorous for the whole class of gain-≥0 competitors, given the previous pass's bound.
+  - Independent re-implementation (`loc_check2.py`): fixed point tilt 0.2312 rad, $v\le0.8335$ rad/s, $E_0=8.462\cdot10^{-3}$, $c_{\rm abs}=0.5$ (adaptive $\kappa$).
+  - proof-tvc's tables dominate mine on all 20000 cells (margins ≥ 1.0e-4 for $v$ and ≥ 4.3e-8 for the tilt).
+- **(iv) Moment term at $\rho_0=0.1$, $\zeta=0.15$, late $\omega_D=\zeta\cos\bar\varphi$: correct.** Exact breakpoint maximum $1.2685\cdot10^{-5}$; rigorous Arb LP-dual bound $\le1.2771\cdot10^{-5}$; proof-tvc's grid value $1.288\cdot10^{-5}$ is conservative. $\mathrm{Pen}_{\max}=3.930\cdot10^{-3}$ (crude $c_E$, conservative).
+
+**Rigorous recursion** (`riccati_exact.py`, independent):
+- Stage matrices come from exact polynomial integration on the sub-cells (fmpq × Arb). The moment rows are exact, and the transition uses exact $h=1/300$.
+- The recursion runs in Arb at 256 bits, with no inflation or deflation fudge. All 600 values $-H^{uu}_k\succ0$ are certified via $-H_{11}>0$ and $\det>0$. The final ball radius is $8\cdot10^{-47}$, and the worst scaled pivot eigenvalue is $-8.8\cdot10^{-5}$.
+- Lemma 4.6′ floors with the true sub-cell sups: worst slack $8.8\cdot10^{-5}$.
+- Absorption (i) and $0\le\lambda\le\lambda_{\max}$ hold. $V_\lambda\in[1.234040078\cdot10^{-3}\pm5\cdot10^{-13}]$.
+- proof-tvc's own "known gap" (float-rounded $g_0,g_w$ in its Arb run) is therefore moot.
+
+**Witness at $t_f=2$** (`TF=2 SS=1/2 witness_check.py cone 1`):
+- The stored profile is again relaxed on $E$ ($\lvert n\rvert/K_1$ down to 0.79). Flown literally it gains only 9.6e-4. proof-tvc's `segments_bangbang` handles this correctly.
+- **W1′ (minor):** the stored profile ends at $\psi(t_f)\approx-7\cdot10^{-17}$, not exactly 0. With my exact rational correction of the last two cells ($\Delta n\approx3.5\cdot10^{-13}$), the rigorous gain is $G_w\in[1.356101073\cdot10^{-3}\pm3\cdot10^{-13}]$.
+- The 6DOF quaternion simulation agrees (terminal error 7e-14). Also: $r_z>0$, $v_z<0$ on $[0,t_f)$, glide ratio $\min r_z/\lvert r_h\rvert=37.8$ (so the claimed $\tan\gamma_{gs}\le37$ is fine), and max tilt 2.15°.
+
+Scope is the same as TVC-1: constant mass, unlimited gimbal rate (sub-ms ±δ reversals), $\omega_3\equiv0$, cone 15° only, and the float localization tables (validated). The tilt-capped $t_f=3$ runs are not audited.
+
+## 10. Re-audit of TVC-3 (math/06 §5.8: $t_f=3$ s, tilt-capped class $\theta_{\max}=80^\circ$ or $30^\circ$, $N_f=900$), 2026-11-07 03:10
+
+**Verdict: CERTIFIED for both caps.** The certificates are identical.
+- Certified margin: $U_{\rm tot}\le1.302013\cdot10^{-3}<G_w\ge1.358494\cdot10^{-3}$, i.e. $5.65\cdot10^{-5}$ (4.16%).
+- $d_*\ge4.79\cdot10^{-5}$ m, with the $d$-part evaluated in float.
+
+**Mathematics.**
+- In the capped class, $b_z\ge\cos\theta_{\max}>0$ supplies (A1). It is the only place the cap enters.
+- The first localization pass uses $\min(K_2\min(s,t_f-s)^2/2,\theta_{\max})$ as its a-priori tilt bound. This is valid because every competitor in the class satisfies the cap.
+- The later bootstrap passes are as in §9. The relaxed class contains the ordinary one, and $R_\pi$ preserves the cap.
+- **Caveat (correctly stated in math/06):** this is a theorem about the capped class $F^{\rm cap}$, not the uncapped one.
+
+**Checks run.**
+- **Localization** (`loc_check2.py 3.0 0.5 {80,30}`): fixed point tilt 0.2276 rad, $v\le0.8286$ rad/s. proof-tvc's tables dominate mine on all 20000 cells, for both caps.
+- **Stage data:** my independent exact assembly agrees with `fine_data`. The moment rows agree to 7e-15, and $S_k,L_k$ to ≤2e-5 and ≤6e-3 relative; the latter difference comes only from sub-cell max coverage near $t_f$, where $\bar v$ is steep, and both choices are valid.
+- **Arb recursion** (256 bit, no fudge): all 900 values $-H^{uu}\succ0$ are certified; worst scaled pivot eigenvalue $-9.1\cdot10^{-5}$.
+- **Remaining conditions:** floors (slack $9.0\cdot10^{-5}$), absorption and $\lambda$-bounds hold, and $V_\lambda\in[1.289089919\cdot10^{-3}\pm2\cdot10^{-13}]$.
+- **Dense check:** float eigen test on 1800 dof, top eigenvalue $-2.4\cdot10^{-5}$.
+- **Moment term:** $\le1.2923\cdot10^{-5}$ (Arb); the exact value is $1.2807\cdot10^{-5}$.
+
+**Witness** (`TF=3 witness_check.py cone 1`).
+- The stored profile is relaxed on $E$ (down to $0.82K_1$); flown literally it gains only $1.01\cdot10^{-3}$. It must be flown as ordinary bang-bang, as proof-tvc does.
+- With the exact rational terminal correction ($\Delta n\approx3.7\cdot10^{-13}$), $G_w\in[1.358494217\cdot10^{-3}\pm2.3\cdot10^{-13}]$.
+- The 6DOF simulation agrees (terminal error 1.5e-14).
+- $v_z<0$ on $[0,t_f)$, so $r_z>0$. Max tilt is 2.16°, well inside either cap.
+- **Note:** my 6DOF simulation gives $\min_{t<t_f}r_z/\lvert r_h\rvert=87.8$, not the $1.5\cdot10^{-4}$ in math/06. That value looks like an artefact of proof-tvc's evaluator, for example backward-integration error where $r_z\to0$. The glide slope ($\tan\gamma_{gs}\lesssim87$) therefore appears to hold numerically, and could be claimed after proof-tvc re-checks its evaluator. This does not affect soundness, since math/06 claims less.
+
+## 11. Re-audit of TVC-5 (math/06 §5.9: $t_f=5$ s, tilt-capped class $80^\circ$ or $30^\circ$, $N_f=1500$), 2026-11-07 03:22
+
+**Verdict: CERTIFIED for both caps, with a thin margin.**
+- Certified: $U_{\rm tot}\le1.361771\cdot10^{-3}<G_w\ge1.364543\cdot10^{-3}$, a margin of **$2.77\cdot10^{-6}$ m (0.20%)**.
+- $d_*\ge2.48\cdot10^{-6}$ m ($d$-part evaluated in float).
+- The rigorous error radii are $\le5\cdot10^{-13}$ for $G_w$ and $V_\lambda$, about $10^{7}\times$ below the margin.
+
+**Upper bound $U_{\rm tot}$.**
+- **Arb recursion** (independent exact stage data, 256 bit, no fudge): all 1500 values $-H^{uu}\succ0$; worst scaled pivot $-1.0\cdot10^{-4}$.
+  - The final ball radius has grown to $2\cdot10^{-18}$, against $10^{-47}$ at $N_f=600$. Radius growth is roughly exponential in $N_f$. It is harmless here, but longer horizons should raise the precision.
+- **Floors, absorption, bounds:** floors pass (slack $9.5\cdot10^{-5}$), as do absorption and $0\le\lambda\le\lambda_{\max}$.
+- **$V_\lambda$:** $\in[1.348479426\cdot10^{-3}\pm2.2\cdot10^{-13}]$.
+- **Dense check:** float eigen test on 3000 dof, top eigenvalue $-1.8\cdot10^{-6}$. It is tight, but the Arb pivots are what certify the result.
+- **Moment term:** rigorous $\le1.32917\cdot10^{-5}$ (exact $1.31501\cdot10^{-5}$; proof-tvc's grid value $1.33540\cdot10^{-5}$). My $U$ is $6\cdot10^{-8}$ below proof-tvc's.
+- **Localization:** `loc_check2.py 5.0 0.5 {80,30}` passes. proof-tvc's tables dominate mine on all cells; the smallest margins are $7.8\cdot10^{-5}$ in $v$ and $2.3\cdot10^{-7}$ in tilt. The two caps' tables differ slightly; each was checked against its own data, with the same $\lambda$.
+
+**Witness** (the new 500-cell `witness_cone_5.0_0.5.npy`).
+- It is relaxed on $E$ (down to $0.936K_1$); flown literally it gains only $1.298\cdot10^{-3}$, which would FAIL. Flown as ordinary bang-bang with the exact terminal correction ($\Delta n=1.0\cdot10^{-11}$): $G_w\in[1.364543155\cdot10^{-3}\pm4.6\cdot10^{-13}]$, or $1.364546046\cdot10^{-3}$ with 4 patterns per cell.
+- The 6DOF simulation agrees, with terminal error $6\cdot10^{-14}$.
+- $v_z<0$ on $[0,t_f)$, so $r_z>0$. Max tilt 1.99°, inside either cap. Glide ratio 299.5.
+
+Scope: as for TVC-3. This is a theorem about the capped class only.

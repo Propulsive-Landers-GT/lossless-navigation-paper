@@ -82,3 +82,43 @@ So the realistic rate-limited, mass-depleting GTPL landing set is **nonconvex bu
 3. Mass depletion.
 4. Free final time.
 5. A tumbling-exclusion lemma for uncapped tf > 2.3 s.
+
+## Update (2026-11-07 ~03:05): TVC-2, tf = 2 s with NO tilt cap, CONFIRMED
+- **Result.** GTPL wet, constant mass, roll held, 15° cone, unlimited gimbal rate, upright at rest, r_z ≥ 0 + glide slope (tan γ ≤ 37), tf = 2 s, s* = 0.5 s.
+  - F^X is nonconvex, with margin 8.06% and dist(θ_m, F) ≥ 9.23e-5 m.
+  - [verify-tvc] re-certified it in exact arithmetic (math/verify-tvc-report.md §9).
+  - [adversary-6dof] verdict: SURVIVES.
+- **New method: a state-space (Riccati/DP) certificate.** The quadratic-form inequality is checked by a backward recursion over the state (x, x', m0, mw) with cellwise-linear controls.
+  - It is O(N), with N = 600 fine cells, so the discretization floors are negligible.
+  - It is re-run in Arb balls.
+  - The multiplier comes from a coarse SDP, used only as a generator.
+  - It is combined with: (A2) dropped, bootstrap localization, and (ρ0, ρw) = (0.1, 45) with ζ = ξ = 0.15.
+  - Files: numerics/proof-tvc/riccati_cert.py and verify_riccati.py.
+- **TVC-3: tf = 3 s, tilt-capped class (cap 80° or 30°), r_z ≥ 0, no glide-slope claim.** CLAIMED, re-audit requested.
+  - Result: U = 1.30211e-3 < G_w = 1.35849e-3, margin 4.15%, dist ≥ 4.78e-5 m.
+  - Trick: the coarse dense SDP fails numerically at tf=3, so the certified TVC-2 multiplier is reused, extended by zero on (2,3]. M_late dominates there.
+
+## Update (2026-11-07 ~03:30): long horizons certified (state-space Riccati certificate)
+All results below assume constant mass, roll held, 15° cone, unlimited gimbal rate, upright at rest and r_z ≥ 0. All are CONFIRMED in exact arithmetic by [verify-tvc] (math/verify-tvc-report.md §9–11).
+
+| ID | tf (s) | class | margin | dist(θ_m, F) ≥ | glide ratio (6DOF sim) |
+|---|---|---|---|---|---|
+| TVC-1 | 1 | uncapped (cone, box, roll-free) | 13.7 / 5.4 / 4.0 % | 9.96e-6 / 7.57e-6 / 2.90e-6 m | 116 |
+| TVC-2 | 2 | **uncapped** | 8.06 % | 9.23e-5 m | 37.8 |
+| TVC-3 | 3 | tilt cap 80° or 30° | 4.16 % | 4.79e-5 m | 87.8 |
+| TVC-5 | 5 | tilt cap 80° or 30° | 0.20 % | 2.48e-6 m | 299 |
+
+**Method.** The proof chain is that of math/06 §4, with three changes:
+- (A2) is dropped;
+- localization is bootstrapped;
+- the matrix inequality is checked by a backward Riccati/DP recursion over the state (x, x', m0, mw), so the cost is O(N) (up to 1500 cells, h = 1/300) and the discretization floors are negligible.
+
+The multipliers come from a coarse SDP at tf = 2. At tf = 3 and 5 they are reused, extended by zero and block-reduced. These generators are not part of the proof; every final multiplier is checked by the Arb recursion. Code: numerics/proof-tvc/riccati_cert.py and verify_riccati.py.
+
+**Still open.**
+- tf ≥ 6 s. tf = 7 was attempted: the certificate fails by 4.8% with the best generator (the tf=5 multiplier), although the Arb recursion passes for every multiplier tried. Kelley cutting planes did not converge. A bundle/trust-region multiplier optimizer on the recursion is the next step.
+- Uncapped tf > 2.3 s, which needs a tumbling-exclusion lemma for (A1).
+- Mass depletion.
+- 100°/s gimbal-rate limit (needs a jerk multiplier).
+- Roll-free and box variants beyond tf = 1.
+- Free final time.

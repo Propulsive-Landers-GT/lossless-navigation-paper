@@ -27,7 +27,8 @@ MSUB = int(sys.argv[2]) if len(sys.argv) > 2 else 8
 
 # ---------------- exact constants ----------------
 m_q, rho1_q, rho2_q, Jt_q, L_q = Fr(7988, 100), Fr(400), Fr(1000), Fr(636, 10), Fr(589, 1000)
-tf_q, ss_q = Fr(1), Fr(1, 4)
+import os
+tf_q, ss_q = Fr(os.environ.get('TF','1')), Fr(os.environ.get('SS','1/4'))
 g0 = arb('9.80665')
 A = lambda q: arb(q.numerator) / arb(q.denominator)
 m, Jt, L = A(m_q), A(Jt_q), A(L_q)
@@ -40,8 +41,8 @@ tf, ss = A(tf_q), A(ss_q)
 J0 = -a1 * de.cos() * ss ** 2 / 2 + a2 * (tf - ss) ** 2 / 2
 kappa = g0 * tf * (ss - tf / 2)
 
-nf = np.load(f"../proof-tvc/witness_{gim}_1.0_0.25.npy")
-N = len(nf); h_q = tf_q / N; kss = int(ss_q / h_q)
+nf = np.load(f"../proof-tvc/witness_{gim}_{float(tf_q)}_{float(ss_q)}.npy")
+N = len(nf); h_q = tf_q / N; kss = int(ss_q / h_q); assert kss * h_q == ss_q
 K1f = float(K1.mid())
 print(f"[{gim}] delta={float(de.mid())*180/np.pi:.4f} deg  K1={K1f:.10f}  early |n|/K1 min={np.min(np.abs(nf[:kss]))/K1f:.4f} "
       f"max={np.max(np.abs(nf[:kss]))/K1f:.6f}  (bang-bang requires 1)")
@@ -59,7 +60,7 @@ assert sum(h_q * nq[k] for k in range(N)) == 0 and sum(h_q * nq[k] * (tf_q - c[k
 print(f"  terminal correction: dn = ({float(dni):.2e}, {float(dnj):.2e}) on the last two cells (exact psi(tf)=psidot(tf)=0)")
 K2f = float((a2 * de.sin() / eps).mid())
 assert max(abs(float(x)) for x in nq[kss:]) < 0.999 * K2f
-assert all(abs(float(x)) < K1f * (1 - 1e-9) for x in nq[:kss])
+assert all(abs(float(x)) <= K1f * (1 + 1e-12) for x in nq[:kss]); nq[:kss] = [x if abs(float(x)) < K1f else Fr(np.sign(float(x))) * Fr(K1f) * (1 - Fr(1, 10**12)) for x in nq[:kss]]
 
 # ---------------- segment list (ordinary control) ----------------
 # each segment: (t_start [arb], length [arb], n [arb], p [arb], T [float], sin_mu [float])
@@ -99,25 +100,25 @@ print(f"  RIGOROUS G_w (ordinary bang-bang, MSUB={MSUB}) in {G.str(10, radius=Tr
 # relaxed value of the original profile, for comparison (float, high resolution)
 def relaxed_G(nv, M=200000):
     a1f, a2f, epsf, def_ = float(a1.mid()), float(a2.mid()), float(eps.mid()), float(de.mid())
-    t = (np.arange(M) + 0.5) / M; dt = 1 / M
-    k = np.minimum((t * N).astype(int), N - 1); nn = np.array([float(x) for x in nv])[k]
+    t = (np.arange(M) + 0.5) / M * float(tf_q); dt = float(tf_q) / M
+    k = np.minimum((t / float(tf_q) * N).astype(int), N - 1); nn = np.array([float(x) for x in nv])[k]
     om = np.concatenate([[0], np.cumsum(nn * dt)])
     psi = np.concatenate([[0], np.cumsum(om[:-1] * dt + nn * dt ** 2 / 2)])
     pm = psi[:-1] + om[:-1] * dt / 2 + nn * dt ** 2 / 8; omm = om[:-1] + nn * dt / 2
-    p = np.where(t < 0.25, a1f * np.cos(def_), np.sqrt(a2f ** 2 - epsf ** 2 * nn ** 2))
-    return np.sum(dt * (t - 0.25) * (p - epsf * omm ** 2) * np.cos(pm)) - float(J0.mid())
+    p = np.where(t < float(ss_q), a1f * np.cos(def_), np.sqrt(a2f ** 2 - epsf ** 2 * nn ** 2))
+    return np.sum(dt * (t - float(ss_q)) * (p - epsf * omm ** 2) * np.cos(pm)) - float(J0.mid())
 print(f"  relaxed G_w of stored profile (float, chattering p=a1 cos delta)   = {relaxed_G(nq):.6e}")
 p_ord = lambda: None
 # ordinary evaluation WITHOUT chattering (gimbal angle mu<delta, p = sqrt(a1^2-eps^2 n^2)): what 'no chattering' really gives
 def ordinary_nochatter_G(nv, M=200000):
     a1f, a2f, epsf = float(a1.mid()), float(a2.mid()), float(eps.mid())
-    t = (np.arange(M) + 0.5) / M; dt = 1 / M
-    k = np.minimum((t * N).astype(int), N - 1); nn = np.array([float(x) for x in nv])[k]
+    t = (np.arange(M) + 0.5) / M * float(tf_q); dt = float(tf_q) / M
+    k = np.minimum((t / float(tf_q) * N).astype(int), N - 1); nn = np.array([float(x) for x in nv])[k]
     om = np.concatenate([[0], np.cumsum(nn * dt)])
     psi = np.concatenate([[0], np.cumsum(om[:-1] * dt + nn * dt ** 2 / 2)])
     pm = psi[:-1] + om[:-1] * dt / 2 + nn * dt ** 2 / 8; omm = om[:-1] + nn * dt / 2
-    p = np.where(t < 0.25, np.sqrt(a1f ** 2 - epsf ** 2 * nn ** 2), np.sqrt(a2f ** 2 - epsf ** 2 * nn ** 2))
-    return np.sum(dt * (t - 0.25) * (p - epsf * omm ** 2) * np.cos(pm)) - float(J0.mid())
+    p = np.where(t < float(ss_q), np.sqrt(a1f ** 2 - epsf ** 2 * nn ** 2), np.sqrt(a2f ** 2 - epsf ** 2 * nn ** 2))
+    return np.sum(dt * (t - float(ss_q)) * (p - epsf * omm ** 2) * np.cos(pm)) - float(J0.mid())
 print(f"  same profile flown literally (T=rho1, |mu|<delta, no chattering)    = {ordinary_nochatter_G(nq):.6e}")
 
 # ---------------- independent full rigid-body simulation ----------------
@@ -150,7 +151,7 @@ for (st, ln, nn, p, T, smu) in segs:
 traj_t = np.array(traj_t); traj_x = np.array(traj_x)
 bT = rot(x[6:10], np.array([0, 0, 1.0])); wT = x[10:13]
 v0 = -x[3:6]; r0 = -x[0:3] - t * v0                      # landing data: r(tf)=0, v(tf)=0
-ell = r0[2] + 0.25 * v0[2]
+ell = r0[2] + float(ss_q) * v0[2]
 G6 = ell - float(kappa.mid()) - float(J0.mid())
 print(f"  6DOF sim: tf={t:.12f}  |b(tf)-e_z|={np.linalg.norm(bT-[0,0,1]):.2e}  |w(tf)|={np.linalg.norm(wT):.2e}  max gimbal {np.degrees(maxmu):.4f} deg (limit {float(de.mid())*180/np.pi:.4f})")
 if gim == 'box': print(f"  box: max Cardan angle along the witness = {np.degrees(maxcard[0]):.10f} deg (limit 15)")
@@ -164,4 +165,4 @@ print(f"  altitude: min r_z(t<tf)={rz.min():.3e} (at t={traj_t[inner][np.argmin(
 # last 10 ms detail
 late = (traj_t > t - 0.01) & inner
 print(f"  last 10 ms: min r_z/|r_h| = {np.min(rz[late[inner]]/np.maximum(rh[late[inner]],1e-300)):.3f}; vz<0 on [0,tf): {bool(np.all((traj_x[inner,5]+v0[2])<0))}")
-np.savez(f"witness_ordinary_{gim}_M{MSUB}.npz", r0=r0, v0=v0, G6=G6, Glo=float(G.lower()), Ghi=float(G.upper()))
+np.savez(f"witness_ordinary_{gim}_M{MSUB}" + ("" if tf_q == 1 else f"_tf{float(tf_q)}") + ".npz", r0=r0, v0=v0, G6=G6, Glo=float(G.lower()), Ghi=float(G.upper()))

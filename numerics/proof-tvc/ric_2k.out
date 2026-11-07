@@ -1,0 +1,37 @@
+localization: {'lat_fac': 1.0, 'E0': 0.00847, 'PenE': 0.01694, 'c_abs': 0.5, 'vmax': 0.83384, 'phimax': 0.23134, 'v_late_max': 0.83384, 'phi_late_max': 0.23134}
+moment term 1.2880e-05
+  kelley it 0: LP V=1.95441e-06 cuts=1
+  kelley it 50: LP V=1.97298e-06 cuts=51
+  kelley it 100: LP V=1.97298e-06 cuts=101
+  kelley it 150: LP V=1.97298e-06 cuts=151
+  kelley it 200: LP V=1.97298e-06 cuts=201
+  kelley it 250: LP V=1.97298e-06 cuts=251
+  kelley it 300: LP V=1.97298e-06 cuts=301
+  kelley it 350: LP V=1.97298e-06 cuts=351
+  kelley it 400: LP V=1.97298e-06 cuts=401
+  kelley it 450: LP V=1.97298e-06 cuts=451
+  kelley it 500: LP V=1.97298e-06 cuts=501
+  kelley it 550: LP V=1.97298e-06 cuts=551
+  kelley it 600: LP V=1.97298e-06 cuts=601
+  kelley it 650: LP V=1.97298e-06 cuts=651
+  kelley it 700: LP V=1.97298e-06 cuts=701
+  kelley it 750: LP V=1.97298e-06 cuts=751
+  kelley it 800: LP V=1.97298e-06 cuts=801
+  kelley it 850: LP V=1.97298e-06 cuts=851
+  kelley it 900: LP V=1.97298e-06 cuts=901
+  kelley it 950: LP V=1.97298e-06 cuts=951
+  kelley it 1000: LP V=1.97298e-06 cuts=1001
+  kelley it 1050: LP V=1.97298e-06 cuts=1051
+  kelley it 1100: LP V=1.97298e-06 cuts=1101
+  kelley it 1150: LP V=1.97298e-06 cuts=1151
+  kelley it 1200: LP V=1.97298e-06 cuts=1201
+  kelley it 1250: LP V=1.97298e-06 cuts=1251
+  kelley it 1300: LP V=1.97298e-06 cuts=1301
+  kelley it 1350: LP V=1.97298e-06 cuts=1351
+  kelley it 1400: LP V=1.97298e-06 cuts=1401
+  kelley it 1450: LP V=1.97298e-06 cuts=1451
+  kelley it 1500: LP V=1.97298e-06 cuts=1501
+  kelley it 1550: LP V=1.97298e-06 cuts=1551
+  kelley it 1600: LP V=1.97298e-06 cuts=1601
+  kelley it 1650: LP V=1.97298e-06 cuts=1651
+  kelley it 1700: LP V=1.97298e-06 cuts=1701

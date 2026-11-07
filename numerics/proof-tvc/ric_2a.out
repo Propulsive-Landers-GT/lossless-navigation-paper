@@ -1,0 +1,8 @@
+localization: {'lat_fac': 1.0, 'E0': 0.00847, 'PenE': 0.01694, 'c_abs': 0.5, 'vmax': 0.83384, 'phimax': 0.23134, 'v_late_max': 0.83384, 'phi_late_max': 0.23134}
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py:171: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  else: prob.solve(solver=solver, verbose=os.environ.get("VERB","0")=="1")
+    solver objective 1.19850e-03
+coarse (no-floor) SDP value 1.26001e-03
+moment term 2.8236e-03
+  scale 0.0: riccati ok=True worst=-1.25e-04 (fail cell -1)  V=1.26207e-03  U=4.08563e-03  G_w=1.35610e-03
+RESULT tf=2.0 s*=0.5 cap=none Nf=600 rho=(0.15, 60.0): U_total=4.085629e-03  G_w=1.356101e-03  margin=-201.28%  exact Arb recursion=PASS  certificate=FAIL

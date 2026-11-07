@@ -15,7 +15,10 @@ Numerics: `numerics/proof-tvc/` (own venv; single-threaded). Companion Lean list
 | TVC-1R | Competitors that also use the roll RCS ($|\tau_3|\le3$ N m, $\omega_3$ free). All gyroscopic terms are in the certificate, including the lateral force, which goes in by weighted Cauchy–Schwarz: $(\int c|\dot h|)^2\le\int c\int c|\dot h|^2$. The localization lemma absorbs the gyro term into $\vartheta_g\Pi$. | **PROVED, computer-assisted** at $N=120$: margin 4.0%, re-verified ($N=60$ fails) |
 | TVC-R | Gimbal-rate limit (100°/s per axis, gimbal centred at $t=0$). | **Nonconvex numerically, unproved.** In the full 6DOF model ([adversary-6dof]'s `m3tvc.py`: Cardan box rate-limited, mass depletion, roll free, $r_z\ge0$, upright at rest), the dive-then-brake face has zero-lateral max < free max at every horizon tried; see §5.3 table. The certificate does not transfer: the rate-limited baseline is unattainable, so a jerk multiplier is needed (§5.3). |
 | TVC-F | Free final time on a window, via RR-LS. | conditional (§5.4) |
-| TVC-L∞ | Long horizons $t_f\ge2$ s (uncapped up to 2.3 s, or with any tilt cap $<90^\circ$). | **OPEN as proof.** Tools are built ((A2) dropped; bootstrap localization), and the ideal ratio is 0.70 at $t_f=3$, but the rigorous runs fail (§5.6). Numerically nonconvex. |
+| TVC-2 | $t_f=2$ s, no tilt cap (§5.7), state-space Riccati certificate with Arb-verified recursion; margin 8.06%, $d_*\ge9.23\cdot10^{-5}$ m (cone, roll held). | **PROVED, computer-assisted; CONFIRMED** ([verify-tvc] exact re-certification; [adversary-6dof] SURVIVES) |
+| TVC-3 | $t_f=3$ s, **tilt-capped class** (cap $80^\circ$ or $30^\circ$), $r_z\ge0$; margin 4.16%, $d_*\ge4.79\cdot10^{-5}$ m (§5.8). | **PROVED, computer-assisted; CONFIRMED** ([verify-tvc] exact) |
+| TVC-5 | $t_f=5$ s, tilt-capped class (cap $80^\circ$/$30^\circ$), $r_z\ge0$ + glide slope; margin 0.20%, $d_*\ge2.48\cdot10^{-6}$ m (§5.9). | **PROVED, computer-assisted; CONFIRMED** ([verify-tvc] exact) |
+| TVC-L∞ | $t_f\ge6$ s; uncapped $t_f>2.3$ s (needs a tumbling lemma); mass depletion; rate limit. | **OPEN as proof**; numerically nonconvex. Tools are built ((A2) dropped; bootstrap localization), and the ideal ratio is 0.70 at $t_f=3$, but the rigorous runs fail (§5.6). Numerically nonconvex. |
 | — | Mass depletion ($\alpha>0$, varying $\varepsilon(m)$), wind. | **OPEN** as proof (§5.5). The numerics above include mass depletion and still show nonconvexity. |
 
 **Size.** The gap is genuinely thin. The certified distance from $\theta_m$ to $F$ is $\ge9.6\cdot10^{-6}$ m (cone) and $\ge7.3\cdot10^{-6}$ m (box). The gain of the best witness is about $10^{-4}$ m in $\ell=r_{0z}+s^*v_{0z}$ at $t_f=1$ s. The adversary's bottom-face numerics (0.08 m/s at 1 s, terminal attitude free or upright, altitude unconstrained) are consistent with this. With $r_z\ge0$ the only face we can certify is the dive-then-brake face, which is thin for the same reason as B\* (math/02 Rem. 10.2): a competitor can cancel lateral moments with small brake-phase tilts at quadratic cost.
@@ -239,17 +242,80 @@ This needs certificates on a continuum of $t$. We have checked it only on a grid
 
 The witness gain depends on $s^*$ but not on $t_f$, once the brake phase is long enough to return upright. **Caveat:** the capped class is a different problem class. Nonconvexity of $F^{\rm cap}$ does not imply nonconvexity of the uncapped $F$, and vice versa.
 
+### 5.7 Theorem TVC-2: $t_f=2$ s, no tilt cap, via a state-space (Riccati) certificate
+**Statement.** Setting of TVC-1 (constant mass, $\omega_3\equiv0$, cone 15°, unlimited gimbal rate, upright at rest, $r_z\ge0$, glide slope with $\tan\gamma_{gs}\le37$), GTPL wet constants, **$t_f=2$ s, no tilt cap**, face $s^*=0.5$ s. Then $F^{\mathcal X}_{t_f}$ is nonconvex, and $\operatorname{dist}(\theta_m,F_{t_f})\ge9.2\cdot10^{-5}$ m. That distance is 10× the $t_f=1$ value.
+
+**Proof.** It is the inequality chain of §4 with the following changes:
+- (A2) is not used; see §5.6, where $\Pi\ge b_z|a_2-f|$ and $\omega_D=\zeta\cos\bar\varphi$.
+- (A1) holds a priori at $t_f=2$, since $K_2t_f^2/8=1.20<\pi/2$.
+- Lemma 4.0 is iterated to a fixed point (bootstrap). The result is tilt $\le0.23$ rad and $v\le0.83$ rad/s.
+- Parameters: $\zeta=\xi=0.15$, $\kappa=0.03$, $\lambda_{\max}=0.01$, $(\rho_0,\rho_w)=(0.1,45)$, $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$.
+- **The discrete matrix inequality is checked by a backward Riccati recursion instead of a dense SDP.** Write $n=a_k+b_k(t-c_k)$ on cell $k$, and use the state $z=(x,\dot x,m_0,m_w)$, where $m_0,m_w$ are the running moment integrals. The quadratic form of (C), with the multiplier, is $\sum_k[z_k;u_k]^\top S_k[z_k;u_k]$ plus the terminal Finsler/clamp form, with $z_0=0$ and $z_{k+1}=T_k[z_k;u_k]$. The cellwise $\lambda_kL_k$ terms are now kept exactly, not replaced by $\lambda_{\max}$. The form is negative definite if every pivot block $H^{uu}_k$ of the backward recursion $H_k=S_k+T_k^\top P_{k+1}T_k$, $P_k=H^{zz}_k-H^{zu}_k(H^{uu}_k)^{-1}H^{uz}_k$ is negative definite (dynamic programming).
+  - Cost is $O(N)$, so we use $N_f=600$ cells ($h=1/300$). The Lemma 4.6′ remainder floors are then negligible.
+  - The multiplier $\lambda$ comes from a coarse no-floor SDP ($N_c=60$; *not* part of the proof). It is interpolated, scaled by the smallest feasible factor (0.979) times a safety factor of 1.02, and the floors are added.
+  - The recursion is re-run in **Arb ball arithmetic** (256 bits) on rationalized data, with the stage matrices inflated by $10^{-10}\cdot\max|S_k|\cdot I$ in the PSD (conservative) direction. Every $-H^{uu}_k$ is certified positive definite via $-H^{uu}_{11}>0$ and $\det>0$.
+  - The routine was cross-validated against the dense eigenvalue test at $t_f=1$, $N=20$, where the two agree in sign at all tested scalings.
+
+**Numbers** (`riccati_cert.py`, `verify_riccati.py`; data `riccati_2.0_0.5_none_600.npz`):
+
+| $V_\lambda$ | moment term | $U_{\rm tot}$ | $G_w$ (ordinary bang-bang witness) | margin |
+|---|---|---|---|---|
+| 1.23404e-3 | 1.29e-5 | 1.24692e-3 | 1.35610e-3 | 8.05% |
+
+The witness lands upright at rest to $10^{-16}$, with $v_z<0$ on $[0,t_f)$.
+
+**Status: CONFIRMED (computer-assisted).** [verify-tvc] independently re-certified the result (math/verify-tvc-report.md §9). They re-assembled every stage matrix by exact polynomial integration (fmpq × Arb, exact $h=1/300$, exact $g_0,g_w$) and ran the recursion in Arb with no inflation: all 600 $-H^{uu}_k\succ0$. The certified values are $U\le1.246811\cdot10^{-3}$, rigorous $G_w\ge1.356101\cdot10^{-3}$, margin 8.06%, $d_*\ge9.23\cdot10^{-5}$ m. The moment term is $\le1.2771\cdot10^{-5}$ (Arb LP dual). [adversary-6dof]: SURVIVES. Minor fix W1′: an exact rational correction of the last two witness cells, so the end state is exactly upright at rest; $G_w$ is unchanged. Glide-slope ratio 37.8.
+**Scope of TVC-2:** roll held (R0), 15° cone, constant mass, unlimited gimbal rate. The box and roll-free (R1) cases at $t_f=2$ are not run. The float-rounding of $g_0,g_w$ in my own Arb run is moot after the auditor's exact rebuild.
+
+**Tilt-capped $t_f=3$:** see §5.6. The same pipeline applies; the result is in the table there.
+
+### 5.8 Theorem TVC-3: $t_f=3$ s, tilt-capped class
+**Statement.** Setting of TVC-2, but in the **problem class with a tilt cap** $b_z\ge\cos\theta_{\max}$, for either $\theta_{\max}=80^\circ$ or $30^\circ$ (the certificate is identical). GTPL wet, $t_f=3$ s, $s^*=0.5$ s, altitude $r_z\ge0$. The glide slope is *not* claimed: the witness's $\min r_z/|r_h|$ is only $1.5\cdot10^{-4}$. Then $F^{\mathcal X,\rm cap}_{t_f}$ is nonconvex, with $\operatorname{dist}(\theta_m,F^{\rm cap}_{t_f})\ge4.78\cdot10^{-5}$ m.
+**Proof.** As in TVC-2, with the Riccati certificate on $N_f=900$ cells ($h=1/300$).
+- The cap is used only for (A1). The bootstrap localization gives the same bounds for every cap $<90^\circ$: tilt $\le0.228$ rad and $v\le0.829$ rad/s.
+- The multiplier is the certified TVC-2 multiplier, extended by $0$ on $(2,3]$ (where $M_{\rm late}$ dominates). It is scaled by the smallest feasible factor (1.0044) times a 1.02 safety factor, plus the fine floors.
+
+| $V_\lambda$ | moment term | $U_{\rm tot}$ | $G_w$ | margin | float recursion | Arb recursion |
+|---|---|---|---|---|---|---|
+| 1.28909e-3 | 1.30e-5 | 1.30211e-3 | 1.35849e-3 | 4.15% | worst pivot $-9.1\cdot10^{-5}$ | PASS |
+
+Data: `riccati_3.0_0.5_{30,80}_900.npz`. Re-check: `ETA1=0.0667 ZETA=0.15 LAMMAX=0.01 KAP=0.03 python verify_riccati.py 3.0 0.5 900 80 0.1:45`.
+**Status: CONFIRMED (computer-assisted).** [verify-tvc] gives an exact re-certification for both caps: $U\le1.302013\cdot10^{-3}$, rigorous $G_w\ge1.358494\cdot10^{-3}$ after the W1′ terminal correction, margin 4.16%, $d_*\ge4.79\cdot10^{-5}$ m, all 900 Arb pivots certified, moment term $\le1.2923\cdot10^{-5}$ (math/verify-tvc-report.md §10). *Glide slope:* the auditor's full 6DOF simulation of the witness gives $\min r_z/|r_h|=87.8$ over $t<t_f$. My evaluator's $1.5\cdot10^{-4}$ is a near-touchdown artefact of its backward position integration. So the glide slope with $\tan\gamma_{gs}\lesssim87$ holds, per the auditor's simulation. **Caveat:** this is a theorem about the tilt-capped class; uncapped $t_f=3$ would need a tumbling-exclusion lemma for (A1).
+
+### 5.9 Theorem TVC-5: $t_f=5$ s, tilt-capped class (a realistic horizon)
+**Statement.** Setting of TVC-3 (tilt cap $80^\circ$ or $30^\circ$, roll held, 15° cone, constant mass, unlimited gimbal rate, upright at rest, $r_z\ge0$). GTPL wet, **$t_f=5$ s**, $s^*=0.5$ s. Then $F^{\rm cap}_{t_f}$ is nonconvex, with $\operatorname{dist}(\theta_m,F^{\rm cap}_{t_f})\ge2.3\cdot10^{-6}$ m.
+**Certificate.** Riccati/DP on $N_f=1500$ cells ($h=1/300$).
+- The multiplier is the TVC-2 multiplier, zero-extended and scaled by 1.0726. It is then reduced by two sweeps of block-coordinate descent (60 blocks), each block checked with the fine recursion, with safety factor 1.002.
+- The witness is re-optimized on 500 cells and flown as ordinary bang-bang. It ends upright at rest to $10^{-15}$, with $v_z<0$.
+
+| $V_\lambda$ | moment term | $U_{\rm tot}$ | $G_w$ | margin | Arb recursion | fresh re-check |
+|---|---|---|---|---|---|---|
+| 1.348479e-3 | 1.34e-5 | 1.361833e-3 | 1.364543e-3 | **0.20%** | PASS | PASS (both caps) |
+
+The margin is thin: $2.7\cdot10^{-6}$ m absolute. It is still about 1000× the float and quadrature error estimates (≤ $10^{-9}$). Data: `riccati_5.0_0.5_{30,80}_1500.npz` (= `tvc5_cap80_cert.npz`) and `witness_cone_5.0_0.5.npy` (the $N=500$ witness).
+**Status: CONFIRMED (computer-assisted).** [verify-tvc] re-certified it exactly for both caps (math/verify-tvc-report.md §11): $U\le1.361771\cdot10^{-3}$, rigorous $G_w\ge1.364543\cdot10^{-3}$ ($\pm5\cdot10^{-13}$) after the exact terminal correction, margin $2.77\cdot10^{-6}$ m, $d_*\ge2.48\cdot10^{-6}$ m, all 1500 Arb pivots certified, glide ratio 299 in the 6DOF sim. Caveat from the audit: the Arb ball radius grows roughly exponentially with $N_f$, so use higher precision for longer horizons.
+
 ### 5.5 Variable $\varepsilon$, mass depletion
 Not covered. With $\alpha>0$, $\varepsilon(m(t))$ gives $\ddot y$ the extra terms $2\dot\varepsilon\dot b+\ddot\varepsilon b$, and $\ddot\varepsilon$ contains $\dot T$, which is unbounded for relaxed throttle. The late baseline also moves by $\alpha\rho_2(\rho_2-\rho_1)s^*/m^2\cdot\int_Lw\approx4\cdot10^{-3}$ m, which is far larger than the gap. A certificate for the $\alpha>0$ class needs the competitor's own mass history inside Pen ([adversary-6dof] A2). **Open.** TVC-1 is a theorem about the constant-mass class. That class is the standard LCvx idealization, but it is not literally GTPL.
 
 ## 6. What remains open
 
-**Final state (2026-11-07 05:30).**
-- **Certified (exact arithmetic, independent audit):** TVC-1, TVC-B, TVC-1R and TVC-1q at GTPL $t_f=1$ s. Constant mass, unlimited gimbal rate, cone and Cardan box, roll held or roll free.
-- **Numerical only:** nonconvexity at realistic horizons. This holds in the full 6DOF GTPL model, with box gimbal rate-limited to 100°/s, mass depletion and roll free; see §5.3 table and [adversary-6dof] exp3. It also holds in our small-angle ideal bounds at $t_f=3$.
+**Final state (2026-11-07 ~03:40).**
+- **Certified, computer-assisted, CONFIRMED by [verify-tvc] in exact arithmetic.** Constant mass, roll held (plus roll-free at $t_f=1$), 15° cone (plus box at $t_f=1$), unlimited gimbal rate, upright at rest, $r_z\ge0$:
+  - TVC-1, $t_f=1$, uncapped;
+  - **TVC-2, $t_f=2$, uncapped**;
+  - TVC-3, $t_f=3$, tilt cap 80°/30°;
+  - **TVC-5, $t_f=5$, tilt cap 80°/30°** (margin 0.20%).
+- **Numerical only.**
+  - $t_f=7$: the certificate fails by 4.8%, with the best generator from $t_f=5$. The idealized bound is still below $G_w$, so a better multiplier generator should close it.
+  - The rate-limited, mass-depleting full-6DOF model is nonconvex in [adversary-6dof]'s simulations (§5.3).
 - **Open:** all items below.
 
-**Recommended route for long horizons (not started).** Replace the dense $2N\times2N$ SDP by a **state-space (Riccati/dissipation) certificate**. Use the augmented state $z=(x,\dot x,\int f_0x,\int wf_0x)$ and a time-varying quadratic storage $z^\top P(t)z$ satisfying a pointwise LMI, i.e. a Riccati differential inequality; the Finsler terms become terminal costs. This scales linearly in $t_f$, removes the dense-SDP size wall, and can be validated with interval ODE enclosures. Combine it with the moment lemma $\mu_0\le|h(s^*)|\,Y+\bar v\int|w|D$. That lemma replaces the crude tilt $H$ at $s^*$ by the competitor's own $h(s^*)$, through a rank-one PSD term $\propto x(s^*)^2$, at the price $4\rho_0D_{\max}\mathrm{Pen}_{\max}/\omega$.
+**Long-horizon method (implemented; §5.7–5.9).** The dense SDP is replaced by a state-space (Riccati/DP) recursion, cost $O(N)$, re-run in Arb. The multipliers come from a coarse SDP at $t_f=2$, then zero-extended and block-reduced.
+- Coarse dense SDPs at $t_f\ge3$ fail numerically (Clarabel). A Kelley cutting-plane search on the fine recursion was tried and did not converge in 1600 cuts.
+- To reach $t_f\ge6$, the remaining work is a proper multiplier optimizer on the recursion, e.g. a bundle/trust-region method or a dual (covariance) formulation.
+
+**(Historical) route proposed before the Riccati certificate was implemented.** Replace the dense $2N\times2N$ SDP by a **state-space (Riccati/dissipation) certificate**. Use the augmented state $z=(x,\dot x,\int f_0x,\int wf_0x)$ and a time-varying quadratic storage $z^\top P(t)z$ satisfying a pointwise LMI, i.e. a Riccati differential inequality; the Finsler terms become terminal costs. This scales linearly in $t_f$, removes the dense-SDP size wall, and can be validated with interval ODE enclosures. Combine it with the moment lemma $\mu_0\le|h(s^*)|\,Y+\bar v\int|w|D$. That lemma replaces the crude tilt $H$ at $s^*$ by the competitor's own $h(s^*)$, through a rank-one PSD term $\propto x(s^*)^2$, at the price $4\rho_0D_{\max}\mathrm{Pen}_{\max}/\omega$.
 1. **Realistic horizons (5–8 s), uncapped.** (A2) is removed (§5.6). (A1), i.e. $b_z>0$, fails for $t_f\gtrsim2.3$ s with the crude a-priori bounds of Lemma 2.2; the tilt-capped class (§5.6) avoids it. A localization lemma would extend the method: a competitor with gain $\ge0$ has small late tilt and rate, by an energy bound plus Lipschitz bootstrap. The certificate would also need to scale, roughly $N\propto t_f$, and the SDP cost grows with $N$.
 2. Mass depletion / varying $\varepsilon$ (§5.5).
 3. A rate-limited witness that beats $U_{\rm tot}$, or a bound tailored to the rate-limited class (§5.3).

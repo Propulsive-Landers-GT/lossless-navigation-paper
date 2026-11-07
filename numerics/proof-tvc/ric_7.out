@@ -1,0 +1,8 @@
+localization: {'lat_fac': 1.0, 'E0': 0.00844, 'PenE': 0.01688, 'c_abs': 0.5, 'vmax': 0.82433, 'phimax': 0.22464, 'v_late_max': 0.82433, 'phi_late_max': 0.22464}
+coarse (no-floor) SDP value nan
+moment term 1.3654e-05
+  smallest feasible factor 1.1233: V+moment = 1.43975e-03  G_w = 1.36446e-03
+  sweep 0: V+moment = 1.43181e-03  (17s)
+  sweep 1: V+moment = 1.43178e-03  (34s)
+  safety 1.002: float ok, Arb PASS, U=1.43458e-03
+RESULT tf=7.0 s*=0.5 cap=80 Nf=2100 rho=(0.1, 45.0): U_total=1.434581e-03  G_w=1.364465e-03  margin=-5.14%  exact Arb recursion=PASS  certificate=FAIL

@@ -1,0 +1,11 @@
+localization: {'lat_fac': 1.0, 'E0': 0.00845, 'PenE': 0.01691, 'c_abs': 0.5, 'vmax': 0.82883, 'phimax': 0.22772, 'v_late_max': 0.82883, 'phi_late_max': 0.22772}
+solver error Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.
+coarse SDP (Clarabel) failed; retry with SCS (generator only)
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py:170: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  if solver == "SCS": prob.solve(solver='SCS', eps=float(os.environ.get("SCSEPS","1e-7")), max_iters=200000, verbose=os.environ.get("VERB","0")=="1")
+    solver objective 1.25097e-03
+coarse (no-floor) SDP value 5.34391e-03
+moment term 1.3016e-05
+  smallest feasible factor 0.9043: V+moment = 4.84853e-03  G_w = 1.35849e-03
+  safety 1.02: float ok, Arb PASS, U=4.94518e-03
+RESULT tf=3.0 s*=0.5 cap=30 Nf=900 rho=(0.1, 45.0): U_total=4.945183e-03  G_w=1.358494e-03  margin=-264.02%  exact Arb recursion=PASS  certificate=FAIL

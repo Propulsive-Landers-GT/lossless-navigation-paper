@@ -1,0 +1,5 @@
+tf=2.0 s*=0.5 cap=none G_w=1.3561e-03  loc={'lat_fac': 1.0, 'E0': 0.0085, 'PenE': 0.0169, 'c_abs': 0.5, 'vmax': 0.8338, 'phimax': 0.2313, 'v_late_max': 0.8338, 'phi_late_max': 0.2313}
+  both exact                  : ideal bound 8.4715e-04  ratio 0.625
+  weighted only               : ideal bound 1.3559e-03  ratio 1.000
+  weighted exact + rho0=0.05  : ideal bound 1.0750e-03  ratio 0.793
+  weighted exact + rho0=0.2   : ideal bound 9.2653e-04  ratio 0.683

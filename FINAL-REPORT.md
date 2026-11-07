@@ -23,10 +23,15 @@ finite rate. The vehicle can't average a left tilt and a right tilt, so the set 
 landing is possible has a dent. Any convex program containing two landable states also contains their average, which
 is not landable.
 
-**Our actual vehicle (pure TVC: the gimbal is the pitch/yaw torque).** A computer-assisted proof, certified in exact
-arithmetic, shows the same nonconvexity at tf = 1 s (GTPL constants, upright at rest, altitude + glide slope, cone or
-Cardan box gimbal, constant mass, unlimited gimbal rate). The fully realistic model (100°/s gimbal, mass depletion,
-3–7 s burns) is nonconvex **numerically** at every horizon tried, but that is not yet proved.
+**Our actual vehicle (pure TVC: the gimbal is the pitch/yaw torque).** Computer-assisted proofs, each independently
+re-certified in exact arithmetic, show the same nonconvexity at realistic horizons. The common setting is GTPL constants,
+landing upright at rest, constant mass, unlimited gimbal rate, roll held.
+- tf = 1 s: altitude + glide slope; cone, Cardan box, and roll-free.
+- **tf = 2 s with no tilt cap:** altitude + glide slope.
+- **tf = 3 s and 5 s with a tilt cap** (80° or 30°, like the flight code's 30° abort): altitude.
+
+The fully realistic model (100°/s gimbal limit, mass depletion, 7 s burns) is nonconvex **numerically** at every horizon
+tried, but not yet proved.
 
 ## What *is* possible (also proved)
 - **Given an attitude profile, the problem is exactly convex** (for pure TVC, no relaxation is needed at all). All the
@@ -70,7 +75,8 @@ Cardan box gimbal, constant mass, unlimited gimbal rate). The fully realistic mo
   only on standard axioms.
 
 ## Open (honestly)
-- Pure-TVC rigor at realistic horizons (≥ 2 s), with the 100°/s gimbal limit, and with mass depletion.
+- Pure-TVC rigor at tf = 7 s, uncapped beyond 2.3 s (needs a no-tumbling lemma), with the 100°/s gimbal limit, and with
+  mass depletion.
 - Lemma S / hop-ring rigor at GTPL constants (proved for higher thrust-to-weight vehicles; numerical for ours).
 - The SDP conjecture CSD2′ residual class.
 - Planner B's convergence (empirical only); the flight port needs a hard time budget.

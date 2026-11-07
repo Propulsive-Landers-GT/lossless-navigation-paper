@@ -1,0 +1,11 @@
+localization: {'lat_fac': 1.0, 'E0': 0.00845, 'PenE': 0.01691, 'c_abs': 0.5, 'vmax': 0.82883, 'phimax': 0.22772, 'v_late_max': 0.82883, 'phi_late_max': 0.22772}
+Traceback (most recent call last):
+  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/riccati_cert.py", line 195, in <module>
+    main()
+    ~~~~^^
+  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/riccati_cert.py", line 151, in main
+    D = C2.setup(P, tf, ss, Nc, par, loc=(vf, pf))
+  File "/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py", line 24, in setup
+    h = tf/N; kss = int(round(ss/h)); assert abs(kss*h-ss) < 1e-12 and ss <= tf/2
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

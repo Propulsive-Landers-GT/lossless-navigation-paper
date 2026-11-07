@@ -129,3 +129,4 @@
 - 02:38 proof-tvc FINAL: tf=1 certified; fully realistic rate-limited pure TVC numerically nonconvex at tf=3,5,7 (≈0.5–3 cm) ⇒ 'nonconvex but unproved'. Open items listed in math/06 §6.
 - 02:40 paper rev 4 DONE (39 pp, no placeholders). Launched lean-tvc, final-auditor; resumed proof-tvc on Riccati certificate (stop 06:15).
 - 02:50 final-auditor DONE: 1 MUST + 17 SHOULD fixed in paper (eee6e5f); 101 Lean names verified, axioms standard. Synced box margin 7.57e-6 in CLAIMS.
+- 03:39 proof-tvc FINAL: Riccati/DP certificates TVC-2 (tf=2 uncapped), TVC-3, TVC-5 (capped) — orchestrator confirmed verify-tvc independently re-certified each in exact arithmetic (report §9–11, riccati_exact.py). tf=7 fails by 4.8%.

@@ -142,6 +142,7 @@ def solve_cert(D, rho, rhoc):
     c_loc, cg = remainder_constants(D, (rho0, rhow))
     c_loc = c_loc + (1+1/tau)*(1+1/par.get('kapg', 10.0))*(rho0*D['Cg0'] + rhow*D['Cgw'])*D['cmax']*(h/(2*np.pi))**2
     lam_lb = np.maximum(c_loc+cg-D['Mlate'], 0.0)*1.02
+    if os.environ.get("NOFLOOR", "0") == "1": lam_lb = 0*lam_lb      # coarse multiplier generation only (NOT a certificate)
     if np.any(lam_lb > D['lam_ub']): return None
     Rm = np.diag([rho0, rhow])
     kg = par.get('kapg', 10.0)

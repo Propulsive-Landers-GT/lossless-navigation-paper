@@ -1,0 +1,10 @@
+localization: {'lat_fac': 1.0, 'E0': 0.02273, 'PenE': 0.04547, 'c_abs': 0.5, 'vmax': 1.13976, 'phimax': 0.36311, 'v_late_max': 1.13976, 'phi_late_max': 0.36311}
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-tvc/certificate2.py:171: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  else: prob.solve(solver=solver, verbose=os.environ.get("VERB","0")=="1")
+    solver objective 2.39171e-03
+coarse (no-floor) SDP value 2.40466e-03
+moment term 4.2402e-02
+  coarse lambda near s*: [0.00435 0.00337 0.00232 0.00128 0.00017 0.00019 0.00033 0.      0.     ]
+  smallest feasible factor 0.9921: V+moment = 4.47906e-02  G_w = 2.91680e-03
+  safety 1.002: float ok, Arb PASS, U=4.47954e-02
+RESULT tf=2.0 s*=0.6 cap=none Nf=600 rho=(0.1, 45.0): U_total=4.479535e-02  G_w=2.916800e-03  margin=-1435.77%  exact Arb recursion=PASS  certificate=FAIL

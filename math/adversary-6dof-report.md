@@ -358,3 +358,15 @@ and continuity is handled by a cell-average split.
 - **Update:** finding (1) is fixed by [proof-tvc]. The witness is now exact (+,−,+) bang-bang (G_w = 7.26909e-5 cone, 1.404329e-4 box), and all three certificates still pass.
   Their new step dropping (A2) via Π ≥ b_z|a2 − f| is checked TRUE. The tilt-capped extension is a separate problem class and must be stated as such.
   Status: TVC-1 SURVIVES within scope, pending [verify-tvc]'s rational/interval re-verification.
+
+### 7.2 TVC-2 (tf = 2 s, no tilt cap; Riccati/DP certificate with Arb re-run)
+U = 1.24692e-3 < G_w = 1.35610e-3 (8.05% margin), and dist(θ_m, F) ≥ 9.2e-5 m.
+- **Checked:**
+  - The bootstrap localization is valid, since each pass uses only bounds proved for {gain ≥ 0}. My own run reproduces E0 = 8.47e-3, φ̄ ≤ 0.231 and v̄ ≤ 0.834.
+  - The DP equivalence holds. The piecewise-linear cell control, ∫n², transition and terminal signs are right, and H_uu ≺ 0 at every step gives sup = 0.
+  - The remainder floors match Lemma 4.6′, and the Arb inflation of the stage matrices is conservative.
+- **Minor rigor items:**
+  - The moment rows and transition matrix are exact rationals of floats but are not enclosed. This needs either an enclosure or a strict-margin absorption argument.
+  - The moment term, V_λ and G_w are float-evaluated; the margin is ample, but a formal claim needs enclosures.
+- **Scope:** R0, cone, constant mass, unlimited gimbal rate.
+- **Verdict:** SURVIVES within scope, pending [verify-tvc].
