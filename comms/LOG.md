@@ -114,3 +114,4 @@
 - 01:27 paper rev 2 DONE (34 pp; referee fixes; boxed machine-checked headline). adversary-6dof: GTPL-realistic pure TVC (box, 100°/s, upright at rest, r_z≥0) nonconvex numerically at tf=5/7 (≈3 cm). proof-tvc certificate at tf=1 in progress.
 - 01:32 numerics (follow-up): unit-d SDP gaps at N=5 (5–15%); sparse order-2 Lasserre bounds lie between SDP and 3D but solver 'inaccurate' ⇒ unit-d break remains numerical, not certified (needs MOSEK or substitution reformulation). Does not affect CSD2′ (convexified lens).
 - 01:35 proof-tvc: computer-assisted proof of pure-TVC GTPL nonconvexity (upright at rest, r_z≥0, glide slope) at tf=1 s, const mass; margins 4–14%. Launched verify-tvc for independent audit incl. exact rational re-verification.
+- 01:38 proof-csd2p: CSD2′ reduced to residual k=p₀+1 class; T1–T5, P6, P7 (T2: exact for all linear objectives; T4 a-priori class; T5 index theorem). Launched verify-sdp2 referee.

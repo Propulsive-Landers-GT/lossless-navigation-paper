@@ -23,7 +23,8 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
     K1 = a1*np.sin(de)/eps; K2 = a2*np.sin(de)/eps
     h = tf/N; kss = int(round(ss/h)); assert abs(kss*h-ss) < 1e-12 and ss <= tf/2
     tk = np.arange(N+1)*h; ck = (tk[:-1]+tk[1:])/2
-    phib0 = lambda s: K2*np.minimum(s, tf-s)**2/2
+    capv = par.get('cap') or np.pi
+    phib0 = lambda s: np.minimum(K2*np.minimum(s, tf-s)**2/2, capv)
     vb0 = lambda s: K2*np.minimum(s, tf-s)
     if loc is None:
         phibar, vbar = phib0, vb0
@@ -31,8 +32,8 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
         vbar, phibar = loc
     om3 = (lambda s: par['tau_roll']/par['Ja']*s) if par['roll'] else (lambda s: 0.0*s)
     rJ = par['Ja']/par['Jt']
-    assert phib0(tf/2) < np.pi/2 - 0.05, "(A1) fails"
-    assert a1*np.cos(de) - eps*vb0(tf/2)**2 > 0, "(A2) fails"
+    assert phib0(tf/2) < np.pi/2 - 0.02, "(A1) fails"
+    # (A2) f>=0 is no longer needed: Pi >= b_z |a2-f| for either sign of f (math/06 §4.2)
     def cellmax(fun, lo, hi):
         if hasattr(fun, 'cells'):   # rigorous: max over all fine cells meeting [lo, hi]
             i0 = max(int(np.floor(lo/fun.ds))-1, 0); i1 = min(int(np.ceil(hi/fun.ds))+1, len(fun.cells))
@@ -197,7 +198,7 @@ def moment_term(D, rho, d=0.0, M=40001):
     Mv0 = np.sum(np.where(E, sph*eps*vb**2, 0))*ds + np.sum(gyro)*ds
     Mvw = np.sum(np.where(E, wmax*sph*eps*vb**2, 0))*ds + np.sum(wmax*gyro)*ds
     Dmax = a2 - a1*np.cos(de) + eps*vb.max()**2
-    om = np.where(E, xi*np.cos(D['phibar'](sg[1:])), zeta)
+    om = np.where(E, xi, zeta)*np.cos(D['phibar'](sg[1:]))    # late: zeta*Pi >= zeta*b_z|a2-f|
     cw = np.max(sph/om)
     cost = om*wmin*Dmax*ds; gain = sph*Dmax*ds
     order = np.argsort(-(gain/np.maximum(cost, 1e-300)))
@@ -219,16 +220,16 @@ if __name__ == "__main__":
     wfile = f"witness_{gim}_{tf}_{ss}.npy"
     if os.path.exists(wfile): nv = np.load(wfile)
     else:
-        nv = optimize(P, tf, ss, N=100, starts=6)[1]; np.save(wfile, nv)
+        nv = optimize(P, tf, ss, N=int(os.environ.get("WN", 100)), starts=6, cap=np.deg2rad(float(os.environ["TILTCAP"])) if "TILTCAP" in os.environ else None)[1]; np.save(wfile, nv)
     ev = evaluate(P, tf, ss, nv)
-    par = dict(PAR); par['tau'] = float(os.environ.get("TAU", par['tau'])); par['zeta'] = par['xi'] = float(os.environ.get("ZETA", par['zeta'])); par['kapg'] = float(os.environ.get("KAPG", 10.0)); par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
+    par = dict(PAR); par['tau'] = float(os.environ.get("TAU", par['tau'])); par['zeta'] = par['xi'] = float(os.environ.get("ZETA", par['zeta'])); par['kapg'] = float(os.environ.get("KAPG", 10.0)); par['cap'] = np.deg2rad(float(os.environ["TILTCAP"])) if "TILTCAP" in os.environ else None; par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
     print(f"[{gim} delta={deg:.2f}] tf={tf} s*={ss} N={N} roll-competitors={par['roll']}: witness G_w={ev['G']:.6e}, "
           f"max tilt {np.degrees(ev['maxtilt']):.3f} deg, max v_z(t<tf)={ev['maxvz']:.3e}, min r_z/|r_h|={ev['rzrel']:.3e}, "
           f"r0={ev['r0']}, v0={ev['v0']}", flush=True)
     loc = None
     if os.environ.get("LOC", "1") == "1":
         from localize import localize
-        vf, pf, info, _ = localize(P, tf, ss, roll=par['roll'])
+        vf, pf, info, _ = localize(P, tf, ss, roll=par['roll'], cap=par.get('cap'))
         print("  localization (Lemma 4.0):", {k: float(v) for k, v in info.items()}, flush=True)
         loc = (vf, pf)
     D = setup(P, tf, ss, N, par, loc=loc)

@@ -17,7 +17,7 @@ Scripts: numerics/proof-csd2p/ (picone.py, index_check.py, index_c1.py, mu_unit.
 | **T5 Index theorem.** At any genuine KKT point: **neg(Q) = neg(Z) − p₀(C_yw)**. Z is the cable part of the stress. C_yw = Σ_c y_{c,h} w_{c,h}ᵀ is the 2×2 lateral residual/target cross-covariance, and p₀ is its number of eigenvalues ≥ 0. Moreover **k−1 ≤ neg(Z) ≤ k**, where k is the number of times b* crosses the primer plane (the Jacobi field h_m = ⟨b*,m⟩). Hence: k ≤ p₀ ⇒ exact (certified); k ≥ p₀+2 ⇒ the genuine point is beaten in ℝ⁴; k = p₀+1 ⇒ decided by one Sturm count. | PROVED in discrete time (finite-dim, under stated nondegeneracy); continuous-time analogue with proof sketch (§5) |
 | **P6 No free singular arcs.** A genuine local optimum has no interval with P ∥ −b, throttled u and slack rate: the 3D tilt into the primer-plane normal improves it. So the Prop 6.1 mechanism has no continuous-time analogue at genuine optima. | PROVED (§6.1) |
 | **P7 Why unit-d fails and the convexified lens works.** At a genuine D^unit optimum the norm multiplier μ_d on ‖d_k‖=1 can be negative ("the segment wants to throttle"). The lift realizes the throttle by an E⊥ tilt (math/08 Prop 6.1). In D^cvx and in continuous time μ ≥ 0 by the KKT sign. Every T4/T5 argument uses μ ≥ 0. | PROVED (mechanism) + NUMERICS (all 13 checked unit-d gap instances have μ_d < 0 and Q ≱ 0; their convexified versions have μ_d ≥ 0 and Q ⪰ 0) |
-| **Numerics (mine)** | **0 gaps** at large ωtf ∈ {π, 1.5π, 2π, 3π} (N=24; d=b, cvx15, cvx40; terminal and free b(tf); 384 targets, including dent mixtures of support points). The index identity holds on every nondegenerate instance tested (§8). T5 certifies 16 of 17 [numerics] c1 cases (9 of 10 GTPL-realistic set A), including case 12 convexified. The one exception (set A case 6: k=2, p₀=1) is exact numerically. |
+| **Numerics (mine)** | **0 gaps** at large ωtf ∈ {π, 1.5π, 2π, 3π} (N=24; d=b, cvx15, cvx40; terminal and free b(tf); 384 targets, including dent mixtures of support points). The index identity holds on all 151 nondegenerate instances. The Sturm bounds hold on all 107 where h_m ≠ 0 at every node, of which 85% are certified by T5 and the other 15% are in the residual class, all exact (§8). T5 certifies 16 of 17 [numerics] c1 cases (9 of 10 GTPL-realistic set A), including case 12 convexified. The one exception (set A case 6: k=2, p₀=1) is exact numerically. |
 | **Open core = Conjecture CSD2″** | At a genuine global optimum with k = p₀ + 1 crossings (terminal attitude: k = 2 and C_yw indefinite), neg(Z) = k − 1. Equivalently, the principal Jacobi solution has no conjugate point in the last lobe. **CSD2′ ⇔ CSD2″** on nondegenerate instances. |
 
 **Physical reading.** The lift is exact whenever the optimal attitude crosses the primer plane no more often than the number of nonnegative eigenvalues of C_yw. C_yw ≺ 0 means the trajectory falls short of the target in every lateral direction (the classical "under-reach" regime); then the attitude must not cross the primer plane at all. Overshoot in some lateral direction (C_yw with nonnegative eigenvalues) allows one or two crossings. The GTPL-realistic optima are almost all two-crossing with C_yw ≻ 0, so they are certified by T5.
@@ -182,7 +182,7 @@ Then Q ⪰ 0, and the SDP is exact at w (math/08 Thm 2.1).
 
 *Continuous analogue.* The same algebra holds for Q_red = J_red + g(I+G)⁻¹gᵀ with G = ∫kkᵀ/μ_u. Indeed ⟨g,J_red⁻¹g⟩ = −YmapYres⁻¹ − G, and M is congruent to −C_yw again.
 
-**Theorem 5.2 (Sturm bounds).** Assume the Schur-reduced chain S (tridiagonal on b_1..b_{N−1}) has strictly negative off-diagonals; in continuous time, ν ≥ ν₀ > 0. Let k be the number of sign changes of h_m along the attitude chain (crossings of the primer plane). Then
+**Theorem 5.2 (Sturm bounds).** Assume the Schur-reduced chain S (tridiagonal on b_1..b_{N−1}) has strictly negative off-diagonals; in continuous time, ν ≥ ν₀ > 0. Let k be the number of sign changes of h_m along the attitude chain (crossings of the primer plane), and assume h_m ≠ 0 at every node (no node lies in Π). Then
   **k − 1 ≤ neg(Z) = neg(S) ≤ k**, and neg(Z) = 0 if k = 0 and ζ₀ > 0.
 *Proof.*
 1. neg(Z) = neg(S) by Haynsworth with D ≻ 0.
@@ -197,7 +197,7 @@ The lower bound has a form-level proof that needs no spectral theory: between co
 - **k = p₀ + 1:** exact ⇔ neg(Z) = k − 1, i.e. the principal solution has no generalized zero after the last crossing. In case T, k is even, so this residual class is **k = 2 with C_yw indefinite**.
 
 **Conjecture CSD2″.** At every target, some genuine global optimum satisfies neg(Z) = p₀(C_yw). (On nondegenerate instances CSD2′ ⇔ CSD2″, by Thm 5.1 + math/08 Thm 2.1/2.4.)
-After Cor 5.3, only the residual class remains. Numerically (§8) it occurs on ~10% of nondegenerate instances, always with neg(Z) = 1 = p₀ (exact).
+After Cor 5.3, only the residual class remains. Numerically (§8) it occurs on 16 of 107 fully nondegenerate instances, always with neg(Z) = k−1 = p₀ (exact).
 
 ## 6. Discretization
 
@@ -250,10 +250,13 @@ If the lift is exact at w with genuine optimum z* = (b,u):
 - **picone_bank.py, picone_bank2.py**: the T4 LP criterion at genuine optima over [verifier-sdp]'s banks.
   - The criterion holds on ~2/3 of the N ≤ 8 bank. In every such instance Q ⪰ 0 (consistency check of T4).
   - Failures are two-crossing optima (overshoot / anti-aligned primers, e.g. case 12: angle(b,P) = 140–180°).
-- **index_check.py, summarize_idx.py**: T5 at genuine optima (D^cvx, D^0) over the banks (incl. all classes of the 509 former unit-d gaps). Results: idx1.jsonl, idx2.jsonl.
-  - The identity neg(Q) = neg(Z) − p₀(C_yw) holds on **every nondegenerate instance** (C_yw eigenvalues bounded away from 0, primer plane well defined). The failures in the raw table are all degenerate: C_yw singular, i.e. coplanar data or e_z ∈ Π.
-  - Observed (k, neg Z, p₀) at optima: (0,0,0), (2,2,2), (2,1,1). There is **no optimum with k ≥ p₀ + 2**.
-  - Class "k ≤ p₀" (certified by T5) covers ~85–90% of nondegenerate instances. The residual class k = 2, p₀ = 1 always has neg Z = 1 (exact).
+- **index_check.py, summarize_idx.py, summarize_strict.py**: T5 at genuine optima (D^cvx, D^0). 260 instances from [verifier-sdp]'s banks (incl. the 509 former unit-d gap targets, convexified) and my large-ωtf screen. Results: idx3.jsonl.
+  - **Identity.** neg(Q) = neg(Z) − p₀(C_yw) holds on all 151 instances with C_yw nonsingular and the primer plane well defined. The raw-table failures are degenerate: C_yw singular, i.e. coplanar data or e_z ∈ Π.
+  - **Sturm bounds.** Restricted to the 107 instances where h_m ≠ 0 at every interior node, k−1 ≤ neg Z ≤ k holds 107/107.
+    - 91 of these (85%) are in the certified class k ≤ p₀.
+    - 16 are in the residual class k = p₀+1. **All 16 have neg Z = k−1 (exact)**.
+    - No optimum has k ≥ p₀+2. Observed (k, neg Z, p₀): (0,0,0), (2,2,2), (2,1,1), and (1,1,1), (1,2,2) with free b(tf).
+  - **Apparent violations** (k=0 with neg Z>0, etc.) all violate T5's hypotheses. Either h_m = 0 (to 1e-13) at some nodes, i.e. the attitude runs *inside* the primer plane, so the crossing count is undefined, or Z is singular with a disconnected chain. These are not counterexamples. When the attitude lies in Π on an interval, m is a genuine normal there, as in the planar case of math/08 Thm 4.1.
 - **index_c1.py** ([numerics] c1 cases, cvx15): 16/17 certified by T5. This includes set A cases 0–5 and 7–9 (GTPL-realistic) and set B case 12 (k = 2, C_yw ≻ 0). Case 6 (set A) is in the residual class and is exact numerically.
 - **mu_unit.py**: §6.2.
 

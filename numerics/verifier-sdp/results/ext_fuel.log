@@ -95,3 +95,16 @@ fuel N=8 wtf=3.0 reach                lifted L=0.77451256[optima] U=0.77451194 r
 fuel N=8 wtf=3.0 M+up                 linear L=0.52070468[optima] U=inf rank=12 liftedErr=1.12e-01
 fuel N=8 wtf=3.0 M+up                 lifted L=nan[error] U=inf rank=-1 liftedErr=nan
 fuel N=12 wtf=0.5 M_a1 (unreachable)   linear L=0.50000009[optima] U=inf rank=4 liftedErr=4.68e-03
+fuel N=12 wtf=0.5 M_a1 (unreachable)   lifted L=0.51646058[optima] U=inf rank=16 liftedErr=1.02e-08
+fuel N=12 wtf=0.5 reach                linear L=0.99964845[optima] U=0.99965881 rank=7 liftedErr=3.25e-05
+fuel N=12 wtf=0.5 reach                lifted L=0.99954979[optima] U=0.9995583 rank=13 liftedErr=9.99e-09
+fuel N=12 wtf=0.5 reach                linear L=0.7419148[optima] U=0.7419148 rank=9 liftedErr=7.83e-04
+fuel N=12 wtf=0.5 reach                lifted L=0.74181411[optima] U=0.74181386 rank=40 liftedErr=1.00e-08
+fuel N=12 wtf=0.5 reach                linear L=0.69898919[optima] U=0.69904338 rank=17 liftedErr=4.40e-04
+fuel N=12 wtf=0.5 reach                lifted L=0.69888888[optima] U=0.6989426 rank=37 liftedErr=1.00e-08
+fuel N=12 wtf=0.5 reach                linear L=0.99882762[optima] U=0.99882762 rank=6 liftedErr=4.24e-05
+fuel N=12 wtf=0.5 reach                lifted L=0.9987269[optima] U=0.99872675 rank=40 liftedErr=1.01e-08
+fuel N=12 wtf=0.5 reach                linear L=0.67419978[optima] U=0.67419968 rank=46 liftedErr=4.30e-03
+fuel N=12 wtf=0.5 reach                lifted L=0.67409949[optima] U=0.67409917 rank=40 liftedErr=1.01e-08
+fuel N=12 wtf=0.5 reach                linear L=0.73425075[optima] U=0.73425851 rank=15 liftedErr=6.86e-04
+fuel N=12 wtf=0.5 reach                lifted L=0.73414839[optima] U=0.73415441 rank=40 liftedErr=1.00e-08

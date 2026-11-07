@@ -201,3 +201,26 @@ Do not start a formal proof of the hole until a mathematical proof exists. Quadr
 - TVC-Q5 (weighted moment). |∫ w Δf h| ≤ sup(|h|/ω_D)·∫ ω_D |w| D, which is linear in the penalty. This is why the Finsler multiplier for Λ_h can be large.
 - TVC-Q6 (gyro lateral force, variant R1). (∫ c|ḣ|)² ≤ (∫c)(∫c|ḣ|²), and (∫|w|c|ḣ|)² ≤ (∫w²c)(∫c|ḣ|²). Cauchy–Schwarz.
 Certified instances (constant mass, ω₃ ≡ 0): GTPL tf = 1 s, s* = 0.25 s, cone 15° and Cardan box. Certificates are in `numerics/proof-tvc/cert2_*.npz`, re-verified by `verify_cert.py`.
+
+## CSD2′ (math/09-csd2-prime.md), added by [proof-csd2p]
+Finite-dimensional unless marked (C). Notation as for "SDP exactness" (SE-*): X real inner-product space, E ⊆ X with e_z ∈ E, configurations z : Fin m → X, symmetric stress Q = Z + Γ Γᵀ, with Z a symmetric matrix whose off-diagonal entries are ≤ 0 and Γ : Fin m × Fin 2 → ℝ.
+- CP-1 (alignment, T1). Let w : Fin 2 → E with laterals in E_h = E ∩ e_zᗮ, and Y : Fin 2 → X. Then ∃ an orthogonal U fixing e_z with U Y i ∈ E for all i and Σ_i ‖U Y i − w i‖² ≤ Σ_i ‖Y i − w i‖². Proof: the lateral term is linear on {pairs in E_h with Gram ⪯ Γ}; its maximum is at a pair with Gram = Γ (2×2 contractions; extreme points); realize that pair by an isometry and extend. Mathlib: `LinearIsometry.extend`, polar decomposition (or a direct 2×2 argument).
+- CP-2 (primer-plane fold, T2). For a subspace Π ⊆ E and a unit m ∈ E ⊓ Πᗮ with ⟪e_z, m⟫ ≥ 0, let F x := P_Π x + ‖P_{Πᗮ} x‖ • m. Then ‖F x‖ = ‖x‖, ⟪F x, F y⟫ ≥ ⟪x, y⟫, ⟪F x, p⟫ = ⟪x, p⟫ for p ∈ Π, and F e_z = e_z. Corollary: every feasible configuration of (VQ) maps to a feasible configuration in E with the same linear objective Σ⟪z i, p i⟫ (p i ∈ Π). Same tools as SE-5.
+- CP-3 (Z-matrix lemma). Let Z be symmetric with Z i j ≤ 0 for i ≠ j, h i > 0, and (Z h) i ≥ 0. Then Z is PSD. Proof: the identity xᵀZx = Σ (Zh)_i x_i²/h_i + ½ Σ_{i≠j} (−Z i j) h_i h_j (x_i/h_i − x_j/h_j)². Pure algebra (`Finset.sum` manipulations).
+- CP-4 (Schur keeps Z-structure). If Z = [[A, B],[Bᵀ, D]] with D diagonal ≥ 0, B ≤ 0 entrywise, and A having nonpositive off-diagonals, then S = A − B D⁺ Bᵀ has nonpositive off-diagonals. If Z h ≥ 0 then S h_A ≥ 0. Also Z ⪰ 0 ⇔ S ⪰ 0, plus the rows with D i i = 0 being zero. (Mathlib: `Matrix.PosSemidef.fromBlocks₂₂`.)
+- CP-5 (discrete hemisphere theorem, T4 / Thm 4.4). Hypotheses:
+  - genuine z* ∈ E;
+  - KKT multipliers with μ_d ≥ 0;
+  - stationarity Σ_j Q i j • z* j = ℓ̃ i;
+  - ∃ c with ⟪b_k, c⟫ > 0, ⟪e_z, c⟫ ≥ 0, ⟪P_k, c⟫ ≥ 0.
+  Conclusion: Q PSD. Hence (SE-3) z* minimizes the lifted problem in every X. Assemble: (Z h_c) from stationarity (algebra), then CP-4, then CP-3.
+- CP-6 (Haynsworth inertia). For symmetric invertible Z and Γ (m×2): neg(Z + ΓΓᵀ) = neg(Z) − #{eigenvalues of I + ΓᵀZ⁻¹Γ that are ≤ 0}. (Sylvester's law of inertia applied to two Schur complements of [[Z, Γ],[Γᵀ, −I]].) Mathlib has `Matrix.det_fromBlocks`. Inertia is not in Mathlib; state it via signatures of congruent forms (`QuadraticForm` equivalence) or keep CP-6 as the target lemma.
+- CP-7 (identification). Suppose Z h_x = −Γ (Yres x) for all x ∈ E_h, with Yres invertible, and Ymap x := Γᵀ h_x = Wmap x + Yres x. Then I + ΓᵀZ⁻¹Γ = −Wmap Yres⁻¹, and Yresᵀ (I + ΓᵀZ⁻¹Γ) Yres = −C_yw. Algebra.
+- CP-8 (index identity, T5). CP-6 + CP-7 + Sylvester give neg(Q) = neg(Z) − p₀(C_yw).
+- CP-9 (form index lemma). Let q be a symmetric bilinear form and W a subspace with q|W = 0 and W ∩ ker q = {0}, where ker q = {w : q(w,·) = 0}. If N is a negative-definite subspace with q ≥ 0 on N^{⊥q}, then dim N ≥ dim W. Proof: linear algebra (Q-orthogonal decomposition). Gives the lower bound neg ≥ k − 1.
+- CP-10 (discrete Sturm). For a symmetric tridiagonal matrix with strictly negative off-diagonals, the number of negative eigenvalues equals the number of sign changes of the principal solution, and the sign changes of independent solutions interlace. A substantial but standard formalization; keep it as an explicit hypothesis `SturmCount` first.
+- CP-11 (C) (Picone, continuous T4). For ν ∈ L^∞, ν ≥ 0, h ∈ W^{1,∞} with h > 0 on supp η, νḣ ∈ W^{1,1}, and η ∈ C_c^∞:
+  ∫ν η̇² + q η² = ∫ν(η̇ − η ḣ/h)² + ∫(J h / h) η².
+  1D integration by parts (Mathlib `intervalIntegral.integral_mul_deriv_eq_deriv_mul`). Analytic. Put PMP/KKT in as an explicit structure, as in `PMPConclusion`.
+- CP-12 (a-priori class, Cor 4.3). If w_{v,z} ≥ ∫a and w_{v,z} + tf·w_{r,z} ≥ ∫a(1 + tf(tf − t)), then P_z ≥ 0 on [0, tf] for every admissible readout. If ωtf < π then b_z > 0. Inequalities only.
+Recommended order: CP-3, CP-4, CP-5 (with SE-2/SE-3), CP-2, CP-1, CP-7, CP-9. CP-6/CP-10 come last (inertia and Sturm infrastructure). CP-11 is optional (analytic).

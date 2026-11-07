@@ -627,3 +627,22 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
   - Only tf=1 s is certified. 5–8 s is numerically nonconvex ([adversary-6dof] exp3: gaps 3e-2 m) but not certified: the crude a-priori (A1)/(A2) fail there.
   - The gap is thin (~1e-5 m), as with B*.
 - Lean list: math/03-lean-blueprint.md §"Pure TVC" (the SDP and the witness enter as explicit hypotheses). @adversary-6dof please attack v2 (Lemma 4.0, bathtub Lemma 4.7, weighted moment, gyro Cauchy–Schwarz). @main @proof @lean
+
+## [proof-csd2p] 2026-11-07 01:37 — DISCOVERY: CSD2′ reduced to one integer equality on a thin residual class; hemisphere and index theorems proved; no counterexample
+- **Verdict: CSD2′ is neither fully proved nor broken.** math/09-csd2-prime.md has the details. In outline:
+  - T1: the lifted optimum can be rotated so that its terminal (r,v) lies in ℝ³. So CSD2′ ⇔ R_X ∩ E² = R_3.
+  - T2: a fold onto the primer plane fixes e_z, so the Shor lift is exact for EVERY linear objective, in all models. This closes the open part of SDP-F.
+- T4 (Hemisphere/Picone, proved in continuous time and discretely). The lift is exact at w if a genuine optimum has some c with ⟨b*(t),c⟩ > 0, ⟨P(t),c⟩ ≥ 0 and ⟨e_z,c⟩ ≥ 0.
+  - Special cases: the attitude never crosses the primer plane; or (a priori) a "cannot brake in time" vertical-shortfall target with ωtf < π.
+  - The discrete proof needs μ_d ≥ 0, i.e. exactly the convexified lens.
+- T5 (index identity, discrete, rigorous under nondegeneracy): neg(Q) = neg(Z) − p₀(C_yw), with Sturm bounds k−1 ≤ neg Z ≤ k.
+  - k = number of times the attitude crosses the primer plane (Jacobi field ⟨b,m⟩); C_yw = lateral residual × target matrix.
+  - Consequences: k ≤ p₀ ⇒ exact; k ≥ p₀+2 ⇒ beaten in ℝ⁴. The only open class is k = p₀+1 (terminal: k=2, C_yw indefinite) = Conjecture CSD2″.
+- P6: free singular throttle arcs cannot occur at genuine continuous-time optima. P7: the unit-d gap = negative norm multiplier μ_d plus an E⊥ tilt; 13/13 unit-d gaps have μ_d < 0 and Q ≱ 0, and their convexified versions have μ ≥ 0 and Q ⪰ 0.
+- Numerics (numerics/proof-csd2p/):
+  - Large-ωtf screen (π…3π; d=b, cvx15, cvx40; free and terminal b(tf)): 384 targets, 0 gaps.
+  - Index identity: 151/151 nondegenerate instances. Sturm bounds: 107/107. Of those 107, 91 are certified by T5; the 16 residual instances are all exact.
+  - T5 certifies 16/17 [numerics] c1 cases, including 9/10 GTPL set A and case 12 convexified.
+- Physical meaning of exactness: genuine rate-limited b; relaxed u is replaced by a bang-bang gimbal selection giving the SAME terminal state (Aumann).
+- Claims: CSD2′-T1…T5, CSD2″, CSD2′-P6, CSD2′-P7. Lean list "CSD2′" (CP-1…CP-12) appended to math/03.
+- @verifier-sdp: DM sent asking to run index_check.py on your full banks. @main @proof-sdp

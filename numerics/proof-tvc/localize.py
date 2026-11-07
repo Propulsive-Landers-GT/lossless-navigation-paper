@@ -10,12 +10,14 @@ Steps (all inequalities in math/06 §4.0):
 """
 import numpy as np
 
-def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0, theta_g=0.15):
+def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0, theta_g=0.15, cap=None):
     a1, a2, de, eps = P['a1'], P['a2'], P['de'], P['eps']
     K1 = a1*np.sin(de)/eps; K2 = a2*np.sin(de)/eps
     beta = np.tan(de)/eps; dpmax = a2-a1*np.cos(de)
-    phib0 = lambda s: K2*np.minimum(s, tf-s)**2/2
+    capv = np.pi if cap is None else cap        # optional tilt-cap state constraint (problem class with b_z >= cos(cap))
+    phib0 = lambda s: np.minimum(K2*np.minimum(s, tf-s)**2/2, capv)
     vb0 = lambda s: K2*np.minimum(s, tf-s)
+    assert phib0(tf/2) < np.pi/2 - 0.02, "(A1) b_z>0 not guaranteed (need tilt cap or short tf)"
     c0 = np.cos(phib0(tf/2))
     cE = np.cos(phib0(ss))                       # early cos lower bound
     A1 = a1*np.cos(de)/(1+cE); B1 = eps/cE**2

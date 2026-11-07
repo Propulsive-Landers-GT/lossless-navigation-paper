@@ -16,7 +16,7 @@ def gtpl(m=79.88, rho1=400., rho2=1000., Jt=63.6, L=0.589, deg=15.):
 def J0(P,tf,ss):
     return -P['a1']*np.cos(P['de'])*ss**2/2 + P['a2']*(tf-ss)**2/2
 
-def optimize(P,tf,ss,N=200,starts=8,seed=0):
+def optimize(P,tf,ss,N=200,starts=8,seed=0,cap=None):
     a1,a2,de,eps=P['a1'],P['a2'],P['de'],P['eps']; K1=a1*np.sin(de)/eps; K2=a2*np.sin(de)/eps
     h=tf/N; tc=(np.arange(N)+.5)*h; early=tc<ss
     sub=8; best=None; rng=np.random.default_rng(seed)
@@ -32,6 +32,7 @@ def optimize(P,tf,ss,N=200,starts=8,seed=0):
                 else: p=ca.sqrt(a2**2-eps**2*n[k]**2)
                 W+=hh*(s-ss)*(p-eps*omm**2)*ca.cos(pm)
                 psi=psi+om*hh+n[k]*hh**2/2; om=om+n[k]*hh
+                if cap is not None and j==sub-1: o.subject_to(o.bounded(-cap,psi,cap))
         o.subject_to(psi==0); o.subject_to(om==0)
         o.subject_to(o.bounded(-np.where(early,K1,K2*0.999),n,np.where(early,K1,K2*0.999)))
         o.minimize(-W)
