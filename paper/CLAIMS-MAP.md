@@ -1,6 +1,6 @@
 # CLAIMS map: paper statement → registry row → status → proof file → Lean name
 
-Maintained by [paper-writer]. Snapshot taken 2026-11-07 ~00:40–01:10 (system clock), from comms/CLAIMS.md, SYNTHESIS.md and lean/MODEL.md, plus [lean]'s DM confirming the build at eb2f850.
+Maintained by [paper-writer]. Snapshot taken 2026-11-07 ~00:40–01:15 (system clock; updated after orchestrator commit b0dd184), from comms/CLAIMS.md, SYNTHESIS.md and lean/MODEL.md, plus [lean]'s DM confirming the build at eb2f850.
 
 Two status columns are given because the claims registry often lags the orchestrator's synthesis:
 - **Registry**: the status in comms/CLAIMS.md.
@@ -44,11 +44,11 @@ The paper tags each theorem as follows:
 | Thm 3.21 (thm:E0) ⚠ | pure TVC, ω⊥(tf)=0, tilt free | B6-TVC, B6-E0 | CLAIMED (B6-TVC "PROVED (adversary-6dof)" in SYNTHESIS) | PROVED | adversary-6dof §3.5, §6 | — |
 | **TODO box** | TVC-1 pure TVC upright at rest, r_z≥0 | B6-TVC-up | **OPEN** | OPEN (proof-tvc) | math/06 (CERT_TABLE placeholder) | — |
 | Rem 3.22 (rem:3dof) ⚠ | exact 3DOF F convex | P-3 | CLAIMED | — | math/02 Prop 8.2 | — |
-| Thm 4.1 (thm:CW) ⚠ | C-W (+C-F) | C, C-W, C-F | CLAIMED | PROVED | math/04 §3; App. D | `relaxed_subset_original`, `original_subset_relaxed`, `origFeas_eq_relFeas`, `convex_origFeas` (Positive/Convexity.lean; Aumann as hypothesis; built; axiom audit run by paper-writer, see report) |
-| Thm 4.2 (thm:CS) ⚠ | C-S, C-D | C-S, C-D | CLAIMED | PROVED (under PMP) | math/04 §5 | `PMPConclusion.lossless_ae_off_degenerate`, `lossy_subset_degenerate_minThrottle`, `lossless_ae_of_ND` (Positive/PMP.lean) |
-| (text) | C-X sharpness, C-K purification | C-X, C-K | CLAIMED | — | math/04 §6–7 | `purification_three` (Positive/Discrete.lean) |
+| Thm 4.1 (thm:CW) ⚠ | C-W (+C-F) | C, C-W, C-F | C-W: CLAIMED, PARTIALLY FORMALIZED; C-F: FORMALIZED (Aumann hyp.) | PROVED; LEAN (parts) | math/04 §3; App. D | `relaxed_subset_original`, `original_subset_relaxed`, `origFeas_eq_relFeas`, `convex_origFeas` (Positive/Convexity.lean, commit 455a288; Aumann as explicit hypothesis; axioms clean per lean/POSITIVE.md) |
+| Thm 4.2 (thm:CS) ⚠ | C-S, C-D | C-S, C-D | CLAIMED; PARTIALLY FORMALIZED (PMP hyp.) | PROVED (under PMP); LEAN (parts) | math/04 §5 | `PMPConclusion.lossless_ae_off_degenerate`, `lossy_subset_degenerate_minThrottle`, `lossless_ae_of_ND` (Positive/PMP.lean) |
+| (text) | C-X sharpness, C-K purification | C-X, C-K | C-X CLAIMED; C-K FORMALIZED | — | math/04 §6–7 | `purification_three` (Positive/Discrete.lean) |
 | Thm 4.3 (thm:CU) ⚠ | C-U | C-U | CLAIMED | PROVED | math/04 §9 | — |
-| Thm 4.4 (thm:C6) ⚠ | C-6 pure TVC exactly convex given b | C-6 | CLAIMED | PROVED | math/04 §8; App. D | `torque_balance_iff`, `convex_tvcSet`, `convex_feasData_M3b`, `tvcSet_upright` (Positive/TVC.lean, Convexity.lean; not joined) |
+| Thm 4.4 (thm:C6) | C-6 pure TVC exactly convex given b | C-6 | FORMALIZED (constant mass) | PROVED; LEAN | math/04 §8; App. D | `torque_balance_iff`, `convex_tvcSet`, `convex_feasData_M3b`, `tvcSet_upright` (Positive/TVC.lean, Convexity.lean; not joined) |
 | Prop 4.5 (prop:X5) ⚠ | X5 / RR-P (M1 only) | X5, RR-P | CLAIMED | PROVED | math/redteam-reform §3.1 | — |
 | (text) | C-Y thinness 3.5 µrad/s; C-3D | C-Y, C-3D | CLAIMED | PROVED (C-Y) | math/04 §10 | — |
 | Lem 4.6 (lem:shor) ⚠ | Shor = Hilbert sphere | L-SD2 (lemma) | (row BROKEN for exactness conjecture; lemma itself not disputed) | — | math/08 Lemma 1.1 | — |

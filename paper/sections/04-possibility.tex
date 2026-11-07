@@ -13,12 +13,13 @@ $\mathrm P_1(b;\theta)$ minimizes $\int\Gamma$ over $T\in K_\Gamma(b):=\{\norm T
 $\rho_1\le\Gamma\le\rho_2$. This is the pointing-cone LCvx of \cite{acikmese2013tcst} with a time-varying axis.
 
 \begin{theorem}[Theorem C-W: value and feasibility exactness for any $b$ {\pnote{math/04 \S3}}]\label{thm:CW}
-% CLAIMS: C, C-W (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: relaxed_subset_original, original_subset_relaxed, origFeas_eq_relFeas (Positive/Convexity.lean; Aumann as hypothesis; constant mass, no state constraints)
+% CLAIMS: C, C-W (registry: CLAIMED; PARTIALLY FORMALIZED), C-F (FORMALIZED under AumannInstance) | Lean: relaxed_subset_original, original_subset_relaxed, origFeas_eq_relFeas (Positive/Convexity.lean; Aumann as hypothesis; constant mass, no state constraints)
 For every $\mathrm P_1$-feasible $(T,\Gamma)$ there is a measurable $\tilde T(t)\in\{\norm{\tilde T}=\Gamma,\ \angle(\tilde T,b)\le\delta\}$
 with the same $\Gamma$, mass history and cost, whose state agrees with that of $(T,\Gamma)$ at $t_f$ and at any prescribed
 finitely many times. Hence $\mathrm P_0$ and $\mathrm P_1$ have the same feasible data and the same value, attainment transfers,
 and nodewise state constraints are preserved. With constant mass (or the convexified-mass model),
-$F_{t_f}(b)=\{\theta:\mathrm P_0(b;\theta)\text{ feasible}\}$ is convex (Corollary C-F).\Spending
+$F_{t_f}(b)=\{\theta:\mathrm P_0(b;\theta)\text{ feasible}\}$ is convex (Corollary C-F).\Spending\
+\Sleanpart{feasibility part and C-F, constant mass, no state constraints, Aumann as explicit hypothesis}
 \end{theorem}
 \begin{proof}[Proof idea]
 On each subinterval the state increment is linear in $T/m$ for the fixed mass history. The extreme points of the cap
@@ -29,12 +30,13 @@ With convex path constraints the value statement holds under a Slater condition.
 that case.
 
 \begin{theorem}[Theorem C-S: every relaxed optimum is lossless, under PMP {\pnote{math/04 \S5}}]\label{thm:CS}
-% CLAIMS: C-S, C-D (registry: CLAIMED) | Lean: PMPConclusion.lossless_ae_off_degenerate, min_throttle_of_antiRay, lossy_subset_degenerate_minThrottle, lossless_ae_of_ND (Positive/PMP.lean, Primer.lean; PMP as explicit hypothesis; axioms output PENDING)
+% CLAIMS: C-S, C-D (registry: CLAIMED; PARTIALLY FORMALIZED under PMP hypothesis) | Lean: PMPConclusion.lossless_ae_off_degenerate, min_throttle_of_antiRay, lossy_subset_degenerate_minThrottle, lossless_ae_of_ND (Positive/PMP.lean, Primer.lean; PMP as explicit hypothesis; axioms clean)
 Assume (H-PMP) for a $\mathrm P_1$-optimal solution, and let $p=a+ct$ be the (affine, for every $b$) primer vector. Off
 $D=\{t:p(t)\in-\R_{\ge0}b(t)\}$ the optimum is lossless and pointwise unique. With constant mass the lossy set is contained in
 $D\cap\{\Gamma^*=\rho_1\}$. $D$ has positive measure only if $p\equiv0$, or $b$ dwells at $\pm$ a fixed vector, or $b$ follows a
 \emph{gnomonic line} $\pm(a+ct)/\norm{a+ct}$ on a set of positive measure. For analytic $b$, $\det(b,\dot b,\ddot b)\not\equiv0$
-suffices for nondegeneracy, and degenerate profiles form a meagre set.\Spending
+suffices for nondegeneracy, and degenerate profiles form a meagre set.\Spending\
+\Sleanpart{under \lean{PMPConclusion}; constant-mass parts; analytic and meagre criteria not formalized}
 \end{theorem}
 The result is sharp. For a fixed upright cone and a vertical descent at a suitable altitude, an interior-point solver
 returns a lossy relaxed optimum with all lossy nodes at minimum throttle. A one-step ``purification'' SOCP repairs it
@@ -54,7 +56,7 @@ in the map $\theta\mapsto b^*(\theta)$.
 
 \subsection{Pure TVC: exactly convex given the attitude}
 \begin{theorem}[Theorem C-6 {\pnote{math/04 \S8}}]\label{thm:C6}
-% CLAIMS: C-6 (registry: CLAIMED) | Lean: throttle_interval, gimbal_bound_iff_cot, convex_tvcSet (Positive/TVC.lean), convex_feasData_M3b (Positive/Convexity.lean); torque_balance_iff not joined to the convexity theorem
+% CLAIMS: C-6 (registry: FORMALIZED, constant mass, closed-form dynamics) | Lean: throttle_interval, gimbal_bound_iff_cot, convex_tvcSet (Positive/TVC.lean), convex_feasData_M3b (Positive/Convexity.lean); torque_balance_iff not joined to the convexity theorem
 In model PT with zero roll rate and constant mass, Euler's equation is equivalent to $\Pi_bT=-k\Pi_b\ddot b$, $k=J_\perp/L$,
 $\Pi_b=I-bb^\top$. For a fixed $b\in W^{2,\infty}$, write $F=-k\Pi_b\ddot b$, $\varkappa=\norm F$. The exact 6-DOF problem is the
 scalar-throttle program
@@ -64,7 +66,7 @@ scalar-throttle program
 \]
 which is convex. No relaxation is involved. Consequently $F^{PT}_{t_f}(b)$ is convex for every attitude profile. If the body is
 held upright ($b\equiv\ez$), then $T\parallel\ez$: the effective cone is $0$, so the common ``upright body with a $15^\circ$
-pointing cone'' 3-DOF model is not 6-DOF-feasible for any off-vertical thrust.\Spending
+pointing cone'' 3-DOF model is not 6-DOF-feasible for any off-vertical thrust.\Sleanpart{constant mass; torque balance and convexity joined in prose}
 \end{theorem}
 
 \subsection{Exact subclasses of the uniform problem}

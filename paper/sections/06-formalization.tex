@@ -8,7 +8,7 @@ no \texttt{sorry} and no \texttt{axiom}. For every headline theorem, \texttt{\#p
 \[
 \texttt{[propext, Classical.choice, Quot.sound]},
 \]
-the standard axioms of classical Lean mathematics. This was checked after a full \texttt{lake build} at commit \texttt{eb2f850}.
+the standard axioms of classical Lean mathematics. For the impossibility side this was checked after a full \texttt{lake build} at commit \texttt{eb2f850}. For the positive side it is the audit file \texttt{Positive/Axioms.lean}, whose output is recorded in \texttt{lean/POSITIVE.md}.
 
 \subsection{What is formalized}
 \Cref{tab:lean} lists the formal theorems that correspond to statements in this paper. A row-by-row faithfulness map from each
@@ -38,6 +38,12 @@ Spherical triangle inequality and rigidity & \lean{inner\_triangle}, \lean{inner
 \Cref{thm:B} (variant F) & \lean{not\_convex\_reachSet}, \lean{not\_convex\_landingSet}, \lean{no\_lossless\_relaxation\_5dof}, \lean{no\_losslessFor\_relaxation\_5dof}, \lean{landingSet\_nonempty} (\texttt{Nonconvex}, \texttt{Main}) & $\delta+\omega t_f\le\pi/2$, any continuous $a_1>0$, any $g$, no state constraints, $b(t_f)$ free \\
 \Cref{thm:Bstar} (qualitative) & \lean{VStar\_not\_mem\_WSet}, \lean{witness\_mem\_glideSlope}, \lean{not\_convex\_constrainedLandingSet}, \lean{exists\_switchTime}, \lean{no\_lossless\_relaxation\_constrained\_5dof}, \lean{no\_losslessFor\_relaxation\_constrained\_5dof}, \lean{constrainedLandingSet\_nonempty} (\texttt{DiveBrake}, \texttt{Main}) & constant acceleration bounds ($\alpha=0$), $g_0<a_{\max}$, every $t_f>0$, every $\X\supseteq$ glide-slope set, $b(t_f)$ free \\
 \Cref{thm:D} (abstract) & \lean{StateLinearRelaxation.convexHull\_subset}, \lean{minError\_lossy}, \lean{convex\_superset\_gap} (\texttt{TheoremD}) & abstract; concrete instance not formalized \\
+\multicolumn{3}{@{}l}{\emph{Positive side} (namespace \texttt{LcvxPositive}, files \texttt{Positive/}; 35 audited theorems)}\\
+Cap lemma (C-G, C-3, uniqueness, sharpness, extreme points) & \lean{normal\_of\_max\_of\_norm\_lt}, \lean{norm\_eq\_or\_antiRay\_of\_isMaxOn\_cap}, \lean{isMaxOn\_cap\_unique}, \lean{extremePoints\_cap}, \lean{C3\_headline} (\texttt{Cap}) & any real inner-product space; $\R^3$ headline \\
+\Cref{thm:CS} & \lean{PMPConclusion.lossless\_ae\_off\_degenerate}, \lean{lossy\_subset\_degenerate\_minThrottle}, \lean{lossless\_ae\_of\_ND}, \lean{volume\_degenerate\_eq\_zero\_of\_ND} (\texttt{PMP}, \texttt{Primer}) & PMP as hypothesis; parts (2)--(3) constant mass; ``$\mathrm P_0$-optimal'' reduced to pointwise feasibility \\
+\Cref{thm:CW} (feasibility), C-F & \lean{relaxed\_subset\_original}, \lean{origFeas\_eq\_relFeas}, \lean{convex\_origFeas} (\texttt{Convexity}) & Aumann as hypothesis; constant mass; no state constraints \\
+Discrete KKT, purification (C-K) & \lean{discrete\_lossless\_nodewise}, \lean{zoh\_pairing}, \lean{purification\_count}, \lean{purification\_three} (\texttt{Discrete}) & KKT assumed; $\le3$ lossy nodes \\
+\Cref{thm:C6} & \lean{torque\_balance\_iff}, \lean{throttle\_interval}, \lean{convex\_tvcSet}, \lean{convex\_feasData\_M3b} (\texttt{TVC}, \texttt{Convexity}) & constant mass; the two halves joined in prose \\\midrule
 \Cref{lem:LS} (abstract) & \lean{not\_lineSearch\_lossless}, \lean{symmetric\_supply}, \lean{not\_lineSearch\_lossless\_of\_symmetry} (\texttt{FreeTime}) & abstract (i)--(ii); sorry-free (commit \texttt{517f1bb}); axiom check after next full build \\\bottomrule
 \end{tabular}
 \end{table}
@@ -56,12 +62,12 @@ feasibility; C-E is discrete-time; and C-W is constant-mass and unconstrained.
 \begin{todobox}[{(lean, lean-s, lean-positive): formalizations still pending}]
 \textbf{Not yet committed or not yet axiom-audited at the time of writing:}
 \begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \texttt{SixDOF.lean} (\cref{thm:6kin}): \lean{not\_convex\_landingSet6}, \lean{not\_convex\_constrainedLandingSet6}. Status per [lean]: PENDING.
+\item \texttt{SixDOF.lean} (\cref{thm:6kin}): \lean{not\_convex\_landingSet6}, \lean{not\_convex\_constrainedLandingSet6}. Status per [lean]'s DM: PENDING. [lean]'s final report (\texttt{comms/reports/lean.md}) already lists it as proven, but the file is uncommitted.
 \item \texttt{Slice/} (lean-s): \lean{periodic\_wirtinger}, \lean{wirtinger\_scalar}, \lean{wirtinger\_lipschitz} (\cref{lem:W}); \lean{master\_inequality},
 \lean{dent} (master inequality of \cref{thm:S}, constant mass); \lean{mixing}, \lean{aOpt}, \lean{no\_valueLossless\_of\_strict} (\cref{thm:Aopt}).
 Lemma S itself (the witness and $0\notin\cl L$) and Theorem B$^*$ beyond the qualitative constant-mass form are not formalized.
-\item \texttt{Positive/} (lean-positive): built locally, but the axiom audit output in \texttt{lean/POSITIVE.md} is a placeholder, and the files are not
-yet in the root import list.
+\item \texttt{Positive/} (lean-positive): committed (\texttt{455a288}) and audited (axioms clean, \texttt{lean/POSITIVE.md}), listed in \cref{tab:lean}; not yet in the
+root import list, so it is not covered by the root \texttt{lake build}.
 \end{itemize}
 \textbf{To fill in:} move each item into \cref{tab:lean} once it is committed with a clean \texttt{\#print axioms}.
 \end{todobox}

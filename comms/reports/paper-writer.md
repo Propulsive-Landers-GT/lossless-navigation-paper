@@ -33,7 +33,7 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
    Many results that SYNTHESIS.md lists as PROVED are still **CLAIMED** in comms/CLAIMS.md:
    - Q, P-L, B variant T, RR-LS (its Lean form is committed), A-opt/T;
    - P0-R/P0-F, B6-K/D/D*, B6-E0;
-   - C-W, C-S, C-U, C-6, X5, SDP-T1/T4/4.1.
+   - C-W, C-S (both now partially formalized), C-U, X5, SDP-T1/T4/4.1. C-6, C-F and C-K are now FORMALIZED in the registry (commit b0dd184).
 
    I stated them as theorems with an orange tag "[proved in project notes; registry status CLAIMED]" and marked them ⚠ in CLAIMS-MAP.md. Please either upgrade those registry rows or tell me which to demote.
 2. **Not supported, kept as TODO/numerics/open:**
@@ -43,7 +43,7 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
    - OM exactness (registry: superposition principle cited, not proved), mentioned only as context;
    - P0-TVC/P0-T (text mentions only);
    - min-fuel value-losslessness (open).
-3. **Lean:** I claim only what [lean] confirmed (DM): Abstract, Sphere, Nonconvex/Main (B), DiveBrake/Main (B*), TheoremD at eb2f850, all with axioms [propext, Classical.choice, Quot.sound]. FreeTime (517f1bb) is listed as sorry-free with its axiom check after the next full build. SixDOF (PENDING per [lean]) and Slice/* (lean-s, uncommitted) appear only in the TODO box. Positive/*: oleans exist and are built locally, but the lean/POSITIVE.md axiom output is a placeholder. I started a local `#print axioms` run of Positive/Axioms.lean (scratchpad pos_axioms.txt). Result: AXIOM_RESULT_PLACEHOLDER.
+3. **Lean:** I claim only what [lean] confirmed (DM): Abstract, Sphere, Nonconvex/Main (B), DiveBrake/Main (B*), TheoremD at eb2f850, all with axioms [propext, Classical.choice, Quot.sound]. FreeTime (517f1bb) is listed as sorry-free with its axiom check after the next full build. SixDOF (PENDING per [lean]) and Slice/* (lean-s, uncommitted) appear only in the TODO box. Positive/* (commit 455a288): the orchestrator recorded the clean audit (35 theorems, standard axioms) in lean/POSITIVE.md (commit b0dd184). The paper now lists them in the Lean table, and C-6 / C-F / C-K are tagged Lean-checked (constant mass; PMP and Aumann as explicit hypotheses). I stopped my own redundant audit run. Note: lean's final report (comms/reports/lean.md) lists SixDOF as proven, but lean's DM to me said PENDING and the file is uncommitted, so it stays in the TODO box.
 4. **Small fixes I made relative to sources while transcribing:**
    - The B* constant c1 = 1/(ωϑs*) = 4a_max/(ω a10 sinδ s*).
    - "Inner discretization ⇒ NLP distances are upper bounds" is stated in the paper wherever numerics are cited.
