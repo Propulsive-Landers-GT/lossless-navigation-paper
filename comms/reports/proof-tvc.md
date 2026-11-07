@@ -55,3 +55,24 @@ Certified margins in dist(θ_m, F): 9.96e-6 m (cone), 7.57e-6 m (box), 2.90e-6 m
 4. **Free final time.** Reduced to a condition on a continuum of horizons via RR-LS (math/06 §5.4); not certified.
 5. **Formal verification of the SDP certificate** (rational LDLᵀ or interval arithmetic). The rest is Lean-ready (math/03 §Pure TVC).
 6. **A non-thin altitude-feasible face** (practical ε-impossibility). Still none known.
+
+## Final state (2026-11-07, ~05:30)
+**Certified (exact arithmetic; [verify-tvc] audit; [adversary-6dof] SURVIVES).** GTPL wet constants, tf = 1 s, s* = 0.25 s, constant mass, unlimited gimbal rate, upright at rest, r_z ≥ 0 + glide slope:
+- cone, roll held: margin 9.96e-6 m;
+- Cardan box, roll held: margin 7.57e-6 m;
+- cone, roll free: margin 2.90e-6 m.
+
+In each case F^X_tf is NONCONVEX, so no uniform state-linear lossless convexification exists for that class at that horizon.
+
+**Numerical only.** These use [adversary-6dof]'s full 6DOF model `m3tvc.py`: quaternion attitude, Euler equations, Cardan box gimbal rate-limited to 100°/s from centred, mass depletion, roll free, r_z ≥ 0 at every node, upright at rest. On the dive-then-brake face, the max of ℓ over zero-lateral data is below the free max:
+
+RATELIM_TABLE
+
+So the realistic rate-limited, mass-depleting GTPL landing set is **nonconvex but unproved**, not "possibly convex on these faces". The free maximizers have nonzero lateral data. The NLPs are discretized, local and started from 2–3 initial guesses, so the gaps are evidence, not certificates. They are 100–300× larger than the certified tf = 1 gap.
+
+**Open.**
+1. Long horizons. Rigorous runs fail at tf = 2–3 s because of the moment-shift term and dense-SDP size. Recommended route: a state-space Riccati/dissipation certificate plus the h(s*)-based moment lemma (math/06 §6).
+2. Gimbal-rate limit. Needs a jerk multiplier and the vertical baseline (math/06 §5.3).
+3. Mass depletion.
+4. Free final time.
+5. A tumbling-exclusion lemma for uncapped tf > 2.3 s.

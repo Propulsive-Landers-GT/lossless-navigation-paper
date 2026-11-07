@@ -79,7 +79,7 @@ convex program that contains both must contain their average.
   pad hop (30 runs): A 0%, C 100% (+23% fuel), **B 97%**. Open loop: B within 0.012% of IPOPT 6DOF, ≤0.85% above the 3DOF lower bound.
 - **Compute:** mean 0.37 s / max 1.33 s per replan (loaded Mac); flight port needs a hard time budget + fallback to last certified plan (solver/PORTING.md).
 - **Also fix regardless of guidance:** the flight MPC overstates angular authority ~4.6× (inertia/lever arm mismatch).
-- 15 pytest tests pass (orchestrator-verified). Solver's new elementary claims N1–N7 being formalized (lean-n).
+- 15 pytest tests pass (orchestrator-verified). Solver's elementary claims N1–N7 **LEAN** (28 theorems, standard axioms; orchestrator-verified). Formalization caught one error: the documented standalone φ-axis gimbal-rate condition is FALSE (`LcvxSolver.phi_rate_heuristic_false`), but the constraint pair the planner actually imposes is proved sufficient (`gimbal_rate_pair`), so no code change was needed.
 - **Pad hops:** the 3DOF relaxation reports 'optimal' at all 20 targets of a 4 s hop map, but neither B nor IPOPT finds
   any flyable plan at 11 of them (all 8 with v0z ≥ 6.5 m/s + 3 at 6 m offset): the nonconvexity showing up in practice
   ("no plan found" is numerical evidence, not a proof of infeasibility). Documented failure mode of B: one stall where IPOPT finds a plan.
