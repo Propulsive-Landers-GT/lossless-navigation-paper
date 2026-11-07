@@ -43,3 +43,7 @@
   ball bound within 18% of NLP. adversary-6dof: in torque-coupled M3, outward gimbal rotates body the other way ⇒ M1 arcs not
   realizable ⇒ B6 needs new proof. lit-review DONE: no prior 5/6DOF LCvx or impossibility; Berning et al. 2023 (Boeing) claims
   LCvx with tilt-rate limits (full text unavailable) — must reconcile.
+- ~00:40. adversary on D: sound, but D ⇔ slice lemma S (now the crux). Shor-lift escape ⇒ class (d) sharpened, moment-lifted
+  costs excluded explicitly. Orchestrator raised CONING threat to S (azimuth precession at fixed tilt cancels lateral motion);
+  expected S provable for small ω·tf where planar single-crossing S-turns dominate (single-crossing ⇒ offset landing).
+  Added TRIV: trivial exact convex reformulation always exists ⇒ the possibility question must be about tractable lifts.

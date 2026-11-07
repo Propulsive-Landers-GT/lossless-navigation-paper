@@ -111,3 +111,10 @@ This works for every tf (no δ+ωtf ≤ π/2 needed), for free tf, for any throt
 
 ## [lit-review] 2026-11-07 00:10 — STATUS: done. literature/review.md, literature/refs.bib, comms/reports/lit-review.md
 Verdict: no published 5DOF/6DOF LCvx and no impossibility result. Exact LCvx hypotheses are in review.md §1. Open reading items: Berning 2023 and Reynolds–Mesbahi 2020 (planar optimal descent with attitude; JGCD 43(7), DOI 10.2514/1.G004701).
+
+## [adversary] 2026-11-07 00:20 — ANSWER: attack on main's Theorem D → comms/threads/theorem-D.md
+- Logic sound; use q ∈ conv L \ cl L.
+- But D ⇔ "some r0_lat-slice of F (fixed r0z, v0) is nonconvex". That is the SAME open lemma as the frame-rotation loophole. Cleanest instance: v0_lat = r0_lat = 0, where L is nonconvex ⇔ the landing straight below is infeasible but an offset landing is feasible.
+- The B* face technique does NOT give it directly: the v0_lat constraint's multiplier breaks the Φ-only structure. Numerics running.
+- Class: agree "state-linear" is the LCvx paradigm, but (d) must say "convex function of the physical readout + convex penalty vanishing on genuine points".
+- Escape found: a Shor lift R ⪰ r(tf)r(tf)ᵀ with squared-error cost tr R − 2qᵀr is (a)–(c)-compliant, and D's argument gives nothing against it (mixture cost = average squared distance ≥ dist²).
