@@ -118,3 +118,39 @@ Verdict: no published 5DOF/6DOF LCvx and no impossibility result. Exact LCvx hyp
 - The B* face technique does NOT give it directly: the v0_lat constraint's multiplier breaks the Φ-only structure. Numerics running.
 - Class: agree "state-linear" is the LCvx paradigm, but (d) must say "convex function of the physical readout + convex penalty vanishing on genuine points".
 - Escape found: a Shor lift R ⪰ r(tf)r(tf)ᵀ with squared-error cost tr R − 2qᵀr is (a)–(c)-compliant, and D's argument gives nothing against it (mixture cost = average squared distance ≥ dist²).
+
+## [adversary-6dof] 2026-11-07 00:40 — BREAK: Claim B6 as argued fails for torque-coupled (TVC) M3/M4 — the GTPL model
+- TVC torque: Jt ∇ḃ = −L T g (+ gyro). Gimbal outward ⇒ body accelerates INWARD. P_u (math/00 §4) needs ‖ḃ(0+)‖=ω̄ and outward gimbal while
+  tilting outward: impossible on both counts ⇒ P_u ∉ R_M3, and the face of conv R_M3 lies strictly above M. "Planar arcs are 6DOF-realizable" is
+  true only for KINEMATIC attitude (ω as control). R_M4 ⊆ R_M1 is true but gives no witness.
+- FIX (rigorous) for models with a transverse-torque actuator independent of the gimbal: Thm D (min-vertical, envelope Φ(s)=∫0^s min(ᾱr,ω̄),
+  rigidity "length = distance") and Thm D* (= [adversary]'s B* with torque limits; allows b(tf)=e_z, ω(tf)=0). Roll/coning cannot help
+  (gyro term does no work on ‖ω⊥‖, needs Jxx=Jyy). Box gimbal OK with δ* = 21.1° corner, u on diagonals.
+- PURE TVC (GTPL): rigorous proof OPEN (both face arguments fail: outward gimbal decelerates tilt; holding d=e_z late is an inverted pendulum).
+  NUMERICS (full 6DOF quaternion+Euler, box ±15°, 100°/s gimbal, terminal upright at rest, tf=1 s): bottom face of R misses its centre,
+  gap V0(lat=0) − Vmin = 0.078 m/s (cone, attitude free: 0.062; box free: 0.21). Nonconvex numerically but gap is ~30× smaller than M1's.
+- Details: math/adversary-6dof-report.md (draft), numerics/adversary-6dof/. CLAIMS B6 → BROKEN (as argued) / FIXED (decoupled) / OPEN (TVC). @main @proof @lean
+
+## [redteam-reform] 2026-11-07 01:10 — DISCOVERY: Claim T (Berning et al. 2023 "tilt-rate LCvx") resolved by rate notion; tilt-only model analysed
+Full text still unobtainable (AIAA paywall; no arXiv/NTRS/RG copy; METU 2025 thesis citing it has no rate constraints). Wang survey (arXiv 2311.05115, p.21) says it is a **3DOF** problem with tilt rate/accel + thrust ramp + inverse-square gravity + min altitude, "relaxed into an SOCP using the framework of [Açıkmeşe–Ploen]". So it gives no 5DOF losslessness theorem to reconcile with. By rate notion:
+1. **SOC-representable**: thrust-vector rate ‖u_{k+1}−u_k‖ ≤ ω σ_k Δt (and 2nd differences for "tilt accel"); ramp |σ_{k+1}−σ_k| ≤ ...; tilt ENVELOPE u_z ≥ σ cos(θ0+ωt). **Not** SOC-representable: tilt-angle rate |d/dt arccos(u_z/‖u‖)| ≤ ω, and full-direction rate on S². So "tilt rate in one SOCP" almost surely means a Euclidean thrust-vector (chord) rate.
+2. **Chord-rate SOCP is provably NOT uniformly lossless.** The original problem (‖T‖ ≥ ρ1, ‖Ṫ‖ ≤ r, T(0) given) has direction rate |ḋ| ≤ r/‖T‖ ≤ r/ρ1. So it is M1 with δ=0 and a time-varying modulus, and B/B* apply (the B* exchange stays inside the class: the lattice of Lipschitz-with-modulus functions). The relaxation contains u(s)=a1 cos(ωs) e_z: ‖u̇‖ = a1 ω sin ωs ≤ ωσ. **Mechanism ("chord shortcut")**: once u is a state whose *Euclidean* speed is bounded, the relaxed u can cut through the ball along the chord instead of the great-circle arc. The LCvx pointwise-maximum argument can't push ‖u‖ back to σ, because the Hamiltonian is maximized over u̇, not u. Any losslessness Berning et al. report must be empirical/instance-wise, or must assume the rate and min-thrust constraints are never active together.
+3. **Tilt-angle-only model (azimuth free)**: (a) THEOREM (sketch in math/redteam-reform.md §5): its velocity-increment set R_tilt EQUALS the time-varying-envelope LCvx set, so it is convex. Proof: rotational symmetry + Lyapunov azimuth-flipping (laterally down-closed) + every exposed point is attained with a monotone, hence ω-Lipschitz, tilt. So the B witness M IS reachable, as lit-review predicted. (b) For the full (r0,v0) set the envelope relaxation is **lossy**: exact DP vs envelope support gap is up to 3.4% for weights whose folded tilt jumps (numerics/redteam-reform/envelope_gap2.py). (c) Convexity of F_tilt itself is OPEN. A DP scan of exposed faces (V-shaped weights) found no ties, but even if F_tilt is convex there is no known convex program for it. Not a "possible" result yet.
+4. **Physics**: body rate ‖ω_⊥‖ = ‖ḃ‖ = (θ̇² + sin²θ ψ̇²)^{1/2}, so the full-direction model is the right one. Tilt-only drops sin²θ ψ̇², which allows instant azimuth flips. At GTPL tilts θ ≤ 15–25° the cheapest tilt reversal goes through vertical (2θ = 0.52–0.87 rad), which takes 1.0–2.9 s at ω = 0.3–0.5 rad/s. That is 10–40% of tf ≈ 7 s, and stored 3DOF solutions do it in 24 ms. The gap is first order in ωtf (numerics: dist ≈ 0.31 ωtf |P_x|), so the two models differ materially for GTPL.
+5. **Exact class (M1, sharp)**: if the guidance pointing cone satisfies θ_p ≤ δ (GTPL box gimbal: inscribed cone 15°) and angle(b0,e_z) ≤ δ−θ_p, then F_5DOF = F_3DOF(θ_p) exactly (b ≡ b0 works). So classical 3DOF LCvx is lossless for 5DOF. If θ_p > δ, B* with small s* (2ωs* < θ_p−δ) makes F nonconvex. Caveat: with gimbal-rate limits (M2) the same B* applies to d itself, but the gap is O(ρ1 θ_p²/(m ω_g)), about 0.05 m/s at 100°/s.
+@main @numerics @positive
+
+## [numerics] 2026-11-07 00:40 — NUMERICS: beyond-regime results (preliminary, low-restart "quick" runs), state-UNconstrained unless noted
+- Generalized midpoint test: z* = min Dv_z over R, M* = (0,0,z*); if the minimizer has lateral != 0 and dist(M*,R) > 0, R is nonconvex.
+- Long tf, M1, w=30 deg/s, no tilt cap: gap 2.09 (tf=2) / 13.5 (tf=4) / 18.6 (tf=8) m/s. Nonconvexity persists, but this uses inverted flight (tilt > 90 deg).
+  With a 30 deg tilt cap the gap is 1.15 / 1.56 / 0.35 m/s (tf=8 is coarse, N=20) and shrinking. That fits azimuthal sliding on the cap (@adversary-6dof).
+- Tent profile b(tf)=e_z, tf=2 / 5 s: dist(M_tent, R) = 0.66 / 6.24 m/s. Nonconvex.
+- Free tf: the 6D hole point of tf0=2 s (r0=(0,0,-14), v0=(0,0,+12.8), i.e. underground, cf. @adversary BREAK) is REACHED for tf' >= 4 s (GTPL). For Mars-like tf0=5 it is reached for tf' >= ~9 s. So the math/00 witness does not survive free tf; B* is needed.
+- rho1 = 0: no gap found in regime (tf=2). At tf=6, no tilt cap (delta+w tf > pi/2), the random-convex-combination index finds a 13.2 m/s gap, which fits @proof's claim.
+  CAVEAT: that index is weak. It also returns 0 for rho1=0.4, tf=2, where the targeted M-test gives 2.2. So "0" is not evidence of convexity.
+- M1A (accel-limited axis, gimbal decoupled), planar, w<=0.5 rad/s: gap 0.95-1.7 m/s at tf=2, 8.8-11.9 m/s at tf=4.
+- M3 torque-coupled TVC (GTPL J=63.6, L=0.589, gimbal 15 deg @100 deg/s): every min-Dv_z solution has lateral != 0.
+  Gap: planar 3.66 (tf=2) / 0.80 (tf=4) without a w cap; 0.89 / 7.98 with |w|<=0.5 rad/s. 3D tf=2: 3.72 m/s. So R is nonconvex for M3 too, at least without the altitude constraint.
+- PRACTICAL (Theorem-D style), first look: fixed r0=(0,0,50), v0=(4,0,-5), tf=7, r_z(t)>=0, M1 w=0.4. The lateral landing set L is 104 m wide.
+  max dist(q, L) over 106 grid points q in conv L is 0.016 m, at isolated points (most likely solver noise). So no visible dent at realistic conditions. Full runs (M1, tilt-rate-only, tent, M3) are queued.
+- @adversary @main: slice lemma S test (Pv vs Pvr, dive and divebrake, planar vs 3D with coning guesses, r_z >= 0) is running: numerics/s1_slice.py.

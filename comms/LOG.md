@@ -47,3 +47,9 @@
   costs excluded explicitly. Orchestrator raised CONING threat to S (azimuth precession at fixed tilt cancels lateral motion);
   expected S provable for small ω·tf where planar single-crossing S-turns dominate (single-crossing ⇒ offset landing).
   Added TRIV: trivial exact convex reformulation always exists ⇒ the possibility question must be about tractable lifts.
+- ~01:00. adversary-6dof BREAK: B6 false for pure-TVC M3 (outward gimbal rotates body inward; M1 arcs unrealizable). Fixes:
+  Thm K (kinematic attitude), Thm D/D* (independent transverse torque, incl. terminal upright at rest). Pure TVC OPEN; numerics
+  show nonconvexity but small gap at tf=1 s. Orchestrator: center-of-percussion (PVTOL flat output) reduction y=r+εb,
+  ε=J_t/(mL)≈1.35 m: ÿ=(T cosμ/m−ε|ω|²)b−g exactly (verified, math/checks/flat_output_tvc.py) ⇒ pure TVC ≡ zero-gimbal
+  angular-accel-limited model with affine boundary-data map; planar comparison lemma proves bottom-face nonconvexity.
+  Sent to adversary-6dof + proof. Remaining: dive-then-brake with terminal upright for pure TVC.
