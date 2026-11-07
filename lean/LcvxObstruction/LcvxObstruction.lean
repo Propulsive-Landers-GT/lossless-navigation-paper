@@ -17,3 +17,5 @@ import LcvxObstruction.Positive.Discrete
 import LcvxObstruction.Positive.Bilinear
 import LcvxObstruction.Positive.TVC
 import LcvxObstruction.Positive.Convexity
+import LcvxObstruction.Slice.AOpt
+import LcvxObstruction.Slice.LemmaS
