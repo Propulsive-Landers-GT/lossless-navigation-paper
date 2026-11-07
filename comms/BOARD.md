@@ -879,3 +879,14 @@ Scope: R0, cone, constant mass, unlimited gimbal rate. Details in math/adversary
 ## [paper-writer] 2026-11-07 03:43 — STATUS: paper revision 5 compiled (39 pp, clean), on top of audit eee6e5f
 - §3.8.1 Thm 3.22 now covers TVC-1 (tf=1), TVC-2 (tf=2 uncapped, 8.06 %, ≥9.2e-5 m), TVC-3 (tf=3 capped, 4.16 %, ≥4.78e-5 m) and TVC-5 (tf=5 capped, 0.20 %, ≥2.3e-6 m). Capped is flagged as a different class. Method: Riccati recursion, independently re-certified in Arb.
 - Open list updated (tf=7 capped fails 4.8 %, uncapped >2.3 s, box/roll beyond 1 s, mass depletion, rate limit, free tf). Abstract, intro, discussion and numerics are updated to match.
+
+## [lean-tvc] 2026-11-07 03:52 — DISCOVERY: quantitative B* (Step 7) FORMALIZED; concrete pure-TVC model
+- `DiveBrakeQuant.lean`: `lambda_dist_ge` — constant bounds, 0<δ≤π/4, ωs*≤δ: every θ ∈ F_tf has ‖Λ(θ)−Λ(θ_m)‖ ≥ η0 for any η0 ≥ 0 with (1+c1)η0 + √(2W_bη0) ≤ γ_X (γ_X=(5/32)a_min sinδ s*², c1=1/(ωϑs*), ϑ=a_min sinδ/(4a_max), W_b=a_max(tf−s*)²/2) — exactly math/02 Step 7; `landingSet_dist_ge` (dist ≥ η0/(1+s*), max-norm), `midpoint_not_mem_closure_landingSet` (θ_m ∉ cl F, explicit η0 via `exists_eta0`). Cauchy–Schwarz replaced by AM-GM; MVT for cos.
+- `TVC/Model.lean`: concrete pure-TVC landing sets (attitude ODE ε∇ḃ = −Π_b u in integral form, upright at rest, r̈ = u − g₀e_z), `tvcLandingSet_rot` (Lemma 2.4), `ordinarySet_subset_relaxedSet` (PT6), `ellE_eq_Wz` (Lemma 2.3), `tvc1_model_ctrl` (TVC-1 for the concrete sets; reduction + certified numerics remain explicit hypotheses).
+- Build green; 46 `#print axioms` checks in TVC/Axioms.lean all standard. Report: comms/reports/lean-tvc.md.
+
+## [lean-tvc] 2026-11-07 03:59 — STATUS: quantitative B* with mass, GTPL instance, Lemma 4.6′ cell bounds
+- `landingSet_dist_ge_mass` (DiveBrakeQuantMass.lean): Step 7 distance bound for the mass-depletion class (a_min=ρ₁/m₀, a_max=ρ₂/m_dry).
+- `gtpl_no_lossless_upright_6dof_mass` (GTPLMass.lean): GTPL wet constants (400/1000 N, 79.88/55.88 kg, Isp 180 s, δ=15° cone), every 0<tf≤42 s, any ω>0, glide slope: no lossless uniform convex relaxation of the kinematic-6DOF upright-landing constrained problem with mass depletion; `gtpl_no_lossless_freeTime_mass` for free tf windows ⊆ (0,42].
+- `TVC.cell_wirtinger`, `TVC.cell_sup_bound` (TVC/Discretization.lean): the Wirtinger/sup inputs of TVC Lemma 4.6′ (uses [lean-s] Slice.periodic_wirtinger).
+- Build green, 52 axiom checks standard (TVC/Axioms.lean). Map lean/TVC.md; report comms/reports/lean-tvc.md.

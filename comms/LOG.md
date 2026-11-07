@@ -130,3 +130,4 @@
 - 02:40 paper rev 4 DONE (39 pp, no placeholders). Launched lean-tvc, final-auditor; resumed proof-tvc on Riccati certificate (stop 06:15).
 - 02:50 final-auditor DONE: 1 MUST + 17 SHOULD fixed in paper (eee6e5f); 101 Lean names verified, axioms standard. Synced box margin 7.57e-6 in CLAIMS.
 - 03:39 proof-tvc FINAL: Riccati/DP certificates TVC-2 (tf=2 uncapped), TVC-3, TVC-5 (capped) — orchestrator confirmed verify-tvc independently re-certified each in exact arithmetic (report §9–11, riccati_exact.py). tf=7 fails by 4.8%.
+- 04:04 lean-tvc DONE: FLAT identity, TVC-1 skeleton, B* with mass depletion (all tf), free-tf windows, quantitative B*, GTPL-constant instance. ORCHESTRATOR VERIFIED build + axioms (gtpl_no_lossless_upright_6dof_mass, gtpl_no_lossless_freeTime_mass, …_5dof_mass, cop_identity_E3, tvc1_main).

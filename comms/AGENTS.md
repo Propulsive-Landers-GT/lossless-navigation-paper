@@ -16,7 +16,7 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | redteam-reform | a6585a8a748ed0c83 (DONE) | Make LCvx work via reformulation; hunt counterexamples to Claim B | math/redteam-reform.md |
 | lean-positive | a1021d973096b337d (DONE) | Lean formalization of positive results (PMP as explicit hypothesis) | lean/LcvxObstruction/LcvxObstruction/Positive/ |
 | possibility-rho0 | a792931e985b589b0 (DONE) | Is 5DOF LCvx possible when min throttle ρ1=0? (sharp dichotomy) | math/possibility-rho0.md |
-| proof-tvc | a237537bb0f864d13 | Pure-TVC (real GTPL 6DOF) nonconvexity: upright at rest, r_z≥0 | math/06-pure-tvc.md |
+| proof-tvc | a237537bb0f864d13 (DONE) | Pure-TVC (real GTPL 6DOF) nonconvexity: upright at rest, r_z≥0 | math/06-pure-tvc.md |
 | proof-s | a8a27205fe1b681a6 (DONE) | Prove slice Lemma S (per-instance min-landing-error impossibility, hard v(tf)=0) | math/07-lemma-S.md |
 | verifier-sdp | a1cc9c46da966f49c (DONE) | Independent numerical attempt to break SDP-lift exactness (CSD2) | numerics/verifier-sdp/, math/verifier-sdp-report.md |
 | proof-sdp | ae94d2bcd8785d34a (DONE) | Prove/disprove CSD2 (degree-2 Shor lift exact for fixed-thrust 5DOF min-landing-error), extend to throttle | math/08-sdp-exactness.md |
@@ -28,6 +28,6 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | verify-tvc | ae6c370b5cd20db43 (DONE) | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
 | verify-sdp2 | ac7006c94fa6b776a (DONE) | Referee math/09 (CSD2′ partial proof) | math/verify-sdp2-report.md |
 | lean-n | a7b44976cb8dca63a (DONE) | Lean: solver claims N1–N7 (gimbal box, rate bounds, chord, gyro, 3DOF lower bound) | lean/…/Solver/, lean/SOLVER.md |
-| lean-tvc | a7f04cecd56f668ff | Lean: centre-of-percussion identity, TVC-1 skeleton (certificate as explicit hypothesis), B* with mass depletion | lean/…/TVC/, lean/TVC.md |
+| lean-tvc | a7f04cecd56f668ff (DONE) | Lean: centre-of-percussion identity, TVC-1 skeleton (certificate as explicit hypothesis), B* with mass depletion | lean/…/TVC/, lean/TVC.md |
 | final-auditor | ad5ce73a9500d2594 (DONE) | Independent audit of paper vs registry vs Lean; applies fixes | paper/AUDIT.md |
 | solver-v2 | aa3239f000bdac159 (DONE) | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |

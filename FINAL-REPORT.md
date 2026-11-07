@@ -16,6 +16,10 @@ not a failure to find a method. Strongest form, machine-checked in Lean 4 / Math
 >
 > `LcvxObstruction.no_lossless_relaxation_constrained_{5dof, upright_5dof, 6dof, upright_6dof}` — sorry-free,
 > axioms = [propext, Classical.choice, Quot.sound]. I rebuilt the project and checked the axioms myself.
+>
+> Also machine-checked **with real mass depletion, on free-final-time windows, and instantiated at our rocket's numbers**
+> (400–1000 N, 79.88 kg wet / 55.88 kg dry, Isp 180 s, 15° gimbal, any burn ≤ 42 s):
+> `LcvxObstruction.gtpl_no_lossless_upright_6dof_mass`, `gtpl_no_lossless_freeTime_mass`.
 
 **Why:** 3DOF LCvx works because the thrust direction can switch instantly, so the convex "filled-in" thrust set is
 achievable on average (Lyapunov/Aumann). On a real lander the thrust direction is tied to a body that rotates at a
