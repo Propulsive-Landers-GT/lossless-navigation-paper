@@ -256,6 +256,12 @@ If the lift is exact at w with genuine optimum z* = (b,u):
     - 91 of these (85%) are in the certified class k ≤ p₀.
     - 16 are in the residual class k = p₀+1. **All 16 have neg Z = k−1 (exact)**.
     - No optimum has k ≥ p₀+2. Observed (k, neg Z, p₀): (0,0,0), (2,2,2), (2,1,1), and (1,1,1), (1,2,2) with free b(tf).
+  - **[verifier-sdp] independent run** (N=16–48, 346 instances, d=b / cvx15 / cvx40; numerics/verifier-sdp/results/idx_full.jsonl):
+    - identity 178/178 nondegenerate; Sturm bounds 150/150;
+    - k ≥ p₀+2: none (even unfiltered);
+    - residual class: 35 instances, all with neg Z = k−1;
+    - negQ > 0 in 0/346.
+    - Its 12 "k=2, p₀=1, neg Z=2, asymmetric C_yw" records are **axis targets** (w_h = 0, so C_yw ≡ 0). My script normalized asym and the C_yw eigenvalues by max|C_yw| ≈ 0, which turned them into noise. The correct values are C_yw = 0 and p₀ = 2, and the identity predicts negQ = negZ − 2 = 0, as observed (asym_dbg.py). Symmetry of C_yw is rotation-stationarity about e_z and holds at every KKT point.
   - **Apparent violations** (k=0 with neg Z>0, etc.) all violate T5's hypotheses. Either h_m = 0 (to 1e-13) at some nodes, i.e. the attitude runs *inside* the primer plane, so the crossing count is undefined, or Z is singular with a disconnected chain. These are not counterexamples. When the attitude lies in Π on an interval, m is a genuine normal there, as in the planar case of math/08 Thm 4.1.
 - **index_c1.py** ([numerics] c1 cases, cvx15): 16/17 certified by T5. This includes set A cases 0–5 and 7–9 (GTPL-realistic) and set B case 12 (k = 2, C_yw ≻ 0). Case 6 (set A) is in the residual class and is exact numerically.
 - **mu_unit.py**: §6.2.

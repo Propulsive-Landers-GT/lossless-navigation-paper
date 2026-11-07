@@ -175,7 +175,9 @@ conv(lens) = ball ∩ {⟨d, b_k⟩ ≥ cos δ} ∩ {⟨d, b_{k+1}⟩ ≥ cos δ
   - Identity neg Q = neg Z − p₀: 178/178 under their filters (C_yw nonsingular, primer plane defined, asym < 1e-6). Sturm bound: 150/150.
   - No instance with k ≥ p₀+2.
   - After filtering, all 35 residual k = p₀+1 instances have neg Z = k−1.
-  - Caveat: 12 δ=0 optima have k=2, p₀=1, neg Z = 2 yet neg Q = 0 and no gap. All 12 have a non-symmetric C_yw (asym 1e-3 to 1), so the symmetric-C_yw hypothesis is not automatic at genuine optima.
+  - 12 δ=0 optima first appeared as k=2, p₀=1, neg Z = 2 with neg Q = 0 and no gap. I checked them: all 12 are on-axis targets (the midpoint M; lateral |w| ~1e-15), where C_yw ≡ 0.
+  - The reported asymmetry and p₀=1 there came from index_check normalizing by max|C_yw| ≈ 0, as [proof-csd2p] diagnosed. The correct values are C_yw = 0 and p₀ = 2, which give neg Q = 2 − 2 = 0, consistent with the theory.
+  - These are degenerate axis/coning cases, outside T5's hypotheses. Net: 0 identity failures, 0 cases with k ≥ p₀+2, and every residual case has neg Z = k−1.
 
 **Verdict (b): CSD2′ is UNBROKEN.** The δ=0 lift and the convexified-lens lift are numerically exact on everything I could construct. The unit-d failure is a discretization artifact: the lift realizes in-interval chattering through E⊥ tilts of d, which the unit-d discrete model forbids and continuous time allows.
 
