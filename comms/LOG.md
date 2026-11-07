@@ -57,3 +57,6 @@
   per-instance exactness C-U (nonconvexity = choice of attitude); C-6: on real TVC, given b the problem is exactly convex;
   C-Y: 3DOF optimum exactly 6DOF-optimal for GTPL essentially never (initial-rate window ~3.5 µrad/s). Launched lean-positive
   (formalize math/05; PMP & Aumann only as explicit hypotheses) and possibility-rho0 (is LCvx possible when ρ1=0? dichotomy).
+- ~01:45. redteam-reform DONE (math/redteam-reform.md): all LCvx-slack routes FAIL; chord-rate & orbitope lifts FAIL; B has no
+  algebraic hole (scope hole fixed by B* w/ small s*); RR-LS line-search lemma written; pure-TVC exact class is measure-zero
+  (b̈ = k(b−d) unstable, √k≈2–3 s⁻¹); ρ1=0: velocity set convex (theorem), full F OPEN (→ possibility-rho0).
