@@ -126,6 +126,36 @@ GTPL (ρ₁ = 400 N, ρ₂ = 1000 N, m₀ ≈ 80 kg, δ = 15°) satisfies these 
 
 ---
 
+## 5a. Free final time / line search (`FreeTime.lean`, Lemma RR-LS)
+
+| Lean | Formal content | Mathematics (math/redteam-reform.md §4) |
+|---|---|---|
+| `not_lineSearch_lossless` | horizons `W ⊆ ι`, true sets `F t`, one uniform convex relaxation `C t` per horizon (lifted space `Y t` may depend on t) with `F t ⊆ proj C t`. If `x̄ ∈ convexHull (F t₀)`, `t₀ ∈ W`, and `x̄ ∉ F t` for all `t ∈ W`, then "∃ t ∈ W, slice nonempty ↔ ∃ t ∈ W, x ∈ F t" fails | RR-LS (i): line search over t_f accepts an infeasible datum |
+| `symmetric_supply` | linear involution `R` preserving each `F t`; `ℓ` linear with `ℓ ∘ R = ℓ`; `x₀ ∈ F t₀` maximises ℓ over the graph; every maximiser `x` has `x − R x ≠ 0`. Then `½(x₀ + R x₀) ∈ convexHull (F t₀)` and lies in no `F t` | RR-LS (ii), hypotheses (H1)–(H3) |
+| `not_lineSearch_lossless_of_symmetry` | (i) + (ii) | RR-LS combined |
+
+These are abstract (any real vector space X). (H2)/(H3) for the concrete 5DOF problem (existence of a
+graph maximiser on a compact window, and the structure lemma) are **not** formalized. The concrete
+free-final-time theorem is therefore not machine-checked; only the abstract kill is.
+
+## 5b. 6DOF, kinematic (`SixDOF.lean`)
+
+| Lean | Formal content | Mathematics (math/02 §6, Thm 6.2 kinematic) |
+|---|---|---|
+| `Attitude6Admissible Att tf ω δ d A` | `A : ℝ → (E3 →ₗᵢ[ℝ] E3)` (body→inertial, any roll), fields: `A ∈ Att`; `A 0 ez = ez`; `s ↦ A s x` continuous; **`∀ x ≠ 0, angle (A s x) (A s' x) ≤ ω|s−s'|`** (every body-fixed direction turns at rate ≤ ω, ⇔ ‖Ω‖ ≤ ω); `d` measurable, unit; `angle (d s) (A s ez) ≤ δ` | rate-limited 6DOF attitude kinematics, thrust axis = body z |
+| `properAttitudes` | `{A \| ∀ s, det (A s) = 1}` | SO(3)-valued attitude paths |
+| `landingSet6`, `constrainedLandingSet6` | as in §3/§5 with `Attitude6Admissible` in place of `AttitudeAdmissible` | F^{6DOF}_{t_f}, F^{6DOF,𝒳}_{t_f} |
+| `Attitude6Admissible.toM1`, `landingSet6_subset`, `constrainedLandingSet6_subset` | the body z-axis of a 6DOF attitude is M1-admissible; 6DOF sets ⊆ 5DOF unconstrained set | projection |
+| `rotY φ` | explicit linear isometry, rotation about `e_y` by φ; `rotY_ez`: `e_z ↦ sin φ e_x + cos φ e_z`; `angle_rotY_le` | the zero-roll planar lift |
+| `lift_admissible` | rotations `rotY(±ω φ(s))` with φ 1-Lipschitz are 6DOF-admissible | lift of the planar witnesses |
+| `not_convex_landingSet6` | Theorem B for 6DOF, any attitude class `Att` containing the two rotation paths | **Theorem B, 6DOF** |
+| `not_convex_constrainedLandingSet6` | Theorem B* for 6DOF | **Theorem B*, 6DOF** |
+
+Scope: this is *kinematic* 6DOF (angular velocity bounded, no torque/inertia dynamics). The
+torque-limited (M3a/M4-dyn) and gimbal-torque-coupled pure-TVC (M3b) models are not formalized.
+
+---
+
 ## 6. What is NOT formalized (honest gaps)
 
 * **Mass depletion in B*** (α > 0). B* is proved for constant acceleration bounds. That is exact for
@@ -137,7 +167,7 @@ GTPL (ρ₁ = 400 N, ρ₂ = 1000 N, m₀ ≈ 80 kg, δ = 15°) satisfies these 
 * **Terminal attitude** b(t_f) = e_z (variant T / T') is not formalized. b(t_f) is free in all theorems.
 * **Free final time** (Cor. 10.4) and the **quantitative gaps** (ball bound Thm Q, ε-lossless
   Cor. 5.2) are not formalized.
-* **6DOF** corollaries (kinematic 6DOF, M3a/M4 envelopes, TVC flat output, center-of-percussion
-  identity) are not formalized.
+* **6DOF**: only the kinematic rate-limited model (§5b). The M3a/M4 torque envelopes, the TVC flat
+  output and the center-of-percussion identity are not formalized.
 * `position` is defined by Cauchy's closed form, not as `r₀ + ∫ v`. The equivalence (Fubini) is standard
   and not proved here.

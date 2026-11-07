@@ -583,6 +583,40 @@ theorem witness_mem_glideSlope {tf ω δ sS amin amax g₀ tanγ : ℝ} {u : E3}
 
 /-! ### Theorem B* -/
 
+/-- Generic step: a set squeezed between two points of `S` and a superset `T` that misses their
+midpoint is not convex. -/
+theorem not_convex_of_midpoint {E : Type*} [AddCommGroup E] [Module ℝ E] {S T : Set E}
+    (hST : S ⊆ T) {x y : E} (hx : x ∈ S) (hy : y ∈ S)
+    (hm : (1 / 2 : ℝ) • x + (1 / 2 : ℝ) • y ∉ T) : ¬ Convex ℝ S := fun hconv =>
+  hm (hST (hconv hx hy (by norm_num) (by norm_num) (by norm_num)))
+
+/-- **Step 6 of Theorem B\*:** the midpoint of the two mirror witness data is not even
+unconstrained-feasible. -/
+theorem witness_midpoint_not_mem_landingSet {Acc : Set (ℝ → ℝ)}
+    {tf ω δ sS amin amax g₀ : ℝ}
+    (hsS : 0 < sS) (hsStf : sS < tf) (hω : 0 < ω) (hδ : 0 ≤ δ)
+    (hreg : δ + ω * sS ≤ π / 2) (hamin : 0 < amin) (h : amin ≤ amax)
+    (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf) ∧ ∀ s ∈ Icc 0 tf, amin ≤ a s ∧ a s ≤ amax) :
+    (1 / 2 : ℝ) • landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS ex) tf +
+      (1 / 2 : ℝ) • landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS (-ex)) tf ∉
+      landingSet Acc tf ω δ (-(g₀ • ez)) := by
+  set g := -(g₀ • ez)
+  rintro ⟨a, d, b, ha, hatt, hr, hv⟩
+  have hfa : IntegrableOn (fun s => a s • d s) (Icc 0 tf) :=
+    integrableOn_smul_of_unit (hAcc a ha).1 hatt.d_meas hatt.d_unit
+  have hΛ := lambda_identity (sS := sS) hfa hr hv
+  have hΛ₁ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
+    (δ := δ) norm_ex inner_ex_ez h) (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
+  have hΛ₂ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
+    (δ := δ) (by simp : ‖-ex‖ = 1) (by simp : ⟪-ex, ez⟫ = 0) h)
+    (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
+  have hW := witness_W_midpoint (tf := tf) (ω := ω) (δ := δ) (sS := sS) norm_ex inner_ex_ez h
+  apply VStar_not_mem_WSet hsS hsStf hω hδ hreg hamin hAcc
+  refine ⟨a, d, b, ha, hatt, ?_⟩
+  simp only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd] at hΛ
+  rw [← hW]
+  linear_combination (norm := module) hΛ - (1 / 2 : ℝ) • hΛ₁ - (1 / 2 : ℝ) • hΛ₂
+
 /-- **Theorem B\* (state-constrained nonconvexity).** Constant acceleration bounds
 `0 < a_min ≤ a_max` (constant mass), gravity `-g₀ e_z` with `g₀ ≤ a_max`, gimbal `δ`, slew rate
 `ω > 0`, switch time `s* ∈ (0, tf)` with `ω s* ≤ δ`, `δ + ω s* ≤ π/2` and the smallness
@@ -598,34 +632,17 @@ theorem not_convex_constrainedLandingSet {Acc : Set (ℝ → ℝ)} {tf ω δ sS 
     (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf) ∧ ∀ s ∈ Icc 0 tf, amin ≤ a s ∧ a s ≤ amax)
     (haW : aW sS amin amax ∈ Acc) {X : Set (E3 × E3)} (hX : glideSlopeSet tanγ ⊆ X) :
     ¬ Convex ℝ (constrainedLandingSet Acc tf ω δ (-(g₀ • ez)) X) := by
-  intro hconv
   have hδ : 0 ≤ δ := le_trans (mul_nonneg hω.le hsS.le) hωs
   have hδπ : δ ≤ π := by linarith [Real.pi_pos, mul_nonneg hω.le hsS.le]
-  set g := -(g₀ • ez)
-  -- the two mirror witnesses
   have mem : ∀ v : E3, ‖v‖ = 1 → ⟪v, ez⟫ = 0 →
-      landingData g (aW sS amin amax) (dW ω δ sS v) tf ∈ constrainedLandingSet Acc tf ω δ g X :=
+      landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS v) tf ∈
+        constrainedLandingSet Acc tf ω δ (-(g₀ • ez)) X :=
     fun v hv hvz => ⟨_, _, _, haW, witness_admissible hv hvz hsS hω.le hδ hδπ hωs,
       (landingData_lands _ _ _ _).1, (landingData_lands _ _ _ _).2,
       fun t ht => hX (witness_mem_glideSlope hv hvz hsS hsStf hω.le hδ hreg hamin h hg htan hS ht)⟩
-  have hmid := hconv (mem ex norm_ex inner_ex_ez) (mem (-ex) (by simp) (by simp))
-    (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)
-  obtain ⟨a, d, b, ha, hatt, hr, hv, -⟩ := hmid
-  -- Λ of the midpoint, computed two ways
-  have hfa : IntegrableOn (fun s => a s • d s) (Icc 0 tf) :=
-    integrableOn_smul_of_unit (hAcc a ha).1 hatt.d_meas hatt.d_unit
-  have hΛ := lambda_identity (sS := sS) hfa hr hv
-  have hΛ₁ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
-    (δ := δ) norm_ex inner_ex_ez h) (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
-  have hΛ₂ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
-    (δ := δ) (by simp : ‖-ex‖ = 1) (by simp : ⟪-ex, ez⟫ = 0) h)
-    (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
-  have hW := witness_W_midpoint (tf := tf) (ω := ω) (δ := δ) (sS := sS) norm_ex inner_ex_ez h
-  apply VStar_not_mem_WSet hsS hsStf hω hδ hreg hamin hAcc
-  refine ⟨a, d, b, ha, hatt, ?_⟩
-  simp only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd] at hΛ
-  rw [← hW]
-  linear_combination (norm := module) hΛ - (1 / 2 : ℝ) • hΛ₁ - (1 / 2 : ℝ) • hΛ₂
+  exact not_convex_of_midpoint constrainedLandingSet_subset (mem ex norm_ex inner_ex_ez)
+    (mem (-ex) (by simp) (by simp))
+    (witness_midpoint_not_mem_landingSet hsS hsStf hω hδ hreg hamin h hAcc)
 
 /-- The switch-time conditions of Theorem B* can be met for **every** horizon `tf > 0`
 (given `0 < δ < π/2`, `ω > 0`, `g₀ < a_max`). -/
