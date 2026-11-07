@@ -88,18 +88,18 @@ feasible for the original problem. We ask whether the same is possible once the 
 vehicle attitude that turns at a finite rate. This is the case for every thrust-vector-controlled (TVC) lander.
 We give a negative answer for the class of relaxations that LCvx belongs to: convex programs in which the physical
 state is a decision variable and the boundary data enter affinely. No such relaxation can be lossless for 5-DOF
-(translation plus thrust-axis pointing) or rate-limited 6-DOF descent. Our headline result, machine-checked in Lean~4/Mathlib,
-covers the realistic constrained problem: with altitude and glide-slope constraints, for every final time, with free or upright
+(translation plus thrust-axis pointing) or kinematic (attitude-rate-limited) 6-DOF descent. Our headline result, machine-checked in Lean~4/Mathlib,
+covers the state-constrained problem (with constant thrust-acceleration bounds, i.e.\ constant mass): with altitude and glide-slope constraints, for every final time, with free or upright
 terminal attitude, in 5-DOF and in kinematic 6-DOF, no convex relaxation of this class is lossless, whatever its lifted variables
 and cost. The obstruction is geometric. A lossless
 relaxation of this kind forces the set of feasible boundary conditions to be convex (Theorem~A). For attitude-rate-limited
 models this set is not convex. The reason is that the vehicle cannot chatter its thrust direction. We prove this
 without state constraints, with altitude and glide-slope constraints for every horizon, for upright landings, for
-free final time on compact windows, for line search over the final time, with or without a minimum throttle, and for
-kinematic and independent-torque 6-DOF models. A per-instance version shows that every state-linear relaxation of a
+free final time on compact windows, for line search over the final time, without a minimum throttle (without state constraints),
+and for kinematic and independent-torque 6-DOF models. A per-instance version shows that every state-linear relaxation of a
 minimum-landing-error problem is lossy on explicit feasible instances, and an optimization version shows that no
 uniform relaxation is value-lossless for all convex costs. On the positive side, LCvx is exact once the attitude
-profile is fixed. For the gimbal-torque-coupled TVC rigid body, the problem with a given attitude profile is exactly
+profile is fixed. For the gimbal-torque-coupled TVC rigid body with constant mass, the problem with a given attitude profile is exactly
 convex, with no relaxation needed. So all of the nonconvexity lies in the choice of attitude profile. Degree-2
 semidefinite lifts are not exact in general, but they give a~posteriori global-optimality and infeasibility
 certificates, and they are certified exact on a coplanar subclass. Besides the headline theorem, the unconstrained
@@ -121,7 +121,7 @@ $0.012\%$ of a nonconvex 6-DOF optimum in simulation.
 \textcolor{MidnightBlue}{\textsf{[proved; refereed, statement as repaired]}} the referee asked for a repair (narrower regime,
 added hypothesis or corrected wording), and the statement printed here is the repaired one;
 \textcolor{BurntOrange}{\textsf{[proved in project notes; registry status CLAIMED]}} a written proof exists but has not been
-refereed (only two minor remarks remain in this state);
+refereed (only two minor remarks and the side claim C-3D remain in this state);
 \textcolor{Plum}{\textsf{[numerical evidence only]}}; \textcolor{BrickRed}{\textsf{[open]}}.
 The mapping theorem $\to$ registry row $\to$ proof file $\to$ Lean name is in \texttt{paper/CLAIMS-MAP.md}.
 Toggle with \texttt{\textbackslash showstatusfalse}.

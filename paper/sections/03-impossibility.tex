@@ -336,7 +336,8 @@ In M3a/M4-dyn (axisymmetric $J$, transverse torque $\norm{\tau_\perp}\le\tau_t$ 
 every body axis satisfies the envelope $\angle(b(s),b(s'))\le\Psi(s')-\Psi(s)$ with $\Psi(s)=\int_0^s\min(\bar\alpha r,\omega)\,dr$,
 $\bar\alpha=\tau_t/J_t$, and the radial ``bang'' arcs attain it. Hence (i) with terminal attitude free and
 $\delta+\Psi(t_f)\le\pi/2$, $\Ft$ is nonconvex; (ii) with terminal attitude $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$ and unlimited gimbal
-rate, a dive-then-brake face again gives nonconvexity, with altitude and glide-slope constraints handled as in
+rate, a dive-then-brake face with a sufficiently short dive $s^*$ ($\bar\alpha s^*\le\omega$, $\bar\alpha s^{*2}\le\delta_{in}$, $4s^*\le t_f$,
+$\delta^*+\bar\alpha s^{*2}/2\le\pi/2$) again gives nonconvexity, with altitude and glide-slope constraints handled as in
 Theorem B$^*$.\Sproved\ (the state-constraint clause of (ii) is inherited from Theorem B$^*$ and was not independently re-derived)
 \end{theorem}
 The gyroscopic terms do no work on $\norm{\Omega_\perp}$ for axisymmetric $J$, so roll and coning cannot defeat the
@@ -363,7 +364,8 @@ settled at one short horizon by a computer-assisted theorem, certified in exact 
 \begin{theorem}[Theorem TVC-1: pure TVC, upright at rest, $r_z\ge0$; computer-assisted {\pnote{math/06; math/verify-tvc-report.md}}]\label{thm:TVC1}
 % CLAIMS: TVC-1, TVC-1q, TVC-B, TVC-1R, TVC-L (B6-TVC-up) -- PROVED, computer-assisted; CERTIFIED in exact arithmetic by verify-tvc subject to repairs W1, W2 (carried out) | Lean: none
 Model PT (pitch and yaw torque produced only by the gimbal), with constant mass and constant $\varepsilon=J_t/(mL)$,
-axisymmetric inertia, and \emph{unlimited gimbal rate}. Use the GTPL wet constants ($m=79.88$~kg, $\rho_1=400$~N, $\rho_2=1000$~N,
+axisymmetric inertia with the gimbal pivot on the body axis (the vehicle's centimetre-scale pivot offset and products of inertia are
+neglected), and \emph{unlimited gimbal rate}. Use the GTPL wet constants ($m=79.88$~kg, $\rho_1=400$~N, $\rho_2=1000$~N,
 $J_t=63.6$~kg\,m$^2$, $L=0.589$~m, $\delta=15^\circ$). Start from $b(0)=\ez$, $\Omega(0)=0$; land at rest and upright,
 $r(t_f)=v(t_f)=0$, $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$; impose $r_z\ge0$ and a glide slope along the trajectory. Take $t_f=1$~s and the
 dive-then-brake face with $s^*=0.25$~s. Then $\FX$ is nonconvex: an explicit witness pair $\theta_w,R_\pi\theta_w\in\FX$ has a midpoint
@@ -378,8 +380,9 @@ cone $15^\circ$, free roll via RCS ($|\tau_3|\le3$~N\,m) & $2.90\times10^{-6}$~m
 \end{tabular}
 \end{center}
 By \cref{thm:A}, no uniform convex relaxation with affine data entry is lossless for this pure-TVC landing problem at this
-horizon. (The margins are certified in exact arithmetic. The distance bounds were recomputed by the referee but evaluated in
-floating point.)\stag{MidnightBlue}{proved, computer-assisted; certified in exact arithmetic by an independent referee}
+horizon. (The margins are certified in exact arithmetic, except that the localization step functions and the physical constants enter
+as floating-point inputs, independently validated with margins many orders of magnitude above rounding error. The distance
+bounds were recomputed by the referee but evaluated in floating point.)\stag{MidnightBlue}{proved, computer-assisted; certified in exact arithmetic by an independent referee}
 \end{theorem}
 \begin{proof}[Method]
 Using the centre-of-percussion identity, the face functional $\ell=r_{0z}+s^*v_{0z}$ is written exactly in terms of the horizontal

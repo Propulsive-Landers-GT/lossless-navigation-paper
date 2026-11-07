@@ -22,7 +22,8 @@ trust-region problem in $(\alpha,T_a)$. The minimum-thrust bound is replaced by 
 approximation (Cauchy--Schwarz).
 \item \emph{Accept or shrink.} Re-run the exact inner solve at the new attitude. Accept if the merit (fuel plus terminal-defect and
 constraint penalties) decreases sufficiently; otherwise shrink the trust region. \emph{Every accepted iterate is an exact solution
-of the true dynamics for its attitude}, so the loop can be stopped at any time.
+of the planning model (with its prescribed mass history) for its attitude}, so the loop can be stopped at any time; the
+certificate below checks it against the full dynamics.
 \item \emph{Certificate.} Check the returned plan, not the optimizer, against the physical limits on an $8\times$ finer grid
 (throttle $400$--$1000$~N, exact gimbal angles within $\pm15^\circ$, gimbal rate $\le100^\circ$/s, throttle rate, tilt, glide slope,
 touchdown defects). Then replay it open loop through a full quaternion rigid-body model, which must land within 5~cm. Fly it
