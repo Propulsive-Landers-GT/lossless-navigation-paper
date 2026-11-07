@@ -5,3 +5,4 @@ __pycache__/
 math/checks/.venv/
 **/.venv/
 **/venv/
+share/dist/

@@ -20,15 +20,25 @@
 \usepackage[capitalise,nameinlink]{cleveref}
 
 % ---------------------------------------------------------------------------
-% Status tags.  Set \showstatustrue for the internal draft, \showstatusfalse for submission.
+% Build modes.
+%   Internal draft (default):  latexmk -pdf main.tex
+%   Shareable version:          make share   (defines \SHAREBUILD; output main-share.pdf)
+% The shareable version hides internal project-file pointers and uses reader-facing status tags.
+\newif\ifshare
+\ifdefined\SHAREBUILD\sharetrue\fi
+\newcommand{\intshare}[2]{\ifshare#2\else#1\fi}% {internal-draft text}{shareable text}
+\newcommand{\paperauthors}{Propulsive Landers at Georgia Tech}% edit to list author names
+% Status tags.  Set \showstatustrue to print them, \showstatusfalse to hide them.
 \newif\ifshowstatus
 \showstatustrue
+\newif\ifshowpointers
+\ifshare\showpointersfalse\else\showpointerstrue\fi
 \newcommand{\stag}[2]{\ifshowstatus\,{\footnotesize\textcolor{#1}{\textsf{[#2]}}}\fi}
 \newcommand{\Slean}{\stag{ForestGreen}{Lean-checked}}
 \newcommand{\Sleanpart}[1]{\stag{ForestGreen}{Lean-checked: #1}}
-\newcommand{\Sproved}{\stag{MidnightBlue}{proved; independently refereed}}
-\newcommand{\Srep}{\stag{MidnightBlue}{proved; refereed, statement as repaired}}
-\newcommand{\Spending}{\stag{BurntOrange}{proved in project notes; registry status CLAIMED}}
+\newcommand{\Sproved}{\stag{MidnightBlue}{\intshare{proved; independently refereed}{proved; not machine-checked}}}
+\newcommand{\Srep}{\stag{MidnightBlue}{\intshare{proved; refereed, statement as repaired}{proved; not machine-checked}}}
+\newcommand{\Spending}{\stag{BurntOrange}{\intshare{proved in project notes; registry status CLAIMED}{proof sketch only}}}
 \newcommand{\Snum}{\stag{Plum}{numerical evidence only}}
 \newcommand{\Sopen}{\stag{BrickRed}{open}}
 
@@ -70,12 +80,12 @@
 \newcommand{\AL}{(\mathrm{AL}_\omega)}
 \newcommand{\lean}[1]{{\ttfamily\hyphenpenalty=10000\exhyphenpenalty=10000 #1}}
 % Pointer to an internal project note (math/...); printed only in the internal draft.
-\newcommand{\pnote}[1]{\ifshowstatus\,{\footnotesize[\texttt{#1}]}\fi}
+\newcommand{\pnote}[1]{\ifshowpointers\,{\footnotesize[\texttt{#1}]}\fi}
 
 \title{On the Impossibility of Lossless Convexification for\\
 Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent}
-\author{Propulsive Landers at Georgia Tech\thanks{Author names to be filled in.}}
-\date{Draft of 7 November 2026}
+\author{\intshare{\paperauthors\thanks{Author names to be filled in.}}{\paperauthors}}
+\date{\intshare{Draft of 7 November 2026}{7 November 2026}}
 
 \setlength{\emergencystretch}{3em}
 \begin{document}
@@ -114,7 +124,27 @@ pad-launched hops. Finally, an attitude-aware planner built on the exact convex 
 $0.012\%$ of a nonconvex 6-DOF optimum in simulation.
 \end{abstract}
 
-\ifshowstatus
+\ifshare
+\begin{tcolorbox}[colback=gray!5,colframe=gray!60,title={\sffamily How to read and check this paper}]
+\small \textbf{Status tags.} Each result carries a tag saying how it is established:
+\textcolor{ForestGreen}{\textsf{[Lean-checked]}} machine-checked in Lean~4/Mathlib (no \texttt{sorry}; axioms \texttt{propext},
+\texttt{Classical.choice}, \texttt{Quot.sound} only);
+\textcolor{MidnightBlue}{\textsf{[proved; not machine-checked]}} pen-and-paper proof;
+\textcolor{MidnightBlue}{\textsf{[proved, computer-assisted]}} proof by certificate checked in exact (rational and ball) arithmetic;
+\textcolor{BurntOrange}{\textsf{[proof sketch only]}};
+\textcolor{Plum}{\textsf{[numerical evidence only]}}; \textcolor{BrickRed}{\textsf{[open]}}.
+
+\textbf{Checking the formal results.} The supplementary archive contains the Lean project. After \texttt{lake exe cache get} and
+\texttt{lake build}, the command \texttt{lake env lean Verify.lean} prints the headline statements and confirms that every Lean
+declaration cited here exists and uses only the three standard axioms (\cref{sec:lean}). The archive also contains the scripts and
+data of the computer-assisted certificates of \cref{sec:6dof}.
+
+\textbf{Statement on methods.} This work was carried out with extensive use of an AI system (Claude, Anthropic), which drafted the
+proofs, the Lean formalization, the numerical experiments and the text under the authors' direction. The Lean-checked results do
+not depend on trusting that process. The pen-and-paper proofs and the computer-assisted certificates were cross-checked by
+independent verification passes, but this paper has not yet been peer reviewed.
+\end{tcolorbox}
+\else\ifshowstatus
 \begin{tcolorbox}[colback=gray!5,colframe=gray!60,title={\sffamily Internal draft conventions (remove before submission)}]
 \small Status tags after theorem titles:
 \textcolor{ForestGreen}{\textsf{[Lean-checked]}} machine-checked (no \texttt{sorry}, axioms
@@ -129,7 +159,7 @@ refereed (only two minor remarks and the side claim C-3D remain in this state);
 The mapping theorem $\to$ registry row $\to$ proof file $\to$ Lean name is in \texttt{paper/CLAIMS-MAP.md}.
 Toggle with \texttt{\textbackslash showstatusfalse}.
 \end{tcolorbox}
-\fi
+\fi\fi
 
 \input{sections/01-introduction}
 \input{sections/02-formulation}

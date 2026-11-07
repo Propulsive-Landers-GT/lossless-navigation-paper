@@ -1,7 +1,7 @@
 # Final report: lossless convexification for 5DOF / 6DOF powered descent
 
 Written by the orchestrator for the user's return. Details live in `SYNTHESIS.md` (results table with the status of
-every claim), `paper/main.pdf` (39-page paper draft), and `comms/LOG.md` (decision log).
+every claim), `paper/main.pdf` (40-page paper draft), and `comms/LOG.md` (decision log).
 
 ## The answer
 
@@ -90,6 +90,7 @@ tried, but not yet proved.
 |---|---|
 | One-page status of every claim | `SYNTHESIS.md` |
 | Paper draft (LaTeX + PDF) | `paper/main.pdf`, `paper/CLAIMS-MAP.md`, `paper/AUDIT.md` |
+| **Shareable paper + proof archive** | `paper/main-share.pdf`; `share/make_bundle.sh` builds `share/dist/lcvx-impossibility-supplement.zip` (paper, Lean project with `Verify.lean`, TVC certificates) |
 | Lean formalization | `lean/LcvxObstruction/` (`lean/MODEL.md`, `POSITIVE.md`, `SLICE.md`, `SOLVER.md`) |
 | Proofs | `math/00`–`math/09`, referee reports `math/verify-*.md` |
 | Practical guidance code | `solver/` (README, RESULTS, PORTING, CLAIMS) |

@@ -161,14 +161,14 @@ settings: (a) in continuous time, with relaxed thrust direction $u(t)\in\conv\,\
 (b) for the convexified-lens discretization $\norm{d_k}\le1$; and (c) for the $\delta=0$ chain.\Sopen
 \end{conjecture}
 No counterexample is known. About 4{,}500 solves were run, including zero gaps on all 509 instances that were gaps for the
-unit-norm discretization once convexified. The following partial results were refereed independently
+unit-norm discretization once convexified. The following partial results \intshare{were refereed independently}{have written proofs}
 \pnote{math/09; math/verify-sdp2-report.md}:
 \begin{itemize}[leftmargin=*,itemsep=2pt]
 \item \emph{T1 (alignment).} The lifted value is an infimum over lifted trajectories whose physical readout lies in $\R^3$. Hence the
 conjecture for all targets is equivalent to $R_X\cap(\R^3)^2=R_3$: every lifted trajectory that lands in $\R^3$ can be replaced by a
 3-D one with the same terminal state. \Sproved
 \item \emph{T2 (primer-plane fold).} The lift is exact for \emph{every linear objective of the terminal readout} $(V,R)$, in continuous
-time and in all three discretizations. This closes the support-function question left open in math/08 (it does not cover
+time and in all three discretizations. This closes the support-function question\intshare{ left open in math/08}{} (it does not cover
 attitude-dependent linear costs). \Sproved
 \item \emph{T3--T4 (stress certificate and hemisphere/Picone theorem).} The continuous-time version holds given a normal KKT
 multiplier set, which is automatic with free terminal attitude but not with prescribed terminal attitude. The discrete

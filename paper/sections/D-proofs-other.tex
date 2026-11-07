@@ -3,7 +3,7 @@
 % ============================================================================
 
 \subsection{Theorem P0-F ($\rho_1=0$)}
-Adapted from \texttt{math/possibility-rho0} \S2. Set $\rho_1=0$, $\alpha=0$, $a_2=\rho_2/m_0$, units $\omega=a_2=1$, $T=\omega t_f$. For fixed $b$ the
+\intshare{Adapted from \texttt{math/possibility-rho0} \S2. }{}Set $\rho_1=0$, $\alpha=0$, $a_2=\rho_2/m_0$, units $\omega=a_2=1$, $T=\omega t_f$. For fixed $b$ the
 pointwise control set $U(b)=\{u:\norm u\le a_2,\ \ip ub\ge\norm u\cos\delta\}$ (convex, containing $0$) has support function
 $a_2\norm p\,c(\angle(p,b))$ with $c(x)=1$ for $x\le\delta$, $\cos(x-\delta)$ for $\delta\le x\le\delta+\pi/2$, and $0$ beyond. $K$ is compact and
 star-shaped about $0$, so it is convex iff every exposed face lies in $K$.
@@ -19,7 +19,7 @@ two groups of maximizers are compact, disjoint, and separated by $\ip{\hat p}{I}
 late and less early. A convex face cannot be a disjoint union of two nonempty compact sets, because convex sets are connected. \qed
 
 \subsection{Theorem E$_0$ (pure TVC, rest-terminal rate, tilt free)}
-Adapted from \texttt{math/adversary-6dof-report.md} \S6, with the repairs of the independent referee. Constant mass, so
+\intshare{Adapted from \texttt{math/adversary-6dof-report.md} \S6, with the repairs of the independent referee. }{}Constant mass, so
 $\kappa=L/J_t=1/(\varepsilon m)$ is constant. Roll rate zero is a model restriction. Write $f=T\cos\mu/m-\varepsilon\norm{\Omega_\perp}^2$ for the
 axial drive of the centre of percussion $y$ (\cref{lem:cop}). In the regime (H-f), (H-$\pi$), $f>0$ and the tilt stays below $\pi/2$.
 Let $\mathcal A$ be the comparison class in which the transverse angular acceleration is bounded by $\kappa T\sin\mu$ with the gimbal
@@ -37,7 +37,7 @@ the velocity projection of $\cl\Ft$. If $\cl\Ft$ were convex, the midpoint $I_z(
 relaxed trajectory set it would be the increment of some $q\in\mathcal A$ minimizing $I_z$ with zero lateral part, a contradiction. \qed
 
 \subsection{Theorem C-W (fixed attitude)}
-Adapted from \texttt{math/04} \S3. The extreme points of the cap $K_\Gamma(b)$ are exactly its spherical part
+\intshare{Adapted from \texttt{math/04} \S3. }{}The extreme points of the cap $K_\Gamma(b)$ are exactly its spherical part
 $S_\Gamma(b)=\{\norm T=\Gamma,\ \angle(T,b)\le\delta\}$, and $K_\Gamma=\conv S_\Gamma$ (Krein--Milman; Lean: \lean{extremePoints\_cap},
 \lean{cap\_subset\_closure\_convexHull\_sCap}). On each subinterval between prescribed nodes, the state increment is
 $\int\Psi_k(s)T(s)/m(s)\,ds$ with $\Psi_k$ of full column rank and $m$ fixed by $\Gamma$. Aumann's theorem applied to the multifunction

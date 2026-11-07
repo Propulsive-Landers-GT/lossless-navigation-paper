@@ -1,7 +1,7 @@
 % ============================================================================
 \section{Proof of Theorem S (Lemma S in a regime)}\label{app:S}
 % ============================================================================
-Adapted from project note \texttt{math/07}, which survived adversarial review (\texttt{math/01} \S9). Model M1, $b(t_f)$ free, $T:=t_f$,
+\intshare{Adapted from project note \texttt{math/07}, which survived adversarial review (\texttt{math/01} \S9). }{}Model M1, $b(t_f)$ free, $T:=t_f$,
 $\Omega=\omega T$, $\tau(s)=\delta+\omega s$, $\bar\tau=\delta+\Omega$, $a_{10}=\rho_1/m_0$, $a_2=\rho_2/(m_0-\alpha\rho_2T)$,
 $\varepsilon_m=a_1(T)/a_{10}-1$. The lateral force is $F=a\,d_h$, and the \emph{gain} of a control is $\int a_1-I_z$, the vertical
 impulse wasted relative to upright minimum throttle. $P$ is the $L^2((0,T);\R^2)$ projection onto affine functions. It depends
@@ -48,8 +48,8 @@ $\varphi(x)=\norm{x_r}+\iota_{\{x_v=0\}}(x)$; since $0\in\conv L(\zeta_w)$, the 
 \end{proof}
 
 \begin{table}[h]\centering\small
-\caption{Certified instances of \cref{thm:S} for a demonstration vehicle ($m_0=100$~kg, $\rho_1=1200$~N, $\rho_2=2500$~N, $\alpha=0$),
-from \texttt{math/07} \S4.}\label{tab:S}
+\caption{Certified instances of \cref{thm:S} for a demonstration vehicle ($m_0=100$~kg, $\rho_1=1200$~N, $\rho_2=2500$~N, $\alpha=0$)\intshare{,
+from \texttt{math/07} \S4}{}.}\label{tab:S}
 \begin{tabular}{@{}lccccc@{}}\toprule
 $\delta$ & $T$ [s] & $\Omega$ [rad] & margin $M$ [m/s] & dent $r_S$ [m] & witness offset $|p_w|$ [m]\\\midrule
 $0$ & 2 & 0.40 & $1.39\times10^{-2}$ & 0.45 & 0.94\\
@@ -61,7 +61,7 @@ $10^\circ$ & 4 & 0.20 & $2.11\times10^{-2}$ & 1.57 & 10.38\\\bottomrule
 \end{table}
 For $\delta>0$ the certified range of $\Omega$ has a positive lower end: as $\Omega\to0$ at fixed $\delta$, $\mathrm{gain}_w\to a_{10}T(1-\cos\delta)$
 while $B\to a_{10}T\cdot2\sin^2(\delta/2)\cdot2/(1+\cos\delta)$, which is larger, so $M<0$. At $T=2$~s the certified ranges are $(0,0.55]$
-($\delta=0$), $[0.004,0.46]$ ($5^\circ$), $[0.009,0.42]$ ($7^\circ$), $[0.038,0.34]$ ($10^\circ$) and $[0.070,0.27]$ ($12^\circ$) (independent referee
+($\delta=0$), $[0.004,0.46]$ ($5^\circ$), $[0.009,0.42]$ ($7^\circ$), $[0.038,0.34]$ ($10^\circ$) and $[0.070,0.27]$ ($12^\circ$) (independent \intshare{referee}{re-}
 computation). All rows of \cref{tab:S} lie inside them.
 With $\alpha=5.66\times10^{-4}$ the $\delta=5^\circ$ row fails narrowly, because $\varepsilon_m$ enters $\delta_e$ linearly. That is a weakness of the constants,
 not of the geometry. For $\delta\ge15^\circ$ the analytic constants do not certify; a discretized S-procedure SDP suggests $\delta=15^\circ$

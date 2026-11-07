@@ -3,16 +3,15 @@
 % ============================================================================
 The obstruction is short but easy to misstate: data entry, terminal attitude, state constraints and the sign conventions of
 the dive-then-brake face all matter. We therefore formalized its core in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}
-(toolchain \texttt{v4.36.0-rc2}; project \texttt{lean/LcvxObstruction}, namespace \texttt{LcvxObstruction}). The project contains
-no \texttt{sorry} and no \texttt{axiom}. For every headline theorem, \texttt{\#print axioms} reports exactly
+(toolchain \texttt{v4.36.0-rc2}; project \texttt{lean/LcvxObstruction}\intshare{}{ in the supplementary archive}, namespace \texttt{LcvxObstruction}). The project contains
+no \texttt{sorry} and no \texttt{axiom}. For every Lean declaration cited in this paper (126 names, including every headline theorem), \texttt{\#print axioms} reports exactly
 \[
 \texttt{[propext, Classical.choice, Quot.sound]},
 \]
-the standard axioms of classical Lean mathematics. This was verified by the orchestrator after a full \texttt{lake build}
-(commit \texttt{19ffe1a}; outputs in \texttt{comms/reports/lean.md}), and for the positive side by the audit file
-\texttt{Positive/Axioms.lean} (output in \texttt{lean/POSITIVE.md}). A final independent audit re-ran \texttt{\#print axioms} on
-every Lean name cited in this paper (101 declarations, including the \texttt{Slice} and \texttt{LcvxSolver} files added after
-\texttt{19ffe1a}) at commit \texttt{ef5ad1b}, with the same result (\texttt{paper/AUDIT.md}).
+the standard axioms of classical Lean mathematics. The script \texttt{Verify.lean} in the project root repeats this check: after
+a full \texttt{lake build}, \texttt{lake env lean Verify.lean} prints the headline statements and fails if any cited declaration is
+missing or depends on any other axiom (a \texttt{sorry} would appear as the axiom \texttt{sorryAx}).\pnote{first verified at commit
+19ffe1a, comms/reports/lean.md; independent audit of the then-cited 101 names at ef5ad1b, paper/AUDIT.md}
 
 \paragraph{Headline theorem.} The Main Theorem of \cref{sec:intro} is \lean{no\_lossless\_relaxation\_constrained\_5dof} together
 with its LCvx (optimization) form \lean{no\_losslessFor\_relaxation\_constrained\_5dof}, the upright-landing version
