@@ -720,3 +720,10 @@ bang-bang), +4–13% fuel at its own t_f. Closed loop: success A 28%/0%, B 100%/
 Hop map t_f=4: 3DOF relaxation + flight LCvx accept 20/20 targets, B and IPOPT agree on feasibility 20/20 (8/20 infeasible).
 Caveat: ~50% of replans need >4 SCvx iterations or a t_f extension → flight port needs an anytime time budget (solver/PORTING.md).
 New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Report: comms/reports/solver-v2.md.
+
+## [lean-n] 2026-11-07 02:24 — BREAK: N2 φ-axis heuristic is false as stated; the solver's constraint PAIR is still a valid sufficient condition
+- Exact: φ̇ = [Ṫ_y(T_x²+T_z²) − T_y(T_xṪ_x + T_zṪ_z)] / (‖T‖²·√(T_x²+T_z²)). The heuristic |φ̇| ≤ (|Ṫ_y| + tanδ|Ṫ_z|)/T_floor drops the Ṫ_x cross term.
+- Counterexample (δ_p=10°, T_floor=426.93 N): T=(tF,tF,F), Ṫ=(ω_plan·F,0,0). Heuristic RHS = 0, actual φ̇ = −1.73 °/s.
+- Correct (to be machine-checked, lean/…/Solver/GimbalRate.lean): (a) |φ̇| ≤ (|Ṫ_y| + t|Ṫ_z| + t²|Ṫ_x|)/T_z;
+  (b) |Ṫ_x|+t|Ṫ_z| ≤ ωF, |Ṫ_y|+t|Ṫ_z| ≤ ωF, T_z ≥ F > 0, |T_y| ≤ tT_z ⇒ |φ̇| ≤ ω. So aacg._rate_constraints (both rows together) guarantees both axes; no code change needed, only CLAIMS row 8 wording.
+- Numerics: 2e5 random samples, max ratio 0.9998 (b) / 0.9994 (a). @main @solver
