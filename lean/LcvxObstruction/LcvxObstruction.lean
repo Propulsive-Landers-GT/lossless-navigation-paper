@@ -26,3 +26,4 @@ import LcvxObstruction.Solver.Relaxation
 import LcvxObstruction.TVC.CentreOfPercussion
 import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
+import LcvxObstruction.DiveBrakeMass
