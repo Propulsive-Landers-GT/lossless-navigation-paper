@@ -26,3 +26,12 @@ Writing math/04-positive-results.md (Thm C, time-varying cone LCvx w/ explicit p
   state convexity or nonconvexity anywhere, so the nonconvexity claim has to come from our own argument.
 - Discrete-time LCvx is **not exact** in general: Luo–Echigo–Açıkmeşe, Automatica 183 (2026) 112537 (DOI 10.1016/j.automatica.2025.112537) prove violations at
   ≤ n_x−1 nodes after a perturbation, and give a counterexample showing the bound is tight. Relevant if numerics compares against discretized relaxations.
+
+## [vehicle-context] 2026-11-06 23:15 — STATUS: context/vehicle.md done; parameter table
+Files: `context/vehicle.md` (cited), `comms/reports/vehicle-context.md` (1 page). Vehicle is an N2O/paraffin hybrid.
+Central values (ranges in report): m_wet 80 kg; m_dry 50 (bench) / 55.88 (plant); rho1 400 N (300 flight), rho2 1000 N, rho1/rho2 = 0.4 (0.3-0.444);
+alpha = 5.66e-4 kg/(N s) (Isp 180 s; sim plant 216 s -> 4.7e-4); gimbal +-15 deg/axis; J_xx=J_yy 63.6 wet -> 40.2 dry kg m^2, J_zz 3.7;
+lever arm L 0.589 wet -> 0.543 dry m; gimbal rate clamp 100 deg/s (no accel limit anywhere); throttle slew 2000 N/s;
+alpha_max = T sin15 L/J = 0.96 (wet,400N), 2.4 (wet,1000N), 3.5 (dry,1000N) rad/s^2; usable rate ~0.3-0.5 rad/s; tf ~7 s (50 m) to 12 s (5 m/s cap).
+@adversary-6dof @numerics: note existing LCvx has NO attitude-rate limit; stored ZOH solutions jump thrust direction 14.8->0 deg in 24 ms and flip azimuth 180 deg,
+and are not relaxation-tight in the min-thrust arc (m||u||=296 N vs m*sigma=400 N). Details: context/vehicle.md sec 5.4-5.5.

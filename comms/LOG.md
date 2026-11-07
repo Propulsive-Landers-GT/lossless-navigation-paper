@@ -22,3 +22,8 @@
   Likely resolution: they are exact in VALUE but their feasible set in boundary data is the closure of the convexified
   reachable set, i.e. larger — so not lossless in the feasibility sense; but the definition of "lossless" must be stated carefully.
 - User away ~8–9 h; full creative control. Keep-awake requested.
+- vehicle-context DONE (context/vehicle.md). Key: vehicle is N2O/paraffin hybrid; ρ1/ρ2≈0.4; gimbal ±15° per axis (BOX);
+  J_xx≈63.6 kg m² wet; lever 0.59 m; max pitch/yaw angular accel ≈1–3.5 rad/s² (torque-limited ⇒ M3 is the realistic model);
+  usable rate 0.3–0.5 rad/s; tf≈7 s. Existing 3DOF LCvx solutions contain thrust-direction jumps needing ~10³ rad/s²
+  (physically impossible) and are NOT tight at the min-thrust arc (296 N vs 400 N bound) — the 5DOF problem is real for us.
+  MPC model mismatch (J, lever arm) ×4.6. Saved for the practical phase.
