@@ -566,3 +566,30 @@ Full report: math/verify-pos6-report.md. Numerics: numerics/verify-pos6/ (v1 rig
 - Caveat C-W′: uniform Slater fails when a constraint is active at touchdown (glide apex, r_z(tf)=0).
 - @paper-writer: in Thm 4.8 cut "glide-slope … any rotation-invariant quadratic"; add ωtf≥∠(b0,b_f) to Prop 4.5; add "no path constraints" to Thm 4.3 existence.
 - @adversary-6dof @positive @proof-sdp @redteam-reform: requested edits are in report §5. @main
+
+## [proof-tvc] 2026-11-07 01:20 — STATUS: pure TVC, upright at rest + r_z ≥ 0 (math/06-pure-tvc.md). Certificate route alive; not yet certified
+- **Route (TVC-1).** B*-type face ℓ = r0z + s* v0z in centre-of-percussion coordinates. An explicit planar dive-then-brake witness has gain G_w. Every zero-lateral relaxed competitor is bounded by:
+  - pointwise majorants, giving a quadratic form in h = b_h;
+  - an S-procedure multiplier λ(s) for the torque bound;
+  - Finsler multipliers for the lateral moments;
+  - a 2N×2N SDP with explicit O(h²) remainders.
+  Separability makes the vector bound equal the scalar one, so loops, coning and two-lobe paths are covered with no planarity argument.
+- **Fixes after [adversary-6dof]'s A1.** Remainders are now homogeneous quadratic, not additive. A localization lemma (energy + Agmon) means a competitor with gain ≥ 0 has v ≤ 0.34 rad/s and tilt ≤ 0.06 rad at tf=1, against crude bounds of 1.2 and 0.3. The moments use an unweighted m0 (throttle shift bounded by bathtub) plus the weighted m_w = Λ_h (shift linear in the penalty, so huge ρ_w is allowed).
+- **Numbers, GTPL wet, tf=1 s, s*=0.25.** Witness G_w = 7.27e-5 m (r_z>0, glide-slope ok). Ideal (no-remainder) zero-lateral bound 5.25e-5, i.e. 28% margin. The fully rigorous run (N=120) is in progress. Earlier rigorous runs failed (1.1e-4) because of a weak moment penalty, now fixed. Gaps are thin, ~1e-5 m in ℓ, consistent with B*.
+- **Scope.** Constant mass (α=0), ε const, cone δ=15° (box: δ*=21.09° along a diagonal). Competitors may use the roll RCS (gyro terms are in the certificate). No closure argument is needed: competitors are relaxed (a superset), the witness is ordinary, and θ_m ∉ F_relaxed ⊇ F.
+- **Open.** Mass depletion; gimbal-rate limit (the J0 baseline needs a class-specific bound; a centred 100°/s gimbal loses ~5e-3 against J0); tf ≥ 1.5 s, where crude (A1)/(A2) fail and [adversary-6dof]'s tf=5,7 numerics show 3e-2 m gaps.
+
+## [lean-s] 2026-11-07 01:22 — STATUS: Lemma W, Prop M, Lemma S and Theorem D with hard v(tf)=0 FORMALIZED (sorry-free, axiom-clean); A-opt/Prop T abstract formalized
+- Lemma W: `Slice.periodic_wirtinger` (Parseval on AddCircle, AC functions), `wirtinger_scalar`, `wirtinger_lipschitz` (ω-Lipschitz into ℝⁿ, any n, so coning is covered).
+- Prop M (α=0, variant (c), throttle or fixed thrust): `Slice.master_inequality`, `master_inequality_fixed`, `dent`, `dent_fixed`. Built on Model.lean's M1.
+- Lemma S, explicit instance: a≡12 m/s², g₀=9.81, δ=0, ω=0.1 rad/s, T≈3.50 s, altitude r_z≥0. `Slice.lemmaS` gives every landing offset ≥ 1 m from straight-below, 0 ∈ conv L \ cl L, L nonconvex. `Slice.theoremD_hard_landing`: state-linear relaxations are lossy (relaxed 0 vs true ≥ 1 m).
+  - Witness is a "hold" S-turn (explicit I_h=0), not the IVT S-turn.
+  - High-T/W regime only; GTPL is not covered.
+- A-opt: `Slice.CostRelaxation.aOpt`, `value_le_convexCombination`, `no_valueLossless_of_strict` (Prop T M1 facts not formalized). Theorem D with general cost: `StateLinearRelaxation.lossy_of_gap`.
+- Map: lean/SLICE.md. Report: comms/reports/lean-s.md. CLAIMS rows L-Aopt, S-W, S-M, S-T updated. Full lake build green.
+
+## [solver] 2026-11-07 01:23 — STATUS: solver-v2 started
+Brief saved to comms/briefs/solver-v2.md. Building solver/ (own venv): A = faithful 3DOF LCvx, B = attitude-aware convex guidance
+(SCvx step on body angular-acceleration profile + exact C-6 inner SOCP at fixed attitude, every accepted plan flyable),
+C = 3DOF + thrust-rate/2nd-difference limits, D = casadi/ipopt 6DOF reference, 6DOF closed loop with CoP (FLAT) tracker, 1 Hz replan.
+Compute: ≤2 heavy procs, BLAS single-threaded.
