@@ -1,0 +1,1618 @@
+[
+ {
+  "name": "S1 vertical 50 m",
+  "r0": [
+   0.0,
+   0.0,
+   50.0
+  ],
+  "v0": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "A": {
+   "tf": 7.0,
+   "fuel": 3.1110340884105483,
+   "tight_min": 0.7411809556097327,
+   "n_lossy": 6,
+   "T_delivered_min": 296.4706543158056,
+   "dir_rate_max": 0.0,
+   "dir_acc_max": 0.0,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": false,
+    "throttle": false,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.011338711
+  },
+  "tf": {
+   "min_3dof": 7.1796875,
+   "opt_3dof": 7.60016067437663,
+   "min_B": 8.3671875
+  },
+  "LB_global": 3.497147885957446,
+  "tfB": {
+   "tf": 8.3671875,
+   "LB": 3.633641918516446,
+   "B": {
+    "fuel": 3.6336394967003685,
+    "status": "certified-inner",
+    "iters": 1,
+    "solve_time": 0.051386708,
+    "wall": 0.15031166600238066,
+    "n_solves": 8,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 2.6495065421287497e-20,
+    "gimbal_rate_max_dps": 2.557422330211114e-19,
+    "tilt_max_deg": 0.0,
+    "ang_acc_ratio": 1.9282451656449767e-21,
+    "replay_dr": 0.00019756120040614888,
+    "replay_dv": 5.6462167866196816e-05
+   },
+   "B0": {
+    "fuel": 3.6336394967003685,
+    "status": "certified-inner",
+    "defect": {
+     "r": 6.902155291754752e-09,
+     "v": 1.8758328224066645e-12,
+     "tilt": 6.126765610580542e-23,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.6336419393327475,
+    "best_start": "B+pert2",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.6336419393780517,
+      "wall": 0.3628034169996681,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.6336419393743142,
+      "wall": 2.0587750840022636,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.6336419393327475,
+      "wall": 4.1802042910021555,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.633641939377881,
+      "wall": 0.15192658299929462,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.8671875,
+   "LB": 3.8454763559184215,
+   "B": {
+    "fuel": 3.845455008823805,
+    "status": "certified-inner",
+    "iters": 1,
+    "solve_time": 0.06570984399999999,
+    "wall": 0.1607885420016828,
+    "n_solves": 9,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 4.209550388760932e-09,
+    "gimbal_rate_max_dps": 5.845177869707712e-09,
+    "tilt_max_deg": 0.0,
+    "ang_acc_ratio": 3.1498725204238407e-10,
+    "replay_dr": 0.0010299614345990159,
+    "replay_dv": 0.0004949271678343822
+   },
+   "B0": {
+    "fuel": 3.8454995528375377,
+    "status": "certified-inner",
+    "defect": {
+     "r": 4.944240572513081e-10,
+     "v": 2.0463630789890885e-12,
+     "tilt": 2.790882128118104e-23,
+     "state": 1.94519411698741e-10
+    }
+   },
+   "C": {
+    "fuel": 3.8454763578179154,
+    "status": "optimal",
+    "tight_min": 1.0000000003254563,
+    "n_lossy": 0,
+    "T_delivered_min": 441.7955271378119,
+    "dir_rate_max": 0.0,
+    "dir_acc_max": 0.0,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.8454763608966687,
+    "best_start": "B+pert1",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.8454763610848914,
+      "wall": 0.3094702500020503,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.8454763608966687,
+      "wall": 0.7083944999976666,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.8454763610849483,
+      "wall": 1.2204357919981703,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.8454763610848914,
+      "wall": 0.1405917079973733,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 8.4921875,
+   "fuel": 3.9795800277899787
+  },
+  "wall": 12.93119502067566
+ },
+ {
+  "name": "S2 offset (10,20,50)",
+  "r0": [
+   10.0,
+   20.0,
+   50.0
+  ],
+  "v0": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "A": {
+   "tf": 7.6000000000000005,
+   "fuel": 3.3417475206100136,
+   "tight_min": 0.9999999993034415,
+   "n_lossy": 0,
+   "T_delivered_min": 399.9758550372251,
+   "dir_rate_max": 0.07774815286602134,
+   "dir_acc_max": 0.340141763983378,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": true,
+    "throttle": false,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.011534371
+  },
+  "tf": {
+   "min_3dof": 7.26171875,
+   "opt_3dof": 7.695347541873055,
+   "min_B": 8.32421875
+  },
+  "LB_global": 3.540802464703887,
+  "tfB": {
+   "tf": 8.32421875,
+   "LB": 3.6462230203721617,
+   "B": {
+    "fuel": 3.6920062416177473,
+    "status": "certified-inner",
+    "iters": 30,
+    "solve_time": 1.2536873089999996,
+    "wall": 2.529357583000092,
+    "n_solves": 86,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.999999934284483,
+    "gimbal_rate_max_dps": 59.113859768155514,
+    "tilt_max_deg": 20.116528277946024,
+    "ang_acc_ratio": 0.9348414916977692,
+    "replay_dr": 0.0009858888512264343,
+    "replay_dv": 0.0015303559092809007
+   },
+   "B0": {
+    "fuel": 3.5319170984027295,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 1.6628643989159104,
+     "v": 2.7384816393802733,
+     "tilt": 0.06385089367342944,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.69343981581045,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": false,
+      "fuel": 3.693883764252618,
+      "wall": 22.749956540999847,
+      "status": "Maximum_Iterations_Exceeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": false,
+      "fuel": 3.6936612788975935,
+      "wall": 22.318020499998966,
+      "status": "Maximum_Iterations_Exceeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": false,
+      "fuel": 3.693676905879485,
+      "wall": 23.17253583300044,
+      "status": "Maximum_Iterations_Exceeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.69343981581045,
+      "wall": 20.22714687500047,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.82421875,
+   "LB": 3.848323617457396,
+   "B": {
+    "fuel": 3.864768862581329,
+    "status": "certified-inner",
+    "iters": 22,
+    "solve_time": 1.2656985320000003,
+    "wall": 2.3054499170029885,
+    "n_solves": 58,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.935166894088423,
+    "gimbal_rate_max_dps": 25.366199137048753,
+    "tilt_max_deg": 12.188310983339422,
+    "ang_acc_ratio": 0.7756959960973812,
+    "replay_dr": 0.00017251491216561693,
+    "replay_dv": 4.700349396147937e-05
+   },
+   "B0": {
+    "fuel": 3.7488755224160144,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 1.1547034260662252,
+     "v": 2.3921095923362397,
+     "tilt": 0.07336064397480031,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.8488435992330636,
+    "status": "optimal",
+    "tight_min": 1.0000000011560597,
+    "n_lossy": 0,
+    "T_delivered_min": 481.0286508959012,
+    "dir_rate_max": 0.05131890266798014,
+    "dir_acc_max": 0.05562654496075767,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.864511426562345,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.8645114757092216,
+      "wall": 5.847041583001555,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.864511426620055,
+      "wall": 1.841628165999282,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.8645114266029736,
+      "wall": 2.6076137499985634,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.864511426562345,
+      "wall": 1.231623125000624,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 8.57421875,
+   "fuel": 4.050525440125327
+  },
+  "wall": 115.62996506690979
+ },
+ {
+  "name": "S3 (-8,5,45) moving",
+  "r0": [
+   -8.0,
+   5.0,
+   45.0
+  ],
+  "v0": [
+   2.0,
+   -1.0,
+   -4.0
+  ],
+  "A": {
+   "tf": 6.0,
+   "fuel": 2.8700782462890686,
+   "tight_min": 0.7416270743715573,
+   "n_lossy": 7,
+   "T_delivered_min": 296.65082978107955,
+   "dir_rate_max": 1.2956819623422056,
+   "dir_acc_max": 12.339205075980752,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": false,
+    "throttle": false,
+    "ang_acc": 0.0
+   },
+   "solve_time": 0.012555821
+  },
+  "tf": {
+   "min_3dof": 6.71484375,
+   "opt_3dof": 6.968132654374106,
+   "min_B": 7.21484375
+  },
+  "LB_global": 3.2924110064496546,
+  "tfB": {
+   "tf": 7.21484375,
+   "LB": 3.31867717645261,
+   "B": {
+    "fuel": 3.3201941391180156,
+    "status": "certified-inner",
+    "iters": 22,
+    "solve_time": 1.033626368,
+    "wall": 2.063689083002828,
+    "n_solves": 60,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 0.9406306322650191,
+    "gimbal_rate_max_dps": 3.335936987245036,
+    "tilt_max_deg": 3.933410386681253,
+    "ang_acc_ratio": 0.0650710260692255,
+    "replay_dr": 6.4478488809641e-05,
+    "replay_dv": 2.258217265250892e-05
+   },
+   "B0": {
+    "fuel": 3.3189286857896434,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.3218577469571749,
+     "v": 0.09924048847000624,
+     "tilt": 0.017019596134040905,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.3191023565344437,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.3191053619104878,
+      "wall": 1.1996679170006246,
+      "status": "Solved_To_Acceptable_Level"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.319169194555073,
+      "wall": 1.7813510000014503,
+      "status": "Solved_To_Acceptable_Level"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.31910235653703,
+      "wall": 9.014075041999604,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.3191023565344437,
+      "wall": 0.6795333750014834,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 7.71484375,
+   "LB": 3.5312640310742154,
+   "B": {
+    "fuel": 3.5319395311424557,
+    "status": "certified-inner",
+    "iters": 15,
+    "solve_time": 0.7269073749999998,
+    "wall": 1.4145370830010506,
+    "n_solves": 41,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 1.0723758427229813,
+    "gimbal_rate_max_dps": 3.250834710554235,
+    "tilt_max_deg": 2.914868220404268,
+    "ang_acc_ratio": 0.07904472201520653,
+    "replay_dr": 0.000599575032548545,
+    "replay_dv": 8.817538162472054e-05
+   },
+   "B0": {
+    "fuel": 3.531549291167437,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.37716892728311174,
+     "v": 0.08541365509599232,
+     "tilt": 0.013125438431154058,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.531265030735014,
+    "status": "optimal",
+    "tight_min": 1.0000000088131544,
+    "n_lossy": 0,
+    "T_delivered_min": 592.7593843977423,
+    "dir_rate_max": 0.002446201579234183,
+    "dir_acc_max": 0.00025046122094079886,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.5315795795955154,
+    "best_start": "B+pert1",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.5316035466688476,
+      "wall": 0.6228918339984375,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.5315795795955154,
+      "wall": 6.655878500001563,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.531599396536876,
+      "wall": 1.4455948329996318,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.531603525313031,
+      "wall": 0.5158069579993025,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 7.46484375,
+   "fuel": 3.619596966512475
+  },
+  "wall": 36.226913928985596
+ },
+ {
+  "name": "S4 (5,0,55) moving",
+  "r0": [
+   5.0,
+   0.0,
+   55.0
+  ],
+  "v0": [
+   -3.0,
+   2.0,
+   -2.0
+  ],
+  "A": {
+   "tf": 7.0,
+   "fuel": 3.2149917588826327,
+   "tight_min": 0.7637216176360438,
+   "n_lossy": 7,
+   "T_delivered_min": 305.4886471211196,
+   "dir_rate_max": 0.2770088624344958,
+   "dir_acc_max": 1.3831029468765212,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": false,
+    "throttle": false,
+    "ang_acc": 0.0
+   },
+   "solve_time": 0.011725929999999999
+  },
+  "tf": {
+   "min_3dof": 7.453125,
+   "opt_3dof": 7.79658384812358,
+   "min_B": 8.265625
+  },
+  "LB_global": 3.6372759929397063,
+  "tfB": {
+   "tf": 8.265625,
+   "LB": 3.69403347988505,
+   "B": {
+    "fuel": 3.7034462312632996,
+    "status": "certified-inner",
+    "iters": 23,
+    "solve_time": 1.0803393019999998,
+    "wall": 2.2638340839985176,
+    "n_solves": 64,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.999992671327615,
+    "gimbal_rate_max_dps": 36.68542538935043,
+    "tilt_max_deg": 14.988767224981704,
+    "ang_acc_ratio": 0.9348408494818924,
+    "replay_dr": 0.00048444672681153335,
+    "replay_dv": 5.806567804114618e-05
+   },
+   "B0": {
+    "fuel": 3.48095613801776,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 1.2372901855910285,
+     "v": 4.954092063211482,
+     "tilt": 0.010131530212664927,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.7031883531780068,
+    "best_start": "B+pert1",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.703188514706625,
+      "wall": 2.820492832997843,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.7031883531780068,
+      "wall": 2.4735502499970607,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.7031885089312198,
+      "wall": 8.36679075000211,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.703188493902104,
+      "wall": 2.0128098749992205,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.765625,
+   "LB": 3.8998130204947756,
+   "B": {
+    "fuel": 3.9058718379311728,
+    "status": "certified-inner",
+    "iters": 26,
+    "solve_time": 1.468514256,
+    "wall": 2.727799500000401,
+    "n_solves": 70,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 7.734469671590051,
+    "gimbal_rate_max_dps": 16.914545773795883,
+    "tilt_max_deg": 9.835526484138976,
+    "ang_acc_ratio": 0.6978474206888199,
+    "replay_dr": 0.00014378713384737175,
+    "replay_dv": 3.0600767162806756e-05
+   },
+   "B0": {
+    "fuel": 3.7709669258468352,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.5514865543931017,
+     "v": 3.071639812702611,
+     "tilt": 0.024035407308109737,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.8999787354504036,
+    "status": "optimal",
+    "tight_min": 1.0000000027979903,
+    "n_lossy": 0,
+    "T_delivered_min": 516.1173253520225,
+    "dir_rate_max": 0.029499309193863232,
+    "dir_acc_max": 0.019720924931191642,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.905706131293826,
+    "best_start": "B+pert2",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.905706131319377,
+      "wall": 1.0522097079992818,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.906816607047091,
+      "wall": 1.057398375000048,
+      "status": "Solved_To_Acceptable_Level"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.905706131293826,
+      "wall": 7.482613416999811,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.9057061312945365,
+      "wall": 1.7519157079987053,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 8.515625,
+   "fuel": 4.082025807627204
+  },
+  "wall": 43.52173590660095
+ },
+ {
+  "name": "S5 numerics in-air",
+  "r0": [
+   0.0,
+   0.0,
+   50.0
+  ],
+  "v0": [
+   4.0,
+   0.0,
+   -5.0
+  ],
+  "A": {
+   "tf": 6.6000000000000005,
+   "fuel": 3.126556180635191,
+   "tight_min": 0.9999999999411343,
+   "n_lossy": 0,
+   "T_delivered_min": 399.9914000138672,
+   "dir_rate_max": 0.0771056233697421,
+   "dir_acc_max": 0.3395348686000681,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": true,
+    "throttle": false,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.012596495
+  },
+  "tf": {
+   "min_3dof": 7.015625,
+   "opt_3dof": 7.3246419943749475,
+   "min_B": 7.515625
+  },
+  "LB_global": 3.4649317089851337,
+  "tfB": {
+   "tf": 7.515625,
+   "LB": 3.511230055436741,
+   "B": {
+    "fuel": 3.527225780680368,
+    "status": "certified-inner",
+    "iters": 27,
+    "solve_time": 1.3325836410000003,
+    "wall": 2.813363625002239,
+    "n_solves": 78,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.99999473992351,
+    "gimbal_rate_max_dps": 34.86133883368347,
+    "tilt_max_deg": 14.456766287594169,
+    "ang_acc_ratio": 0.6709246887059602,
+    "replay_dr": 0.00013229344303474172,
+    "replay_dv": 3.9834140427647326e-05
+   },
+   "B0": {
+    "fuel": 3.4196533952329418,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 2.3465565186340247,
+     "v": 2.2056283312399096,
+     "tilt": 0.05422948664556709,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.5271979416960733,
+    "best_start": "B+pert2",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.5271979418943715,
+      "wall": 2.008509041999787,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.52719794208555,
+      "wall": 1.8896362079976825,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.5271979416960733,
+      "wall": 1.1839572499993665,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.527348021685725,
+      "wall": 1.7486158339997928,
+      "status": "Solved_To_Acceptable_Level"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.015625,
+   "LB": 3.7200233170579793,
+   "B": {
+    "fuel": 3.7320368113250453,
+    "status": "certified-inner",
+    "iters": 19,
+    "solve_time": 1.0873757670000002,
+    "wall": 2.059976167001878,
+    "n_solves": 51,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.999964857412431,
+    "gimbal_rate_max_dps": 30.981374910632454,
+    "tilt_max_deg": 12.21464290368632,
+    "ang_acc_ratio": 0.6709230004765492,
+    "replay_dr": 0.00043770471888876717,
+    "replay_dv": 7.07644746672044e-05
+   },
+   "B0": {
+    "fuel": 3.6921431319281055,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 4.214643236380375,
+     "v": 0.7430039506301436,
+     "tilt": 0.042468170104048124,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.7203055319526754,
+    "status": "optimal",
+    "tight_min": 1.000000009817127,
+    "n_lossy": 0,
+    "T_delivered_min": 637.6765013007381,
+    "dir_rate_max": 0.04452362840627384,
+    "dir_acc_max": 0.024011764933294596,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.731860489057169,
+    "best_start": "B+pert2",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.7337576242481276,
+      "wall": 1.9940053329992224,
+      "status": "Solved_To_Acceptable_Level"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.7337981363198622,
+      "wall": 0.8491492499997548,
+      "status": "Solved_To_Acceptable_Level"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.731860489057169,
+      "wall": 2.1267828330019256,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.733755901445292,
+      "wall": 1.8881682079991151,
+      "status": "Solved_To_Acceptable_Level"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 7.703125,
+   "fuel": 3.833717019334273
+  },
+  "wall": 29.82259511947632
+ },
+ {
+  "name": "S6 (15,-10,60) sinking",
+  "r0": [
+   15.0,
+   -10.0,
+   60.0
+  ],
+  "v0": [
+   0.0,
+   0.0,
+   -6.0
+  ],
+  "A": {
+   "tf": 7.0,
+   "fuel": 3.340444470845185,
+   "tight_min": 0.9999999971731325,
+   "n_lossy": 0,
+   "T_delivered_min": 399.9923368750772,
+   "dir_rate_max": 0.0758286435329175,
+   "dir_acc_max": 0.3449456478699488,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": true,
+    "throttle": false,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.015391963
+  },
+  "tf": {
+   "min_3dof": 7.671875,
+   "opt_3dof": 8.002178230627155,
+   "min_B": 8.109375
+  },
+  "LB_global": 3.7848933431778704,
+  "tfB": {
+   "tf": 8.109375,
+   "LB": 3.801936917864566,
+   "B": {
+    "fuel": 3.8250072529898063,
+    "status": "certified-inner",
+    "iters": 25,
+    "solve_time": 1.2204084880000003,
+    "wall": 2.5177375829989614,
+    "n_solves": 69,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.99999448699599,
+    "gimbal_rate_max_dps": 58.63871071499943,
+    "tilt_max_deg": 16.31724913967353,
+    "ang_acc_ratio": 0.9348406968122145,
+    "replay_dr": 0.0005146687600379945,
+    "replay_dv": 6.921922138774765e-05
+   },
+   "B0": {
+    "fuel": 3.717031148748916,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.8262294544074735,
+     "v": 2.0770246045041074,
+     "tilt": 0.05719453773397427,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.8248691867945865,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.8248692720878523,
+      "wall": 8.583238832998177,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.8248692720921014,
+      "wall": 4.938934458001313,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.824869272092016,
+      "wall": 6.460290625000198,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.8248691867945865,
+      "wall": 1.732728874998429,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.609375,
+   "LB": 4.008278198444955,
+   "B": {
+    "fuel": 4.017865594932431,
+    "status": "certified-inner",
+    "iters": 15,
+    "solve_time": 0.882740697,
+    "wall": 1.6646357089994126,
+    "n_solves": 40,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 8.018131289698843,
+    "gimbal_rate_max_dps": 20.205744968158683,
+    "tilt_max_deg": 8.52691805911673,
+    "ang_acc_ratio": 0.64160154465559,
+    "replay_dr": 0.0003631953769235502,
+    "replay_dv": 5.685895601910805e-05
+   },
+   "B0": {
+    "fuel": 3.9095770569350634,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.8535739721249332,
+     "v": 2.3549498754218754,
+     "tilt": 0.05722140767622642,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 4.0084863173126735,
+    "status": "optimal",
+    "tight_min": 1.000000002933366,
+    "n_lossy": 0,
+    "T_delivered_min": 624.4117815502917,
+    "dir_rate_max": 0.037645247531423065,
+    "dir_acc_max": 0.02511612743232338,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 4.017560812021912,
+    "best_start": "B",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 4.017560812021912,
+      "wall": 2.4045111250015907,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 4.017560812130839,
+      "wall": 2.039051040999766,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 4.017561026215006,
+      "wall": 2.119481999998243,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 4.017560812134235,
+      "wall": 1.469234124997456,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 8.359375,
+   "fuel": 3.979772852920533
+  },
+  "wall": 46.13538980484009
+ },
+ {
+  "name": "S7 (-5,-12,40)",
+  "r0": [
+   -5.0,
+   -12.0,
+   40.0
+  ],
+  "v0": [
+   1.0,
+   3.0,
+   -3.0
+  ],
+  "A": {
+   "tf": 6.0,
+   "fuel": 2.7581604887576674,
+   "tight_min": 0.9999999982490319,
+   "n_lossy": 0,
+   "T_delivered_min": 400.00672967026406,
+   "dir_rate_max": 0.01241704983676308,
+   "dir_acc_max": 0.00024573376937293324,
+   "alpha_available": 0.9587699217948724,
+   "passed": true,
+   "checks": {
+    "tight": true,
+    "throttle": true,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.008836832999999999
+  },
+  "tf": {
+   "min_3dof": 6.38671875,
+   "opt_3dof": 6.6744495081227395,
+   "min_B": 6.94921875
+  },
+  "LB_global": 3.1236489770414266,
+  "tfB": {
+   "tf": 6.94921875,
+   "LB": 3.1635684656580025,
+   "B": {
+    "fuel": 3.1645017368697523,
+    "status": "certified-inner",
+    "iters": 19,
+    "solve_time": 1.099430556,
+    "wall": 2.1497167499983334,
+    "n_solves": 52,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 2.778534719126619,
+    "gimbal_rate_max_dps": 8.584299365142828,
+    "tilt_max_deg": 3.692641376518232,
+    "ang_acc_ratio": 0.22025287032071783,
+    "replay_dr": 1.6774323316781726e-05,
+    "replay_dv": 5.707143403483783e-06
+   },
+   "B0": {
+    "fuel": 3.164035948643786,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.4179622205384541,
+     "v": 0.14426121748907839,
+     "tilt": 0.02598058983201841,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.1644861369612443,
+    "best_start": "B+pert1",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.1644861371286765,
+      "wall": 0.9346708330012916,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.1644861369612443,
+      "wall": 1.8202723750000587,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.164486137124044,
+      "wall": 4.187083707998681,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.1644861371236317,
+      "wall": 1.0752236249973066,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 7.44921875,
+   "LB": 3.3764426406517316,
+   "B": {
+    "fuel": 3.3776238350359193,
+    "status": "certified-inner",
+    "iters": 18,
+    "solve_time": 1.124184846,
+    "wall": 2.1762462080005207,
+    "n_solves": 51,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 1.1811642080866716,
+    "gimbal_rate_max_dps": 4.419388476688328,
+    "tilt_max_deg": 4.098848737075957,
+    "ang_acc_ratio": 0.109321400851683,
+    "replay_dr": 0.00014280901562983584,
+    "replay_dv": 7.987500661757318e-05
+   },
+   "B0": {
+    "fuel": 3.376959779596305,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 0.5087932050579738,
+     "v": 0.13112292302805076,
+     "tilt": 0.01986434575971574,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.3764440627355157,
+    "status": "optimal",
+    "tight_min": 1.0000000094356916,
+    "n_lossy": 0,
+    "T_delivered_min": 573.9731123571844,
+    "dir_rate_max": 0.0029264426707990257,
+    "dir_acc_max": 0.00031372228850534695,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.377102489809431,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.3771573492282556,
+      "wall": 0.7873417500013602,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.377146297757662,
+      "wall": 0.722575792002317,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.3771808004648136,
+      "wall": 2.3723565000000235,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.377102489809431,
+      "wall": 1.4371746249998978,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 7.19921875,
+   "fuel": 3.562216388090505
+  },
+  "wall": 29.16944408416748
+ },
+ {
+  "name": "S8 (20,0,50) drifting",
+  "r0": [
+   20.0,
+   0.0,
+   50.0
+  ],
+  "v0": [
+   -2.0,
+   0.0,
+   -2.0
+  ],
+  "A": {
+   "tf": 7.0,
+   "fuel": 3.1518870483541406,
+   "tight_min": 0.9999999996741399,
+   "n_lossy": 0,
+   "T_delivered_min": 399.98384092524384,
+   "dir_rate_max": 0.04876055645862914,
+   "dir_acc_max": 0.0023875119943853095,
+   "alpha_available": 0.9587699217948724,
+   "passed": false,
+   "checks": {
+    "tight": true,
+    "throttle": false,
+    "ang_acc": 1.0
+   },
+   "solve_time": 0.012751961
+  },
+  "tf": {
+   "min_3dof": 7.15234375,
+   "opt_3dof": 7.49580259812358,
+   "min_B": 7.96484375
+  },
+  "LB_global": 3.496335241546049,
+  "tfB": {
+   "tf": 7.96484375,
+   "LB": 3.5579242524693626,
+   "B": {
+    "fuel": 3.56678199781868,
+    "status": "certified-inner",
+    "iters": 22,
+    "solve_time": 1.0768345079999997,
+    "wall": 2.2213562079996336,
+    "n_solves": 61,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 9.999741896765775,
+    "gimbal_rate_max_dps": 43.82561740501789,
+    "tilt_max_deg": 8.533621629536643,
+    "ang_acc_ratio": 0.6709079039102386,
+    "replay_dr": 0.00023554958147074633,
+    "replay_dv": 3.2420163503543236e-05
+   },
+   "B0": {
+    "fuel": 3.493182905034672,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 1.2827664540930222e-07,
+     "v": 1.548416372007386,
+     "tilt": 0.056837268401633965,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": Infinity,
+    "status": "infeasible"
+   },
+   "D": {
+    "best": 3.566658879855993,
+    "best_start": "3dof",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.5666588798560355,
+      "wall": 1.7963598749993253,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.5666588798560213,
+      "wall": 1.1561982499988517,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.5666588798560923,
+      "wall": 1.601254457997129,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.566658879855993,
+      "wall": 3.6802588750033465,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "tfB+0.5": {
+   "tf": 8.46484375,
+   "LB": 3.767635255063837,
+   "B": {
+    "fuel": 3.7721744702176494,
+    "status": "certified-inner",
+    "iters": 10,
+    "solve_time": 0.5370418100000002,
+    "wall": 1.1216276669983927,
+    "n_solves": 32,
+    "cert": true,
+    "cert_detail": {
+     "throttle": true,
+     "gimbal": true,
+     "gimbal_rate": true,
+     "thrust_rate": true,
+     "tilt": true,
+     "state": true,
+     "terminal": true,
+     "replay": true
+    },
+    "gimbal_max_deg": 6.2230712560827115,
+    "gimbal_rate_max_dps": 18.93741000540987,
+    "tilt_max_deg": 6.624744688999482,
+    "ang_acc_ratio": 0.4188241308524744,
+    "replay_dr": 0.0001334765456851166,
+    "replay_dv": 1.1882967910539415e-05
+   },
+   "B0": {
+    "fuel": 3.768228360292099,
+    "status": "infeasible-best-effort",
+    "defect": {
+     "r": 1.1668834039977969,
+     "v": 0.08995476167431447,
+     "tilt": 0.04847200269289536,
+     "state": 0.0
+    }
+   },
+   "C": {
+    "fuel": 3.7677515020775587,
+    "status": "optimal",
+    "tight_min": 1.0000000008486642,
+    "n_lossy": 0,
+    "T_delivered_min": 532.0200960116609,
+    "dir_rate_max": 0.02447481717997791,
+    "dir_acc_max": 0.01250543368966522,
+    "alpha_available": 0.9587699217948724,
+    "passed": true
+   },
+   "D": {
+    "best": 3.7719925833816177,
+    "best_start": "B+pert1",
+    "runs": [
+     {
+      "name": "B",
+      "ok": true,
+      "fuel": 3.7725205151452883,
+      "wall": 0.9220710829977179,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert1",
+      "ok": true,
+      "fuel": 3.7719925833816177,
+      "wall": 3.4504077909987245,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "B+pert2",
+      "ok": true,
+      "fuel": 3.77206887875208,
+      "wall": 4.4478214160008065,
+      "status": "Solve_Succeeded"
+     },
+     {
+      "name": "3dof",
+      "ok": true,
+      "fuel": 3.772525756706102,
+      "wall": 1.094445791997714,
+      "status": "Solve_Succeeded"
+     }
+    ]
+   }
+  },
+  "C_own": {
+   "tf": 8.21484375,
+   "fuel": 3.8599430534372488
+  },
+  "wall": 32.96723413467407
+ }
+]

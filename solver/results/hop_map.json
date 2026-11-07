@@ -1,0 +1,382 @@
+[
+ {
+  "v0z": 5.0,
+  "d": 0.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 455.6668408871617,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5362325289937928,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 7.253142494098283e-09,
+   "v": 1.0762461232943551e-11,
+   "tilt": 7.08888423604196e-12,
+   "state": 1.122018487276011e-08
+  },
+  "B_fuel": 1.5362325620429687,
+  "D_feasible": true,
+  "D_fuel": 1.5362325187730903
+ },
+ {
+  "v0z": 5.0,
+  "d": 2.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98657944343944,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5381247043086432,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 9.614714818282658e-11,
+   "v": 3.993583762337556e-12,
+   "tilt": 1.5540376270260332e-06,
+   "state": 0.0
+  },
+  "B_fuel": 1.5448707614012278,
+  "D_feasible": true,
+  "D_fuel": 1.544769674810368
+ },
+ {
+  "v0z": 5.0,
+  "d": 4.0,
+  "A_status": "optimal_inaccurate",
+  "A_Tdel_min": 399.98671713217635,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5438070216057724,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 2.0804444232448352e-11,
+   "v": 2.5614779742913015e-05,
+   "tilt": 3.596911830739224e-14,
+   "state": 0.0
+  },
+  "B_fuel": 1.5759857439361724,
+  "D_feasible": true,
+  "D_fuel": 1.5747933802222036
+ },
+ {
+  "v0z": 5.0,
+  "d": 6.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98682592367845,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5533009860785967,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 1.9446215297800727e-08,
+   "v": 6.548295307064814e-09,
+   "tilt": 0.05443100372035989,
+   "state": 0.0
+  },
+  "B_fuel": 1.629628041740773,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 5.5,
+  "d": 0.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 438.8872814965824,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5140041553945736,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 8.383000537763146e-10,
+   "v": 2.1548085149318982e-11,
+   "tilt": 7.896507156562605e-12,
+   "state": 2.5331164767262417e-09
+  },
+  "B_fuel": 1.5140060405427818,
+  "D_feasible": true,
+  "D_fuel": 1.5140041552707544
+ },
+ {
+  "v0z": 5.5,
+  "d": 2.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98620599773574,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5160035324771144,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 1.838171046930694e-10,
+   "v": 2.7904346484548564e-11,
+   "tilt": 9.932071846682242e-07,
+   "state": 0.0
+  },
+  "B_fuel": 1.5237230802435704,
+  "D_feasible": true,
+  "D_fuel": 1.523582897281841
+ },
+ {
+  "v0z": 5.5,
+  "d": 4.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9860170386106,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.522006903252148,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 2.7976820684552217e-10,
+   "v": 2.9295198034887635e-05,
+   "tilt": 1.8526269571896295e-12,
+   "state": 0.0
+  },
+  "B_fuel": 1.5603581515654952,
+  "D_feasible": true,
+  "D_fuel": 1.5587202680802648
+ },
+ {
+  "v0z": 5.5,
+  "d": 6.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9886860045745,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5320421143683092,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 6.113510992860095e-07,
+   "v": 3.817090725628254e-07,
+   "tilt": 0.10337643759666192,
+   "state": 0.0
+  },
+  "B_fuel": 1.6017937828463005,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 6.0,
+  "d": 0.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 424.65312341867,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.491769500493902,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 1.9184653865522705e-12,
+   "v": 7.858602657506708e-12,
+   "tilt": 1.00204648878528e-23,
+   "state": 1.691472982995994e-11
+  },
+  "B_fuel": 1.4917694330658406,
+  "D_feasible": true,
+  "D_fuel": 1.4917694945925888
+ },
+ {
+  "v0z": 6.0,
+  "d": 2.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9851316454668,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.493898613855336,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 1.1025158586499967e-10,
+   "v": 7.372984861395735e-12,
+   "tilt": 7.607691766290781e-07,
+   "state": 0.0
+  },
+  "B_fuel": 1.5029963239688726,
+  "D_feasible": true,
+  "D_fuel": 1.5028271199076073
+ },
+ {
+  "v0z": 6.0,
+  "d": 4.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9856191332914,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5002930119217837,
+  "B": "certified-inner",
+  "B_defect": {
+   "r": 1.149354516445517e-09,
+   "v": 7.722980175129931e-07,
+   "tilt": 1.4970468540229733e-12,
+   "state": 0.0
+  },
+  "B_fuel": 1.5510448144140696,
+  "D_feasible": true,
+  "D_fuel": 1.5473023450951047
+ },
+ {
+  "v0z": 6.0,
+  "d": 6.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9875670654466,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.5109889308242401,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 5.597043767320674e-07,
+   "v": 6.382868595388028e-07,
+   "tilt": 0.19010506452063158,
+   "state": 0.0
+  },
+  "B_fuel": 1.5672104826558098,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 6.5,
+  "d": 0.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 412.3020977650486,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.4882155613123302,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 2.0447288306968403e-10,
+   "v": 0.5542054397997518,
+   "tilt": 1.00204648878528e-23,
+   "state": 0.0
+  },
+  "B_fuel": 1.4448689837089148,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 6.5,
+  "d": 2.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98354376488356,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.4888025759425432,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 8.605521886892364e-08,
+   "v": 0.2649520772927045,
+   "tilt": 1.5877973531246233e-08,
+   "state": 0.0
+  },
+  "B_fuel": 1.4837286103902727,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 6.5,
+  "d": 4.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98654393993115,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.491506391289505,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 7.073916185463744e-06,
+   "v": 0.312102986047337,
+   "tilt": 0.04692837561514818,
+   "state": 0.0
+  },
+  "B_fuel": 1.5130992757930954,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 6.5,
+  "d": 6.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.98653387761715,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.4978136160101911,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 3.7378679853708146e-06,
+   "v": 0.5152238162971085,
+   "tilt": 0.21580704317968186,
+   "state": 0.0
+  },
+  "B_fuel": 1.524792389303741,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 7.0,
+  "d": 0.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 396.144594381837,
+  "A_lossy": 1,
+  "relax3": "optimal",
+  "relax3_fuel": 1.4887980828052747,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 1.0742837730504107e-09,
+   "v": 1.3592204602448987,
+   "tilt": 1.00204648878528e-23,
+   "state": 0.0
+  },
+  "B_fuel": 1.3867714849447168,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 7.0,
+  "d": 2.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9820372186792,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.489400259652058,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 2.956583603110217e-07,
+   "v": 0.8772876409363141,
+   "tilt": 1.9671856886343015e-08,
+   "state": 5.306117097740735e-10
+  },
+  "B_fuel": 1.4489807894554332,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 7.0,
+  "d": 4.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9853966729554,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.491922293160087,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 8.443175959458503e-06,
+   "v": 0.9007993667883247,
+   "tilt": 0.04758207756752599,
+   "state": 0.0
+  },
+  "B_fuel": 1.46824152094905,
+  "D_feasible": false,
+  "D_fuel": null
+ },
+ {
+  "v0z": 7.0,
+  "d": 6.0,
+  "A_status": "optimal",
+  "A_Tdel_min": 399.9852998298909,
+  "A_lossy": 0,
+  "relax3": "optimal",
+  "relax3_fuel": 1.49709694899542,
+  "B": "infeasible-best-effort",
+  "B_defect": {
+   "r": 1.0715458083039548e-06,
+   "v": 1.1418447284137614,
+   "tilt": 0.23373303487242875,
+   "state": 0.0
+  },
+  "B_fuel": 1.4756014097223158,
+  "D_feasible": false,
+  "D_fuel": null
+ }
+]

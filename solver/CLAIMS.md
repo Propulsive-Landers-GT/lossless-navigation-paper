@@ -40,8 +40,9 @@ and does not prove" at the end).
   problem's merit decreases; every accepted iterate is an exact inner solution, so it is flyable whenever its
   terminal defect is zero. This is a property of the acceptance rule, not a theorem about convergence.
 - **SCvx convergence to a KKT point of the 6DOF problem: NOT claimed.** Observed in 8/8 open-loop scenarios
-  (B within 0.04% of the best IPOPT multistart optimum), but B can stall at an infeasible point near the edge of the
-  feasible set (hop v0z = 5 m/s, d = 6 m: D finds a plan, B does not; see RESULTS.md).
+  (B within 0.012% of the best IPOPT multistart optimum) and 20/20 hop cells (B and IPOPT agree on feasibility).
+  An early run without the initial-gimbal condition showed one stall at an infeasible stationary point of the merit
+  where IPOPT found a plan (`results/hop_map_v1.json`), so stalls near the feasibility edge are possible.
 - **Mass fixed point** (inner problems use the mass history of the previous iterate): no convergence proof; the
   residual is measured by the open-loop replay (`replay_dm` ≈ 1e-5 kg, terminal error < 1 mm).
 - **Closed-loop robustness** (tracking controller + 1 Hz replans): Monte Carlo evidence only.

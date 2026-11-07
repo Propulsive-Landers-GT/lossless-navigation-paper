@@ -23,12 +23,13 @@ problems, the same kind of SOCP Clarabel already solves in `rust_lossless`:
 
 What it achieved here (details in RESULTS.md):
 
-- Every plan B returned passed the certificate.
-- B is within **0.04 %** of the best nonconvex 6DOF optimum IPOPT found (multistart), and within 0.03–1.3 % of a
+- Every plan B flew passed the certificate.
+- B is within **0.012 %** of the best nonconvex 6DOF optimum IPOPT found (multistart), and within 0.03–0.85 % of a
   rigorous 3DOF lower bound.
-- In the closed-loop Monte Carlo, B landed in every run.
+- In the closed-loop Monte Carlo, B landed in 40/40 in-air descents (median touchdown 0.20 m/s, 3 cm) and 29/30 pad
+  hops.
 - The current flight LCvx (baseline A) asks for thrust below the 400 N minimum and for direction changes the gimbal
-  cannot produce, and it lands hard in closed loop.
+  cannot produce. In closed loop it succeeds in 28 % of in-air descents and in no pad hop.
 
 ## Why we need this: what is wrong with the current guidance
 
@@ -153,9 +154,10 @@ do this during the 10 s hover, then fly a fixed absolute touchdown time with shr
 | failure | symptom | handling |
 |---|---|---|
 | No flyable plan exists (e.g. pad hops with too much upward speed; the 3DOF relaxation wrongly claims feasibility, see the hop map) | `status = infeasible-best-effort`, certificate fails | Do not fly it. The returned plan minimises the landing defect (a "least-bad" plan) and can serve as an abort/divert reference. |
-| SCvx stalls near the feasibility edge (seen once: hop v0z = 5 m/s, d = 6 m, where IPOPT found a plan) | not certified after `max_iter` | Retry from the 3DOF warm start, extend t_f, or keep the previous certified plan. |
+| SCvx stalls near the feasibility edge (seen once in an early run without the initial-gimbal condition; not seen in the final runs) | not certified after `max_iter` | Retry from the 3DOF warm start, extend t_f, or keep the previous certified plan. |
 | A replan becomes infeasible after tracking errors | the shrinking-horizon problem at the remaining t_f is not certified | Continue iterating, then extend t_f by 0.5 s / 1.0 s. If that still fails, keep the last certified plan, which is still flyable. |
 | Plant differs from the model (mass properties, Isp, wind) | tracking errors | Handled by the tracking controller plus replans. The plan certificate covers only the planning model. |
+| Hop plans skimming the altitude floor (no glide slope for hops; 1/30 hops touched down early, tilted 5.2°) | early touchdown | Add a clearance or glide-slope corridor near the target for hops. |
 | Symmetric problems (pure vertical drop at too short a t_f) | B stays vertical; a tilted dive would waste vertical impulse | Choose t_f with `min_tf_B` (bisection on certified status). |
 
 ## How it relates to the theory (one paragraph per result)

@@ -108,7 +108,9 @@ def mc(scn):
     if 'B' in {r['method'] for r in d}:
         rb = [r for r in d if r['method'] == 'B' and 'speed' in r]
         print(f"\nB: t_f extensions used in {sum(r['tf_ext'] > 0 for r in rb)}/{len(rb)} runs (mean {np.mean([r['tf_ext'] for r in rb]):.2f} s); "
-              f"first plan certified in {sum(r['cert_first'] for r in rb)}/{len(rb)}; min altitude margin {min(r['min_alt_margin'] for r in rb):.3f} m")
+              f"first plan certified in {sum(r['cert_first'] for r in rb)}/{len(rb)}; min altitude margin {min(r['min_alt_margin'] for r in rb):.3f} m; "
+              f"replans needing a fallback (continuation or t_f extension): {sum(r.get('n_fallback', 0) for r in rb)}/{sum(r['n_replans'] - 1 for r in rb)}; "
+              f"mean fuel overrun at t_f vs first plan {np.mean([100 * (r['fuel_tf'] / r['plan_fuel0'] - 1) for r in rb]):+.1f}%")
     fig, ax = plt.subplots(figsize=(5.5, 3.6))
     for m in ['A', 'C', 'B']:
         rs = [r for r in d if r['method'] == m and 'speed' in r]
@@ -153,7 +155,7 @@ def example():
     veh, cfg = default_vehicle(), default_config()
     r0, v0, tgt = np.array([10, 20, 50.]), np.zeros(3), np.array([0, 0, 1.5])
     pA = tf_search_A(r0, v0, 80.0, tgt, veh)
-    pB = AACG(veh, cfg).plan(r0, v0, 80.0, np.eye(3), np.zeros(3), tgt, 8.33)
+    pB = AACG(veh, cfg).plan(r0, v0, 80.0, np.eye(3), np.zeros(3), tgt, 8.40)
     fig, axs = plt.subplots(3, 1, figsize=(7, 6.2), sharex=True)
     tA = pA.t[:-1]
     TA = pA.T
@@ -178,7 +180,7 @@ def example():
     axs[2].set_ylabel('gimbal [deg]')
     axs[2].set_xlabel('time [s]')
     axs[2].legend(frameon=False, fontsize=8)
-    axs[0].set_title('Scenario S2 (10, 20, 50) m: A demands thrust-direction jumps; B plans a flyable attitude', loc='left')
+    axs[0].set_title('S2, start (10, 20, 50) m: plan profiles of A and B', loc='left')
     fig.tight_layout()
     fig.savefig(os.path.join(RES, 'example_S2_profiles.png'), dpi=150)
 

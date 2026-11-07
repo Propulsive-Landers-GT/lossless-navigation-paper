@@ -64,7 +64,7 @@ the Rust solver's own time. Measured on the development Mac, under a load averag
 | one inner or step SOCP (N = 35) | 10–25 ms | 30–100 ms |
 | first plan (warm start + ~15–30 iterations, 40–90 SOCPs) | 0.5–1.3 s | 2–5 s, **done during the 10 s hover** |
 | warm-started replan, 4 iterations (≈ 9 SOCPs) | 0.1–0.25 s | 0.3–0.9 s |
-| replan that needs continuation or a t_f extension (≈ 30–60 SOCPs) | 0.5–1.5 s | 2–5 s, **over budget** |
+| replan that needs continuation or a t_f extension (≈ 30–60 SOCPs; 49 % of in-air replans) | 0.5–1.5 s | 2–5 s, **over budget** |
 | certificate (fine grid + RK4 replay, 1120 steps) | 0.15 s in Python | < 5 ms in Rust |
 | attitude propagation + sensitivities + quadrature matrices | ~0.1 s in Python | < 5 ms in Rust |
 
@@ -82,7 +82,7 @@ How to stay inside 1 Hz:
 5. **Stop replanning at t_go < 1.5 s** (implemented). The final second is pure tracking.
 
 On the measurements above, a warm-started replan with a 4-iteration budget fits 1 Hz on a Jetson-class CPU with
-margin. The rare fallback replans (about 15 % of replans in the Monte Carlo) need the time budget in point 1.
+margin. Fallback replans are not rare: 49 % of in-air replans and 27 % of hop replans needed iterations beyond the 4-iteration budget or a t_f extension. They need the time budget in point 1. The measured mean solver time per replan was 0.37 s (in-air) and 0.19 s (hop), with a maximum of 1.33 s.
 
 ## 4. Tracking controller
 
