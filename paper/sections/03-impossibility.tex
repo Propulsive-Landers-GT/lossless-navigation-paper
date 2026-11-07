@@ -359,28 +359,35 @@ regime (H-f) $\varepsilon\bar\omega^2<\rho_1\cos\delta^*/m_0$ (strict) and (H-$\
 $\cl\Ft$, and hence $\Ft$, is nonconvex, with no state constraints (proof sketch with the closure step in \cref{app:other}).\Srep
 \end{theorem}
 \Cref{thm:E0} does not cover the realistic case: an upright terminal attitude with an altitude constraint. That case is
-settled at one short horizon by a computer-assisted theorem, certified in exact arithmetic.
+settled at four horizons by computer-assisted theorems certified in exact arithmetic: $t_f=1$ and $2$~s without any tilt cap, and
+$t_f=3$ and $5$~s in the tilt-capped class.
 
-\begin{theorem}[Theorem TVC-1: pure TVC, upright at rest, $r_z\ge0$; computer-assisted {\pnote{math/06; math/verify-tvc-report.md}}]\label{thm:TVC1}
-% CLAIMS: TVC-1, TVC-1q, TVC-B, TVC-1R, TVC-L (B6-TVC-up) -- PROVED, computer-assisted; CERTIFIED in exact arithmetic by verify-tvc subject to repairs W1, W2 (carried out) | Lean: none
+\begin{theorem}[Theorems TVC-1, TVC-2, TVC-3, TVC-5: pure TVC, upright at rest, $r_z\ge0$; computer-assisted {\pnote{math/06 \S3--4, \S5.7--5.9; math/verify-tvc-report.md \S\S1--11}}]\label{thm:TVC1}
+% CLAIMS: TVC-1, TVC-1q, TVC-B, TVC-1R, TVC-L (B6-TVC-up), TVC-2, TVC-3, TVC-5 -- PROVED, computer-assisted; all CERTIFIED in exact arithmetic by verify-tvc (TVC-1 after repairs W1-W3; TVC-2/3/5 by an independent Arb Riccati recursion); adversary-6dof: TVC-2 survives | Lean: none
 Model PT (pitch and yaw torque produced only by the gimbal), with constant mass and constant $\varepsilon=J_t/(mL)$,
 axisymmetric inertia with the gimbal pivot on the body axis (the vehicle's centimetre-scale pivot offset and products of inertia are
 neglected), and \emph{unlimited gimbal rate}. Use the GTPL wet constants ($m=79.88$~kg, $\rho_1=400$~N, $\rho_2=1000$~N,
 $J_t=63.6$~kg\,m$^2$, $L=0.589$~m, $\delta=15^\circ$). Start from $b(0)=\ez$, $\Omega(0)=0$; land at rest and upright,
-$r(t_f)=v(t_f)=0$, $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$; impose $r_z\ge0$ and a glide slope along the trajectory. Take $t_f=1$~s and the
-dive-then-brake face with $s^*=0.25$~s. Then $\FX$ is nonconvex: an explicit witness pair $\theta_w,R_\pi\theta_w\in\FX$ has a midpoint
-$\theta_m\notin\Ft$. The certified margins (witness gain minus the bound on every zero-lateral competitor, in metres of $\ell$) and
-distances are:
-\begin{center}\small
-\begin{tabular}{@{}lcc@{}}\toprule
-gimbal / competitor class & margin $G_w-U_{\rm tot}$ & $\dist(\theta_m,\Ft)\ge$ \\\midrule
-cone $15^\circ$, roll held & $9.96\times10^{-6}$~m (13.7\%) & $9.63\times10^{-6}$~m\\
-Cardan box $\pm15^\circ$ (corner $21.09^\circ$), roll held & $7.57\times10^{-6}$~m (5.4\%) & $7.34\times10^{-6}$~m\\
-cone $15^\circ$, free roll via RCS ($|\tau_3|\le3$~N\,m) & $2.90\times10^{-6}$~m (4.0\%) & $2.81\times10^{-6}$~m\\\bottomrule
+$r(t_f)=v(t_f)=0$, $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$; and impose $r_z\ge0$ along the trajectory. Then, on the dive-then-brake face with
+switch time $s^*$, an explicit witness pair $\theta_w,R_\pi\theta_w$ lies in the constrained feasible set while its midpoint $\theta_m$
+does not, so that set is nonconvex. This is certified in the following cases (margin = witness gain minus the bound on every
+zero-lateral competitor, in metres of $\ell$):
+\begin{center}\footnotesize
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{0.11\linewidth}>{\raggedright\arraybackslash}p{0.2\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}>{\raggedright\arraybackslash}p{0.17\linewidth}l@{}}\toprule
+& $t_f$, $s^*$ & class & gimbal / competitors & margin $G_w-U_{\rm tot}$ & distance $\ge$ \\\midrule
+TVC-1 & 1~s, 0.25~s & uncapped, $r_z\ge0$ + glide slope & cone $15^\circ$, roll held & $9.96\times10^{-6}$~m (13.7\%) & $9.63\times10^{-6}$~m\\
+TVC-B & 1~s, 0.25~s & same & Cardan box $\pm15^\circ$, roll held & $7.57\times10^{-6}$~m (5.4\%) & $7.34\times10^{-6}$~m\\
+TVC-1R & 1~s, 0.25~s & same & cone, free roll via RCS & $2.90\times10^{-6}$~m (4.0\%) & $2.81\times10^{-6}$~m\\
+TVC-2 & 2~s, 0.5~s & uncapped, $r_z\ge0$ + glide slope & cone, roll held & $1.09\times10^{-4}$~m (8.06\%) & $9.2\times10^{-5}$~m\\
+TVC-3 & 3~s, 0.5~s & tilt cap $80^\circ$ or $30^\circ$, $r_z\ge0$ & cone, roll held & $5.65\times10^{-5}$~m (4.16\%) & $4.78\times10^{-5}$~m\\
+TVC-5 & 5~s, 0.5~s & tilt cap $80^\circ$ or $30^\circ$, $r_z\ge0$ & cone, roll held & $2.7\times10^{-6}$~m (0.20\%) & $2.3\times10^{-6}$~m\\\bottomrule
 \end{tabular}
 \end{center}
-By \cref{thm:A}, no uniform convex relaxation with affine data entry is lossless for this pure-TVC landing problem at this
-horizon. (The margins are certified in exact arithmetic, except that the localization step functions and the physical constants enter
+Here ``distance'' is $\dist(\theta_m,F_{t_f})$ to the unconstrained (uncapped rows) or capped (capped rows) feasible set. The glide
+slope is part of the claim for TVC-1 and TVC-2, with $\tan\gamma_{gs}$ up to the witnesses' minimum glide ratio, but not for
+TVC-3 and TVC-5. The capped rows concern a different problem class, $b_z\ge\cos\theta_{\max}$ imposed on every trajectory.
+Nonconvexity of the capped feasible set neither implies nor is implied by nonconvexity of the uncapped one. By \cref{thm:A}, no
+uniform convex relaxation with affine data entry is lossless for the corresponding pure-TVC landing problem at these horizons. (The margins are certified in exact arithmetic, except that the localization step functions and the physical constants enter
 as floating-point inputs, independently validated with margins many orders of magnitude above rounding error. The distance
 bounds were recomputed by the referee but evaluated in floating point.)\stag{MidnightBlue}{proved, computer-assisted; certified in exact arithmetic by an independent referee}
 \end{theorem}
@@ -391,12 +398,18 @@ which is exactly the condition $\theta_m$ satisfies. The torque bound enters thr
 two lateral-moment conditions through Finsler multipliers. The quadratic form is a sum over the two components of $h$, so the
 vector bound equals the scalar bound. Planarity and rigidity are never used, and coning, loops and two-lobe paths are covered
 automatically.
-The resulting infinite-dimensional inequality is reduced to a $2N\times2N$ SDP ($N=60$ or $120$). The reduction uses a piecewise-linear
-cell basis, with Wirtinger-type cell-local remainders and a localization lemma that shrinks the a~priori speed and tilt bounds
-for competitors with nonnegative gain. The witness is an explicit ordinary control, a fast $\pm\delta$ bang-bang realization with
+For $t_f=1$~s the resulting infinite-dimensional inequality is reduced to a $2N\times2N$ SDP ($N=60$ or $120$). The reduction uses a
+piecewise-linear cell basis, with Wirtinger-type cell-local remainders and a localization lemma that shrinks the a~priori speed and
+tilt bounds for competitors with nonnegative gain. For $t_f=2,3,5$~s the same quadratic form is certified negative by a backward
+Riccati (dynamic-programming) recursion over the cells, which is $O(N)$ and handles up to 1500 cells. The bootstrap localization is
+iterated to a fixed point. The multipliers are generated by coarse SDPs, which are not part of the proof; each final multiplier
+is checked by the recursion. The witness is an explicit ordinary control, a fast $\pm\delta$ bang-bang realization with
 exact terminal correction, whose gain $G_w$ is evaluated in interval (Arb) arithmetic.
-The independent referee rebuilt every certificate matrix by exact polynomial integration (rationals and Arb balls) and decided
-definiteness by exact integer Sylvester minors. Three repairs were made, and all were carried out and verified:
+For $t_f=1$~s the independent referee rebuilt every certificate matrix by exact polynomial integration (rationals and Arb balls)
+and decided definiteness by exact integer Sylvester minors. For $t_f=2,3,5$~s the referee re-ran each recursion independently in Arb
+(256 bits) with exactly integrated stage data, certifying every pivot; the error radii are about $10^7$ times below the thinnest
+margin. A separate adversarial review found that TVC-2 survives. For $t_f=1$~s three repairs were made, and all were carried out and
+verified:
 (W1) the originally stored witness was a relaxed (chattering) control and was replaced by the explicit bang-bang one;
 (W2) the gyroscopic weight in the free-roll case was replaced by a rigorous upper weight;
 (W3) the cell-local remainder constants now use the true supremum rather than a maximum over quadrature nodes.
@@ -404,11 +417,14 @@ definiteness by exact integer Sylvester minors. Three repairs were made, and all
 
 \paragraph{Scope, honestly.}
 \begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \emph{The gap is thin.} The certified distance is about $10^{-5}$~m, for the same reason as \cref{rem:thin}.
+\item \emph{The gap is thin.} The certified distances are $10^{-6}$--$10^{-4}$~m, for the same reason as \cref{rem:thin}. TVC-5's margin
+is only 0.20\%, but it is rigorous.
 \item \emph{Unlimited gimbal rate is essential to the certificate.} The bang-bang witness needs sub-millisecond gimbal reversals.
 Against a $100^\circ$/s gimbal-rate limit, the deflection credit in the unlimited-rate baseline is unattainable.
 \item \emph{Constant mass only.} Mass depletion makes $\varepsilon$ time-varying and moves the baseline by more than the gap.
-\item \emph{Horizon.} Only $t_f=1$~s is certified.
+\item \emph{Horizons and classes.} Without a tilt cap, $t_f=1$ and $2$~s are certified. With a tilt cap, $t_f=3$ and $5$~s are certified.
+The cone gimbal with roll held is certified at every one of these horizons, but the box gimbal and free-roll competitors only at
+$t_f=1$~s. At $t_f=7$~s (capped) the certificate fails by 4.8\%.
 \end{itemize}
 \emph{The fully realistic model, numerically.} The model here combines a $\pm15^\circ$ Cardan box gimbal rate-limited to $100^\circ$/s
 from centred, mass depletion, free roll, $r_z\ge0$ and an upright-at-rest touchdown. In it, the zero-lateral maximum of the
@@ -424,14 +440,12 @@ These are local solutions of discretized NLPs, not certificates. The status of t
 
 \emph{Open.}
 \begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \emph{A certificate for $t_f\ge2$~s.} The structural obstacle is that throttle near $s^*$, which is free to first order, shifts the
-lateral initial velocity. This costs a factor of about 300 in the current majorant. A possible route is a penalty localized
-relative to $G_w$, combined with a state-space Riccati certificate.
+\item \emph{Longer horizons.} Open: $t_f=7$~s in the capped class (fails by 4.8\%); uncapped $t_f>2.3$~s, which needs a lemma excluding
+tumbling competitors, because the a~priori tilt bound no longer keeps the body above the horizontal; and the box gimbal and
+free-roll competitors beyond $t_f=1$~s.
 \item \emph{A rate-limited certificate,} adding the jerk constraint implied by the gimbal-rate limit with its own S-procedure
 multiplier.
 \item \emph{Mass depletion; free final time} (covered only conditionally, via \cref{lem:LS}).
-\item \emph{A lemma excluding tumbling competitors} for uncapped horizons $t_f>2.3$~s, where the a~priori tilt bound no longer keeps the
-body above the horizontal.
 \end{itemize}
 Other evidence for pure TVC: a torque-coupled hop instance has a 1.74~m hole in its landing set (\cref{sec:numerics}), and with
 $\rho_1=0$ pure TVC is nonconvex in a strong-torque, small-gimbal asymptotic regime \pnote{P0-TVC}.

@@ -32,10 +32,11 @@ of a rigid body.
 \subsection{Open problems}
 \begin{enumerate}[leftmargin=*,itemsep=3pt]
 \item \emph{Pure TVC, upright landing at rest, with altitude constraint.} This is the actual small-lander case. It is proved, computer-assisted and
-certified in exact arithmetic, at $t_f=1$~s with constant mass and unlimited gimbal rate (\cref{thm:TVC1}). The fully realistic model
-(rate-limited gimbal, mass depletion, free roll) is nonconvex numerically at every horizon tried ($t_f=3$--$7$~s, gaps
-$0.5$--$3.3$~cm; a 1.7~m hole at hop data), but a certificate for $t_f\ge2$~s, with a gimbal-rate limit, or with mass depletion
-remains open.
+certified in exact arithmetic, with constant mass and unlimited gimbal rate, at $t_f=1,2$~s without a tilt cap and at $t_f=3,5$~s in
+the tilt-capped class (\cref{thm:TVC1}). The fully realistic model (rate-limited gimbal, mass depletion, free roll) is nonconvex
+numerically at every horizon tried ($t_f=3$--$7$~s, gaps $0.5$--$3.3$~cm; a 1.7~m hole at hop data). Still open: certificates with a
+gimbal-rate limit, with mass depletion, at $t_f=7$~s capped (fails by 4.8\%), for uncapped $t_f>2.3$~s (tumbling lemma), for the box
+gimbal and free roll beyond $t_f=1$~s, and with free final time.
 \item \emph{Rigor at realistic constants.} For our vehicle, Lemma S (hard soft landing, per instance) and the hop-instance hole
 are numerical. The available quadratic, Wirtinger and S-procedure certificates are provably too loose. A two-dimensional
 rigidity argument or validated branch-and-bound is needed. The $\rho_1=0$ landing-set result with altitude constraint is open at

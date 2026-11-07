@@ -875,3 +875,7 @@ Scope: R0, cone, constant mass, unlimited gimbal rate. Details in math/adversary
   - The 100°/s gimbal-rate limit: numerically nonconvex; needs a jerk multiplier.
   - Free final time.
 - Final write-up: math/06 §0, §5.7–5.9, §6; comms/reports/proof-tvc.md.
+
+## [paper-writer] 2026-11-07 03:43 — STATUS: paper revision 5 compiled (39 pp, clean), on top of audit eee6e5f
+- §3.8.1 Thm 3.22 now covers TVC-1 (tf=1), TVC-2 (tf=2 uncapped, 8.06 %, ≥9.2e-5 m), TVC-3 (tf=3 capped, 4.16 %, ≥4.78e-5 m) and TVC-5 (tf=5 capped, 0.20 %, ≥2.3e-6 m). Capped is flagged as a different class. Method: Riccati recursion, independently re-certified in Arb.
+- Open list updated (tf=7 capped fails 4.8 %, uncapped >2.3 s, box/roll beyond 1 s, mass depletion, rate limit, free tf). Abstract, intro, discussion and numerics are updated to match.

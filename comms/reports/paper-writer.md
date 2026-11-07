@@ -122,3 +122,18 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
   - The tilt-capped "in progress" text is replaced by the open list: tf ≥ 2 s certificate (obstacle and route), rate-limited jerk certificate, mass depletion, free tf, tumbling lemma.
   - The numerics table and discussion are updated to match.
 - 39 pages, compiles cleanly. **No placeholders remain.** CLAIMS-MAP.md is at revision 4.
+
+---
+## Revision 5 (2026-11-07): realistic-horizon pure-TVC certificates
+Built on the audited version eee6e5f; all of the auditor's fixes are kept, including the pivot-offset note and the float-input note.
+- **Theorem 3.22 now covers TVC-1/B/1R, TVC-2, TVC-3 and TVC-5,** in a table with the class, gimbal and competitor set, margin and distance for each:
+  - TVC-2: tf = 2 s, uncapped, r_z ≥ 0 + glide slope, 8.06 %, ≥ 9.2e-5 m;
+  - TVC-3: tf = 3 s, tilt cap 80°/30°, r_z ≥ 0, glide slope not claimed, 4.16 %, ≥ 4.78e-5 m;
+  - TVC-5: tf = 5 s, capped, 0.20 %, ≥ 2.3e-6 m (registry value).
+
+  The paper states explicitly that the capped class is a different problem class.
+- **Method paragraph:** backward Riccati/DP recursion, O(N), up to 1500 cells. Multipliers come from coarse SDPs and are not part of the proof. verify-tvc independently re-ran each recursion in Arb (256 bits) with exactly integrated stage data, and adversary-6dof found that TVC-2 survives.
+- **Scope and open list:** not certified are tf = 7 s capped (fails by 4.8 %), uncapped tf > 2.3 s (tumbling lemma), box gimbal and free-roll competitors beyond tf = 1 s, mass depletion, gimbal-rate limit, and free tf.
+- **Also updated:** the abstract sentence, the intro contributions and scope paragraph, the discussion open problem, and the numerics table and text.
+- **CLAIMS-MAP:** revision 5. The TVC row also notes that Lean has only the TVC-1 skeleton (`tvc1_skeleton`, `tvc1_main`, with the certificate and the reduction as hypotheses).
+- 39 pages, compiles cleanly. No placeholders remain.

@@ -105,7 +105,8 @@ semidefinite lifts are not exact in general, but they give a~posteriori global-o
 certificates, and they are certified exact on a coplanar subclass. Besides the headline theorem, the unconstrained
 obstruction (with mass depletion), the abstract per-instance, line-search and value-losslessness results, and an explicit
 hard-landing instance of the per-instance obstruction are machine-checked. For the real pure-TVC actuation, landing upright at rest with altitude and glide-slope constraints, nonconvexity is proved
-by a computer-assisted certificate checked in exact arithmetic (1~s horizon, constant mass, unlimited gimbal rate).
+by computer-assisted certificates checked in exact arithmetic (horizons of 1 and 2~s without a tilt cap, and 3 and 5~s in the
+tilt-capped class; constant mass, unlimited gimbal rate).
 Numerically, the obstruction is thin for in-air descents of a small lander (centimetre scale), but reaches metre scale for
 pad-launched hops. Finally, an attitude-aware planner built on the exact convex inner problem produces flyable plans within
 $0.012\%$ of a nonconvex 6-DOF optimum in simulation.
