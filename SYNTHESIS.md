@@ -13,6 +13,10 @@ no uniform convex relaxation (boundary data entering jointly convexly, any lifte
 cost. Lean 4/Mathlib, sorry-free, axioms = [propext, Classical.choice, Quot.sound]
 (`LcvxObstruction.no_lossless_relaxation_constrained_{5dof,upright_5dof,6dof,upright_6dof}`).
 
+**Real GTPL actuation (pure TVC, gimbal = torque):** computer-assisted proof, certified in exact arithmetic, that the
+landing set is nonconvex (upright at rest, altitude + glide slope, cone or Cardan box, tf = 1 s, constant mass, unlimited
+gimbal rate) ⇒ no uniform lossless convexification for that problem class either. Realistic 5–8 s horizons: numerical.
+
 1. **Impossible in the LCvx sense.** Classical LCvx keeps the physical state (r, v, m) as decision variables, enters
    boundary data affinely, and relaxes the control constraints. No relaxation of that kind can be lossless for 5DOF
    with a finite attitude rate — with a minimum throttle ρ1 > 0 (B, B*), and even with ρ1 = 0 (P0-F: the vehicle can coast while it rotates, which creates a different nonconvex kink). The obstruction: the set of feasible boundary conditions is
@@ -44,7 +48,7 @@ cost. Lean 4/Mathlib, sorry-free, axioms = [propext, Classical.choice, Quot.soun
 | S-GTPL | Lemma S at GTPL constants (hovering possible at min throttle) | M1 | NUMERICAL (gap ≈1 cm in ℓ; optimizers land 1.5–2.4 m off-axis) | math/07, numerics s1 |
 | FLAT | Centre-of-percussion identity: pure TVC ≡ zero-gimbal, torque-limited point thrust along b | pure TVC, ω3 ≡ 0, ε const | identity verified numerically (5e-15) | math/checks/flat_output_tvc.py |
 | B6-TVC | Pure-TVC F nonconvex | terminal r=v=0, ω⊥(tf)=0, tilt free | PROVED (adversary-6dof) | math/adversary-6dof-report.md |
-| B6-TVC-up | Pure-TVC F nonconvex, upright at rest + r_z ≥ 0 + glide slope (**the real GTPL case**) | pure TVC, GTPL wet constants, constant mass, cone 15° or Cardan box ±15°, roll held or free | **COMPUTER-ASSISTED PROOF at tf = 1 s** (proof-tvc: witness 7.27e-5 m vs rigorous competitor bound 6.27e-5, cone; box & free-roll margins 4–5%) — UNDER AUDIT (verify-tvc: exact-arithmetic re-check). NUMERICAL at tf=5/7 s (≈3 cm). Open: mass depletion, 100°/s gimbal-rate limit, tf ≥ 1.5 s rigor, free tf | math/06-pure-tvc.md |
+| B6-TVC-up | Pure-TVC F nonconvex, upright at rest + r_z ≥ 0 + glide slope (**the real GTPL actuation**) | pure TVC, GTPL wet constants, constant mass, unlimited gimbal rate, cone 15° or Cardan box ±15°, roll held or free, tf = 1 s | **COMPUTER-ASSISTED PROOF, CERTIFIED IN EXACT ARITHMETIC** (verify-tvc: exact rational/Arb rebuild, exact integer-determinant PD check; margins 13.7% cone / 5.4% box / 4.0% free roll; certified dist(θ_m,F) ≥ 9.6e-6 m). Repairs: witness replaced by explicit fast bang-bang gimbal (needs unlimited gimbal rate); free-roll gyro weight made rigorous. NUMERICAL at tf=5/7 s (≈3 cm). Open: mass depletion, 100°/s gimbal limit, tf ≥ 1.5 s rigor, free tf | math/06, math/verify-tvc-report.md |
 | C | LCvx exact given attitude profile b(t); strong form under PMP + checkable non-degeneracy | M1 | PROVED; **LEAN**: C-3 pointwise lemma (`LcvxPositive.C3_headline`), C-S/C-D2 (const. mass), discrete purification C-K, C-F (`convex_origFeas`, with Aumann as explicit hypothesis), C-6 TVC convexity — 35 theorems, standard axioms only; PMP & Aumann only as explicit named hypotheses | math/04, lean/POSITIVE.md |
 | C-Y | 3DOF LCvx optimum exactly 6DOF-flyable for GTPL essentially never | pure TVC | PROVED | math/04 |
 | X5 | Pointing cone ≤ gimbal ⇒ 5DOF = 3DOF, LCvx exact | M1 only (pure TVC: effective gimbal 0) | PROVED | math/redteam-reform.md |

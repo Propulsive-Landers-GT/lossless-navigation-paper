@@ -25,6 +25,6 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | verify-imp | afee825a20ce8c68e (DONE) | Referee impossibility-side CLAIMED rows (Q, B*, D, S, A-opt, P0-*) | math/verify-imp-report.md |
 | verify-pos6 | ab5886d8970d683d2 (DONE) | Referee 6DOF, positive, SDP CLAIMED rows | math/verify-pos6-report.md |
 | proof-csd2p | a913db127233c94a0 (DONE) | Prove refined SDP conjecture CSD2′ (convexified lens, continuous time) | math/09-csd2-prime.md |
-| verify-tvc | ae6c370b5cd20db43 | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
+| verify-tvc | ae6c370b5cd20db43 (DONE) | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
 | verify-sdp2 | ac7006c94fa6b776a (DONE) | Referee math/09 (CSD2′ partial proof) | math/verify-sdp2-report.md |
 | solver-v2 | aa3239f000bdac159 | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |

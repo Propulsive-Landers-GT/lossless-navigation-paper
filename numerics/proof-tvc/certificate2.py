@@ -10,7 +10,7 @@ Same inequality chain as certificate.py, with three changes:
 import os, sys
 os.environ.setdefault("OMP_NUM_THREADS", "1")
 import numpy as np, cvxpy as cp
-from witness_nl import gtpl, J0, optimize, evaluate
+from witness_nl import gtpl, J0, optimize, evaluate, segments_bangbang, evaluate_segments
 import certificate as C1
 
 GL_x, GL_w = np.polynomial.legendre.leggauss(6)     # exact for degree <= 11 (cubic x times cubic x times linear w)
@@ -222,6 +222,9 @@ if __name__ == "__main__":
     else:
         nv = optimize(P, tf, ss, N=int(os.environ.get("WN", 100)), starts=6, cap=np.deg2rad(float(os.environ["TILTCAP"])) if "TILTCAP" in os.environ else None)[1]; np.save(wfile, nv)
     ev = evaluate(P, tf, ss, nv)
+    evo = evaluate_segments(P, tf, ss, segments_bangbang(P, tf, ss, nv))   # ordinary-control realization (exact bang-bang early)
+    assert abs(evo['end'][0]) < 1e-12 and abs(evo['end'][1]) < 1e-12
+    ev['G'] = evo['G']; ev['maxvz'] = max(ev['maxvz'], evo['maxvz'])
     par = dict(PAR); par['tau'] = float(os.environ.get("TAU", par['tau'])); par['zeta'] = par['xi'] = float(os.environ.get("ZETA", par['zeta'])); par['kapg'] = float(os.environ.get("KAPG", 10.0)); par['cap'] = np.deg2rad(float(os.environ["TILTCAP"])) if "TILTCAP" in os.environ else None; par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
     print(f"[{gim} delta={deg:.2f}] tf={tf} s*={ss} N={N} roll-competitors={par['roll']}: witness G_w={ev['G']:.6e}, "
           f"max tilt {np.degrees(ev['maxtilt']):.3f} deg, max v_z(t<tf)={ev['maxvz']:.3e}, min r_z/|r_h|={ev['rzrel']:.3e}, "

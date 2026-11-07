@@ -79,3 +79,45 @@ if __name__=="__main__":
         ev=evaluate(P,tf,ss,b[1])
         print(f"tf={tf} s*={ss}: G_w={ev['G']:.4e}  maxtilt={np.degrees(ev['maxtilt']):.2f}deg  min r_z={ev['minrz']:.3f} m  glide30 margin={ev['glide']:.3f}  v0={ev['v0']} r0={ev['r0']} lat moments={ev['latmom']}",flush=True)
         np.save(f"witness_{tf}_{ss}.npy",b[1])
+
+def segments_bangbang(P, tf, ss, nv, tol=1e-12):
+    """Ordinary-control realization (fix of [adversary-6dof] finding (1)): every early cell with |n| < K1 is
+    flown as exact full-deflection bang-bang (+K1, -K1, +K1) (or the mirror) with switch times
+    a = (h-d)/2, b = (h+d)/2, d = h(1-|m|)/2, m = n/K1, which reproduces the cell-end (psi, psi') exactly.
+    Returns a list of segments (t0, dt, n, early_flag)."""
+    a1, de, eps = P['a1'], P['de'], P['eps']; K1 = a1*np.sin(de)/eps
+    N = len(nv); h = tf/N; segs = []
+    for k in range(N):
+        t0 = k*h; early = (t0 + h/2) < ss
+        n = nv[k]
+        if early and abs(n) < K1*(1-tol):
+            m = n/K1; sg = 1.0 if m >= 0 else -1.0; mm = abs(m)
+            d = h*(1-mm)/2; a = (h-d)/2
+            segs += [(t0, a, sg*K1, True), (t0+a, d, -sg*K1, True), (t0+a+d, h-a-d, sg*K1, True)]
+        else:
+            segs.append((t0, h, float(np.clip(n, -K1, K1)) if early else n, early))
+    return segs
+
+def evaluate_segments(P, tf, ss, segs, sub_per_unit=40000):
+    """Exact closed-form psi on each constant-n segment; midpoint quadrature (sub-steps ~ 1/sub_per_unit s).
+    Early segments: p = a1 cos(delta) (full deflection, |n| = K1 required); late: p = sqrt(a2^2 - eps^2 n^2)."""
+    a1, a2, de, eps, g0 = P['a1'], P['a2'], P['de'], P['eps'], P['g0']; K1 = a1*np.sin(de)/eps
+    psi = 0.0; om = 0.0; W = 0.0; T = []; AZ = []; AX = []; PS = []; DT = []
+    for (t0, dt, n, early) in segs:
+        if dt <= 0: continue
+        if early: assert abs(abs(n) - K1) < 1e-9*K1, "early segment not at full deflection"
+        p = a1*np.cos(de) if early else np.sqrt(max(a2**2 - eps**2*n**2, 0.0))
+        M = max(4, int(np.ceil(dt*sub_per_unit))); h = dt/M
+        tau = (np.arange(M)+0.5)*h
+        ps = psi + om*tau + n*tau**2/2; omm = om + n*tau
+        f = p - eps*omm**2
+        W += np.sum(h*(t0+tau-ss)*f*np.cos(ps))
+        T.append(t0+tau); AZ.append(f*np.cos(ps)-g0); AX.append(f*np.sin(ps)); PS.append(ps); DT.append(np.full(M, h))
+        psi = psi + om*dt + n*dt**2/2; om = om + n*dt
+    T = np.concatenate(T); AZ = np.concatenate(AZ); AX = np.concatenate(AX); PS = np.concatenate(PS); DT = np.concatenate(DT)
+    # landing data from y: ydot(0) = g0 tf e_z - int f b  (+ lateral), r0 = int s f b - g0 tf^2/2
+    v0 = np.array([-np.sum(DT*AX), -np.sum(DT*AZ)])
+    r0 = np.array([np.sum(DT*T*AX), np.sum(DT*T*(AZ+g0)) - g0*tf**2/2])
+    # v_z(t) = v0z + int_0^t az  (y-velocity; r_z>0 on [0,tf) follows from v_z<0, see math/06 §3)
+    vz = v0[1] + np.cumsum(DT*AZ)
+    return dict(G=W - J0(P, tf, ss), end=(psi, om), v0=v0, r0=r0, maxvz=vz[:-1].max(), maxtilt=np.abs(PS).max())

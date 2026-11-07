@@ -83,3 +83,21 @@ for Pa, Pb in zip(grid[:-1], grid[1:]):
         Tup = max(Tup, float(TA.mid()) + float(TA.rad()))
 print(f"  rigorous (Arb, piecewise LP-dual, 60 intervals) upper bound on the moment term = {Tup:.6e}")
 np.save(f"moment_{gim}_{N}_roll{roll}.npy", np.array([Tf, Tup]))
+# ---- final comparison and quantitative distance (float for d*, rigorous for the margin) ----
+import os
+ef = f"exact_{gim}_{N}_roll{roll}.npy"; wf = f"witness_ordinary_{gim}_M8.npz"
+if os.path.exists(ef) and os.path.exists(wf):
+    ex = np.load(ef); wz = np.load(wf)
+    Vup, Glo = ex[0], float(wz['Glo'])
+    Uup = Vup + Tup
+    print(f"  FINAL: exact-PSD={bool(ex[2])} remainders={bool(ex[3])} multiplier-bounds={bool(ex[4])}  "
+          f"U_tot <= {Uup:.6e}  G_w(ordinary) >= {Glo:.6e}  certified margin = {Glo-Uup:.4e} ({(Glo-Uup)/Glo*100:.2f}%)")
+    def Td(d):
+        TT = lambda P: kgf*rho0*(d + M0 + mu0(P))**2 + rhow*(d*(1+ss) + Mw + cw*P)**2 - P
+        return max(TT(P) for P in cands)
+    lo_, hi_ = 0.0, 1e-3
+    for _ in range(60):
+        dm = (lo_+hi_)/2
+        if Glo - dm*np.sqrt(1+ss**2) > Vup + Td(dm)*(1+1e-6): lo_ = dm
+        else: hi_ = dm
+    print(f"  dist(theta_m, F_relaxed) >= {lo_:.4e} m (float evaluation of the d-dependent moment term)")

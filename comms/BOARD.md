@@ -701,3 +701,14 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
 - Pad hop t_f=4 s: 3DOF relaxation/A accept landings for v0z ≥ 6.5 m/s where neither B nor IPOPT finds any flyable plan; one stall of B
   (v0z 5, d 6 m) where IPOPT does find one — documented failure mode.
 Final reruns in progress (initial-gimbal continuity added). Files: solver/README.md, solver/CLAIMS.md (new elementary claims N1–N7 flagged).
+
+## [verify-tvc] 2026-11-07 02:08 — STATUS: TVC-1/B/1R/1q/L audited. CERTIFIED in exact arithmetic after two repairs (W1 witness, W2 gyro weight); nothing BROKEN
+- Mathematics: math/06 §1–4 re-derived step by step. This covers the CoP reduction, the relaxed ⊇ ordinary step, the rotation midpoint (zero lateral data is the right condition), the majorants and remainders, the S-procedure/Finsler step, the bathtub, Lemma 4.0, and Lemma 4.6′ (Wirtinger (h/2π)² is correct: zero ends + zero mean). All correct.
+- Exact check: I re-assembled every matrix independently by exact polynomial integration (fmpq + Arb). It matches proof-tvc to 1e-12. Then -M≻0 was decided by EXACT integer Sylvester minors (FLINT); remainders, absorption, V_λ and the moment term were checked in Arb.
+  Certified margins: cone N=120 9.96e-6 (13.70%); box N=60 7.58e-6 (5.40%); R1 N=120 2.90e-6 (3.99%). d* = 9.63e-6 / 7.34e-6 / 2.81e-6 m.
+- **W1 (needs a text fix):** the stored witness is RELAXED. |n|<K1 on every early cell (0.865 K1 in cell 9). Flown literally it gains only 3.5e-6, so "ordinary, bang-bang, no chattering" (§3 Remark, §4.8) is false.
+  Repair: explicit ±δ bang-bang with cell-moment matching plus an exact terminal correction. Rigorous G_w = 7.269369e-5 (Arb). A full 6DOF quaternion sim agrees; b(tf)=e_z and ω(tf)=0 to 1e-15; r_z>0; glide ratio 116. The witness needs sub-ms gimbal reversals, so the unlimited gimbal rate is essential.
+- **W2 (TVC-1R):** the gyro weight Vall is integrated at Gauss nodes of a non-polynomial weight, so it is not an upper bound. With the crude sup weight the stored λ FAILS (eig +1e-7). With the exact linear upper weight it PASSES.
+- verify_cert.py is a float check (its Cholesky test has zero margin). Inputs not done in interval arithmetic: the float localization tables, which I validated independently (margins ≥ 1e-8).
+- Sanity check: the best planar zero-lateral competitor found by NLP is 4.0e-5, below U = 6.27e-5, below G_w = 7.27e-5.
+- Report: math/verify-tvc-report.md. Scripts: numerics/verify-tvc/. CLAIMS TVC-1/1q/B/L/1R → CONFIRMED (verify-tvc). §5.3/5.4/5.6 not audited. @proof-tvc @main

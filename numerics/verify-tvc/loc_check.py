@@ -11,6 +11,7 @@ sys.path.insert(0, "../proof-tvc")
 from localize import localize          # THEIR implementation (only for comparison)
 
 gim = sys.argv[1] if len(sys.argv) > 1 else 'cone'
+roll = len(sys.argv) > 2 and sys.argv[2] == 'roll'
 m, rho1, rho2, Jt, L = 79.88, 400., 1000., 63.6, 0.589
 de = np.pi/12 if gim == 'cone' else np.arccos(np.cos(np.pi/12)**2)
 a1, a2, eps = rho1/m, rho2/m, Jt/(m*L)
@@ -25,8 +26,16 @@ E0 = A1*(1+k)*K1**2/4 * ss**6/30 + B1*(1+k)*K1**2 * ss**4/12
 # absorption: int (s*-s) Y^2 <= dpm * s*^2/2 * int|w| dp ; tilt carries an extra s^2 <= s*^2
 c_abs = (1+1/k)*beta**2*dpm*ss**2/2*(B1 + A1*ss**2)/cE
 assert c_abs < 1
+lat = 1.0
+if roll:   # (R1): early gyro vertical term with crude bounds; late gyro absorbed into theta_g*Pi (AM-GM)
+    Ja, taur, thg = 3.74, 3.0, 0.15
+    cgmax = eps*(Ja/Jt)*(taur/Ja)*tf; gam = np.sqrt(eps*c0/(a2/2))
+    assert cgmax*gam/2 <= thg*a2/2 and cgmax/(2*gam) <= thg*eps*c0
+    from scipy.integrate import quad
+    E0 += quad(lambda s: (ss-s)*eps*(Ja/Jt)*(taur/Ja)*s*np.sin(K2*s**2/2)*K2*s, 0, ss, epsabs=1e-16)[0]
+    lat = 1/(1-thg)
 PenE = E0/(1-c_abs)                    # bound on cE * int_E |w| dp
-LhW, LvW, LqW = 2*E0/a2, E0/(eps*c0), 2*a2*E0/c0**2
+LhW, LvW, LqW = 2*E0/a2*lat, E0/(eps*c0)*lat, 2*a2*E0/c0**2*lat
 def Ybar(x):                           # min_eta [dpm*eta + PenE/(cE (s*-x+eta))], eta >= 0 ; also <= dpm*x
     eta = max(np.sqrt(PenE/(cE*dpm)) - (ss-x), 0.0)
     return min(dpm*x, dpm*eta + PenE/(cE*(ss-x+eta)) if ss-x+eta > 0 else np.inf)
@@ -64,8 +73,8 @@ def Bp_at(s):
     i = np.searchsorted(sl, s); return max(phl[max(i-1, 0)], phl[min(i, len(sl)-1)])
 
 P = dict(m=m, a1=a1, a2=a2, de=de, eps=eps, g0=9.80665)
-vf, pf, info, _ = localize(P, tf, ss)
-print(f"[{gim}] mine: E0={E0:.6e} c_abs={c_abs:.6f} PenE={PenE:.6e} | theirs: E0={info['E0']:.6e} c_abs={info['c_abs']:.6f} PenE={info['PenE']:.6e}")
+vf, pf, info, _ = localize(P, tf, ss, roll=roll)
+print(f"[{gim} roll={roll}] mine: E0={E0:.6e} c_abs={c_abs:.6f} PenE={PenE:.6e} | theirs: E0={info['E0']:.6e} c_abs={info['c_abs']:.6f} PenE={info['PenE']:.6e}")
 ds = vf.ds; ncell = len(vf.cells)
 vmax_mine = max(vx.max(), vl.max())
 worst_v = worst_p = np.inf; bad = 0

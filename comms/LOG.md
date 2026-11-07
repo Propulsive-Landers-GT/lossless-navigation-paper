@@ -119,3 +119,4 @@
 - 01:57 verifier-sdp final: index check 346 inst.: no negative stress; but 12 optima with non-symmetric C_yw violate T5's symmetry assumption (sent to verify-sdp2).
 - 01:57 verifier-sdp correction: the 12 'non-symmetric C_yw' cases were a script normalization artifact (C_yw≡0 on-axis); index identity 0 failures on 346. Correction sent to verify-sdp2.
 - 02:02 verify-sdp2 DONE: 0 BROKEN in math/09. T5 free-b(tf) sharper (exact iff k≤p₀). C_yw symmetric at every KKT (rotation invariance) — artifact confirmed. Fixes listed in report §9.
+- 02:09 verify-tvc DONE: pure-TVC tf=1 certificate CERTIFIED in exact arithmetic after repairs W1 (witness was chattering → explicit bang-bang, needs unlimited gimbal rate) and W2 (free-roll gyro weight). Rows TVC-1,1q,B,L,1R CONFIRMED.

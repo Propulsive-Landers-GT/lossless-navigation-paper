@@ -355,3 +355,6 @@ and continuity is handled by a cell-average split.
 - Scope: constant mass (α = 0, ε const), unlimited gimbal rate, roll-free certificate for the cone only. Realistic horizons are open.
   My NLP shows gaps of ~3e-2 m at tf = 5–7 s, but the crude a-priori bounds (A1)/(A2) fail there before localization can start.
 - Verdict on TVC-1: **SURVIVES within its stated scope** (constant mass, unlimited gimbal rate), pending (i) the exact-switching witness and (ii) an independent or interval re-check of the SDP.
+- **Update:** finding (1) is fixed by [proof-tvc]. The witness is now exact (+,−,+) bang-bang (G_w = 7.26909e-5 cone, 1.404329e-4 box), and all three certificates still pass.
+  Their new step dropping (A2) via Π ≥ b_z|a2 − f| is checked TRUE. The tilt-capped extension is a separate problem class and must be stated as such.
+  Status: TVC-1 SURVIVES within scope, pending [verify-tvc]'s rational/interval re-verification.

@@ -5,7 +5,7 @@ usage: verify_cert.py tf ss N gim roll(0/1) rho0 rhow   (other parameters as in 
 import os, sys
 os.environ.setdefault("OMP_NUM_THREADS", "1"); os.environ["FASTL"] = "1"
 import numpy as np, certificate2 as C2
-from witness_nl import gtpl, evaluate
+from witness_nl import gtpl, evaluate, segments_bangbang, evaluate_segments
 from localize import localize
 tf, ss, N, gim, roll, r0, rw = float(sys.argv[1]), float(sys.argv[2]), int(sys.argv[3]), sys.argv[4], int(sys.argv[5]), float(sys.argv[6]), float(sys.argv[7])
 deg = 15.0 if gim == 'cone' else np.degrees(np.arccos(np.cos(np.deg2rad(15))**2))
@@ -27,9 +27,9 @@ Mv = A - np.diag(Wd*np.concatenate([lam+D['Mlate']]*2))
 Sc = 1/np.sqrt(Wd); Ms = (Mv+Mv.T)/2*Sc[:, None]*Sc[None, :]
 top = np.linalg.eigvalsh(Ms).max()
 try:
-    np.linalg.cholesky(-Ms + 0*np.eye(len(Ms)) - 1e-14*np.eye(len(Ms))*0); chol = True
+    np.linalg.cholesky(-Ms); chol = True   # -M positive definite (strict)
 except np.linalg.LinAlgError:
     chol = False
 U = h*np.sum(lam*D['Nb2']) + C2.moment_term(D, (r0, rw))
-nv = np.load(f"witness_{gim}_{tf}_{ss}.npy"); G = evaluate(P, tf, ss, nv)['G']
+nv = np.load(f"witness_{gim}_{tf}_{ss}.npy"); G = evaluate_segments(P, tf, ss, segments_bangbang(P, tf, ss, nv))['G']   # ordinary bang-bang witness
 print(f"verify {gim} tf={tf} s*={ss} N={N} roll={roll}: top eig={top:.2e}  cholesky(-M) ok={chol}  U_total={U:.6e}  G_w={G:.6e}  PASS={top<=0 and G>U}")

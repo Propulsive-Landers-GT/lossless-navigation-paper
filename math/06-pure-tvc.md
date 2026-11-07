@@ -76,10 +76,10 @@ Then $\theta_w,R_\pi\theta_w\in F^{\mathcal X}_{t_f}$ and $\theta_m\notin F_{t_f
 | gimbal | competitors | $N$ (solver) | $G_w$ (m) | $U_{\rm tot}$ (m) | margin | $d_*$ (m) | $(\rho_0,\rho_w)$ | file |
 |---|---|---|---|---|---|---|---|---|
 | cone 15° | R0 | 60 (Clarabel) | 7.269e-5 | 6.781e-5 | 6.7% | 4.7e-6 | (1.5, 15) | `cert2_R60.out` |
-| cone 15° | R0 | 120 (SCS + eigen repair) | 7.269e-5 | 6.274e-5 | 13.7% | 9.6e-6 | (1.5, 100) | `cert2_R120.out` |
-| box ±15° (δ*=21.09°) | R0 | 60 (Clarabel) | 1.404e-4 | 1.329e-4 | 5.4% | 7.3e-6 | (1, 15) | `cert2_R60_box.out` |
+| cone 15° | R0 | 120 (SCS + eigen repair) | 7.2691e-5 | 6.2736e-5 | 13.7% | 9.6e-6 | (1.5, 100) | `cert2_R120.out` |
+| box ±15° (δ*=21.09°) | R0 | 60 (Clarabel) | 1.4043e-4 | 1.3286e-4 | 5.4% | 7.3e-6 | (1, 15) | `cert2_R60_box.out` |
 | cone 15° | R1 (roll free) | 60 | 7.269e-5 | 8.709e-5 | FAIL | — | (1, 15) | `cert2_R60_roll.out` |
-| cone 15° | R1 (roll free) | 120 (SCS + repair) | 7.269e-5 | 6.980e-5 | 4.0% | 2.8e-6 | (1, 30), $\kappa_g=0.3$ | `cert2_R120_roll.out` |
+| cone 15° | R1 (roll free) | 120 (SCS + repair) | 7.2691e-5 | 6.9798e-5 | 4.0% | 2.8e-6 | (1, 30), $\kappa_g=0.3$ | `cert2_R120_roll.out` |
 
 Common parameters: $\zeta=\xi=0.1$, $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$, $\kappa=0.01$, $r_\vartheta=0.2$, $\lambda_{\max}=3\cdot10^{-3}$ (fixed PSD bound for the $\lambda$-weighted remainder terms), $\rho_c=0.1$, $\eta_1=2$ cells. The $N=120$ cone (R0, R1) and $N=60$ box certificates were **re-verified independently** by `verify_cert.py`: fresh process, all matrices rebuilt, no SDP solver; top eigenvalue $-3.0\cdot10^{-8}$ (cone, $N=120$), $-5.4\cdot10^{-8}$ (roll, $N=120$) and $-2.0\cdot10^{-11}$ (box), Cholesky of $-M$ succeeds, $U_{\rm tot}$ reproduced.
 
@@ -167,12 +167,12 @@ So the $n'$ terms are $\le\sum_kc_{{\rm loc},k}\|n'\|_k^2+c_g\|n'\|^2$, of order
 $$W_z-J_0\le U_{\rm tot}:=V_\lambda+\max_{0\le\mathrm{Pen}\le\mathrm{Pen}_{\max}}\Big[\rho_0\big(M^v_0+\mu_0^{\max}(\mathrm{Pen})\big)^2+\rho_w\big(M^v_w+c_w\mathrm{Pen}\big)^2-\mathrm{Pen}\Big].$$
 On a grid, the maximum is bounded by pairing right-endpoint shifts with the left-endpoint Pen. *Remainder (Lemma 4.6′):* the Finsler terms are split with their own parameter $\tau_\rho=0.2$. Since $|g_0''|\le a_2$ and $|g_w''|\le a_2\max(s^*,t_f-s^*)$, their contribution is $\le(1/\tau_\rho-1)\big(\rho_0g_0''^2+\rho_wg_w''^2\big)h_c^4t_f/64$.
 
-### 4.8 The witness (planar dive-then-brake, ordinary control)
-Planar meridian $b=\cos\psi\,e_z+\sin\psi\,u$, with $\ddot\psi=n$ piecewise constant (100 cells), $\psi,\dot\psi=0$ at both ends.
-- On $E$: $T=\rho_1$, gimbal in the plane at angle $\delta$, so $p=a_1\cos\delta$, $|q|=a_1\sin\delta$, $|n|\le K_1$. The optimized profile is bang-bang $|n|=K_1$ on $E$, so no chattering is needed.
-- On $L$: $T=\rho_2$, gimbal angle $\mu$ with $a_2\sin\mu=\varepsilon|n|$, so $p=\sqrt{a_2^2-\varepsilon^2n^2}$.
+### 4.8 The witness (planar dive-then-brake, ORDINARY control)
+Planar meridian $b=\cos\psi\,e_z+\sin\psi\,u$, landing with $\psi,\dot\psi=0$ at both ends.
+- On $E$: $T=\rho_1$ and the gimbal sits at **full** deflection $\pm\delta$ in the plane, so $p=a_1\cos\delta$ and $\ddot\psi=\pm K_1$. The optimized profile is piecewise constant on 100 cells. Every early cell whose value $n_k$ has $|n_k|<K_1$ is flown as exact bang-bang $(+K_1,-K_1,+K_1)$ (or its mirror) with switch times $a=(h-d)/2$, $b=(h+d)/2$, $d=h(1-|n_k|/K_1)/2$. This reproduces $\psi$ and $\dot\psi$ at the cell end exactly (`segments_bangbang`). Fix of [adversary-6dof] finding (1): v1 evaluated such cells with $p=a_1\cos\delta$, which silently assumed chattering. A partial-deflection realization loses 95% of the gain; the bang-bang realization loses $3\cdot10^{-9}$.
+- On $L$: $T=\rho_2$ and the gimbal angle $\mu$ satisfies $a_2\sin\mu=\varepsilon|n|$, so $p=\sqrt{a_2^2-\varepsilon^2n^2}$.
 
-$W_z=\int w(p-\varepsilon\dot\psi^2)\cos\psi$ is evaluated exactly: $\psi$ is integrated in closed form on 40000 sub-steps, with a midpoint quadrature of the smooth integrand. For the state constraints, $v_z<0$ on $[0,t_f)$ gives $r_z>0$, and $\min r_z/|r_h|$ gives the admissible glide-slope angle (both in the table). By Lemma 2.4 the rotated witness lands from $R_\pi\theta_w$.
+$W_z=\int w(p-\varepsilon\dot\psi^2)\cos\psi$ is evaluated segment by segment, with closed-form $\psi$ and midpoint quadrature on about 40000 sub-steps per second. The end state is upright at rest to $10^{-16}$. For the state constraints, $v_z<0$ on $[0,t_f)$ gives $r_z>0$ (in fact $y_z>\varepsilon$, so $r_z>\varepsilon(1-\cos\psi)\ge0$, as noted by [adversary-6dof]); $\min r_z/|r_h|$ gives the admissible glide slope. By Lemma 2.4 the rotated witness lands from $R_\pi\theta_w$. The witness is an ordinary control, so $\theta_w,R_\pi\theta_w\in F^{\mathcal X}$ with no closure argument.
 
 ### 4.9 Conclusion and quantitative bound
 If $\theta\in F$ with $\|\theta-\theta_m\|\le d$, then $|v_{0h}|,|r_{0h}|\le d$, which replaces $M^v_j$ by $M^v_j+d$, and $\ell(\theta)\ge\ell(\theta_m)-d\sqrt{1+s^{*2}}$. So $G_w-d\sqrt{1+s^{*2}}\le U_{\rm tot}(d)$. Bisection gives $d_*$. ∎
