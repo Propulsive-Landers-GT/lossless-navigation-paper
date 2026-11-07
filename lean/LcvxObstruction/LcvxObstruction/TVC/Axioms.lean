@@ -2,6 +2,7 @@ import LcvxObstruction.TVC.CentreOfPercussion
 import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
 import LcvxObstruction.TVC.Model
+import LcvxObstruction.TVC.Discretization
 import LcvxObstruction.FreeTimeBStar
 import LcvxObstruction.DiveBrakeQuantMass
 
@@ -65,3 +66,5 @@ import LcvxObstruction.DiveBrakeQuantMass
 #print axioms LcvxObstruction.midpoint_not_mem_closure_landingSet
 #print axioms LcvxObstruction.lambda_dist_ge_of_max
 #print axioms LcvxObstruction.landingSet_dist_ge_mass
+#print axioms LcvxObstruction.TVC.cell_wirtinger
+#print axioms LcvxObstruction.TVC.cell_sup_bound

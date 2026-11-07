@@ -33,3 +33,4 @@ import LcvxObstruction.FreeTimeBStar
 import LcvxObstruction.TVC.Model
 import LcvxObstruction.DiveBrakeQuant
 import LcvxObstruction.DiveBrakeQuantMass
+import LcvxObstruction.TVC.Discretization
