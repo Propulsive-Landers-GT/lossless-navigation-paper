@@ -1,0 +1,137 @@
+% main.tex -- research paper draft (paper-writer agent).
+% Build: latexmk -pdf main.tex   (or pdflatex; bibtex; pdflatex; pdflatex)
+% Every theorem-like environment carries a comment "% CLAIMS: <row> | Lean: <name or none>".
+% The table paper/CLAIMS-MAP.md lists the same mapping with statuses and proof files.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[capitalise,nameinlink]{cleveref}
+
+% ---------------------------------------------------------------------------
+% Status tags.  Set \showstatustrue for the internal draft, \showstatusfalse for submission.
+\newif\ifshowstatus
+\showstatustrue
+\newcommand{\stag}[2]{\ifshowstatus\,{\footnotesize\textcolor{#1}{\textsf{[#2]}}}\fi}
+\newcommand{\Slean}{\stag{ForestGreen}{Lean-checked}}
+\newcommand{\Sleanpart}[1]{\stag{ForestGreen}{Lean-checked: #1}}
+\newcommand{\Sproved}{\stag{MidnightBlue}{proved; survived attack}}
+\newcommand{\Spending}{\stag{BurntOrange}{proved in project notes; registry status CLAIMED}}
+\newcommand{\Snum}{\stag{Plum}{numerical evidence only}}
+\newcommand{\Sopen}{\stag{BrickRed}{open}}
+
+% Placeholder boxes for results that are still in progress.
+\newtcolorbox{todobox}[1][]{colback=yellow!8,colframe=BurntOrange,fonttitle=\bfseries\sffamily,
+  title={TODO / placeholder #1},breakable}
+
+% ---------------------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\crefname{assumption}{Assumption}{Assumptions}
+
+% ---------------------------------------------------------------------------
+% Notation
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Sph}{S^2}
+\newcommand{\ez}{e_z}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\Ft}{F_{t_f}}
+\newcommand{\FX}{F^{\mathcal X}_{t_f}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Reach}{\mathrm{Reach}}
+\newcommand{\U}{\mathcal U}
+\newcommand{\X}{\mathcal X}
+\newcommand{\AL}{(\mathrm{AL}_\omega)}
+\newcommand{\lean}[1]{{\ttfamily\hyphenpenalty=10000\exhyphenpenalty=10000 #1}}
+% Pointer to an internal project note (math/...); printed only in the internal draft.
+\newcommand{\pnote}[1]{\ifshowstatus\,{\footnotesize[\texttt{#1}]}\fi}
+
+\title{On the Impossibility of Lossless Convexification for\\
+Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent}
+\author{Propulsive Landers at Georgia Tech\thanks{Author names to be filled in.}}
+\date{Draft of 7 November 2026}
+
+\setlength{\emergencystretch}{3em}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Lossless convexification (LCvx) solves the three-degree-of-freedom (3-DOF) powered-descent guidance problem,
+including the nonconvex minimum-thrust constraint, by one convex program. Its relaxed solutions are provably
+feasible for the original problem. We ask whether the same is possible once the thrust direction is tied to a
+vehicle attitude that turns at a finite rate. This is the case for every thrust-vector-controlled (TVC) lander.
+We give a negative answer for the class of relaxations that LCvx belongs to: convex programs in which the physical
+state is a decision variable and the boundary data enter affinely. No such relaxation can be lossless for 5-DOF
+(translation plus thrust-axis pointing) or rate-limited 6-DOF descent. The obstruction is geometric. A lossless
+relaxation of this kind forces the set of feasible boundary conditions to be convex (Theorem~A). For attitude-rate-limited
+models this set is not convex. The reason is that the vehicle cannot chatter its thrust direction. We prove this
+without state constraints, with altitude and glide-slope constraints for every horizon, for upright landings, for
+free final time on compact windows, for line search over the final time, with or without a minimum throttle, and for
+kinematic and independent-torque 6-DOF models. A per-instance version shows that every state-linear relaxation of a
+minimum-landing-error problem is lossy on explicit feasible instances, and an optimization version shows that no
+uniform relaxation is value-lossless for all convex costs. On the positive side, LCvx is exact once the attitude
+profile is fixed. For the gimbal-torque-coupled TVC rigid body, the problem with a given attitude profile is exactly
+convex, with no relaxation needed. So all of the nonconvexity lies in the choice of attitude profile. Degree-2
+semidefinite lifts are not exact in general, but they give a~posteriori global-optimality and infeasibility
+certificates, and they are certified exact on a coplanar subclass. The core obstruction, its state-constrained
+version, and the abstract per-instance and line-search results are machine-checked in Lean~4/Mathlib. Numerically,
+the obstruction is thin for in-air descents of a small lander (centimetre scale), but reaches metre scale for
+pad-launched hops.
+\end{abstract}
+
+\ifshowstatus
+\begin{tcolorbox}[colback=gray!5,colframe=gray!60,title={\sffamily Internal draft conventions (remove before submission)}]
+\small Status tags after theorem titles:
+\textcolor{ForestGreen}{\textsf{[Lean-checked]}} machine-checked (no \texttt{sorry}, axioms
+\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound} only);
+\textcolor{MidnightBlue}{\textsf{[proved; survived attack]}} rigorous proof that survived an adversarial review;
+\textcolor{BurntOrange}{\textsf{[proved in project notes; registry status CLAIMED]}} a written proof exists and the
+orchestrator's synthesis lists it as proved, but the claims registry has not yet been moved to CONFIRMED;
+\textcolor{Plum}{\textsf{[numerical evidence only]}}; \textcolor{BrickRed}{\textsf{[open]}}.
+The mapping theorem $\to$ registry row $\to$ proof file $\to$ Lean name is in \texttt{paper/CLAIMS-MAP.md}.
+Toggle with \texttt{\textbackslash showstatusfalse}.
+\end{tcolorbox}
+\fi
+
+\input{sections/01-introduction}
+\input{sections/02-formulation}
+\input{sections/03-impossibility}
+\input{sections/04-possibility}
+\input{sections/05-numerics}
+\input{sections/06-formalization}
+\input{sections/07-discussion}
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\appendix
+\input{sections/A-proofs-B}
+\input{sections/B-proof-Bstar}
+\input{sections/C-proof-S}
+\input{sections/D-proofs-other}
+
+\end{document}

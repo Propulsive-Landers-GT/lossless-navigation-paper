@@ -1,0 +1,47 @@
+% ============================================================================
+\section{Proof of Theorem B$^*$}\label{app:Bstar}
+% ============================================================================
+Adapted from project note \texttt{math/02} \S10, which survived adversarial review (\texttt{math/01}). Notation:
+$a_{10}=\rho_1/m_0$, $a_{\max}=\rho_2/(m_0-\alpha\rho_2t_f)$, $A_b=\rho_2/m_0-g_0$, $w(s)=s-s^*$. For a control $c$ put
+$W(c)=\int w\,a\,d$, $X(c)=\int_0^{s^*}(s^*-s)a\,d$, $B(c)=\int_{s^*}^{t_f}(s-s^*)a\,d$, so $W=-X+B$. By \eqref{eq:lambda},
+$\Lambda(\theta)=W(c)+\kappa\ez$ with $\kappa=g_0t_f(s^*-t_f/2)$, for any control $c$ landing from $\theta$.
+
+\begin{proof}[Proof of \cref{thm:Bstar} (qualitative part)]
+\emph{Step 1 (direction bound for a fixed throttle).} Fix $T$, hence $a=a_T>0$. On $[0,s^*]$, $b_z\ge\cos\omega s$ and
+$\delta+\omega s\le2\delta<\pi$, so $d_z\ge\cos(\delta+\omega s)$. On $(s^*,t_f]$, $d_z\le1$. Since $w<0$ before $s^*$ and $w>0$ after,
+\[
+W_z(c)\le V(T):=-\int_0^{s^*}(s^*-s)a_T\cos(\delta+\omega s)\,ds+\int_{s^*}^{t_f}(s-s^*)a_T\,ds .
+\]
+\emph{Step 2 (attained for every $T$).} The dive-then-brake control $c^T_u$ uses $b=\cos(\omega s)\ez+\sin(\omega s)u$ and
+$d=\cos(\delta+\omega s)\ez+\sin(\delta+\omega s)u$ on $[0,s^*]$, then $b\equiv b(s^*)$ and $d=\ez$. It is admissible, because by (S1)
+$\angle(\ez,b(s^*))=\omega s^*\le\delta$. In variant (T$'$), return $b$ meridionally to $\ez$ on $[s^*,2s^*]$. The gimbal angle stays $\le\delta$.
+\emph{Step 3 (late throttle).} Replacing $T$ by $\rho_2$ on $(s^*,t_f]$ leaves $a$ unchanged before $s^*$ and does not decrease it after. So
+$V(T)\le V(T^\sharp)$, strictly unless $T=\rho_2$ a.e.\ late.
+\emph{Step 4 (outer maximum).} $V^*=\sup_TV(T)$ is attained, explicitly for $\alpha=0$ ($T^*=\rho_1$ then $\rho_2$), and for $\alpha>0$ by
+weak-$*$ compactness of the throttle set and weak-$*$ continuity of $V$.
+\emph{Step 5 (state constraints).} On the brake $d=\ez$, so $v_h=r_h=0$ there and $\dot v_z\ge A_b$. Hence $v_z(t)\le-A_b(t_f-t)$ and
+$r_z(t)\ge\tfrac12A_b(t_f-t)^2$. On the dive $\dot v_z\ge-g_0$, so $v_z<0$ by (S2). Thus $r_z$ is decreasing, hence positive before
+$t_f$. Laterally $\norm{r_h}\le\tfrac12a_{\max}s^{*2}$, and (S3) gives the glide slope. By rotation invariance, $R_\pi\theta^*$ is landed by
+$c^{T^*}_{-u}$.
+\emph{Step 6 (midpoint infeasible).} $\Lambda(\theta_m)=(V^*+\kappa)\ez$. If $\theta_m\in\Ft$ via $c$, then $V^*=W_z(c)\le V(T)\le V^*$, so all
+inequalities are equalities a.e. On the dive, $d_z=\cos(\delta+\omega s)$, so \cref{cor:extremal,lem:rigid} give a constant azimuth $u_0$. On
+the brake, $d=\ez$. Then $W_h(c)=-(\int_0^{s^*}(s^*-s)a_T\sin(\delta+\omega s))u_0\ne0$, contradicting $W_h(c)=\Lambda_h(\theta_m)=0$.
+\end{proof}
+
+\begin{proof}[Proof of the quantitative bound ($\delta\le\pi/4$)]
+Let $c$ land from $\theta\in\Ft$ and put $\eta=V^*-W_z(c)\ge\eta_{dive}+\eta_{brake}$, the deficits relative to Step 1. Let $\tau=\vartheta s^*$ with
+$\vartheta=a_{10}\sin\delta/(4a_{\max})\le\tfrac14$, and $c_\tau=b(\tau)$, of tilt $\beta\le\omega\tau$.
+(i) As in \cref{lem:support}, $\ip{X}{c_\tau}\ge G(T):=\int_0^{s^*}(s^*-s)a_T\cos(\delta+\omega|s-\tau|)$, since $\delta+\omega s^*\le\pi/2$.
+(ii) With $c_\tau=\cos\beta\,\ez+\sin\beta\,n$: $\sin\beta\norm{X_h}\ge G-X_z\ge G-Z_0-\eta_{dive}$, where $Z_0=\int_0^{s^*}(s^*-s)a_T\cos(\delta+\omega s)$.
+(iii) The mean value theorem gives $G-Z_0\ge\omega\tau\gamma_X$, using $(1-\vartheta)^2-\tfrac14\ge\tfrac5{16}$.
+(iv) Since $\sin\beta\le\omega\tau$: $\norm{X_h}\ge\gamma_X-c_1\eta_{dive}$ with $c_1=1/(\omega\tau)$.
+(v) $\norm{d_h}\le\sqrt{2(1-d_z)}$ and Cauchy--Schwarz give $\norm{B_h}\le\sqrt{2W_b\eta}$.
+(vi) $\norm{\Lambda(\theta)-\Lambda(\theta_m)}^2=\norm{W_h}^2+\eta^2$ and $\norm{W_h}\ge\gamma_X-c_1\eta-\sqrt{2W_b\eta}$, so
+$\norm{\Lambda(\theta-\theta_m)}\ge\eta_0$. Finally, $\norm{\Lambda}=\sqrt{1+s^{*2}}$.
+\end{proof}
+
+\begin{proof}[Proof of the free-final-time window variant]
+$\ell^*(t)=\sup_{F_t}\ell=V^*_t+\kappa(t)$ is continuous in $t$, so it attains its maximum on $[t_a,t_b]$ at some $t^\circ$. If the union were
+convex, $\theta_m(t^\circ)\in F_{t'}$ for some $t'$ with $\ell(\theta_m)\ge\ell^*(t')$. Then $\theta_m$ would be a maximizer at horizon $t'$, and
+Step 6 at that horizon forces $\Lambda_h\ne0$. Note that $\Lambda$ does not depend on the horizon.
+\end{proof}

@@ -1,0 +1,84 @@
+% ============================================================================
+\section{Introduction}\label{sec:intro}
+% ============================================================================
+
+\paragraph{Lossless convexification.}
+Powered-descent guidance asks for a thrust history that takes a lander from its current position and velocity
+to rest at a target, subject to thrust-magnitude bounds $0<\rho_1\le\norm{T}\le\rho_2$, pointing and state constraints,
+and often minimum fuel or minimum landing error. The lower thrust bound makes the control set an annulus, which is
+nonconvex. The lossless convexification (LCvx) programme of A\c{c}\i kme\c{s}e and coauthors
+\cite{acikmese2005gnc,acikmese2007jgcd,acikmese2011automatica,acikmese2013tcst,blackmore2010jgcd} replaces the annulus
+by a convex cone in an augmented space, $\norm{T}\le\Gamma$, $\rho_1\le\Gamma\le\rho_2$, and proves that optimal
+solutions of the relaxed second-order cone program (SOCP) satisfy $\norm{T}=\Gamma$ almost everywhere. They are
+therefore optimal for the original problem. Extensions cover pointing constraints \cite{carson2011acc,acikmese2013tcst},
+state constraints \cite{harris2013cdc,harris2014automatica}, some nonlinear dynamics \cite{blackmore2012scl},
+normality-based general theory \cite{harris2021tac}, free final time \cite{kunhippurayil2021automatica} and discrete
+time \cite{luo2026automatica}. Surveys and tutorials are \cite{malyuta2021survey,malyuta2022csm}. LCvx-based guidance
+has flown \cite{acikmese2013flight,scharf2014aero}. Every one of these results treats the thrust direction as a free
+control variable, possibly restricted to a cone about a fixed or prescribed axis. Six-degree-of-freedom (6-DOF)
+powered-descent methods use sequential convex programming instead \cite{szmuk2018gnc,szmuk2020jgcd,reynolds2020dq,reynolds2020ptr,elango2025automatica},
+and LCvx appears there only as an embedded relaxation of the thrust bounds \cite{malyuta2022csm}. A search of the
+literature through November 2026 found no LCvx theorem for a model in which the thrust direction is a
+rate-limited state, and no impossibility result for lossless convexification of any kind.
+
+\paragraph{Why 5-DOF and 6-DOF matter.}
+On a gimballed (TVC) lander the thrust acts along an engine axis that can deflect by at most a gimbal angle $\delta$ from
+the body axis $b$. The body axis itself turns at a finite rate, and on a pure-TVC vehicle it is turned \emph{by} the
+gimbal. A 3-DOF LCvx solution can ask for thrust-direction changes the vehicle cannot follow. The lander that
+motivated this study is a small throttleable TVC vehicle ($\approx 80$~kg wet, thrust 400--1000~N, $\pm15^\circ$
+box gimbal, usable body rate 0.3--0.5~rad/s). Its stored 3-DOF LCvx solutions contain thrust-direction jumps of
+$15^\circ$ within one 24~ms control step, plus $180^\circ$ azimuth flips, which would require angular accelerations
+around $10^3$~rad/s$^2$. The vehicle can deliver 1--3.5~rad/s$^2$. The question we address is whether \emph{any}
+LCvx-type convex program can be lossless once the attitude dynamics are part of the model.
+
+\paragraph{The answer in one paragraph.}
+3-DOF LCvx works because the reachable set of a linear system with a measurable control is convex: whatever the
+relaxed problem does on average can be realized by fast switching (Lyapunov--Aumann \cite{lyapunov1940,aumann1965}).
+In 5-DOF the thrust direction is tied to a body axis that rotates at a finite rate, so it cannot switch. Take a maximal
+tilt to the left and a maximal tilt to the right. The average of these two manoeuvres is not flyable. Any convex
+program that contains both must also contain their average, provided the physical state is a decision variable and
+the boundary data enter affinely. That is exactly the LCvx situation. The rest of the paper makes this precise,
+removes the idealizations one by one (state constraints, minimum throttle, terminal attitude, final time, 6-DOF),
+quantifies the size of the obstruction, and describes what can still be convexified exactly.
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Definitions} (\cref{sec:formulation}). We define uniform and state-linear convex relaxations with
+affine (or separable-monotone) data entry, and lossless relaxations in a feasibility (detection-sound) form and in
+an optimization form. We show that the standard LCvx definition with attainment implies the feasibility form. We also
+state precisely what the class excludes: occupation-measure and moment lifts with nonaffine data entry,
+per-instance restrictions, and the trivial convex-hull reformulation that every problem admits.
+\item \emph{Impossibility} (\cref{sec:impossibility}). Theorem~A: a lossless uniform convex relaxation forces the
+feasible boundary-data set to be convex. Theorem~B and an explicit ball bound: the 5-DOF feasible set is nonconvex,
+with a gap of metres per second. Theorem~B$^*$: nonconvexity persists with altitude and glide-slope constraints at
+every horizon, with upright landing, and with free final time on compact windows. A line-search lemma shows that
+searching over $t_f$ cannot rescue LCvx. Theorem~D and Lemma~S give per-instance versions for minimum-landing-error
+problems, with a Wirtinger-type inequality that handles coning manoeuvres. Theorem~A-opt and Proposition~T give the
+optimization version. Results for $\rho_1=0$ show that the obstruction does not depend on a minimum throttle.
+Transfers to kinematic and independent-torque 6-DOF models are given, and pure TVC is treated through a
+centre-of-percussion reduction, with its exact scope stated.
+\item \emph{Possibility} (\cref{sec:possibility}). LCvx is exact for any fixed attitude profile. For the
+gimbal-torque-coupled TVC body the problem with a given attitude is exactly convex, with no relaxation. There is an
+exact subclass for the kinematic model. For degree-2 SDP lifts we give stress certificates and a certified-global
+coplanar subclass, together with counterexamples to exactness in general.
+\item \emph{Numerics} (\cref{sec:numerics}). Gap laws, results beyond the proven regimes, and the size of the
+obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
+pad-launched hops.
+\item \emph{Formalization} (\cref{sec:lean}). Theorem~A, Theorem~B, the state-constrained Theorem~B$^*$, the abstract
+Theorem~D and the line-search lemma are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}.
+External theorems used on the positive side (the maximum principle and Aumann's theorem) enter only as explicit
+hypotheses.
+\end{enumerate}
+
+\paragraph{Scope, honestly stated.}
+The impossibility concerns the class of convex programs in which the physical state is a decision variable and the
+boundary data enter affinely. That covers every LCvx formulation in the literature. It does not cover convex
+programs over measures with point-mass data entry, which are exact but infinite-dimensional and per instance, and it
+does not say that 5-DOF guidance is intractable. For the in-air descents of the motivating vehicle, the
+nonconvexity we can exhibit is real but thin. For the actual pure-TVC actuation with an upright terminal attitude, the
+rigorous proof is still being completed (\cref{sec:tvc}).
+
+\paragraph{Notation.}
+$\ip{\cdot}{\cdot}$ and $\norm{\cdot}$ are Euclidean, $\Sph$ is the unit sphere, $\ez$ points up, $x_z=\ip{x}{\ez}$ and
+$x_h=x-x_z\ez$. For unit vectors, $\angle(x,y)=\arccos\ip xy\in[0,\pi]$. Gravity is $g=-g_0\ez$ unless stated
+otherwise. All functions live on $[0,t_f]$ with Lebesgue measure.

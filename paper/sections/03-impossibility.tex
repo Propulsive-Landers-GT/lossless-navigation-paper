@@ -1,0 +1,364 @@
+% ============================================================================
+\section{Impossibility results}\label{sec:impossibility}
+% ============================================================================
+
+\subsection{The abstract obstruction}
+
+\begin{theorem}[Theorem A]\label{thm:A}
+% CLAIMS: A (CONFIRMED / FORMALIZED) | Lean: theoremA, not_isLossless_of_not_convex, not_isLosslessFor_of_not_convex (Abstract.lean)
+If a uniform convex relaxation $C$ with affine data entry is lossless for $F$ (feasibility form), then
+$F=\pi_\Theta(C)$; in particular $F$ is convex. Consequently, if $F$ is not convex, no uniform convex relaxation is
+lossless for $F$, in either the feasibility or the optimization form, whatever the cost.\Slean
+\end{theorem}
+\begin{proof}
+$\theta\in\pi_\Theta(C)\iff C_\theta\neq\emptyset\iff\theta\in F$, and a linear image of a convex set is convex. The
+optimization form reduces to the feasibility form by \cref{prop:opt-feas}.
+\end{proof}
+
+\begin{corollary}\label{cor:A}
+% CLAIMS: A | Lean: IsLossless.convex_affine_image (affine pushforward)
+(i) If the data enter through an affine bijection $\psi$, then $\psi(F)$, hence $F$, is convex.
+(ii) If $C$ contains the original problem ($F\subseteq\pi_\Theta(C)$), then $\pi_\Theta(C)\supseteq\conv F$, so $C$
+reports feasibility on all of $\conv F\setminus F$. If $\dist(\theta_M,F)=\Gamma>0$ for some $\theta_M\in\conv F$, no
+uniform convex relaxation is $\varepsilon$-lossless for $\varepsilon<\Gamma$.\Slean\ (part (i))
+\end{corollary}
+
+Theorem A is elementary. The substance lies in showing that the 5-DOF and 6-DOF feasible sets are not convex, in the
+physically relevant settings, and in establishing that the definitions match LCvx (\cref{sec:scope}). Theorem A also
+explains why 3-DOF LCvx is consistent: for the exact 3-DOF problem $\Ft$ is convex by Aumann's theorem
+\cite{aumann1965} (\cref{rem:3dof}).
+
+\begin{lemma}[Reduction to velocity increments {\pnote{math/02, Lemma~3.1}}]\label{lem:reduction}
+% CLAIMS: (part of P-B) | Lean: snd_image_landingSet, convex_reachSet_of_convex_landingSet
+Let $P_\pm\in R$ be realized by controls landing from $\theta_\pm$, $M=\tfrac12(P_++P_-)$ and
+$\theta_M=\tfrac12(\theta_++\theta_-)\in\conv\Ft$. Then $\dist(\theta_M,\Ft)\ge\dist(M,R)$. In particular
+$M\notin R\Rightarrow\theta_M\notin\Ft$.\Slean
+\end{lemma}
+
+\subsection{Theorem B: the unconstrained 5-DOF feasible set is nonconvex}\label{sec:B}
+Let $\varphi_F(s)=\omega s$ (variant F) or $\varphi_T(s)=\omega\min(s,t_f-s)$ (variant T). For a horizontal unit vector $u$,
+the \emph{extreme arc} tilts the body at full rate toward $u$, deflects the thrust a further $\delta$ outward, and
+holds minimum throttle:
+\begin{equation}\label{eq:arcs}
+b_u=\cos\varphi\,\ez+\sin\varphi\,u,\quad d_u=\cos(\delta+\varphi)\,\ez+\sin(\delta+\varphi)\,u,\quad T\equiv\rho_1 .
+\end{equation}
+Its velocity increment is $P_u=(\int a_1\sin(\delta+\varphi))u+(\int a_1\cos(\delta+\varphi))\ez$.
+
+\begin{theorem}[Theorem B]\label{thm:B}
+% CLAIMS: B, P-B (variant F FORMALIZED; variant T CLAIMED in registry) | Lean: not_convex_reachSet, not_convex_landingSet, no_lossless_relaxation_5dof, no_losslessFor_relaxation_5dof (Nonconvex.lean, Main.lean)
+Model M1 with $\rho_1>0$, $0<\omega<\infty$, $\delta\in[0,\pi/2)$, $\alpha\ge0$, any $g$, and either (F) $b(t_f)$ free with
+$\delta+\omega t_f\le\pi/2$, or (T) $b(t_f)=\ez$ with $\delta+\omega t_f/2\le\pi/2$. Then
+$M=\tfrac12(P_u+P_{-u})=(\int_0^{t_f}a_1\cos(\delta+\varphi))\,\ez$ lies in $\conv R\setminus R$. Hence $R$ and $\Ft$ are
+nonconvex, and no uniform convex relaxation of the 5-DOF landing problem is lossless.
+\Sleanpart{variant F, any continuous $a_1>0$}\ \Spending\ (variant T)
+\end{theorem}
+\begin{proof}[Proof sketch (full proof in \cref{app:B})]
+Suppose $M=\int a\,d$ for an admissible control.
+(1)~By \eqref{eq:AL} from $s'=0$, $b_z(s)\ge\cos\varphi(s)$. The spherical triangle inequality and the gimbal constraint
+give $d_z\ge\cos(\delta+\varphi)\ge0$, so $a\,d_z\ge a_1\cos(\delta+\varphi)$ pointwise.
+(2)~Integrating, $M_z\ge\int a_1\cos(\delta+\varphi)=M_z$, so equality holds a.e.
+(3)~Equality in the triangle inequality forces $b_z=\cos\varphi$ and puts $d$ in the vertical plane of $b$, tilted
+outward: $d=\cos(\delta+\varphi)\ez+\sin(\delta+\varphi)u(s)$ with $u(s)$ the azimuth of $b(s)$.
+(4)~\emph{Rigidity:} for $s<s'$ on a monotone piece of $\varphi$, \eqref{eq:AL} gives
+$\ip{b(s)}{b(s')}\ge\cos(\varphi(s')-\varphi(s))$, which with both tilts exact forces $u(s)=u(s')$. So the azimuth is
+constant.
+(5)~Then $M_h=(\int a\sin(\delta+\varphi))u_0\neq0$, a contradiction.
+\end{proof}
+Step (4) is where the finite rate enters. With $\omega=\infty$ the azimuth can chatter between $\pm u$ and $M\in R$,
+which is consistent with 3-DOF LCvx. With $\omega=0$ the attitude is fixed and $M\in R$ again, by chattering of the
+thrust azimuth on the gimbal cone. So $\omega\in(0,\infty)$ is essential. The gimbal is not: $\delta=0$ works.
+
+\subsubsection*{Quantitative gap: the ball bound}
+\begin{theorem}[Theorem Q, ball bound {\pnote{math/02, \S5}}]\label{thm:Q}
+% CLAIMS: Q, P-Q, P-epsilon (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: none
+In M1, variant F, assume $\delta+\omega t_f/2\le\pi/2$ and $M_z=\int a_1\cos(\delta+\omega s)\,ds\ge0$ (automatic if $\alpha=0$
+or $\delta+\omega t_f\le\pi/2$). Every $I\in R$ satisfies $\norm I\ge\ip{I}{b(t_f/2)}\ge G(t_f/2)$, where
+$G(\tau)=\int_0^{t_f}a_1\cos(\delta+\omega|s-\tau|)\,ds$. Consequently
+\[
+\dist(\theta_M,\Ft)\ \ge\ \dist(M,R)\ \ge\ G(t_f/2)-M_z\ \ge\ \Gamma_F:=\frac{4a_1(t_f/4)}{\omega}\sin\!\Big(\delta+\frac{\omega t_f}{2}\Big)\sin^2\!\Big(\frac{\omega t_f}{4}\Big)>0,
+\]
+with equality in the last step if $\alpha=0$, and no uniform convex relaxation is $\varepsilon$-lossless for
+$\varepsilon<\Gamma_F$.\Spending
+\end{theorem}
+The proof needs only the triangle inequality, without its equality case, and one explicit integral (\cref{app:B}).
+For $\rho_1=400$~N, $m_0=80$~kg, $\delta=15^\circ$, $\omega=0.3$~rad/s, $t_f=5$~s the bound is $7.6$~m/s. Numerically it is
+within 17--19\% of the true distance over 39 configurations (\cref{sec:numerics}). For small $\omega t_f$,
+$\Gamma_F\approx\tfrac14a_1\omega t_f^2\sin\delta$ ($\delta>0$), so the gap vanishes as $\omega\to0$ and is linear in $\omega$.
+A two-reference-direction refinement gives an explicit gap $\gamma_T>0$ for the tent variant (T) when $\alpha=0$
+\pnote{math/02, Thm~Q$_T$}.
+
+\begin{proposition}[All horizons, free terminal attitude {\pnote{math/02, Thm~L}}]\label{prop:L}
+% CLAIMS: P-L, P-L0 (registry: CLAIMED) | Lean: none
+In M1 with $\rho_1>0$, $0<\omega<\infty$, $0\le\delta<\pi$, $\alpha\ge0$ and $b(t_f)$ free, $\Ft$ is nonconvex for
+\emph{every} $t_f>0$. With $\rho_1=0$ and $\alpha=0$ the same holds whenever $\delta+\omega t_f>\pi/2$.\Spending
+\end{proposition}
+The witnesses of \cref{prop:L} use capped arcs (and inverted thrust when $\delta+\omega s>\pi/2$), so their physical
+content lies mostly in \cref{thm:B,thm:Q}. They do show that the obstruction is not an artefact of short horizons.
+
+\subsection{State constraints: the dive-then-brake face (Theorem B*)}\label{sec:Bstar}
+The witnesses of Theorems B and Q fly at minimum throttle throughout. A small lander cannot hover at minimum throttle
+($\rho_1/(m_0g_0)\approx0.51$ for our vehicle), so these witnesses start \emph{below ground}. Theorems B and Q say
+nothing about the altitude-constrained problem. The repair uses a different exposed face. Fix a switch time
+$s^*\in(0,t_f)$ and the rotation-invariant linear functional $\ell(\theta)=r_{0z}+s^*v_{0z}$. A landing control
+satisfies the exact identity
+\begin{equation}\label{eq:lambda}
+\Lambda(\theta):=r_0+s^*v_0=\int_0^{t_f}(s-s^*)\,a\,d\,ds+g_0t_f\big(s^*-\tfrac{t_f}2\big)\ez .
+\end{equation}
+The weight $s-s^*$ is negative before $s^*$ and positive after. Maximizing $\ell$ therefore asks for a \emph{dive}
+(minimum throttle, tilted as far as possible) followed by a \emph{brake} (full throttle, vertical thrust). The brake keeps
+the trajectory above ground.
+
+\begin{theorem}[Theorem B$^*$]\label{thm:Bstar}
+% CLAIMS: B*, P-B* (qualitative alpha=0 FORMALIZED; Steps 1-7 and Cor 10.4 survived adversary) | Lean: not_convex_constrainedLandingSet, exists_switchTime, no_lossless_relaxation_constrained_5dof, no_losslessFor_relaxation_constrained_5dof, constrainedLandingSet_nonempty (DiveBrake.lean, Main.lean)
+Model M1 with $\rho_1>0$, $0<\omega<\infty$, $0<\delta<\pi/2$, $\alpha\ge0$, $A_b:=\rho_2/m_0-g_0>0$, and the state constraint
+\eqref{eq:X}. Let $s^*\in(0,t_f)$ satisfy
+\[
+\text{(S1) }\omega s^*\le\delta,\qquad \text{(S2) }g_0s^*<A_b(t_f-s^*),\qquad
+\text{(S3) }\tan\gamma_{gs}\,a_{\max}s^{*2}\le A_b(t_f-s^*)^2 .
+\]
+Then there are $\theta^*\in\FX$ and its rotation $R_\pi\theta^*\in\FX$ by $\pi$ about $\ez$ whose midpoint $\theta_m$
+(with zero lateral components) is not in the \emph{unconstrained} set $\Ft$. Hence $\FX$ is nonconvex for every
+$t_f>0$ (for every $t_f$ a small enough $s^*$ exists), and no uniform convex relaxation of the altitude- and
+glide-slope-constrained 5-DOF problem is lossless. The same proof covers:
+(T$'$) upright landing $b(t_f)=\ez$ when $t_f\ge2s^*$;
+free final time on any compact window $[t_a,t_b]$, i.e.\ $\bigcup_{t\in[t_a,t_b]}F^{\X}_t$ is nonconvex;
+any additional closed, $R_\pi$-invariant constraint satisfied by the witness (e.g.\ a tilt cap $\ge\omega s^*$).
+If moreover $\delta\le\pi/4$, then
+\[
+\dist(\theta_m,\Ft)\ \ge\ \frac{\eta_0}{\sqrt{1+s^{*2}}},\qquad (1+c_1)\eta_0+\sqrt{2W_b\eta_0}=\gamma_X,
+\]
+with $\gamma_X=\tfrac5{32}a_{10}\sin\delta\,s^{*2}$, $c_1=4a_{\max}/(\omega a_{10}\sin\delta\,s^{*})$,
+$W_b=\tfrac12a_{\max}(t_f-s^*)^2$, $a_{10}=\rho_1/m_0$, $a_{\max}=\rho_2/(m_0-\alpha\rho_2t_f)$.
+\Sleanpart{qualitative statement, $\alpha=0$, $b(t_f)$ free, every $t_f$, any $\X\supseteq$ glide-slope set}\
+\Sproved\ (all variants and the quantitative bound)
+\end{theorem}
+\begin{proof}[Proof sketch (full proof in \cref{app:Bstar})]
+For a fixed throttle, $W_z=\int(s-s^*)a\,d_z$ is bounded above pointwise: on the dive $d_z\ge\cos(\delta+\omega s)$ and the
+weight is negative; on the brake $d_z\le1$. One attitude history attains both bounds. It dives at full rate for $s^*$
+and then holds its tilt $\omega s^*\le\delta$, so vertical thrust remains inside the gimbal cone. Full throttle on the
+brake is optimal by a pointwise mass comparison. The witness pair lands from $\theta^*$ and $R_\pi\theta^*$. It stays
+above ground, because the brake decelerates at $\ge A_b$, and inside the glide slope by (S3). If $\theta_m$ were feasible,
+its control would attain the bound, so the equality case and the rigidity argument of Theorem B apply on the dive and
+force $d=\ez$ on the brake. Its weighted lateral moment would be nonzero, whereas $\Lambda_h(\theta_m)=0$. The
+quantitative part avoids the equality case. It uses a support bound at $\tau=\vartheta s^*$ for the dive and
+Cauchy--Schwarz for brake-phase tilts.
+\end{proof}
+
+\begin{remark}[Formal version and its hypotheses]
+The Lean statement \lean{not\_convex\_constrainedLandingSet} assumes constant acceleration bounds
+$0<a_{\min}\le a\le a_{\max}$ (constant mass), $g_0\le a_{\max}$, $\omega s^*\le\delta$, $\delta+\omega s^*\le\pi/2$, and the
+single smallness condition $(a_{\max}+2\tan\gamma\,a_{\min})s^{*2}\le(a_{\max}-g_0)(t_f-s^*)^2$ in place of (S2)--(S3).
+\lean{exists\_switchTime} shows that such an $s^*$ exists for every $t_f>0$, $0<\delta<\pi/2$, $g_0<a_{\max}$. The statement
+holds for every $\X$ containing the glide-slope set.
+\end{remark}
+
+\begin{remark}[The B$^*$ gap is thin, and why]\label{rem:thin}
+For the motivating vehicle ($\rho_1=400$~N, $\rho_2=1000$~N, $m_0=80$~kg, $\delta=15^\circ$, $\omega=0.4$~rad/s,
+$\gamma_{gs}=30^\circ$, $s^*=\delta/\omega$, $t_f=7$~s), $\gamma_X=0.087$~m but $\eta_0\approx1.3\times10^{-5}$~m. This
+is not slack in the proof. A competitor can cancel the dive's lateral moment by tilting slightly during the long
+brake, at a cost quadratic in the tilt, of order $\norm{X_h}^2/(2W_b)$. Dropping (S1) gives an envelope version
+(Theorem B$^*$-env, \pnote{math/02 \S10.6}; survived adversarial review) whose heuristic gap is at most about 1~cm.
+Numerically the B$^*$ face gap is about 1~cm/s (\cref{sec:numerics}). \emph{So the nonconvexity of the real constrained
+problem is proved, but a practically significant $\varepsilon$-impossibility for in-air descents of this vehicle is not.}
+\end{remark}
+
+\subsection{Free final time and line search}\label{sec:freetf}
+LCvx usually treats free final time by a line search over $t_f$, solving one convex program per horizon
+\cite{blackmore2010jgcd,acikmese2013tcst}. Two routes are possible. A single program in which $t_f$ is a jointly
+convex decision variable fails immediately: every slice $F_t$ would then be convex \pnote{math/02, Prop.~7.2}. Line
+search needs an argument, because the accepted set is a union of convex sets.
+
+\begin{lemma}[Line search cannot be lossless; RR-LS]\label{lem:LS}
+% CLAIMS: RR-LS, LS (registry: CLAIMED; abstract form formalized, commit 517f1bb) | Lean: not_lineSearch_lossless, symmetric_supply, not_lineSearch_lossless_of_symmetry (FreeTime.lean)
+Let $W$ be a set of horizons, $F_t$ the true feasible sets, and $\{C_t\}_{t\in W}$ per-horizon uniform convex
+relaxations with $F_t\subseteq\pi_\Theta(C_t)$. (i) If some $\bar x\in\conv F_{t^*}$, $t^*\in W$, lies in no $F_t$,
+$t\in W$, then line search accepts $\bar x$ although it is infeasible at every horizon. (ii) Such an $\bar x$ exists if
+there are a linear involution $R$ preserving every $F_t$ and an $R$-invariant linear functional $\ell$ with a maximizer
+over the graph $\{(t,x):t\in W,\,x\in F_t\}$, and every maximizer has $x\ne Rx$.\Sleanpart{abstract (i)--(ii)}
+\end{lemma}
+\begin{corollary}\label{cor:LS}
+% CLAIMS: RR-LS + P-B* (Cor 10.4) | Lean: abstract part only
+On any compact window on which the B$^*$ conditions hold (e.g.\ $W\subseteq[t_a,\min(t_b,t_{fuel})]$ with
+$t_{fuel}=(m_0-m_{dry})/(\alpha\rho_1)$), the B$^*$ functional supplies (ii). No per-horizon family of uniform convex
+relaxations makes free-final-time 5-DOF landing lossless, in feasibility or optimization form.\Spending
+\end{corollary}
+The window is necessary for this witness: the unconstrained midpoint of Theorem B becomes reachable at a longer
+horizon when $g_0>a_1\cos\delta$ \pnote{math/redteam-lift \S4.3}, and over unbounded horizons $\sup\ell=\infty$.
+
+\subsection{Per-instance obstructions: Theorem D and Lemma S}\label{sec:D}
+Theorem A concerns relaxations that are uniform in the data. A guidance computer solves one instance at a time, so one
+may ask whether some convex program is exact for each given instance, possibly exploiting a rotated frame or
+symmetry. \Cref{def:statelinear} answers this for minimum-landing-error problems.
+
+\begin{theorem}[Theorem D]\label{thm:D}
+% CLAIMS: D, P-D (abstract D FORMALIZED) | Lean: StateLinearRelaxation.convexHull_subset, minError_lossy, convex_superset_gap (TheoremD.lean)
+For any state-linear relaxation of an instance, $\rho(\{y\in C:P(y)=0\})\supseteq\conv\Reach(\theta_0)$. Hence the relaxed value
+is at most $\inf_{\conv\Reach}\varphi$. If $q\in\conv\Reach\setminus\cl\Reach$ and $\varphi=\norm{\cdot-q}$, the relaxed value is
+$0$, the true value is $\dist(q,\Reach)>0$, and every relaxed optimum reads out a non-genuine state.\Slean
+\end{theorem}
+\begin{proof}
+Mix the embedded points $y_i$ of genuine states $x_i$. The readout is affine and the penalty convex and vanishing at
+the $y_i$.
+\end{proof}
+Theorem D needs no joint convexity in the data and is immune to frame rotation. It is useful only once a nonconvex
+reachable set is exhibited at a \emph{single} feasible instance. With a soft terminal velocity, the vertical instance
+$\theta_m$ of Theorem B$^*$ gives one, with a certified (tiny) gap \pnote{math/02, Cor.~D.1}. The LCvx soft-landing
+problem imposes $v(t_f)=0$ hard and penalizes the landing offset. Theorem D then needs a nonconvex landing-offset set:
+\begin{quote}
+\textbf{(S)} there is vertical data $\zeta=(r_0=h\ez,\ v_0=v_{0z}\ez)$ with $0\notin\cl L(\zeta)\neq\emptyset$.
+\end{quote}
+$L(\zeta)$ is rotation invariant, so (S) says it is an annulus with a hole around the point directly below. The danger
+is \emph{coning}: precessing the azimuth at fixed tilt cancels lateral motion and might fill the hole. A Wirtinger
+inequality modulo affine functions handles all such manoeuvres at once.
+
+\begin{lemma}[Wirtinger modulo affine functions {\pnote{math/07, Lemma~W}}]\label{lem:W}
+% CLAIMS: S-W (registry: CLAIMED; used in S-T which survived attack) | Lean: periodic_wirtinger, wirtinger_scalar, wirtinger_lipschitz (Slice/Wirtinger.lean; PENDING, uncommitted)
+Let $P$ be the $L^2(0,T)$-orthogonal projection onto affine functions. For $f\in H^1((0,T);\R^N)$,
+\[
+\norm{f-Pf}_{L^2}^2\le\Big(\frac T{2\pi}\Big)^2\Big(\norm{\dot f}_{L^2}^2-\frac{|f(T)-f(0)|^2}{T}\Big),
+\]
+with equality for $f=c(1-\cos(2\pi s/T))$. In particular an $\omega$-Lipschitz path $\beta$ (of any range dimension)
+satisfies $\norm{\beta-P\beta}\le\omega T^{3/2}/(2\pi)$.\Sproved
+\end{lemma}
+The inequality is componentwise, so planar S-turns, coning paths and even $\R^N$-valued (lifted) lateral paths obey
+the same bound.
+
+\begin{theorem}[Theorem S: Lemma S in an explicit regime {\pnote{math/07, Thm~S}}]\label{thm:S}
+% CLAIMS: S, S-M, S-T (PROVED IN REGIME; SURVIVED adversary) | Lean: master_inequality, dent (Slice/Master.lean; PENDING, uncommitted); Lemma S itself not formalized
+Model M1, $b(t_f)$ free, $\alpha\ge0$, $g=-g_0\ez$. Let $\bar\tau=\delta+\omega t_f$ and assume (S0) $\bar\tau<\pi/2$,
+(S1) $(\rho_1/m_0)\cos(\delta+\omega t_f)>g_0$ (minimum-throttle thrust-to-weight above $1/\cos\bar\tau$; altitude is then
+automatic), (S2) a throttle condition that is automatic if $\rho_1=\rho_2$, and (S3) $M:=\mathrm{gain}_w-B>0$, where
+$\mathrm{gain}_w$ is the vertical-impulse waste of an explicit planar single-crossing S-turn witness and $B$ is an explicit
+constant (\cref{app:S}). Then at the witness's vertical data $\zeta_w$, $L(\zeta_w)$ contains a full circle, and every
+landing offset satisfies
+\[
+|p|\ \ge\ r_S=\Big(\frac{M t_f^3}{12\,C_m}\Big)^{1/2}>0 .
+\]
+Hence (S) holds, and every state-linear relaxation of the minimum-landing-error problem from $\zeta_w$ with hard
+$v(t_f)=0$ and target $q=0$ has relaxed value $0$ while the true value is at least $r_S$.\Sproved
+\end{theorem}
+For a demonstration vehicle with $a_1=12$, $a_2=25$~m/s$^2$, the theorem is certified for $\omega t_f\le0.55$ ($\delta=0$),
+$\le0.45$ ($\delta=5^\circ$) and $\le0.30$ ($\delta=10^\circ$), with certified dents $r_S=0.4$--$1.8$~m. \emph{Realism caveat:}
+(S1) requires a vehicle that cannot hover at minimum throttle. That excludes essentially every deeply throttleable lander,
+including ours ($\rho_1/m_0=5.0$--$7.2$~m/s$^2<g_0$). For our vehicle, (S) holds numerically at dive-then-brake data, with
+landing-set gaps of about 1~cm in $\ell$ and optimizers landing 1.5--2.4~m off axis (\cref{sec:numerics}). The rigorous GTPL
+case is open, because the $L^2$ slack (cm--dm) exceeds the $\ell$-gap (mm--cm).
+
+\subsection{Optimization form: Theorem A-opt and Proposition T}\label{sec:aopt}
+A weaker notion of losslessness escapes Theorem A: exactness of the optimal value on $F$ only, with no
+infeasibility detection off $F$. Mixtures of genuine trajectories constrain it too.
+
+\begin{theorem}[Theorem A-opt {\pnote{math/redteam-lift \S5}}]\label{thm:Aopt}
+% CLAIMS: L-Aopt (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: mixing, aOpt, value_le_convexCombination, no_valueLossless_of_strict (Slice/AOpt.lean; PENDING, uncommitted)
+Let $C\subseteq\Theta\times Y$ be a uniform convex relaxation with a cost $J$ convex on $C$, in which every genuine
+trajectory $\tau$ is represented with $J=\text{cost}(\tau)$. If $C$ is value-lossless on $F$, then
+$V(\sum_i\lambda_i\theta_i)\le\sum_i\lambda_iV(\theta_i)$ whenever all $\theta_i$ and $\sum\lambda_i\theta_i$ lie in $F$: the value
+function agrees with its convex envelope $V^{**}$ on $F$.\Spending
+\end{theorem}
+\begin{proposition}[Proposition T: an attitude-sensitive cost]\label{prop:T}
+% CLAIMS: L-Aopt (Prop T part; registry: CLAIMED) | Lean: abstract skeleton no_valueLossless_of_strict (PENDING)
+In M1 with $\alpha=0$, cost $\int_0^{t_f}\ip{b}{\ez}\,ds$ (maximize mean tilt), $\omega t_f/2>\delta$,
+$\delta+\omega t_f/2\le\pi/2$ and $a_2\cos(\omega t_f/2-\delta)\ge a_1$, there is $\theta'\in F$ at which every such
+relaxation has value strictly below $V(\theta')$. So no uniform convex relaxation is value-lossless on $F$ for all convex
+costs.\Spending
+\end{proposition}
+For minimum fuel the question is open. Numerically the rotational axis test shows no violation of $V=V^{**}$
+\pnote{math/redteam-lift \S5.4}. Even if minimum fuel were value-lossless on $F$, the relaxation would report spurious
+feasibility on $\conv F\setminus F$, which is not LCvx in the sense of \cref{def:lossless}(b).
+
+\subsection{The minimum throttle is not the cause: $\rho_1=0$}\label{sec:rho0}
+Theorems B and B$^*$ use the minimum throttle. If the engine may shut down ($\rho_1=0$), the velocity set does become convex
+in the short-horizon regime, but the landing set does not.
+
+\begin{proposition}[P0-R {\pnote{math/possibility-rho0 \S1}}]\label{prop:P0R}
+% CLAIMS: P0-R (= RR-R0 + sharp converse; registry: CLAIMED) | Lean: none
+In M1 with $\rho_1=0$, $\alpha=0$, $b(t_f)$ free: $R$ is convex iff $\delta+\omega t_f\le\pi/2$, and then
+$R=\{\int u:\norm{u(s)}\le a_2,\ \angle(u(s),\ez)\le\delta+\omega s\}$, the 3-DOF time-varying-envelope set. (Tent variant:
+iff $\delta+\omega t_f/2\le\pi/2$.)\Spending
+\end{proposition}
+\begin{theorem}[P0-F: landing set nonconvex with $\rho_1=0$]\label{thm:P0F}
+% CLAIMS: P0-F (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: none
+In M1 with $\rho_1=0$, $\alpha=0$, $b(t_f)$ free, $0\le\delta<\pi/4$ and $0<\omega t_f<\pi/2-2\delta$, the set $K$, hence $\Ft$, is
+nonconvex. No uniform convex relaxation is lossless even with engine shutdown allowed.\Spending
+\end{theorem}
+\begin{proof}[Proof idea (\cref{app:other})]
+On the face $\ip{\hat p}{r_0+\sigma v_0}$ with $\hat p$ pointing $\delta$ below the horizontal, the face value reduces exactly
+to a one-dimensional maximization over the tilt reached at $\sigma$. An intermediate-value argument in $\sigma$ produces a tie
+between two separated groups of maximizers. Both ``coast while rotating'', and the thrust on/off boundary acts as a
+convex kink. The face is a disjoint union of two nonempty compact sets, so it is not convex.
+\end{proof}
+With an altitude constraint the same mechanism gives nonconvexity of $F^{\X}_{t_f}$ (early-kink face) when full-throttle
+thrust-to-weight is at least $1/(\cos(\delta+\omega t_f)(1-x_*^2))\approx2.1$ \pnote{P0-X}. That covers neither our
+vehicle ($T/W\approx1.27$) nor glide slopes. The ``LCvx is possible iff $\rho_1=0$'' dichotomy is therefore false: \emph{the
+obstruction is driven by the finite attitude rate itself.} \Cref{prop:P0R} does give a small exact result: for problems that
+constrain only the terminal velocity, the 3-DOF envelope SOCP is feasibility-exact when $\rho_1=0$.
+
+Two further loopholes are closed. A separable monotone reparametrization of the data cannot convexify $F$, because the
+lowest slice of $\pi_v F$ is a circle \pnote{math/redteam-lift Prop.~P1}. The only rate notion that is
+SOC-representable (a thrust-vector ``chord rate'' $\norm{\dot u}\le\omega\sigma$) is not uniformly lossless, because its
+original problem is again of type M1 with $\delta=0$ \pnote{math/redteam-reform \S6}. A tilt-angle-only rate limit, with
+the azimuth free to jump, leaves rigidity broken and appears to give convex landing sets numerically (\cref{sec:numerics});
+it is, however, not SOC-representable.
+
+\subsection{6-DOF}\label{sec:6dof}
+\begin{theorem}[Transfer to kinematic 6-DOF {\pnote{math/02 Thm~6.2; math/adversary-6dof Thm~K}}]\label{thm:6kin}
+% CLAIMS: B6 (FIXED for kinematic: Thm K), B6-D (registry: CLAIMED) | Lean: not_convex_landingSet6, not_convex_constrainedLandingSet6 (SixDOF.lean; PENDING, uncommitted)
+In M4-kin the projection $(\mathsf R,\Omega,T,d)\mapsto(b=\mathsf Re_3,T,d)$ maps admissible 6-DOF controls into admissible M1
+controls, and the planar witnesses lift with zero roll, as rotations about a fixed horizontal axis. Hence
+$R_6\subseteq R_5$ contains the same witnesses, and Theorems B, Q, B$^*$ (and their variants) hold verbatim for 6-DOF with
+fixed attitude data. With a box gimbal, replace $\delta$ by the corner angle and take $u$ along a diagonal.\Spending
+\end{theorem}
+\begin{theorem}[Independent transverse torque {\pnote{math/02 Thm~E; math/adversary-6dof Thms~D, D$^*$}}]\label{thm:6dyn}
+% CLAIMS: P-E (survived adversary-6dof), B6-D, B6-D* (registry: CLAIMED) | Lean: none
+In M3a/M4-dyn (axisymmetric $J$, transverse torque $\norm{\tau_\perp}\le\tau_t$ independent of the engine, any roll, $\Omega(0)=0$),
+every body axis satisfies the envelope $\angle(b(s),b(s'))\le\Psi(s')-\Psi(s)$ with $\Psi(s)=\int_0^s\min(\bar\alpha r,\omega)\,dr$,
+$\bar\alpha=\tau_t/J_t$, and the radial ``bang'' arcs attain it. Hence (i) with terminal attitude free and
+$\delta+\Psi(t_f)\le\pi/2$, $\Ft$ is nonconvex; (ii) with terminal attitude $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$ and unlimited gimbal
+rate, a dive-then-brake face again gives nonconvexity, with altitude and glide-slope constraints handled as in
+Theorem B$^*$.\Spending
+\end{theorem}
+The gyroscopic terms do no work on $\norm{\Omega_\perp}$ for axisymmetric $J$, so roll and coning cannot defeat the
+envelope. Not covered are a nonzero initial transverse rate (which breaks the $\pm u$ symmetry), nonaxisymmetric
+inertia, and gimbal-rate limits in the terminal-attitude case.
+
+\subsubsection{Pure TVC: what is proved}\label{sec:tvc}
+On a pure-TVC vehicle the M1 witnesses are not realizable: deflecting the thrust outward rotates the body inward.
+The centre-of-percussion identity (\cref{lem:cop}) converts the problem into a zero-gimbal, angular-acceleration-limited
+problem for $y=r+\varepsilon b$, with boundary data that map affinely. The landing condition becomes a fixed affine
+condition on $(y,\dot y)$ only when the vehicle lands upright at rest, $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$.
+
+\begin{theorem}[Pure TVC, rest-terminal rate, tilt free {\pnote{math/adversary-6dof Thm~E$_0$}}]\label{thm:E0}
+% CLAIMS: B6-TVC, B6-E0, FLAT (FIXED part) (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: none
+Model PT with constant $\varepsilon$, zero roll rate, axisymmetric $J$, unlimited gimbal rate (cone or box gimbal),
+$b(0)=\ez$, $\Omega_\perp(0)=0$, and landing $r(t_f)=v(t_f)=0$, $\Omega_\perp(t_f)=0$ with terminal tilt \emph{free}. In the
+regime $\varepsilon\bar\omega^2<\rho_1\cos\delta^*/m_0$, $\bar\omega t_f\le\pi/2$ (for a rate cap $\bar\omega$), $\Ft$ is nonconvex
+(indeed $\cl\Ft$ is nonconvex), with no state constraints.\Spending
+\end{theorem}
+\Cref{thm:E0} does not cover the realistic case: upright terminal attitude, altitude constraint, and gimbal-rate limits.
+For that case there is strong numerical evidence (\cref{sec:numerics}): a dive-then-brake face with full rigid-body
+dynamics, $\pm15^\circ$ box gimbal at $100^\circ$/s, $r_z\ge0$ and upright-at-rest touchdown has rotation-midpoint gaps of
+2.8--3.3~cm at $t_f=5$--$7$~s. A torque-coupled hop instance has a 1.74~m hole in its landing set. With $\rho_1=0$, pure TVC is
+nonconvex in a strong-torque, small-gimbal asymptotic regime \pnote{P0-TVC}.
+
+\begin{todobox}[{(proof-tvc): Theorem TVC-1, pure TVC upright at rest with $r_z\ge0$}]
+% CLAIMS: B6-TVC-up (OPEN in registry) / math/06 TVC-1 (claimed "PROVED, computer-assisted" by proof-tvc; certificate table pending)
+\textbf{Status:} registry row B6-TVC-up is \textbf{OPEN}. \texttt{math/06-pure-tvc.md} states Theorem TVC-1: for constant mass,
+upright at rest at both ends, $r_z\ge0$ and glide slope, at the GTPL wet constants and certified horizons, $\FX$ is
+nonconvex. The proof is computer-assisted: an S-procedure/Finsler SDP certificate bounds \emph{every} zero-lateral competitor,
+is separable in the two components of the horizontal tilt (covering coning and loops), and comes with remainder and
+localization lemmas. An explicit planar dive-then-brake witness exceeds the bound. The certified-instance table
+(\texttt{CERT\_TABLE\_PLACEHOLDER}) and the verdict in \texttt{comms/reports/proof-tvc.md} are not yet filled in.
+Adversary attack A1 (additive remainder) is reported fixed. Open: mass depletion, gimbal-rate limit, roll-rate competitors
+(certification status pending).\\
+\textbf{To fill in:} statement with the certified $(t_f,s^*,d_*)$ table; the scope (constant mass, unlimited gimbal rate, roll
+R0/R1); the certificate method in one paragraph; an appendix pointer. Until then, the paper claims only \cref{thm:E0} and the
+numerics for pure TVC.
+\end{todobox}
+
+\begin{remark}[Consistency with 3-DOF]\label{rem:3dof}
+For the exact 3-DOF problem with free direction, $\Ft$ is convex even with mass depletion, and with any measurable compact
+control set it is convex for constant mass, by Aumann's theorem \pnote{math/02 Prop.~8.2}. Theorem A therefore never
+contradicts 3-DOF LCvx in any case where convexity can be decided. The decisive ingredient of our obstruction is that the
+attitude constraint \emph{couples different times}, through continuity and a rate bound. Pointwise (measurable) attitude
+constraints never obstruct.
+\end{remark}

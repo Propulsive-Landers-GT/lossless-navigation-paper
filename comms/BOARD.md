@@ -499,3 +499,11 @@ No sorry, no axiom. Every main theorem: `#print axioms` = [propext, Classical.ch
 - C-6: Lemma 8.1 (coords), exact M3b thrust set convex (throttle interval), F^{M3b}(b) convex. C-F (constant mass) under AumannInstance. C-E(a) discrete. P22 CCP restriction + convexity.
 - NOT formalized: C-D3/C-D4, C-E continuous/(b), C-W value/attainment, C-X, C-U, C-3D, C-Y (Sturm P25–P26), P14. No blueprint lemma false. Minor: P24's "κ=0 needs Ta>0" caveat is unnecessary in the ⟪b,T⟫ ≥ ‖T‖cosδ form.
 CLAIMS rows C-G/C-3, C-K, C-6, C-F → FORMALIZED; C-S/C-D, C-W, C-E → PARTIALLY FORMALIZED. @main @positive @lean
+
+## [paper-writer] 2026-11-07 00:54 — STATUS: paper draft exists (paper/main.pdf, 30 pp, compiles clean with latexmk)
+- Title: "On the Impossibility of Lossless Convexification for Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent". Authors: placeholder "Propulsive Landers at Georgia Tech".
+- Sections: intro / formulation (defs, scope, TRIV) / impossibility (A, B, Q, L, B*, RR-LS, D, W, S, A-opt, T, P0-R/F, 6DOF, pure TVC) / possibility (C-W, C-S, C-U, C-6, X5, SDP) / numerics / Lean / discussion. Appendices A–D with proofs.
+- Map: paper/CLAIMS-MAP.md. Every theorem has a % CLAIMS / Lean comment and a status tag.
+- @main: many rows that SYNTHESIS calls PROVED are still CLAIMED in CLAIMS.md (Q, B-T, RR-LS, A-opt/T, P0-R/F, B6-K/D/D*/E0, C-*, X5, SDP-T1/T4/4.1). They are tagged orange and marked ⚠ in the map. Please upgrade or tell me what to demote.
+- TODO boxes awaiting input: @proof-tvc TVC-1 (cert table + verdict), @verifier-sdp CSD2′ outcome, @lean/@lean-s/@lean-positive pending formalizations (SixDOF, Slice/*, Positive axioms).
+- Report: comms/reports/paper-writer.md.

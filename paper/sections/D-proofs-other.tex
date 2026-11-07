@@ -1,0 +1,35 @@
+% ============================================================================
+\section{Further proof sketches}\label{app:other}
+% ============================================================================
+
+\subsection{Theorem P0-F ($\rho_1=0$)}
+Adapted from \texttt{math/possibility-rho0} \S2. Set $\rho_1=0$, $\alpha=0$, $a_2=\rho_2/m_0$, units $\omega=a_2=1$, $T=\omega t_f$. For fixed $b$ the
+pointwise control set $U(b)=\{u:
+orm u\le a_2,\ \ip ub\ge
+orm u\cos\delta\}$ (convex, containing $0$) has support function
+$a_2\norm p\,c(\angle(p,b))$ with $c(x)=1$ for $x\le\delta$, $\cos(x-\delta)$ for $\delta\le x\le\delta+\pi/2$, and $0$ beyond. $K$ is compact and
+star-shaped about $0$, so it is convex iff every exposed face lies in $K$.
+
+Take $\hat p=(\cos\delta,0,-\sin\delta)$ and $\sigma\in(0,t_f)$, primer $p(s)=(s-\sigma)\hat p$, face functional
+$\ell_\sigma=\ip{\hat p}{\int(s-\sigma)a\,d}=\ip{\hat p}{r_0+\sigma v_0}+\text{const}$. With $\beta=\phi_0-\angle(\hat p,b)$ (an $\omega$-Lipschitz tilt toward
+$\hat p$, $\beta(0)=0$) one has $\ell_\sigma\le a_2P[\beta]$ for an explicit integral $P$, with equality along great circles through $\ez$ and
+$\hat p$. For fixed $\beta^*=\beta(\sigma)$ the optimal profile is the lower envelope before $\sigma$ and the upper envelope after, so
+$h_K=a_2\max_{\beta^*}V(\beta^*)$ with $V=E+L_t$. Here $E$ is nonincreasing (strictly on $[-T,0]$, because $T<\pi/2-2\delta$), and $L_t$ vanishes iff
+$\beta^*\le-\tau$, $\tau=T-\sigma$. Let $A(\sigma)=E(-\sigma)$ and $B(\sigma)=\max_{[-\tau,\sigma]}V$. At $\sigma=T$, $B<A$. At $\sigma=T/2=h$,
+$A-V(h)\le-f(h)$ with $f(h)=\sin2h-h\cos2h+\sin h-2h\ge h^3(\tfrac12-\tfrac23h^2)>0$, so $B>A$. Hence there is a tie $\sigma_c\in(T/2,T)$. The
+two groups of maximizers are compact, disjoint, and separated by $\ip{\hat p}{I}$: the left group coasts late, while the right group thrusts
+late and less early. A convex face cannot be a disjoint union of two nonempty compact sets, because convex sets are connected. \qed
+
+\subsection{Theorem C-W (fixed attitude)}
+Adapted from \texttt{math/04} \S3. The extreme points of the cap $K_\Gamma(b)$ are exactly its spherical part
+$S_\Gamma(b)=\{\norm T=\Gamma,\ \angle(T,b)\le\delta\}$, and $K_\Gamma=\conv S_\Gamma$ (Krein--Milman; Lean: \lean{extremePoints\_cap},
+\lean{cap\_subset\_closure\_convexHull\_sCap}). On each subinterval between prescribed nodes, the state increment is
+$\int\Psi_k(s)T(s)/m(s)\,ds$ with $\Psi_k$ of full column rank and $m$ fixed by $\Gamma$. Aumann's theorem applied to the multifunction
+$\Psi_kS_\Gamma(b)/m$ yields a measurable lossless selection with the same increment. Concatenation over subintervals preserves the state at
+every node. \qed
+
+\subsection{Theorem C-6 (pure TVC given attitude)}
+With zero roll rate the angular momentum is $J_\perp b\times\dot b$, and Euler's equation reads $J_\perp b\times\ddot b=L\,T\times b$. Splitting $T$ and $\ddot b$
+into components along and orthogonal to $b$ gives $\Pi_bT=-k\Pi_b\ddot b$. So $T=T_ab+F$ with $F$ determined by $b$. The gimbal condition becomes
+$\varkappa\le T_a\tan\delta$, and the throttle condition becomes $\rho_1^2\le T_a^2+\varkappa^2\le\rho_2^2$. Both are intervals in $T_a$. The dynamics are
+affine in $T_a$ for fixed $b$, and the fuel integrand $\norm{(T_a,\varkappa)}$ is convex. \qed

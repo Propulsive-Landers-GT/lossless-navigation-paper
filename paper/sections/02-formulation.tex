@@ -1,0 +1,158 @@
+% ============================================================================
+\section{Problem formulation}\label{sec:formulation}
+% ============================================================================
+
+\subsection{Translational dynamics and thrust}
+All models share the translational part
+\begin{equation}\label{eq:dyn}
+\dot r=v,\qquad \dot v=a(t)\,d(t)+g,\qquad \dot m=-\alpha T,\qquad a=T/m,
+\end{equation}
+with thrust magnitude $T(t)\in[\rho_1,\rho_2]$ (measurable), $0<\rho_1\le\rho_2$ unless $\rho_1=0$ is stated,
+mass-depletion constant $\alpha\ge0$, initial mass $m_0$ with $m_0-\alpha\rho_2t_f>0$, and thrust direction
+$d(t)\in\Sph$ (measurable). Integrating \eqref{eq:dyn} gives
+\begin{equation}\label{eq:IJ}
+v(t_f)=v_0+gt_f+I,\quad r(t_f)=r_0+v_0t_f+\tfrac12gt_f^2+J,\qquad
+I=\int_0^{t_f}a\,d\,ds,\quad J=\int_0^{t_f}(t_f-s)\,a\,d\,ds.
+\end{equation}
+Since $T\ge\rho_1$ forces $m(s)\le m_0-\alpha\rho_1s$, every admissible acceleration satisfies
+$a(s)\ge a_1(s):=\rho_1/(m_0-\alpha\rho_1s)$, the acceleration at constant minimum throttle.
+
+\subsection{Attitude models}\label{sec:models}
+The body (thrust) axis is $b(t)\in\Sph$. The gimbal constraint is $\angle(d(t),b(t))\le\delta$ with
+$\delta\in[0,\pi/2)$. A body-fixed box gimbal $\pm\delta$ per axis is handled by replacing $\delta$ by the corner angle
+$\delta^*$ in obstruction arguments ($\delta^*\approx21.2^\circ$ for $\pm15^\circ$) and by the inscribed angle where a
+witness needs it \pnote{math/adversary-6dof-report.md, V7}.
+\begin{description}[leftmargin=1.2em,style=nextline,itemsep=3pt]
+\item[M0 (3-DOF LCvx baseline).] No attitude; optional pointing cone $\angle(d,\hat n)\le\theta_p$ about a fixed axis.
+\item[M1 (5-DOF kinematic: rate-limited axis, gimbal cone).] $b$ is continuous, $b(0)=\ez$, and \emph{angle-Lipschitz}:
+\begin{equation}\label{eq:AL}\tag{AL$_\omega$}
+\ip{b(s)}{b(s')}\ \ge\ \cos(\omega|s-s'|)\qquad\text{whenever }\omega|s-s'|\le\pi .
+\end{equation}
+\eqref{eq:AL} holds iff $b$ is absolutely continuous with $\dot b=\Omega\times b$ and $\norm{\Omega_\perp}\le\omega$, where
+$\Omega_\perp$ is the transverse body rate; roll is unrestricted \pnote{math/02, Prop.~1.2}. The gimbal is fast
+($d$ measurable). Two terminal variants: (F) $b(t_f)$ free; (T) $b(t_f)=\ez$.
+\item[M3a / M4-dyn (rigid body, independent transverse torque).] Axisymmetric inertia $J=\mathrm{diag}(J_t,J_t,J_a)$,
+Euler's equations, transverse torque $\norm{\tau_\perp}\le\tau_t$ from an actuator independent of the main engine
+(reaction-control system or wheels), any roll torque, $\Omega(0)=0$. Optional rate limit.
+\item[M4-kin (kinematic 6-DOF).] Full attitude $\mathsf R(t)\in SO(3)$ with angular velocity as control,
+$\norm{\Omega_\perp}\le\omega$, arbitrary roll; thrust axis $b=\mathsf Re_3$.
+\item[PT / M3b (pure TVC rigid body; the realistic small-lander model).] Pitch and yaw torque come only from the
+gimbal: with the pivot at $-Lb$ from the centre of mass, $\tau_\perp=-LT\,b\times d$. Deflecting the thrust
+outward rotates the body \emph{inward}. Roll is held by a separate RCS.
+\end{description}
+Roll does not move the thrust axis of an axisymmetric vehicle. 5-DOF (translation plus pitch and yaw of $b$) is
+therefore the natural primary model, and 6-DOF results follow by projection and lifting (\cref{sec:6dof}).
+
+\begin{lemma}[Centre-of-percussion identity {\pnote{math/02, Lemma~6.4}}]\label{lem:cop}
+% CLAIMS: P-K3, FLAT (identity CONFIRMED for eps const, roll rate 0) | Lean: none
+Consider model PT with constant mass $m$, axisymmetric $J$, roll rate $\varpi=\ip{\Omega}{b}$ and
+$\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
+\[
+\ddot y=\Big(\frac{T\cos\mu}{m}-\varepsilon\norm{\Omega_\perp}^2\Big)b+g+\frac{J_a}{mL}\,\varpi\,\Omega_\perp,
+\qquad \mu=\angle(d,b).
+\]
+With zero roll rate the lateral gimbal force cancels exactly: $y$ is driven by a thrust along $b$ (effective gimbal
+$0$) whose magnitude is reduced by the centripetal term.\Spending
+\end{lemma}
+For the motivating vehicle, $\varepsilon\approx1.35$~m. The identity is the basis of both the pure-TVC obstruction
+(\cref{sec:tvc}) and the pure-TVC positive result (\cref{thm:C6}).
+
+\subsection{Boundary data and feasible sets}
+The boundary data are $\theta=(r_0,v_0)\in\R^6$. The mass $m_0$, the initial attitude (and initial rate in torque models),
+the terminal attitude in variant (T), and $t_f$ are fixed. Landing means $r(t_f)=0$, $v(t_f)=0$.
+\begin{definition}[Feasible boundary-data sets]
+$\Ft=\{\theta:\ \text{some admissible control lands from }\theta\text{ at }t_f\}$. For a closed state-constraint set
+$\X\subseteq\R^6$, $\FX$ is the subset whose landing trajectory satisfies $(r(t),v(t))\in\X$ for all $t$. Our main
+choice is altitude plus glide slope,
+\begin{equation}\label{eq:X}
+\X=\{(r,v):\ r_z\ge0,\ r_z\ge\tan\gamma_{gs}\norm{r_h}\},\qquad \gamma_{gs}\in[0,\pi/2).
+\end{equation}
+The \emph{velocity-increment set} is $R=\{I\}$ over admissible controls, and $K=\{(I,J)\}$.
+\end{definition}
+By \eqref{eq:IJ}, $\Ft=A^{-1}(K)$ for an affine bijection $A$, and $\pi_v(\Ft)=-gt_f-R$. Hence
+\[
+\Ft\ \text{convex}\ \Longleftrightarrow\ K\ \text{convex}\ \Longrightarrow\ R\ \text{convex}.
+\]
+For one fixed instance $\theta_0$ we also use $\Reach(\theta_0)$, the set of terminal states of admissible
+trajectories that stay in $\X$, and the \emph{landing-offset set}
+$L(\theta_0)=\{p:\ \text{some admissible trajectory from }\theta_0\text{ ends at }r(t_f)=(p,0),\ v(t_f)=0\}$.
+
+\subsection{Relaxations and losslessness}\label{sec:defs}
+\begin{definition}[Uniform convex relaxation]\label{def:ucr}
+% CLAIMS: A (definitions) | Lean: UniformConvexRelaxation
+Let $\Theta=\R^6$ and let $Y$ be any real vector space (lifted variables, discretized controls, slacks; possibly
+infinite-dimensional). A \emph{uniform convex relaxation} is a convex set $C\subseteq\Theta\times Y$. Its slice
+$C_\theta=\{y:(\theta,y)\in C\}$ is the feasible set of the relaxed problem at $\theta$, which may minimize any cost.
+The data enter \emph{affinely} in the sense that $C$ is convex jointly in $(\theta,y)$. More generally, they enter through
+an affine bijection $\psi$ of $\Theta$, or through a \emph{separable monotone} map
+$\psi(\theta)=(\psi_r(r_0),\psi_1(v_{0x}),\psi_2(v_{0y}),\psi_3(v_{0z}))$ with each $\psi_i$ continuous and strictly
+monotone in a frame with vertical third axis.
+\end{definition}
+
+\begin{definition}[Losslessness]\label{def:lossless}
+% CLAIMS: A | Lean: IsLossless, IsLosslessFor
+(a) \emph{Feasibility (detection-sound) form:} $C$ is lossless for $F\subseteq\Theta$ if
+$C_\theta\neq\emptyset\iff\theta\in F$ for every $\theta$. It is \emph{$\varepsilon$-lossless} if
+$F\subseteq\pi_\Theta(C)\subseteq\{\theta:\dist(\theta,F)\le\varepsilon\}$.
+(b) \emph{Optimization (LCvx) form} for a cost $J$: every original-feasible $\theta$ has $C_\theta\ne\emptyset$, and
+whenever $C_\theta\ne\emptyset$ the relaxed minimum over $C_\theta$ is attained at a point that certifies an
+original-feasible (and optimal) solution at $\theta$.
+(c) \emph{Value-lossless on $F$:} $\min_{C_\theta}J=V(\theta)$ for every $\theta\in F$, where $V$ is the original value.
+\end{definition}
+
+\begin{proposition}[LCvx form implies feasibility form {\pnote{math/02, Prop.~1.5}}]\label{prop:opt-feas}
+% CLAIMS: A (scope note: standard LCvx def + attainment) | Lean: IsLosslessFor.isLossless
+If $C$ is lossless in the optimization form (b) for some cost, it is lossless in the feasibility form (a).\Slean
+\end{proposition}
+\begin{proof}
+The first half of (b) gives ``$\Leftarrow$''. If $C_\theta\ne\emptyset$, the attained relaxed optimum certifies an
+original-feasible solution, so $\theta\in F$.
+\end{proof}
+So the feasibility form is not stronger than the definition used in the LCvx literature
+\cite{acikmese2013tcst,malyuta2022csm}, provided relaxed optima are attained (which thrust bounds guarantee). A
+relaxation that is exact on $F$ but reports false feasibility off $F$ fails (b). That is the failure mode Theorem~A
+forces, and the optimization form (c) is treated separately in \cref{sec:aopt}.
+
+\begin{definition}[State-linear relaxation of one instance {\pnote{math/02, Def.~11.1}}]\label{def:statelinear}
+% CLAIMS: P-D, D | Lean: StateLinearRelaxation
+Fix an instance $\theta_0$. A \emph{state-linear relaxation} is $(Y,C,\rho,P)$ with $C\subseteq Y$ convex,
+$\rho:Y\to\R^6$ affine (the physical readout of the terminal state, or of $(r,v)$ at finitely many times), and
+$P:Y\to[0,\infty]$ convex (a penalty), such that every genuine trajectory with terminal state $x_f$ is represented by
+some $y\in C$ with $\rho(y)=x_f$ and $P(y)=0$. For a convex terminal-error function $\varphi$, the relaxed problem is
+$\inf_{y\in C}\varphi(\rho(y))+P(y)$; the original is $\inf_{x\in\Reach(\theta_0)}\varphi(x)$.
+\end{definition}
+
+\subsection{Why this class captures LCvx, and what it excludes}\label{sec:scope}
+Every LCvx formulation we know enters $(r_0,v_0)$ through linear equality constraints $x(0)=x_0$ on top of a convex
+constraint set in the remaining variables (states, relaxed controls, slack $\Gamma$, discretization). It is therefore a
+uniform convex relaxation at fixed $t_f$. The log-mass change of variables $z=\ln m$ \cite{acikmese2007jgcd} acts on
+$Y$, and the only data reparametrization in the literature is coordinatewise monotone. The cost of LCvx (fuel, landing
+error) is a convex function of the physical variables plus slack penalties that vanish on genuine points, which is
+\cref{def:statelinear}. Statements are made in continuous time. Discrete-time LCvx is not exact in general either
+\cite{luo2026automatica}, and continuous-time statements avoid conflating the two effects.
+
+The class excludes the following on purpose. We consider these the honest boundary of the impossibility.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \emph{Nonaffine data entry.} Any compact $S\subset\Theta$ is the preimage of a convex set of measures under
+$\theta\mapsto\delta_\theta$ (point mass). Without a restriction on how data enter, convexity of a feasible set has no
+content.
+\item \emph{Occupation-measure and moment-SOS lifts} \cite{lasserre2008sicon,henrionkorda2014tac}. Here the initial
+state enters as a point mass, terminal conditions act on the support of a lifted measure, and costs are integrals
+against it. These programs are convex and, under standard conditions, value-exact \cite{vinter2000book,palladino2014sicon},
+but they are infinite-dimensional and set up per instance. Their order-one truncation is exactly the affine case and
+inherits the obstruction. Degree-2 truncations are studied in \cref{sec:sdp}.
+\item \emph{Costs on lifted second moments} (e.g.\ $R\succeq r(t_f)r(t_f)^\top$ with cost $\operatorname{tr}R-2q^\top r$). On
+mixtures these average the error instead of evaluating it at the mean readout.
+\item \emph{Per-instance restrictions} such as a fixed attitude profile. These violate the embedding property of
+\cref{def:statelinear}, and they are the positive side of the story (\cref{sec:possibility}).
+\end{enumerate}
+
+\begin{proposition}[Trivial exact convex reformulation {\pnote{math/02, Prop.~11.3}}]\label{prop:triv}
+% CLAIMS: TRIV | Lean: none
+Every optimal control problem $\min_{x\in\mathcal F}J(x)$ with $J$ bounded below has an exact convex reformulation:
+minimize the linear functional $(x,t)\mapsto t$ over $\conv\{(x,J(x)):x\in\mathcal F\}$. If the graph is compact,
+the minimum is attained at a genuine solution.\Spending
+\end{proposition}
+This reformulation is per instance, not state-linear (the cost is a lifted coordinate that averages over mixtures),
+and describing the hull is as hard as the original problem. ``Is LCvx possible?'' is therefore a meaningful question
+only inside a tractable class. Our answer is the statement that the state-linear class cannot be exact.

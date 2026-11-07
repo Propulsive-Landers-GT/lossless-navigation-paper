@@ -1,0 +1,52 @@
+% ============================================================================
+\section{Discussion}\label{sec:discussion}
+% ============================================================================
+
+\subsection{Implications for guidance design}
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Do not expect a single LCvx-type SOCP for attitude-rate-limited landing.} Within the class of convex programs on the
+physical state with affine data entry, exactness is impossible, and this cannot be fixed by adding slacks, cuts, lifted
+variables, discretization or a line search over $t_f$ (\cref{thm:A,thm:Bstar,lem:LS,thm:D}). Any such program, if it contains all
+genuine trajectories, accepts boundary data that no flyable trajectory can land from. The flight software then has no way to
+detect infeasibility from the convex program alone.
+\item \emph{Outer attitude loop, exact convex inner problem.} The nonconvexity lies entirely in the choice of attitude profile
+(\cref{thm:CU}). For a fixed attitude profile, the time-varying-cone LCvx is exact (\cref{thm:CW,thm:CS}). On a pure-TVC vehicle the
+problem given the attitude is \emph{exactly} convex, with no relaxation (\cref{thm:C6}). A natural architecture is therefore an
+outer search over a low-dimensional family of attitude profiles (or a sequential update of $b$) around an exact convex inner
+problem. Every inner solution is then genuinely flyable, and the inner problem certifies infeasibility for the given profile.
+\item \emph{Certificates.} The degree-2 SDP lift gives a rigorous lower bound on the minimum landing error and certifies
+infeasibility of exact landing when positive. Its global optimality can be certified a~posteriori (rank 3, stress test), and
+a~priori for coplanar targets (\cref{thm:stress,thm:coplanar}). It is a useful companion to a local or sequential solver, not a
+replacement.
+\item \emph{How much does it matter?} For in-air descents of a small lander, the exhibited nonconvexity is centimetre-scale, and
+3-DOF guidance with an attitude-aware outer loop may lose little in value. The large effects are elsewhere. First, near
+lift-off (pad-launched hops) the landing set can have a metre-scale hole. Second, 3-DOF LCvx solutions ask for thrust-direction
+changes far beyond the vehicle's angular acceleration (\cref{sec:numerics}). Third, on a pure-TVC vehicle the 3-DOF optimum is
+essentially never exactly flyable. The ``upright body plus pointing cone'' 3-DOF model has effective cone zero.
+\item \emph{Tilt-angle rate limits.} Constraining only the tilt angle from vertical, with free azimuth, removes rigidity and
+appears to give convex landing sets numerically. It is not SOC-representable either, and it is not the physical constraint
+of a rigid body.
+\end{enumerate}
+
+\subsection{Open problems}
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item \emph{Pure TVC, upright landing at rest, with altitude constraint.} This is the actual small-lander case. It is numerically
+nonconvex (2.8--3.3~cm at $t_f=5$--$7$~s; a 1.7~m hole at hop data), with a computer-assisted proof in progress
+(\cref{sec:tvc}). Mass depletion and gimbal-rate limits remain open even there.
+\item \emph{Rigor at realistic constants.} For our vehicle, Lemma S (hard soft landing, per instance) and the hop-instance hole
+are numerical. The available quadratic, Wirtinger and S-procedure certificates are provably too loose. A two-dimensional
+rigidity argument or validated branch-and-bound is needed. The $\rho_1=0$ landing-set result with altitude constraint is open at
+$T/W\approx1.27$.
+\item \emph{CSD2$'$.} Is the degree-2 lift exact in continuous time with fixed thrust, or for the convexified-lens and $\delta=0$
+discretizations? Is there a tractable exact lift with variable throttle (e.g.\ the separate-axis lift CSD3)?
+\item \emph{Minimum-fuel value-losslessness.} Is $V=V^{**}$ on $F$ for minimum fuel? Theorem A-opt reduces this to a convexity
+question, and numerics show no violation. A positive answer would still not give an LCvx in the detection-sound sense.
+\item \emph{Long horizons and coning.} At long horizons with tilt caps, coning fills most but not all of the dents. Whether
+nonconvexity persists for all horizons in the tent variant, and at faces with long capped plateaus, is open.
+\item \emph{Quantitative state-constrained gaps.} The rigorous B$^*$ gap ($\sim10^{-5}$~m) is far below the numerical one
+($\sim10^{-2}$). A sharp quantitative version would settle how much a guidance designer actually loses.
+\end{enumerate}
+
+\paragraph{Reproducibility.} Proof notes (\texttt{math/}), the Lean project (\texttt{lean/}), numerical scripts and outputs
+(\texttt{numerics/}) and the claims registry (\texttt{comms/CLAIMS.md}) are kept in the project repository. \texttt{paper/CLAIMS-MAP.md}
+maps every theorem of this paper to its proof file, registry row and Lean name.

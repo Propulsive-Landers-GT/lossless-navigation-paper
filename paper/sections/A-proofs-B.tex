@@ -1,0 +1,65 @@
+% ============================================================================
+\section{Proofs of Theorems B and Q}\label{app:B}
+% ============================================================================
+Adapted from project note \texttt{math/02} \S\S1--5. Throughout, M1 of \cref{sec:models}.
+
+\begin{lemma}[Spherical triangle inequality, inner-product form]\label{lem:tri}
+% CLAIMS: P-B (lemma) | Lean: inner_triangle, inner_triangle_eq_lateral (Sphere.lean)
+Let $x,y,z\in\Sph$, $\alpha,\beta\in[0,\pi]$, $\alpha+\beta\le\pi$, $\ip xy\ge\cos\alpha$, $\ip yz\ge\cos\beta$. Then (a)
+$\ip xz\ge\cos(\alpha+\beta)$. (b) If $\ip xz=\cos(\alpha+\beta)$ and $\alpha+\beta<\pi$, then $\ip xy=\cos\alpha$, $\ip yz=\cos\beta$, and,
+if $\beta\in(0,\pi)$, $x=\cos\alpha\,y-\frac{\sin\alpha}{\sin\beta}(z-\cos\beta\,y)$.\Slean
+\end{lemma}
+\begin{proof}
+Write $p=\ip xy=\cos a$, $q=\ip yz=\cos c$ with $a\le\alpha$, $c\le\beta$, and $x'=x-py$, $z'=z-qy$, both orthogonal to $y$. Then
+$\ip xz=pq+\ip{x'}{z'}\ge\cos a\cos c-\sin a\sin c=\cos(a+c)\ge\cos(\alpha+\beta)$. Equality forces $a=\alpha$, $c=\beta$ (strict
+monotonicity of $\cos$ on $[0,\pi]$) and $\ip{x'}{z'}=-\norm{x'}\norm{z'}$, i.e.\ $x'$ is a nonpositive multiple of $z'$.
+\end{proof}
+\begin{corollary}[Extremal thrust direction]\label{cor:extremal}
+If $\ip db\ge\cos\delta$, $\ip b\ez\ge\cos\varphi$, $\varphi\in(0,\pi)$, $\delta+\varphi<\pi$, then $d_z\ge\cos(\delta+\varphi)$. Equality implies
+$b=\cos\varphi\,\ez+\sin\varphi\,u$ for a horizontal unit $u$ and $d=\cos(\delta+\varphi)\ez+\sin(\delta+\varphi)u$.
+\end{corollary}
+\begin{lemma}[Rigidity]\label{lem:rigid}
+% CLAIMS: P-B (lemma) | Lean: lateral_eq_of_inner_ge (Sphere.lean)
+If $b(s)=\cos\psi\,\ez+\sin\psi\,u$, $b(s')=\cos\psi'\,\ez+\sin\psi'\,u'$ with $\psi,\psi'\in(0,\pi)$, $u,u'$ horizontal unit vectors, and
+$\ip{b(s)}{b(s')}\ge\cos(\psi-\psi')$, then $u=u'$.\Slean
+\end{lemma}
+\begin{proof}
+$\ip{b(s)}{b(s')}-\cos(\psi-\psi')=\sin\psi\sin\psi'(\ip u{u'}-1)\ge0$ forces $\ip u{u'}=1$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:B}]
+The extreme arcs \eqref{eq:arcs} are admissible: $\ip{b_u(s)}{b_u(s')}=\cos(\varphi(s)-\varphi(s'))$ and $\varphi$ is $\omega$-Lipschitz; the
+gimbal angle is $\delta$; $a=a_1$ at constant minimum throttle. So $P_{\pm u}\in R$ and $M\in\conv R$. Suppose $M=\int a\,d$ for an
+admissible $(T,d,b)$. In both variants $\omega t_f\le\pi$ and $0\le\delta+\varphi\le\pi/2$.
+
+\emph{Step 1.} \eqref{eq:AL} with $s'=0$ (and $s'=t_f$ in variant T) gives $b_z(s)\ge\cos\varphi(s)$. By \cref{lem:tri}(a),
+$d_z\ge\cos(\delta+\varphi)\ge0$, and with $a\ge a_1$, $a\,d_z\ge a_1d_z\ge a_1\cos(\delta+\varphi)$ a.e.
+\emph{Step 2.} Integrating, $M_z\ge\int a_1\cos(\delta+\varphi)=M_z$, so the nonnegative integrand $a\,d_z-a_1\cos(\delta+\varphi)$ vanishes a.e.
+Since $a_1>0$, $d_z=\cos(\delta+\varphi)$ a.e.
+\emph{Step 3.} By \cref{cor:extremal}, for a.e.\ $s\in(0,t_f)$, $b_z(s)=\cos\varphi(s)$ and
+$d(s)=\cos(\delta+\varphi)\ez+\sin(\delta+\varphi)u(s)$, where $u(s)$ is the azimuth of $b(s)$.
+\emph{Step 4.} $b_z-\cos\varphi$ is continuous and vanishes a.e., hence everywhere, so $u(\cdot)$ is defined and continuous on $(0,t_f)$.
+\emph{Step 5.} In variant F, for $0<s<s'$, \eqref{eq:AL} gives $\ip{b(s)}{b(s')}\ge\cos(\varphi(s')-\varphi(s))$, and \cref{lem:rigid} gives
+$u(s)=u(s')$. In variant T apply this on $(0,t_f/2]$ and on $[t_f/2,t_f)$ and chain through $t_f/2$. So $u\equiv u_0$.
+\emph{Step 6.} $I_h=(\int a\sin(\delta+\varphi))u_0$ with coefficient $\ge\int a_1\sin(\delta+\varphi)>0$, contradicting $M_h=0$.
+Nonconvexity of $\Ft$ follows from \cref{lem:reduction}, and impossibility from \cref{thm:A}.
+\end{proof}
+
+\begin{lemma}[Support bound]\label{lem:support}
+For any admissible control (no boundary condition on $b$ needed) and $\tau$ with $\delta+\omega\max(\tau,t_f-\tau)\le\pi/2$,
+$\norm I\ge\ip{I}{b(\tau)}\ge G(\tau)=\int_0^{t_f}a_1(s)\cos(\delta+\omega|s-\tau|)\,ds$.
+\end{lemma}
+\begin{proof}
+\eqref{eq:AL} gives $\ip{b(s)}{b(\tau)}\ge\cos(\omega|s-\tau|)$, and \cref{lem:tri}(a) gives $\ip{d(s)}{b(\tau)}\ge\cos(\delta+\omega|s-\tau|)\ge0$.
+Multiply by $a\ge a_1$ and integrate.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:Q}]
+For $I\in R$, $\norm{I-M}\ge\norm I-\norm M\ge G(t_f/2)-M_z$ by \cref{lem:support}. With $c(x)=\cos(\delta+\omega x)$, strictly decreasing on
+$[0,t_f]$, put $h(s)=c(|s-t_f/2|)-c(s)$. Then $h\ge0$ for $s\ge t_f/4$ and $h<0$ for $s<t_f/4$. Since $a_1$ is nondecreasing,
+$(a_1(s)-a_1(t_f/4))h(s)\ge0$, so $G(t_f/2)-M_z=\int a_1h\ge a_1(t_f/4)\int h$. A direct computation, using
+$\sin x+\sin(x+2k)=2\sin(x+k)\cos k$, gives
+$\int_0^{t_f}h=\frac4\omega\sin(\delta+\frac{\omega t_f}2)\sin^2\frac{\omega t_f}4$. The sign condition holds if $\delta+\omega t_f\le\pi/2$
+(nonnegative integrand), or if $\alpha=0$, where $M_z=\frac{a_1}\omega(\sin(\delta+\omega t_f)-\sin\delta)\ge0$. The relaxation statement is
+\cref{cor:A}(ii) together with \cref{lem:reduction}.
+\end{proof}

@@ -1,0 +1,146 @@
+% ============================================================================
+\section{What is possible}\label{sec:possibility}
+% ============================================================================
+The impossibility results identify the obstruction precisely: the \emph{choice} of a rate-limited attitude profile. Once
+that choice is removed, convexification works again, and in the pure-TVC case it works without any relaxation. This
+section collects the positive results. Aumann's theorem \cite{aumann1965} is the one external theorem used without proof.
+The Pontryagin maximum principle \cite{pontryagin1962,vinter2000book} enters only as a labelled hypothesis (H-PMP).
+
+\subsection{LCvx is exact for any fixed attitude profile}\label{sec:C}
+Fix a measurable $b:[0,t_f]\to\Sph$. The original problem $\mathrm P_0(b;\theta)$ minimizes $\int\norm T$ subject to
+$\rho_1\le\norm T\le\rho_2$, $\ip{b}{T}\ge\norm T\cos\delta$, the dynamics \eqref{eq:dyn} and the boundary conditions. The relaxation
+$\mathrm P_1(b;\theta)$ minimizes $\int\Gamma$ over $T\in K_\Gamma(b):=\{\norm T\le\Gamma,\ \ip bT\ge\Gamma\cos\delta\}$,
+$\rho_1\le\Gamma\le\rho_2$. This is the pointing-cone LCvx of \cite{acikmese2013tcst} with a time-varying axis.
+
+\begin{theorem}[Theorem C-W: value and feasibility exactness for any $b$ {\pnote{math/04 \S3}}]\label{thm:CW}
+% CLAIMS: C, C-W (registry: CLAIMED; SYNTHESIS: PROVED) | Lean: relaxed_subset_original, original_subset_relaxed, origFeas_eq_relFeas (Positive/Convexity.lean; Aumann as hypothesis; constant mass, no state constraints)
+For every $\mathrm P_1$-feasible $(T,\Gamma)$ there is a measurable $\tilde T(t)\in\{\norm{\tilde T}=\Gamma,\ \angle(\tilde T,b)\le\delta\}$
+with the same $\Gamma$, mass history and cost, whose state agrees with that of $(T,\Gamma)$ at $t_f$ and at any prescribed
+finitely many times. Hence $\mathrm P_0$ and $\mathrm P_1$ have the same feasible data and the same value, attainment transfers,
+and nodewise state constraints are preserved. With constant mass (or the convexified-mass model),
+$F_{t_f}(b)=\{\theta:\mathrm P_0(b;\theta)\text{ feasible}\}$ is convex (Corollary C-F).\Spending
+\end{theorem}
+\begin{proof}[Proof idea]
+On each subinterval the state increment is linear in $T/m$ for the fixed mass history. The extreme points of the cap
+$K_\Gamma(b)$ are exactly its spherical part. Aumann's theorem replaces the relaxed selection by a lossless one with the
+same moments.
+\end{proof}
+With convex path constraints the value statement holds under a Slater condition. Attainment of $\mathrm P_0$ is not claimed in
+that case.
+
+\begin{theorem}[Theorem C-S: every relaxed optimum is lossless, under PMP {\pnote{math/04 \S5}}]\label{thm:CS}
+% CLAIMS: C-S, C-D (registry: CLAIMED) | Lean: PMPConclusion.lossless_ae_off_degenerate, min_throttle_of_antiRay, lossy_subset_degenerate_minThrottle, lossless_ae_of_ND (Positive/PMP.lean, Primer.lean; PMP as explicit hypothesis; axioms output PENDING)
+Assume (H-PMP) for a $\mathrm P_1$-optimal solution, and let $p=a+ct$ be the (affine, for every $b$) primer vector. Off
+$D=\{t:p(t)\in-\R_{\ge0}b(t)\}$ the optimum is lossless and pointwise unique. With constant mass the lossy set is contained in
+$D\cap\{\Gamma^*=\rho_1\}$. $D$ has positive measure only if $p\equiv0$, or $b$ dwells at $\pm$ a fixed vector, or $b$ follows a
+\emph{gnomonic line} $\pm(a+ct)/\norm{a+ct}$ on a set of positive measure. For analytic $b$, $\det(b,\dot b,\ddot b)\not\equiv0$
+suffices for nondegeneracy, and degenerate profiles form a meagre set.\Spending
+\end{theorem}
+The result is sharp. For a fixed upright cone and a vertical descent at a suitable altitude, an interior-point solver
+returns a lossy relaxed optimum with all lossy nodes at minimum throttle. A one-step ``purification'' SOCP repairs it
+(Claims C-X, C-K; discrete version: at most three lossy nodes without state constraints, Lean
+\lean{purification\_three}). So \emph{the relaxation itself is never the problem}. This agrees with the lossiness observed in
+stored GTPL solutions (296~N delivered on a 400~N minimum-throttle arc).
+
+\subsection{Per-instance exactness and the union structure}
+\begin{theorem}[Theorem C-U {\pnote{math/04 \S9}}]\label{thm:CU}
+% CLAIMS: C-U (registry: CLAIMED) | Lean: none
+$\Ft=\bigcup_{b}F_{t_f}(b)$ with each $F_{t_f}(b)$ convex (M1 with constant or convexified mass; PT by \cref{thm:C6}), and
+$V(\theta)=\min_bV(b;\theta)$. In M1 with constant mass the 5-DOF minimum is attained, and the convex program at an optimal
+attitude $b^*$ is exact for that instance.\Spending
+\end{theorem}
+The impossibility theorems say exactly that this union of convex sets is not convex. \emph{All} of the nonconvexity lies
+in the map $\theta\mapsto b^*(\theta)$.
+
+\subsection{Pure TVC: exactly convex given the attitude}
+\begin{theorem}[Theorem C-6 {\pnote{math/04 \S8}}]\label{thm:C6}
+% CLAIMS: C-6 (registry: CLAIMED) | Lean: throttle_interval, gimbal_bound_iff_cot, convex_tvcSet (Positive/TVC.lean), convex_feasData_M3b (Positive/Convexity.lean); torque_balance_iff not joined to the convexity theorem
+In model PT with zero roll rate and constant mass, Euler's equation is equivalent to $\Pi_bT=-k\Pi_b\ddot b$, $k=J_\perp/L$,
+$\Pi_b=I-bb^\top$. For a fixed $b\in W^{2,\infty}$, write $F=-k\Pi_b\ddot b$, $\varkappa=\norm F$. The exact 6-DOF problem is the
+scalar-throttle program
+\[
+\min\int\sqrt{T_a^2+\varkappa^2}\quad\text{s.t.}\quad \ddot r=(T_ab+F)/m+g,\quad
+\max\{\varkappa\cot\delta,\sqrt{(\rho_1^2-\varkappa^2)_+}\}\le T_a\le\sqrt{\rho_2^2-\varkappa^2},
+\]
+which is convex. No relaxation is involved. Consequently $F^{PT}_{t_f}(b)$ is convex for every attitude profile. If the body is
+held upright ($b\equiv\ez$), then $T\parallel\ez$: the effective cone is $0$, so the common ``upright body with a $15^\circ$
+pointing cone'' 3-DOF model is not 6-DOF-feasible for any off-vertical thrust.\Spending
+\end{theorem}
+
+\subsection{Exact subclasses of the uniform problem}
+\begin{proposition}[X5: small pointing cone, M1 only {\pnote{math/redteam-reform \S3.1}}]\label{prop:X5}
+% CLAIMS: X5, RR-P (registry: CLAIMED) | Lean: none
+In M1 with an LCvx pointing constraint $\angle(d,\ez)\le\theta_p$: if $\theta_p\le\delta$ and the initial (and, if prescribed,
+terminal) attitude lie within $\delta-\theta_p$ of $\ez$, then $F_{5\mathrm{DOF}}=F_{3\mathrm{DOF}}(\theta_p)$, so classical LCvx guarantees
+transfer verbatim. If $\theta_p>\delta$ (and the B$^*$ braking condition holds), $\Ft$ is nonconvex. Thus $\theta_p=\delta$ is a sharp
+threshold \emph{for M1}.\Spending
+\end{proposition}
+X5 relies on the gimbal pointing the thrust while the body stays still, which is impossible on a pure-TVC vehicle
+(\cref{thm:C6}). There the effective exact class collapses to $\theta_p=0$. More precisely, a prescribed planar thrust history
+with $\norm T\ge\rho_1$ is exactly TVC-realizable only for in-plane initial body rates in an interval of length at most
+$2\delta\mu_c/\sinh(\mu_ct_f)$, $\mu_c^2=L\rho_1\cos\delta/J_\perp$. For our vehicle this is about $3.5\,\mu$rad/s, so a 3-DOF
+LCvx optimum is essentially never exactly 6-DOF-optimal (Claim C-Y, \Spending). In M1, by contrast, $V_5=V_3$ iff some
+3-DOF optimum is $\delta$-trackable by an admissible attitude, with a closed-form primer-arc certificate (Claim C-3D).
+
+\subsection{Semidefinite lifts}\label{sec:sdp}
+Occupation-measure linear programs with point-mass data entry are exact but infinite-dimensional and per instance
+(\cref{sec:scope}). Their order-one truncation is exactly the affine case of Theorem A. The first nontrivial tractable
+truncation is the degree-2 (Shor) lift \cite{shor1987,lasserre2001siopt}. We study it for the fixed-thrust
+minimum-landing-error problem. With weights $c^v_k,c^r_k$, unknown unit vectors $b_k$ (axis) and $d_k$ (thrust direction),
+inner-product constraints $\ip{d_k}{b_k},\ip{d_k}{b_{k+1}}\ge\cos\delta$ (gimbal) and $\ip{b_k}{b_{k+1}}\ge\cos\omega h$ (rate), and
+cost $\norm{\sum c^v_kd_k-w_v}^2+\norm{\sum c^r_kd_k-w_r}^2$, the problem is a vector QCQP. The data $w$ enter only the
+objective, and the lifted cost is a second-moment cost. The lift therefore lies outside the classes of Theorems A and D, and
+no contradiction arises.
+
+\begin{lemma}[Shor lift = Hilbert-sphere problem {\pnote{math/08 Lemma~1.1}}]\label{lem:shor}
+% CLAIMS: L-SD2 (lemma part), SDP-T1 context (registry: CLAIMED) | Lean: none
+The Shor relaxation's value equals the minimum of the same vector QCQP posed in $\R^{3+m}$ (indeed in any real Hilbert space
+containing $\R^3$). The lift is exact iff some optimum can be ``planarized'' into $\R^3$.\Spending
+\end{lemma}
+\begin{theorem}[Stress certificate and local-to-global {\pnote{math/08 Thms~2.1, 2.4}}]\label{thm:stress}
+% CLAIMS: SDP-T1, SDP-T4, SDP-2.4 (registry: CLAIMED, "proved") | Lean: none
+Let $z^*$ be a genuine KKT point with multipliers $(\lambda,\mu)$ and stress matrix
+$Q_\lambda=C+\mathrm{diag}(\mu)-\tfrac12\sum_e\lambda_e(E_{ij}+E_{ji})$. If $Q_\lambda\succeq0$, then $z^*$ is a global optimum of the lift
+in every dimension, hence of the genuine problem. Conversely, exactness implies that a PSD stress exists, and
+$Q_\lambda\succ0$ gives a unique rank-3 optimum. Moreover the lift is exact iff some genuine global minimizer is a \emph{local}
+minimizer of the problem posed in $\R^4$ (``$\Leftarrow$'' under LICQ). Any LICQ KKT point that is a local minimizer in $\R^4$ is
+a global minimizer of the lift.\Spending
+\end{theorem}
+\begin{theorem}[Coplanar data: certified global optima {\pnote{math/08 Thm~4.1}}]\label{thm:coplanar}
+% CLAIMS: SDP-P, SDP-4.1 (registry: CLAIMED, proved, not yet attacked) | Lean: none
+If the lateral parts of $w_v$ and $w_r$ are parallel (velocity-only, position-only or vertical-plane targets), then every
+planar genuine local minimizer satisfying LICQ is a certified global optimum of both the lift and the genuine problem. This
+remains true with altitude and glide-slope constraints, or any constraint quadratic in node positions and invariant under
+rotations about $\ez$.\Spending
+\end{theorem}
+\noindent\emph{Where exactness fails.}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \emph{Unit-thrust discretization with gimbal (numerical).} With $\norm{d_k}=1$ and $\delta>0$ the lift is lossy on an
+asymmetric near-dent target: SDP $0.027529$ (rank 4) against best genuine $0.028231$ over 480 multistarts, a 2.5\% gap.
+Three independent implementations agree, and an explicit feasible $\R^4$ chain attains the SDP value. Gaps are frequent at
+small $N$ and small $\omega t_f$. The mechanism is identified exactly: in the lift, $d_k$ can tilt into the extra dimension at no
+rate cost, which shortens its in-plane part, i.e.\ it throttles one segment down \pnote{math/08 Prop.~6.1}. A unit-norm
+discretization forbids this chattering, while continuous time allows it. With the convexified lens ($\norm{d_k}\le1$, the
+discrete analogue of relaxed controls) the same instance is exact. \Snum\ (the 3-DOF optimum is not certified)
+\item \emph{Variable throttle (certified).} The natural degree-2 lift with $\norm{U_k}^2=a_k^2$ is lossy whenever the rate limit
+binds: throttle headroom lets the thrust tilt out of the physical space while keeping its in-plane part. At $N=3$ an
+order-2 Lasserre bound, which is a valid lower bound on the genuine problem, equals the local optimum $0.6047$, while the
+Shor value is $0.5759$. \stag{Plum}{certified numerically by Lasserre-2, up to solver accuracy}
+\item \emph{$\delta=0$ (no gimbal).} No gap on about 2{,}900 targets. \Snum
+\end{itemize}
+
+\begin{todobox}[{(verifier-sdp / proof-sdp): Conjecture CSD2$'$}]
+% CLAIMS: CSD2' (OPEN)
+\textbf{Conjecture CSD2$'$} (open; no counterexample known). The Shor lift is exact (a) in continuous time with a fixed thrust
+profile, (b) for the convexified-lens discretization $\norm{d_k}\le1$, and (c) for the $\delta=0$ chain. By \cref{thm:stress} this
+is equivalent to the absence of second-order descent directions out of the physical space at genuine optima. Evidence:
+case 12 after convexification, its coplanar variant, all converged cases of the convexified scan, and 840 adversarial
+$\delta=0$ instances. \emph{To fill in:} the outcome of \texttt{numerics/verifier-sdp/run\_csd2p.py} (convexified check, including
+the $\delta=40^\circ$, $N=4$ instance), and either a proof or a counterexample.
+\end{todobox}
+
+\emph{Practical reading.} The degree-2 lift is a polynomial-size SDP whose value is always a rigorous lower bound, and a
+positive value certifies that exact landing is infeasible. Exactness is certified a~posteriori by a rank-3 optimum, by the
+stress test of \cref{thm:stress}, or a~priori in the coplanar case of \cref{thm:coplanar}. In the tests, it was exact on every
+realistic in-air target for our vehicle. It is a certificate, not a lossless convexification. It does not handle minimum
+fuel: fuel is constant for fixed thrust, and the natural variable-throttle lift is lossy.
