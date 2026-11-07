@@ -8,6 +8,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 |---|---|---|
 | `TVC/CentreOfPercussion.lean` | `LcvxObstruction.TVC` | FLAT: centre-of-percussion identity (zero roll rate and with roll rate), boundary translation |
 | `TVC/Certificate.lean` | `LcvxObstruction.TVC` | TVC-1 skeleton: S-procedure/Finsler, separability, certificate and reduction as explicit hypotheses, rotation-midpoint argument, Theorem A link |
+| `TVC/Model.lean` | `LcvxObstruction.TVC` | concrete pure-TVC landing sets `F^X ⊆ F ⊆ F^rel`, `R_π` invariance (Lemma 2.4), landing identity (Lemma 2.3), `tvc1_model` |
 | `TVC/Pointwise.lean` | `LcvxObstruction.TVC` | elementary pointwise inequalities of math/06 §4.2–4.3 (blueprint TVC-P1/P2/P3/Q4) and PT6 "⊆" |
 | `DiveBrakeMass.lean` | `LcvxObstruction` | B* core and witness for **any** acceleration class with a face maximiser |
 | `DiveBrakeMassModel.lean` | `LcvxObstruction` | B* for the explicit mass-depletion model `AccMass` (α > 0), every horizon |
@@ -53,6 +54,18 @@ trajectory-level pure-TVC landing set is defined in Lean. Mass depletion (`ε(m)
 | `rotPi`, `rotPi2`, `rotPi2_invol`, `rotPi2_fixed_iff` | `R_π = diag(−1,−1,1)` on `(r₀,v₀)`; `R_π θ = θ ⇔ r_{0h} = v_{0h} = 0` | "zero lateral data" = fixed points of `R_π` |
 | `ellFace`, `ellFace_rotPi2` | `ℓ(θ) = r_{0z} + s* v_{0z}`, `R_π`-invariant | the face functional `Λ_z` |
 | `tvc1_main` | everything combined, on `ℝ³ × ℝ³`, gain `ℓ − κ` | **Theorem TVC-1, conditional on `TVC1Certificate` (external exact numerics) and `TVC1Reduction` (unformalized analysis)** |
+
+**Concrete model (`TVC/Model.lean`).** Boundary data `θ = (r₀,v₀) ∈ E3 × E3`.
+
+| Lean | Content | math/06 |
+|---|---|---|
+| `ordinarySet a₁ a₂ δ b`, `relaxedSet a₁ a₂ δ b`, `ordinarySet_subset_relaxedSet` | `{a d}` (gimbal cone) ⊆ `𝒞(b)` | PT2, PT6 |
+| `TVCAdmissible C ε tf b ḃ u` | `u` integrable, `‖b‖ = 1`, `b(t) = e_z + ∫₀ᵗ ḃ`, `ḃ(t) = ∫₀ᵗ(−ε⁻¹Π_b u − ‖ḃ‖² b)`, `ḃ(0) = 0`, `b(tf) = e_z`, `ḃ(tf) = 0`, `u(s) ∈ C(b(s))` | PT1, PT3 (R0), PT4, Lemma 2.1 (`ε∇ḃ = −Π_b u`) |
+| `tvcLandingSet C ε tf g₀ X` | some admissible control lands (`position`/`velocity` of `Model.lean` with `a ≡ 1`, `d = u`, gravity `−g₀e_z`, i.e. `r̈ = u − g₀e_z`) with `(r,v) ∈ X` on `[0,tf]` | PT4, PT5 |
+| `tvcLandingSet_mono_X`, `tvcLandingSet_mono_C` | `F^X ⊆ F ⊆ F^rel` | "relaxed ⊇ ordinary" |
+| `rotPiE`, `rotPiE_fixed_iff`, `rotPiE2_fixed_iff`, `tvcLandingSet_rot`, `ordinarySet_rot`, `relaxedSet_rot`, `glideSlopeSet_rotInvariant` | `R_π = 2⟪·,e_z⟫e_z − id` (linear isometry); landing sets are `R_π`-invariant; fixed points = zero lateral data | Lemma 2.4 |
+| `tvc_lambda_identity` | `r₀ + s*v₀ = ∫(s−s*)u + (tf²/2 − s*tf)(−g₀e_z)` | Lemma 2.3 (translational part) |
+| `tvc1_model` | `tvc1_skeleton` instantiated with the concrete `F^X` (ordinary, any `R_π`-invariant `X`), `F` (ordinary, `X = univ`), `F^rel` (relaxed), `ℓ = ⟪r₀ + s*v₀, e_z⟫`: from witness + `TVC1Certificate` + `TVC1Reduction` (for the concrete `F^rel`) ⇒ `¬Convex F^X`, no lossless uniform relaxation | Theorem TVC-1 |
 
 Also not formalized: the witness (`θ_w ∈ F^X` with gain `G_w`; math/06 §4.8, certified in Arb by `witness_check.py`) enters as the
 hypotheses `hw`, `hGw` of `tvc1_main`; `F^X ⊆ F ⊆ F^rel` and `R_π`-invariance of `F^X` are hypotheses (no concrete pure-TVC landing set

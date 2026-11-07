@@ -1,6 +1,7 @@
 import LcvxObstruction.TVC.CentreOfPercussion
 import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
+import LcvxObstruction.TVC.Model
 import LcvxObstruction.FreeTimeBStar
 
 /-! `#print axioms` for the main theorems of the `TVC/` files (expected: only
@@ -44,3 +45,10 @@ import LcvxObstruction.FreeTimeBStar
 #print axioms LcvxObstruction.not_convex_iUnion_constrainedLandingSet_mass
 #print axioms LcvxObstruction.no_lossless_relaxation_freeTime_5dof
 #print axioms LcvxObstruction.no_lossless_relaxation_freeTime_5dof_mass
+
+-- concrete pure-TVC model (`TVC/Model.lean`)
+#print axioms LcvxObstruction.TVC.ordinarySet_subset_relaxedSet
+#print axioms LcvxObstruction.TVC.tvcLandingSet_rot
+#print axioms LcvxObstruction.TVC.rotPiE2_fixed_iff
+#print axioms LcvxObstruction.TVC.tvc_lambda_identity
+#print axioms LcvxObstruction.TVC.tvc1_model
