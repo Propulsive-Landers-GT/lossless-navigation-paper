@@ -55,9 +55,19 @@ space) is lossless for the set of feasible initial positions and velocities, in 
 optimization form for any cost. The same holds with an upright terminal attitude $b(t_f)=\ez$, and for kinematic 6-DOF
 attitude (paths of proper rotations with body rate at most $\omega$ and free roll angle), with free or upright terminal attitude.
 \end{maintheorem}
-The constant acceleration bounds make the formal statement exact for constant mass. A pen-and-paper version with mass depletion,
-free final time on compact windows and an explicit (tiny) quantitative gap is proved and independently refereed
-(\cref{thm:Bstar}).
+The constant acceleration bounds make this formal statement exact for constant mass. Lean also proves the following
+extensions (\cref{tab:lean}):
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \emph{Mass depletion,} for every $t_f$: thrust $T\in[\rho_1,\rho_2]$, $m=m_0-\alpha\int T\ge m_{dry}$, $a=T/m$, with $0<\rho_1<\rho_2$, $\alpha>0$,
+$0<m_{dry}\le m_0-\alpha\rho_2t_f$ and $g_0<\rho_2/m_0$; also with upright landing and in kinematic 6-DOF.
+\item \emph{Free final time} on compact windows, both with constant bounds and with mass depletion.
+\item \emph{A quantitative version} for $\delta\le\pi/4$: the witness midpoint lies outside the closure of the feasible set, at an
+explicit distance.
+\item \emph{An instance at the motivating vehicle's constants:} 400/1000~N, $m_0=79.88$~kg, $m_{dry}=55.88$~kg, $I_{sp}=180$~s,
+$15^\circ$ cone, any $\omega>0$, any $t_f\le42$~s, kinematic 6-DOF with upright landing. A 5-DOF free-time version holds on any
+window in $(0,42]$~s.
+\end{itemize}
+The refereed pen-and-paper statement is \cref{thm:Bstar}.
 
 \paragraph{Contributions.}
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
@@ -88,7 +98,9 @@ convex inner problem) whose every accepted plan is flyable by construction. In s
 obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
 pad-launched hops.
 \item \emph{Formalization} (\cref{sec:lean}). The Main Theorem above (state-constrained Theorem~B$^*$ with Theorem~A, in 5-DOF and
-kinematic 6-DOF, with free or upright terminal attitude), Theorem~B with explicit mass depletion, the abstract Theorem~D, the
+kinematic 6-DOF, with free or upright terminal attitude) and its extensions to mass depletion, free-time windows, the
+quantitative gap and the vehicle's constants; Theorem~B with explicit mass depletion; the centre-of-percussion identity and the
+logical skeleton of the pure-TVC certificate; the abstract Theorem~D, the
 line-search lemma, the Wirtinger lemma and master inequality, Theorem~A-opt, and an explicit instance of Lemma~S with the resulting
 hard-landing Theorem~D are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}.
 External theorems used on the positive side (the maximum principle and Aumann's theorem) enter only as explicit

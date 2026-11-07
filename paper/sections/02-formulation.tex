@@ -44,7 +44,7 @@ Roll does not move the thrust axis of an axisymmetric vehicle. 5-DOF (translatio
 therefore the natural primary model, and 6-DOF results follow by projection and lifting (\cref{sec:6dof}).
 
 \begin{lemma}[Centre-of-percussion identity {\pnote{math/02, Lemma~6.4}}]\label{lem:cop}
-% CLAIMS: P-K3 (CONFIRMED by verify-pos6, incl. roll term), FLAT (identity CONFIRMED) | Lean: none
+% CLAIMS: P-K3 (CONFIRMED by verify-pos6, incl. roll term), FLAT (identity CONFIRMED; FORMALIZED) | Lean: TVC.cop_identity_E3, TVC.cop_identity_roll, TVC.convex_tvcSet_iff
 Consider model PT with constant mass $m$, axisymmetric $J$, roll rate $\varpi=\ip{\Omega}{b}$ and
 $\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
 \[
@@ -52,7 +52,7 @@ $\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
 \qquad \mu=\angle(d,b).
 \]
 With zero roll rate the lateral gimbal force cancels exactly: $y$ is driven by a thrust along $b$ (effective gimbal
-$0$) whose magnitude is reduced by the centripetal term.\Sproved
+$0$) whose magnitude is reduced by the centripetal term.\Sproved\ \Sleanpart{zero roll rate and with roll rate; constant $\varepsilon$}
 \end{lemma}
 For the motivating vehicle, $\varepsilon\approx1.35$~m. The identity is the basis of both the pure-TVC obstruction
 (\cref{sec:tvc}) and the pure-TVC positive result (\cref{thm:C6}).

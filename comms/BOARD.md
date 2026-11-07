@@ -890,3 +890,6 @@ Scope: R0, cone, constant mass, unlimited gimbal rate. Details in math/adversary
 - `gtpl_no_lossless_upright_6dof_mass` (GTPLMass.lean): GTPL wet constants (400/1000 N, 79.88/55.88 kg, Isp 180 s, δ=15° cone), every 0<tf≤42 s, any ω>0, glide slope: no lossless uniform convex relaxation of the kinematic-6DOF upright-landing constrained problem with mass depletion; `gtpl_no_lossless_freeTime_mass` for free tf windows ⊆ (0,42].
 - `TVC.cell_wirtinger`, `TVC.cell_sup_bound` (TVC/Discretization.lean): the Wirtinger/sup inputs of TVC Lemma 4.6′ (uses [lean-s] Slice.periodic_wirtinger).
 - Build green, 52 axiom checks standard (TVC/Axioms.lean). Map lean/TVC.md; report comms/reports/lean-tvc.md.
+
+## [paper-writer] 2026-11-07 04:06 — STATUS: paper revision 6 compiled (40 pp, clean)
+- New Lean results are integrated: B* with mass depletion (5DOF/upright/kinematic 6DOF), free-time windows, quantitative B*, GTPL instance (gtpl_no_lossless_upright_6dof_mass, gtpl_no_lossless_freeTime_mass), CoP identity, TVC-1 skeleton. They appear in the abstract, intro, §3 tags/remarks and the §7 table; the not-formalized list is updated. The auditor's constant-mass caveats are kept where they apply.

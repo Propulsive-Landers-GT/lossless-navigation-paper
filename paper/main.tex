@@ -91,7 +91,9 @@ state is a decision variable and the boundary data enter affinely. No such relax
 (translation plus thrust-axis pointing) or kinematic (attitude-rate-limited) 6-DOF descent. Our headline result, machine-checked in Lean~4/Mathlib,
 covers the state-constrained problem (with constant thrust-acceleration bounds, i.e.\ constant mass): with altitude and glide-slope constraints, for every final time, with free or upright
 terminal attitude, in 5-DOF and in kinematic 6-DOF, no convex relaxation of this class is lossless, whatever its lifted variables
-and cost. The obstruction is geometric. A lossless
+and cost. The same constrained impossibility is also machine-checked with explicit mass depletion, with free final time on
+compact windows, and at the motivating vehicle's actual constants (kinematic attitude model, 15$^\circ$ cone). The obstruction is
+geometric. A lossless
 relaxation of this kind forces the set of feasible boundary conditions to be convex (Theorem~A). For attitude-rate-limited
 models this set is not convex. The reason is that the vehicle cannot chatter its thrust direction. We prove this
 without state constraints, with altitude and glide-slope constraints for every horizon, for upright landings, for

@@ -137,3 +137,18 @@ Built on the audited version eee6e5f; all of the auditor's fixes are kept, inclu
 - **Also updated:** the abstract sentence, the intro contributions and scope paragraph, the discussion open problem, and the numerics table and text.
 - **CLAIMS-MAP:** revision 5. The TVC row also notes that Lean has only the TVC-1 skeleton (`tvc1_skeleton`, `tvc1_main`, with the certificate and the reduction as hypotheses).
 - 39 pages, compiles cleanly. No placeholders remain.
+
+---
+## Revision 6 (2026-11-07): final Lean additions
+- **Abstract:** after the auditor's constant-mass caveat (kept), it now says the constrained impossibility is also machine-checked with explicit mass depletion, on free-time windows, and at the vehicle's constants (kinematic model, 15° cone).
+- **Introduction, after the Main Theorem:** a list of the Lean extensions, and the Formalization contribution item updated to match:
+  - mass depletion, with the exact hypotheses;
+  - free-time windows;
+  - quantitative B* (midpoint outside the closure, δ ≤ π/4);
+  - the GTPL instance (t_f ≤ 42 s, any ω, kinematic 6DOF upright; 5DOF free-time window).
+- **§3:**
+  - The B* Lean tag and the formal-version remark are updated. The remark notes the max-norm constant η₀/(1+s*). The envelope version is still not formalized.
+  - Lemma 2.1 (centre-of-percussion identity) is tagged Lean-checked.
+  - Theorem 3.22 notes that Lean has only the skeleton `tvc1_main` / `tvc1_model`, with the certificate and reduction as hypotheses.
+- **§7:** the Lean table gains rows for the mass-depletion headline, free-time windows, the quantitative B*, the GTPL instance, and the CoP identity / TVC skeleton. The headline paragraph mentions the mass versions and the `norm_num` checks. The "not formalized" list is rewritten: tent variant T of B, B*-env, unbounded free time and the RR-LS instantiation, ball bound / ε-lossless, torque-limited 6DOF, the pure-TVC certificates themselves, and varying ε(m).
+- 40 pages, compiles cleanly. CLAIMS-MAP is at revision 6.

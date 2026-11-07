@@ -131,7 +131,7 @@ If moreover $\delta\le\pi/4$, then
 \]
 with $\gamma_X=\tfrac5{32}a_{10}\sin\delta\,s^{*2}$, $c_1=4a_{\max}/(\omega a_{10}\sin\delta\,s^{*})$,
 $W_b=\tfrac12a_{\max}(t_f-s^*)^2$, $a_{10}=\rho_1/m_0$, $a_{\max}=\rho_2/(m_0-\alpha\rho_2t_f)$.
-\Sleanpart{qualitative statement, constant acceleration bounds, every $t_f$, any $\X\supseteq$ glide-slope set, $b(t_f)$ free \emph{and} upright (T$'$), 5-DOF and kinematic 6-DOF}\
+\Sleanpart{every $t_f$, any $\X\supseteq$ glide-slope set, $b(t_f)$ free and upright (T$'$), 5-DOF and kinematic 6-DOF, constant bounds and explicit mass depletion; free-time windows; quantitative bound in max-norm form}\
 \Sproved\ (all variants and the quantitative bound)
 \end{theorem}
 \begin{proof}[Proof sketch (full proof in \cref{app:Bstar})]
@@ -154,7 +154,12 @@ single smallness condition $(a_{\max}+2\tan\gamma\,a_{\min})s^{*2}\le(a_{\max}-g
 holds for every $\X$ containing the glide-slope set. The upright-landing variant (T$'$, with $2s^*\le t_f$, also supplied by
 \lean{exists\_switchTime}) is \lean{not\_convex\_constrainedLandingSetUp}. The kinematic 6-DOF versions (attitude a path of proper
 rotations, total body rate $\le\omega$, roll angle free) are \lean{no\_lossless\_relaxation\_constrained\_6dof} and
-\lean{no\_lossless\_relaxation\_constrained\_upright\_6dof}. Mass depletion in B$^*$, free final time and the quantitative bound are not formalized.
+\lean{no\_lossless\_relaxation\_constrained\_upright\_6dof}. With explicit mass depletion (model \lean{AccMass}) the headline is
+\lean{no\_lossless\_relaxation\_constrained\_5dof\_mass}, with upright and kinematic 6-DOF variants. Free final time on compact windows is
+\lean{no\_lossless\_relaxation\_freeTime\_5dof} (and \lean{\_mass}). The quantitative bound is \lean{landingSet\_dist\_ge}
+and \lean{midpoint\_not\_mem\_closure\_landingSet}, with \lean{landingSet\_dist\_ge\_mass} for mass depletion; it uses the max-norm on
+$\R^3\times\R^3$, so its constant reads $\eta_0/(1+s^*)$. The instances at the vehicle's constants are
+\lean{gtpl\_no\_lossless\_upright\_6dof\_mass} and \lean{gtpl\_no\_lossless\_freeTime\_mass}. The envelope version B$^*$-env is not formalized.
 \end{remark}
 
 \begin{remark}[The B$^*$ gap is thin, and why]\label{rem:thin}
@@ -387,7 +392,8 @@ Here ``distance'' is $\dist(\theta_m,F_{t_f})$ to the unconstrained (uncapped ro
 slope is part of the claim for TVC-1 and TVC-2, with $\tan\gamma_{gs}$ up to the witnesses' minimum glide ratio, but not for
 TVC-3 and TVC-5. The capped rows concern a different problem class, $b_z\ge\cos\theta_{\max}$ imposed on every trajectory.
 Nonconvexity of the capped feasible set neither implies nor is implied by nonconvexity of the uncapped one. By \cref{thm:A}, no
-uniform convex relaxation with affine data entry is lossless for the corresponding pure-TVC landing problem at these horizons. (The margins are certified in exact arithmetic, except that the localization step functions and the physical constants enter
+uniform convex relaxation with affine data entry is lossless for the corresponding pure-TVC landing problem at these horizons.
+\Sleanpart{logical skeleton only: \lean{TVC.tvc1\_main} / \lean{tvc1\_model} take the certificate and the analytic reduction as explicit hypotheses} (The margins are certified in exact arithmetic, except that the localization step functions and the physical constants enter
 as floating-point inputs, independently validated with margins many orders of magnitude above rounding error. The distance
 bounds were recomputed by the referee but evaluated in floating point.)\stag{MidnightBlue}{proved, computer-assisted; certified in exact arithmetic by an independent referee}
 \end{theorem}
