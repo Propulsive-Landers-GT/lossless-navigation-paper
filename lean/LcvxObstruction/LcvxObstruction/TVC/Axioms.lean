@@ -1,7 +1,7 @@
 import LcvxObstruction.TVC.CentreOfPercussion
 import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
-import LcvxObstruction.DiveBrakeMassVariants
+import LcvxObstruction.FreeTimeBStar
 
 /-! `#print axioms` for the main theorems of the `TVC/` files (expected: only
 `[propext, Classical.choice, Quot.sound]`). Not imported from the root; run with
@@ -37,3 +37,10 @@ import LcvxObstruction.DiveBrakeMassVariants
 #print axioms LcvxObstruction.no_lossless_relaxation_constrained_upright_5dof_mass
 #print axioms LcvxObstruction.no_lossless_relaxation_constrained_6dof_mass
 #print axioms LcvxObstruction.no_lossless_relaxation_constrained_upright_6dof_mass
+
+-- B*, free final time on a compact window (`FreeTimeBStar.lean`)
+#print axioms LcvxObstruction.not_convex_iUnion_of_max
+#print axioms LcvxObstruction.not_convex_iUnion_constrainedLandingSet_box
+#print axioms LcvxObstruction.not_convex_iUnion_constrainedLandingSet_mass
+#print axioms LcvxObstruction.no_lossless_relaxation_freeTime_5dof
+#print axioms LcvxObstruction.no_lossless_relaxation_freeTime_5dof_mass

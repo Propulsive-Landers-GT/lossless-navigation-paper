@@ -12,6 +12,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 | `DiveBrakeMass.lean` | `LcvxObstruction` | B* core and witness for **any** acceleration class with a face maximiser |
 | `DiveBrakeMassModel.lean` | `LcvxObstruction` | B* for the explicit mass-depletion model `AccMass` (α > 0), every horizon |
 | `DiveBrakeMassVariants.lean` | `LcvxObstruction` | the same for upright landing (T′) and kinematic 6DOF (free / upright terminal attitude) |
+| `FreeTimeBStar.lean` | `LcvxObstruction` | B* with free final time on a compact window (Cor. 10.4), constant bounds and mass depletion |
 | `TVC/Axioms.lean` | — | `#print axioms` for all of the above (not imported from the root) |
 
 ---
@@ -103,9 +104,22 @@ by `not_convex_constrainedLandingSet_mass`: `0 < s* < tf`, `ωs* ≤ δ`, `δ + 
 `(ρ₂/m₀ + 2tanγ·ρ₂/m_dry) s*² ≤ (ρ₂/m₀ − g₀)(tf − s*)²` (always satisfiable, `exists_switchTime`).
 `ρ₁ = ρ₂` (no throttling) is excluded only for convenience (the comparison divides by `ρ₁ − ρ₂`); α = 0 is the existing theorem.
 
+## 3a. B*, free final time on a compact window (math/02 Cor. 10.4; CLAIMS rows P-B*, LS)
+
+| Lean | Content |
+|---|---|
+| `not_convex_iUnion_of_max` | abstract: horizon-dependent class `Acc t` (`t ∈ [t_a,t_b]`, `s* < t_a`), face bound `PhiFace_t a ≤ V_max(t)`, `t ↦ V_max(t) + g₀ t (s* − t/2)` continuous on the window, a witness attaining `V_max(t)` with the B* bounds ⇒ `⋃_{t ∈ [t_a,t_b]} F^X_t` not convex. Proof: maximise `ℓ*(t)` at `t°`; a midpoint landing at `t'` would have `W = V e_z`, `V = V_max(t°) + κ(t°) − κ(t') ≥ V_max(t')`, excluded by `PhiMax_not_mem_WSet` at horizon `t'` |
+| `phiFace_le_VStar`, `phiFace_aW`, `continuousOn_VStar` | constant-bounds instance ingredients |
+| `not_convex_iUnion_constrainedLandingSet_box`, `no_lossless_relaxation_freeTime_5dof` | free final time, constant bounds (`α = 0`), every window `0 < t_a ≤ t_b` |
+| `continuous_wval₂`, `not_convex_iUnion_constrainedLandingSet_mass`, `no_lossless_relaxation_freeTime_5dof_mass` | free final time, mass depletion; `V_max(t) = sup_{σ∈[0,s*]} w_t(σ)` is continuous in `t` (`IsCompact.continuous_sSup`); needs `m_dry ≤ m₀ − αρ₂ t_b` (the verify-imp window condition) |
+
+"Free final time" here means: the boundary-data set of the free-`t_f` problem with `t_f ∈ [t_a,t_b]` is the union of the
+fixed-horizon sets, and that union is not convex, so (Theorem A) no single uniform convex relaxation of the free-time problem is
+lossless. (The line-search variant RR-LS is in `FreeTime.lean`; its concrete hypotheses (H2)/(H3) are not instantiated here.)
+
 ## 4. Not formalized (honest list)
 
 * TVC-1: the analytic reduction (`TVC1Reduction`), the witness, the certified numerics (`TVC1Certificate`), and a concrete
   trajectory-level pure-TVC landing set. Lean checks only the logical skeleton and the finite-dimensional S-procedure step.
 * FLAT with varying `ε(m)`; FLAT link to a trajectory-level `F_TVC` (taken as hypothesis in `convex_tvcSet_iff`).
-* B* with mass depletion: quantitative bound (Step 7), free final time (Cor. 10.4), envelope version (§10.6).
+* B*: quantitative bound (Step 7), envelope version (§10.6); free final time is formalized only on compact windows (unbounded free time has no such face, Cor. 10.4 remark).
