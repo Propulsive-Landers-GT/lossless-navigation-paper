@@ -14,6 +14,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 | `DiveBrakeMassModel.lean` | `LcvxObstruction` | B* for the explicit mass-depletion model `AccMass` (α > 0), every horizon |
 | `DiveBrakeMassVariants.lean` | `LcvxObstruction` | the same for upright landing (T′) and kinematic 6DOF (free / upright terminal attitude) |
 | `DiveBrakeQuant.lean` | `LcvxObstruction` | quantitative B* (Step 7): explicit distance from the witness midpoint to the landing set, constant bounds |
+| `DiveBrakeQuantMass.lean` | `LcvxObstruction` | quantitative B* for any class with a face maximiser, and for mass depletion |
 | `FreeTimeBStar.lean` | `LcvxObstruction` | B* with free final time on a compact window (Cor. 10.4), constant bounds and mass depletion |
 | `TVC/Axioms.lean` | — | `#print axioms` for all of the above (not imported from the root) |
 
@@ -150,10 +151,12 @@ throttle).
 | `lambda_dist_ge` | for every `θ ∈ F_tf` (unconstrained) and every `η₀ ≥ 0` with `(1+c₁)η₀ + √(2W_bη₀) ≤ γ_X`: `η₀ ≤ ‖Λ(θ) − Λ(θ_m)‖` | (vi) |
 | `norm_lambda_le`, `landingSet_dist_ge` | `η₀/(1+s*) ≤ ‖θ − θ_m‖` (max-norm on `ℝ³ × ℝ³`; math/02 uses `√(1+s*²)` with the Euclidean product norm) | distance form |
 | `exists_eta0`, `midpoint_not_mem_closure_landingSet` | an explicit `η₀ > 0` exists; `θ_m ∉ closure F_tf` | "x̄* ∉ cl F" (δ ≤ π/4) |
+| `lambda_dist_ge_of_max` | the same bound for any class with `a_min ≤ a ≤ a_max` and a face maximiser `â` (witnesses with throttle `â`; deficit `PhiFace(â) − W_z ≥ η_d + η_b`, Remark 10.3) | Step 7, general |
+| `landingSet_dist_ge_mass` | mass depletion: with the mass face maximiser `â`, `dist(θ_m, F_tf) ≥ η₀/(1+s*)` for `a_min = ρ₁/m₀`, `a_max = ρ₂/m_dry` | Step 7, α > 0 |
 
 ## 4. Not formalized (honest list)
 
 * TVC-1: the analytic reduction (`TVC1Reduction`), the witness, the certified numerics (`TVC1Certificate`), and a concrete
   trajectory-level pure-TVC landing set. Lean checks only the logical skeleton and the finite-dimensional S-procedure step.
 * FLAT with varying `ε(m)`; FLAT link to a trajectory-level `F_TVC` (taken as hypothesis in `convex_tvcSet_iff`).
-* B*: quantitative bound for the mass-depletion class (Step 7 is formalized for constant bounds only), envelope version (§10.6); free final time is formalized only on compact windows (unbounded free time has no such face, Cor. 10.4 remark).
+* B*: envelope version (§10.6); free final time is formalized only on compact windows (unbounded free time has no such face, Cor. 10.4 remark).
