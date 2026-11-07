@@ -34,3 +34,4 @@ import LcvxObstruction.TVC.Model
 import LcvxObstruction.DiveBrakeQuant
 import LcvxObstruction.DiveBrakeQuantMass
 import LcvxObstruction.TVC.Discretization
+import LcvxObstruction.GTPLMass

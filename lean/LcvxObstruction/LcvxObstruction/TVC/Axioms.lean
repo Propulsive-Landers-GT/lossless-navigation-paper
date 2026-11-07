@@ -5,6 +5,7 @@ import LcvxObstruction.TVC.Model
 import LcvxObstruction.TVC.Discretization
 import LcvxObstruction.FreeTimeBStar
 import LcvxObstruction.DiveBrakeQuantMass
+import LcvxObstruction.GTPLMass
 
 /-! `#print axioms` for the main theorems of the `TVC/` files (expected: only
 `[propext, Classical.choice, Quot.sound]`). Not imported from the root; run with
@@ -68,3 +69,7 @@ import LcvxObstruction.DiveBrakeQuantMass
 #print axioms LcvxObstruction.landingSet_dist_ge_mass
 #print axioms LcvxObstruction.TVC.cell_wirtinger
 #print axioms LcvxObstruction.TVC.cell_sup_bound
+
+-- GTPL instance (`GTPLMass.lean`)
+#print axioms LcvxObstruction.gtpl_no_lossless_upright_6dof_mass
+#print axioms LcvxObstruction.gtpl_no_lossless_freeTime_mass

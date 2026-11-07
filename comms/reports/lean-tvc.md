@@ -11,6 +11,7 @@ reports `[propext, Classical.choice, Quot.sound]`.
 |---|---|---|
 | 1. FLAT (centre of percussion) | **DONE.** Zero-roll identity (in `Fin 3 → ℝ` and in `EuclideanSpace ℝ (Fin 3)`), the roll-rate version with the gyroscopic term, roll-rate conservation, and the boundary translation `F_TVC = F_y − shift`. | `TVC.cop_identity`, `TVC.cop_identity_E3`, `TVC.cop_identity_roll`, `TVC.euler_roll_const`, `TVC.convex_tvcSet_iff` |
 | 2. TVC-1 skeleton | **DONE.** S-procedure/Finsler in finite dimensions, separability over tilt components, the rotation-midpoint argument with the Theorem A link, and a concrete pure-TVC landing-set model with `R_π` invariance, ordinary ⊆ relaxed and the landing identity. Numerics enter only as `structure TVC1Certificate`, documented as verified by `numerics/verify-tvc/exact_cert.py` and `moment_check.py`. The analytic reduction (math/06 §4.0–4.4, Lemma 4.6′) enters as `structure TVC1Reduction`. **That reduction is not formalized.** | `TVC.sprocedure_finsler(_sum)`, `TVC.gain_le_of_certificate`, `TVC.tvc1_skeleton`, `TVC.tvc1_main`, `TVC.tvc1_model` / `TVC.tvc1_model_ctrl` (concrete sets; reduction stated for controls, gain `W_z(u) − J₀`), `TVC.tvcLandingSet_rot`, pointwise lemmas in `TVC/Pointwise.lean`, Lemma 4.6′ cell bounds `TVC.cell_wirtinger`, `TVC.cell_sup_bound` |
+| (extra) GTPL instance | **DONE.** Kinematic 6DOF, upright landing, altitude/glide slope, mass depletion at GTPL wet constants, every `0 < t_f ≤ 42 s`; also free final time on windows within 42 s. | `gtpl_no_lossless_upright_6dof_mass`, `gtpl_no_lossless_freeTime_mass` |
 | (extra) quantitative B* | **DONE**, δ ≤ π/4 (Step 7): `η₀/(1+s*) ≤ dist(θ_m, F)`, `θ_m ∉ closure F`, for constant bounds and for mass depletion. | `lambda_dist_ge`, `landingSet_dist_ge`, `midpoint_not_mem_closure_landingSet`, `lambda_dist_ge_of_max`, `landingSet_dist_ge_mass` |
 | 3. B* with mass depletion α > 0 | **DONE, beyond scope:** every horizon, plus upright landing, kinematic 6DOF, and free final time on compact windows. | `no_lossless_relaxation_constrained_5dof_mass`, `…_upright_5dof_mass`, `…_6dof_mass`, `…_upright_6dof_mass`, `no_lossless_relaxation_freeTime_5dof(_mass)`, non-vacuity `constrainedLandingSet_mass_nonempty` |
 
@@ -53,7 +54,7 @@ reports `[propext, Classical.choice, Quot.sound]`.
 
 ## Files (all committed, no AI attribution)
 `lean/LcvxObstruction/LcvxObstruction/TVC/{CentreOfPercussion,Certificate,Pointwise,Model,Discretization,Axioms}.lean`,
-`lean/LcvxObstruction/LcvxObstruction/{DiveBrakeMass,DiveBrakeMassModel,DiveBrakeMassVariants,FreeTimeBStar,DiveBrakeQuant,DiveBrakeQuantMass}.lean`,
+`lean/LcvxObstruction/LcvxObstruction/{DiveBrakeMass,DiveBrakeMassModel,DiveBrakeMassVariants,FreeTimeBStar,DiveBrakeQuant,DiveBrakeQuantMass,GTPLMass}.lean`,
 root imports in `lean/LcvxObstruction/LcvxObstruction.lean`, `lean/TVC.md`, `comms/briefs/lean-tvc.md`, this report.
 `comms/CLAIMS.md` rows B*, P-B*, FLAT, TVC-1 were updated (status column), and BOARD milestones were posted. Both files are
 shared and contain other agents' uncommitted edits, so I left them for the orchestrator to commit.

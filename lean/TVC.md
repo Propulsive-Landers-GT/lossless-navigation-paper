@@ -17,6 +17,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 | `DiveBrakeQuant.lean` | `LcvxObstruction` | quantitative B* (Step 7): explicit distance from the witness midpoint to the landing set, constant bounds |
 | `DiveBrakeQuantMass.lean` | `LcvxObstruction` | quantitative B* for any class with a face maximiser, and for mass depletion |
 | `FreeTimeBStar.lean` | `LcvxObstruction` | B* with free final time on a compact window (Cor. 10.4), constant bounds and mass depletion |
+| `GTPLMass.lean` | `LcvxObstruction` | B* with mass depletion instantiated at GTPL wet constants |
 | `TVC/Axioms.lean` | — | `#print axioms` for all of the above (not imported from the root) |
 
 ---
@@ -156,6 +157,15 @@ throttle).
 | `exists_eta0`, `midpoint_not_mem_closure_landingSet` | an explicit `η₀ > 0` exists; `θ_m ∉ closure F_tf` | "x̄* ∉ cl F" (δ ≤ π/4) |
 | `lambda_dist_ge_of_max` | the same bound for any class with `a_min ≤ a ≤ a_max` and a face maximiser `â` (witnesses with throttle `â`; deficit `PhiFace(â) − W_z ≥ η_d + η_b`, Remark 10.3) | Step 7, general |
 | `landingSet_dist_ge_mass` | mass depletion: with the mass face maximiser `â`, `dist(θ_m, F_tf) ≥ η₀/(1+s*)` for `a_min = ρ₁/m₀`, `a_max = ρ₂/m_dry` | Step 7, α > 0 |
+
+## 3c. GTPL instance (`GTPLMass.lean`)
+
+`ρ₁ = 400 N`, `ρ₂ = 1000 N`, `m₀ = 79.88 kg`, `m_dry = 55.88 kg`, `α = 1/(9.81·180)` (guidance Isp 180 s), `g₀ = 9.81`,
+`δ = π/12` (cone; the ±15° Cardan box contains it). `gtpl_no_lossless_upright_6dof_mass`: for every `0 < t_f ≤ 42 s`, every
+`ω > 0`, `tanγ ≥ 0`, `X ⊇ glideSlopeSet tanγ`, no uniform convex relaxation is lossless for the kinematic-6DOF, upright-landing,
+altitude/glide-slope constrained landing set with mass depletion. `gtpl_no_lossless_freeTime_mass`: same for free final time on
+any window `[t_a,t_b] ⊆ (0, 42]` (5DOF). The numeric side conditions (burn: `24 kg ≥ αρ₂·42 s ≈ 23.8 kg`; T/W:
+`9.81 < 1000/79.88`) are checked by `norm_num`.
 
 ## 4. Not formalized (honest list)
 
