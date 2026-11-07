@@ -1,5 +1,7 @@
 import LcvxObstruction.Abstract
 import LcvxObstruction.Nonconvex
+import LcvxObstruction.DiveBrake
+import LcvxObstruction.TheoremD
 
 /-!
 # Main theorem: no lossless uniform convex relaxation of 5DOF (model M1, no state constraints)
@@ -104,5 +106,53 @@ theorem main_hypotheses_satisfiable :
       ContinuousOn a₁ (Icc 0 tf) ∧ ∀ s ∈ Icc 0 tf, 0 < a₁ s :=
   ⟨1, 1, 0, fun _ => 1, one_pos, one_pos, le_rfl, by linarith [Real.pi_gt_three],
     continuousOn_const, fun _ _ => one_pos⟩
+
+/-! ### Main theorem with altitude / glide-slope state constraints (Theorem B*) -/
+
+/-- **Main theorem (state-constrained, every horizon).** Model M1 with constant acceleration
+bounds `0 < a_min ≤ a_max` (constant mass: `a = T/m₀`, `T ∈ [ρ₁, ρ₂]`), gravity `-g₀ e_z` with
+`g₀ < a_max` (full-throttle thrust-to-weight `> 1`), gimbal `0 < δ < π/2`, slew rate `ω > 0`,
+any horizon `tf > 0`, and any state-constraint set `X` containing the glide-slope cone
+`{r_z ≥ 0, tan γ ‖r_h‖ ≤ r_z}` (`tanγ = 0`: altitude only). Then no uniform convex relaxation is
+lossless for the constrained landing set. -/
+theorem no_lossless_relaxation_constrained_5dof {Y : Type*} [AddCommGroup Y] [Module ℝ Y]
+    {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf) (hω : 0 < ω) (hδ : 0 < δ) (hδ2 : δ < π / 2)
+    (hamin : 0 < amin) (h : amin ≤ amax) (hg : g₀ < amax) (htan : 0 ≤ tanγ)
+    {X : Set (E3 × E3)} (hX : glideSlopeSet tanγ ⊆ X)
+    (R : UniformConvexRelaxation (E3 × E3) Y) :
+    ¬ R.IsLossless
+      (constrainedLandingSet (AccBox tf (fun _ => amin) (fun _ => amax)) tf ω δ (-(g₀ • ez)) X) := by
+  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS⟩ :=
+    exists_switchTime (amin := amin) (tanγ := tanγ) htf hω hδ hδ2 hg
+  exact not_isLossless_of_not_convex
+    (not_convex_constrainedLandingSet hsS hsStf hω hωs hreg hamin h hg.le htan hS
+      (fun _ ha => ha) (aW_mem_accBox h) hX) R
+
+/-- LCvx (optimisation) form of the state-constrained main theorem, for every cost `J`. -/
+theorem no_losslessFor_relaxation_constrained_5dof {Y : Type*} [AddCommGroup Y] [Module ℝ Y]
+    {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf) (hω : 0 < ω) (hδ : 0 < δ) (hδ2 : δ < π / 2)
+    (hamin : 0 < amin) (h : amin ≤ amax) (hg : g₀ < amax) (htan : 0 ≤ tanγ)
+    {X : Set (E3 × E3)} (hX : glideSlopeSet tanγ ⊆ X)
+    (R : UniformConvexRelaxation (E3 × E3) Y) (J : E3 × E3 → Y → ℝ) :
+    ¬ R.IsLosslessFor J
+      (constrainedLandingSet (AccBox tf (fun _ => amin) (fun _ => amax)) tf ω δ (-(g₀ • ez)) X) :=
+  fun hL => no_lossless_relaxation_constrained_5dof htf hω hδ hδ2 hamin h hg htan hX R
+    hL.isLossless
+
+/-- Non-vacuity of the constrained main theorem: the constrained landing set is nonempty
+(it contains the dive-then-brake witnesses). -/
+theorem constrainedLandingSet_nonempty {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf)
+    (hω : 0 < ω) (hδ : 0 < δ) (hδ2 : δ < π / 2) (hamin : 0 < amin) (h : amin ≤ amax)
+    (hg : g₀ < amax) (htan : 0 ≤ tanγ) :
+    (constrainedLandingSet (AccBox tf (fun _ => amin) (fun _ => amax)) tf ω δ (-(g₀ • ez))
+      (glideSlopeSet tanγ)).Nonempty := by
+  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS⟩ :=
+    exists_switchTime (amin := amin) (tanγ := tanγ) htf hω hδ hδ2 hg
+  have hδπ : δ ≤ π := by linarith [Real.pi_pos]
+  exact ⟨_, _, _, _, aW_mem_accBox h,
+    witness_admissible norm_ex inner_ex_ez hsS hω.le hδ.le hδπ hωs,
+    (landingData_lands _ _ _ _).1, (landingData_lands _ _ _ _).2,
+    fun t ht => witness_mem_glideSlope norm_ex inner_ex_ez hsS hsStf hω.le hδ.le hreg hamin h
+      hg.le htan hS ht⟩
 
 end LcvxObstruction

@@ -328,4 +328,339 @@ theorem VStar_not_mem_WSet {Acc : Set (ℝ → ℝ)} {tf ω δ sS amin amax : �
   rw [hzero] at hmono
   linarith
 
+/-! ### The dive-then-brake witnesses -/
+
+/-- Witness throttle: minimum on the dive `s ≤ s*`, maximum on the brake. -/
+noncomputable def aW (sS amin amax : ℝ) (s : ℝ) : ℝ := if s ≤ sS then amin else amax
+
+/-- Witness thrust direction: extreme tilt (gimbal `δ` beyond the axis) on the dive, vertical on
+the brake. -/
+noncomputable def dW (ω δ sS : ℝ) (u : E3) (s : ℝ) : E3 := if s ≤ sS then arcD ω δ u s else ez
+
+/-- Witness body axis: tilt at the maximal rate until `s*`, then hold. -/
+noncomputable def bW (ω sS : ℝ) (u : E3) (s : ℝ) : E3 := arcB ω u (min s sS)
+
+theorem measurable_aW (sS amin amax : ℝ) : Measurable (aW sS amin amax) :=
+  Measurable.ite measurableSet_Iic measurable_const measurable_const
+
+theorem measurable_dW (ω δ sS : ℝ) (u : E3) : Measurable (dW ω δ sS u) :=
+  Measurable.ite measurableSet_Iic (by unfold arcD; fun_prop) measurable_const
+
+theorem norm_dW {ω δ sS : ℝ} {u : E3} (hu : ‖u‖ = 1) (huz : ⟪u, ez⟫ = 0) (s : ℝ) :
+    ‖dW ω δ sS u s‖ = 1 := by
+  unfold dW; split_ifs
+  · exact norm_polar hu norm_ez huz _
+  · exact norm_ez
+
+theorem inner_ez_arcB {ω : ℝ} {u : E3} (huz : ⟪u, ez⟫ = 0) (x : ℝ) :
+    ⟪ez, arcB ω u x⟫ = Real.cos (ω * x) := by
+  have hzz : ⟪ez, ez⟫ = 1 := by rw [real_inner_self_eq_norm_sq, norm_ez]; norm_num
+  rw [arcB, inner_add_right, real_inner_smul_right, real_inner_smul_right, real_inner_comm,
+    huz, hzz]; ring
+
+/-- **The witnesses are admissible.** -/
+theorem witness_admissible {tf ω δ sS : ℝ} {u : E3} (hu : ‖u‖ = 1) (huz : ⟪u, ez⟫ = 0)
+    (hsS : 0 < sS) (hω : 0 ≤ ω) (hδ : 0 ≤ δ) (hδπ : δ ≤ π) (hωs : ω * sS ≤ δ) :
+    AttitudeAdmissible tf ω δ (dW ω δ sS u) (bW ω sS u) where
+  b_init := by simp [bW, arcB, min_eq_left hsS.le]
+  b_unit s _ := norm_polar hu norm_ez huz _
+  b_cont := by unfold bW arcB; fun_prop
+  b_rate s hs s' hs' := by
+    have hm : |min s sS - min s' sS| ≤ |s - s'| :=
+      (abs_min_sub_min_le_max _ _ _ _).trans (by simp)
+    have hmS : |min s sS - min s' sS| ≤ sS := by
+      rw [abs_sub_le_iff]
+      constructor <;> linarith [min_le_right s sS, min_le_right s' sS,
+        le_min hs.1 hsS.le, le_min hs'.1 hsS.le]
+    calc angle (bW ω sS u s) (bW ω sS u s') ≤ ω * |min s sS - min s' sS| := by
+          apply angle_le_of_cos_le_inner (norm_polar hu norm_ez huz _)
+            (norm_polar hu norm_ez huz _) (mul_nonneg hω (abs_nonneg _))
+            (by nlinarith [mul_le_mul_of_nonneg_left hmS hω])
+          rw [inner_polar hu norm_ez huz, cos_mul_abs_sub hω]
+      _ ≤ ω * |s - s'| := mul_le_mul_of_nonneg_left hm hω
+  d_meas := (measurable_dW ω δ sS u).aestronglyMeasurable
+  d_unit s _ := norm_dW hu huz s
+  gimbal s _ := by
+    by_cases h : s ≤ sS
+    · simp only [dW, bW, h, ↓reduceIte, min_eq_left h]
+      apply angle_le_of_cos_le_inner (norm_polar hu norm_ez huz _) (norm_polar hu norm_ez huz _)
+        hδ hδπ
+      rw [inner_polar hu norm_ez huz]
+      ring_nf; exact le_rfl
+    · simp only [dW, bW, h, ↓reduceIte, min_eq_right (le_of_lt (not_le.1 h))]
+      apply angle_le_of_cos_le_inner norm_ez (norm_polar hu norm_ez huz _) hδ hδπ
+      rw [← arcB, inner_ez_arcB huz]
+      exact Real.cos_le_cos_of_nonneg_of_le_pi (mul_nonneg hω hsS.le) hδπ hωs
+
+theorem aW_mem_accBox {tf sS amin amax : ℝ} (h : amin ≤ amax) :
+    aW sS amin amax ∈ AccBox tf (fun _ => amin) (fun _ => amax) := by
+  refine ⟨?_, fun s _ => ?_⟩
+  · refine Integrable.mono' (integrableOn_const (C := |amin| + |amax|) measure_Icc_lt_top.ne)
+      (measurable_aW sS amin amax).aestronglyMeasurable (ae_of_all _ fun s => ?_)
+    unfold aW; split_ifs <;> simp [Real.norm_eq_abs] <;> linarith [abs_nonneg amin, abs_nonneg amax]
+  · unfold aW; split_ifs <;> constructor <;> linarith
+
+theorem integrableOn_witness {tf sS amin amax ω δ : ℝ} {u : E3} (hu : ‖u‖ = 1)
+    (huz : ⟪u, ez⟫ = 0) (h : amin ≤ amax) :
+    IntegrableOn (fun s => aW sS amin amax s • dW ω δ sS u s) (Icc 0 tf) :=
+  integrableOn_smul_of_unit (aW_mem_accBox (tf := tf) h).1
+    (measurable_dW ω δ sS u).aestronglyMeasurable fun s _ => norm_dW hu huz s
+
+/-- The midpoint of the weighted impulses of the two mirror witnesses is `V* e_z`. -/
+theorem witness_W_midpoint {tf ω δ sS amin amax : ℝ} {u : E3} (hu : ‖u‖ = 1)
+    (huz : ⟪u, ez⟫ = 0) (h : amin ≤ amax) :
+    (1 / 2 : ℝ) • (∫ s in Icc 0 tf, (s - sS) • (aW sS amin amax s • dW ω δ sS u s)) +
+      (1 / 2 : ℝ) • (∫ s in Icc 0 tf, (s - sS) • (aW sS amin amax s • dW ω δ sS (-u) s)) =
+      VStar tf ω δ sS amin amax • ez := by
+  have h1 : Integrable (fun s => (1 / 2 : ℝ) • ((s - sS) • (aW sS amin amax s • dW ω δ sS u s)))
+      (volume.restrict (Icc 0 tf)) :=
+    (integrableOn_cont_smul (integrableOn_witness hu huz h) (c := fun s => s - sS)
+      (by fun_prop)).smul (1 / 2 : ℝ)
+  have h2 : Integrable
+      (fun s => (1 / 2 : ℝ) • ((s - sS) • (aW sS amin amax s • dW ω δ sS (-u) s)))
+      (volume.restrict (Icc 0 tf)) :=
+    (integrableOn_cont_smul (integrableOn_witness (by simpa using hu) (by simpa using huz) h)
+      (c := fun s => s - sS) (by fun_prop)).smul (1 / 2 : ℝ)
+  rw [← integral_smul, ← integral_smul, ← integral_add h1 h2, VStar, ← integral_smul_const]
+  congr 1
+  funext s
+  by_cases hs : s ≤ sS
+  · simp only [aW, dW, hStar, hs, ↓reduceIte, min_eq_left (sub_nonpos.2 hs),
+      max_eq_right (sub_nonpos.2 hs), arcD]
+    module
+  · have hs' : 0 ≤ s - sS := by linarith [not_le.1 hs]
+    simp only [aW, dW, hStar, hs, ↓reduceIte, min_eq_right hs', max_eq_left hs']
+    module
+
+/-! ### Landing data of a control, and the witnesses' state constraints -/
+
+/-- The boundary data from which the control `(a, d)` lands at `tf` (gravity `g`). -/
+noncomputable def landingData (g : E3) (a : ℝ → ℝ) (d : ℝ → E3) (tf : ℝ) : E3 × E3 :=
+  (-(tf • (-(tf • g) - ∫ s in Icc 0 tf, a s • d s) + (tf ^ 2 / 2) • g +
+      ∫ s in Icc 0 tf, (tf - s) • (a s • d s)),
+    -(tf • g) - ∫ s in Icc 0 tf, a s • d s)
+
+theorem landingData_lands (g : E3) (a : ℝ → ℝ) (d : ℝ → E3) (tf : ℝ) :
+    position g (landingData g a d tf).1 (landingData g a d tf).2 a d tf = 0 ∧
+      velocity g (landingData g a d tf).2 a d tf = 0 := by
+  constructor
+  · simp only [position, landingData]; abel
+  · simp only [velocity, landingData]; abel
+
+theorem integral_Ioc_sub_self {p q : ℝ} (hpq : p ≤ q) (t : ℝ) :
+    ∫ s in Ioc p q, (s - t) = ((q - t) ^ 2 - (p - t) ^ 2) / 2 := by
+  rw [← intervalIntegral.integral_of_le hpq,
+    intervalIntegral.integral_comp_sub_right (fun x => x) t, integral_id]
+
+theorem Ioc_disjoint_Ioc' (t sS tf : ℝ) : Disjoint (Ioc t sS) (Ioc sS tf) :=
+  Set.disjoint_left.2 fun _ h1 h2 => absurd h1.2 (not_le.2 h2.1)
+
+/-- **The witness trajectory satisfies the glide-slope constraint** at every time, provided the
+switch time is short: `(a_max + 2 tanγ a_min) s*² ≤ (a_max - g₀)(tf - s*)²`. -/
+theorem witness_mem_glideSlope {tf ω δ sS amin amax g₀ tanγ : ℝ} {u : E3} (hu : ‖u‖ = 1)
+    (huz : ⟪u, ez⟫ = 0) (hsS : 0 < sS) (hsStf : sS < tf) (hω : 0 ≤ ω) (hδ : 0 ≤ δ)
+    (hreg : δ + ω * sS ≤ π / 2) (hamin : 0 < amin) (h : amin ≤ amax) (hg : g₀ ≤ amax)
+    (htan : 0 ≤ tanγ)
+    (hS : (amax + 2 * tanγ * amin) * sS ^ 2 ≤ (amax - g₀) * (tf - sS) ^ 2)
+    {t : ℝ} (ht : t ∈ Icc 0 tf) :
+    (position (-(g₀ • ez)) (landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS u) tf).1
+        (landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS u) tf).2
+        (aW sS amin amax) (dW ω δ sS u) t,
+      velocity (-(g₀ • ez)) (landingData (-(g₀ • ez)) (aW sS amin amax) (dW ω δ sS u) tf).2
+        (aW sS amin amax) (dW ω δ sS u) t) ∈ glideSlopeSet tanγ := by
+  set a := aW sS amin amax
+  set d := dW ω δ sS u
+  have hf := integrableOn_witness (tf := tf) (sS := sS) (ω := ω) (δ := δ) hu huz h
+  obtain ⟨hr, hv⟩ := landingData_lands (-(g₀ • ez)) a d tf
+  simp only [glideSlopeSet, Set.mem_setOf_eq]
+  rw [position_eq_tail ht hf hr hv]
+  -- the integrand and its vertical / lateral parts
+  set ψ : ℝ → E3 := fun s => (s - t) • (a s • d s) with hψ
+  have hψI : IntegrableOn ψ (Icc 0 tf) :=
+    integrableOn_cont_smul hf (c := fun s => s - t) (by fun_prop)
+  have hψI' : IntegrableOn ψ (Ioc t tf) :=
+    hψI.mono_set (Ioc_subset_Icc_self.trans (Icc_subset_Icc_left ht.1))
+  set Z : ℝ → ℝ := fun s => ⟪ψ s, ez⟫ with hZ
+  set L : ℝ → E3 := fun s => ψ s - Z s • ez with hL
+  have hzz : ⟪ez, ez⟫ = 1 := by rw [real_inner_self_eq_norm_sq, norm_ez]; norm_num
+  have hZ_dive : ∀ s, s ≤ sS → Z s = (s - t) * (amin * Real.cos (δ + ω * s)) := fun s hs => by
+    simp only [hZ, hψ, a, d, aW, dW, hs, ↓reduceIte, arcD, real_inner_smul_left, inner_add_left, huz,
+      hzz]; ring
+  have hZ_brake : ∀ s, sS < s → Z s = (s - t) * amax := fun s hs => by
+    simp only [hZ, hψ, a, d, aW, dW, not_le.2 hs, ↓reduceIte, real_inner_smul_left, hzz]; ring
+  have hL_dive : ∀ s, s ≤ sS → L s = ((s - t) * amin * Real.sin (δ + ω * s)) • u := fun s hs => by
+    simp only [hL, hZ_dive s hs, hψ, a, d, aW, dW, hs, ↓reduceIte, arcD]; module
+  have hL_brake : ∀ s, sS < s → L s = 0 := fun s hs => by
+    simp only [hL, hZ_brake s hs, hψ, a, d, aW, dW, not_le.2 hs, ↓reduceIte]; module
+  have hZI : IntegrableOn Z (Ioc t tf) := by
+    have : IntegrableOn (fun s => ⟪ez, ψ s⟫) (Ioc t tf) := Integrable.const_inner ez hψI'
+    exact this.congr_fun (fun s _ => real_inner_comm _ _) measurableSet_Ioc
+  have hLI : IntegrableOn L (Ioc t tf) := hψI'.sub (hZI.smul_const ez)
+  set R := ∫ s in Ioc t tf, ψ s with hR
+  have hRz : ⟪R, ez⟫ = ∫ s in Ioc t tf, Z s := by
+    rw [hR, real_inner_comm, ← integral_inner hψI']
+    exact setIntegral_congr_fun measurableSet_Ioc (fun s _ => real_inner_comm _ _)
+  have hRh : R - ⟪R, ez⟫ • ez = ∫ s in Ioc t tf, L s := by
+    rw [hRz, hR, hL, integral_sub hψI' (hZI.smul_const ez), integral_smul_const]
+  set c := (tf - t) ^ 2 / 2 with hc
+  have hrz : ⟪R + c • -(g₀ • ez), ez⟫ = (∫ s in Ioc t tf, Z s) - g₀ * c := by
+    rw [inner_add_left, hRz, real_inner_smul_left, inner_neg_left, real_inner_smul_left, hzz]
+    ring
+  have hrh : R + c • -(g₀ • ez) - ⟪R + c • -(g₀ • ez), ez⟫ • ez = ∫ s in Ioc t tf, L s := by
+    rw [← hRh, inner_add_left, real_inner_smul_left, inner_neg_left, real_inner_smul_left, hzz]
+    module
+  rw [hrh, hrz]
+  -- case analysis on the time
+  rcases le_or_gt sS t with hts | hts
+  · -- brake phase only
+    have hZeq : ∫ s in Ioc t tf, Z s = amax * c := by
+      rw [setIntegral_congr_fun measurableSet_Ioc (fun s hs => hZ_brake s (by linarith [hs.1])),
+        integral_mul_const, integral_Ioc_sub_self ht.2]
+      simp only [hc]; ring
+    have hLeq : ∫ s in Ioc t tf, L s = 0 := by
+      rw [setIntegral_congr_fun measurableSet_Ioc (fun s hs => hL_brake s (by linarith [hs.1]))]
+      simp
+    rw [hZeq, hLeq, norm_zero, mul_zero]
+    have : 0 ≤ (amax - g₀) * c := mul_nonneg (by linarith) (by positivity)
+    constructor <;> nlinarith
+  · -- dive then brake
+    have hsplit : ∀ {F : ℝ → ℝ}, IntegrableOn F (Ioc t tf) →
+        ∫ s in Ioc t tf, F s = (∫ s in Ioc t sS, F s) + ∫ s in Ioc sS tf, F s := by
+      intro F hF
+      rw [← setIntegral_union (Ioc_disjoint_Ioc' t sS tf) measurableSet_Ioc
+        (hF.mono_set (Ioc_subset_Ioc_right hsStf.le)) (hF.mono_set (Ioc_subset_Ioc_left hts.le)),
+        Ioc_union_Ioc_eq_Ioc hts.le hsStf.le]
+    have hsplitV : ∫ s in Ioc t tf, L s = (∫ s in Ioc t sS, L s) + ∫ s in Ioc sS tf, L s := by
+      rw [← setIntegral_union (Ioc_disjoint_Ioc' t sS tf) measurableSet_Ioc
+        (hLI.mono_set (Ioc_subset_Ioc_right hsStf.le)) (hLI.mono_set (Ioc_subset_Ioc_left hts.le)),
+        Ioc_union_Ioc_eq_Ioc hts.le hsStf.le]
+    have hZ1 : 0 ≤ ∫ s in Ioc t sS, Z s := by
+      refine setIntegral_nonneg measurableSet_Ioc fun s hs => ?_
+      rw [hZ_dive s hs.2]
+      have : 0 ≤ Real.cos (δ + ω * s) :=
+        Real.cos_nonneg_of_mem_Icc ⟨by nlinarith [ht.1, hs.1, Real.pi_pos], by nlinarith [hs.2]⟩
+      have : 0 ≤ s - t := by linarith [hs.1]
+      positivity
+    have hZ2 : ∫ s in Ioc sS tf, Z s = amax * (((tf - t) ^ 2 - (sS - t) ^ 2) / 2) := by
+      rw [setIntegral_congr_fun measurableSet_Ioc (fun s hs => hZ_brake s hs.1),
+        integral_mul_const, integral_Ioc_sub_self hsStf.le]
+      ring
+    have hL2 : ∫ s in Ioc sS tf, L s = 0 := by
+      rw [setIntegral_congr_fun measurableSet_Ioc (fun s hs => hL_brake s hs.1)]; simp
+    have hL1 : ‖∫ s in Ioc t sS, L s‖ ≤ amin * sS * sS := by
+      have hb : ∀ s ∈ Ioc t sS, ‖L s‖ ≤ amin * sS := fun s hs => by
+        rw [hL_dive s hs.2, norm_smul, hu, mul_one, Real.norm_eq_abs, abs_mul, abs_mul,
+          abs_of_nonneg (by linarith [hs.1] : (0:ℝ) ≤ s - t), abs_of_pos hamin]
+        have h1 : |Real.sin (δ + ω * s)| ≤ 1 := Real.abs_sin_le_one _
+        have h2 : s - t ≤ sS := by linarith [hs.2, ht.1]
+        have h3 : 0 ≤ s - t := by linarith [hs.1]
+        calc (s - t) * amin * |Real.sin (δ + ω * s)| ≤ sS * amin * 1 := by gcongr
+          _ = amin * sS := by ring
+      have := norm_setIntegral_le_of_norm_le_const (μ := volume) measure_Ioc_lt_top hb
+      rw [Real.volume_real_Ioc_of_le hts.le] at this
+      calc ‖∫ s in Ioc t sS, L s‖ ≤ amin * sS * (sS - t) := this
+        _ ≤ amin * sS * sS := by
+          apply mul_le_mul_of_nonneg_left (by linarith [ht.1]); positivity
+    rw [hsplit hZI, hZ2, hsplitV, hL2, add_zero]
+    have hmono1 : (tf - sS) ^ 2 ≤ (tf - t) ^ 2 :=
+      pow_le_pow_left₀ (by linarith) (by linarith) 2
+    have hmono2 : (sS - t) ^ 2 ≤ sS ^ 2 := pow_le_pow_left₀ (by linarith) (by linarith [ht.1]) 2
+    have hlat : tanγ * ‖∫ s in Ioc t sS, L s‖ ≤ tanγ * (amin * sS * sS) :=
+      mul_le_mul_of_nonneg_left hL1 htan
+    have k1 : (amax - g₀) * (tf - sS) ^ 2 ≤ (amax - g₀) * (tf - t) ^ 2 :=
+      mul_le_mul_of_nonneg_left hmono1 (by linarith)
+    have k2 : amax * (sS - t) ^ 2 ≤ amax * sS ^ 2 :=
+      mul_le_mul_of_nonneg_left hmono2 (by linarith)
+    have hgc : g₀ * c = g₀ * (tf - t) ^ 2 / 2 := by rw [hc]; ring
+    have hkey : tanγ * (amin * sS * sS) ≤
+        (∫ s in Ioc t sS, Z s) + amax * (((tf - t) ^ 2 - (sS - t) ^ 2) / 2) - g₀ * c := by
+      rw [hgc]
+      have e : tanγ * (amin * sS * sS) = (2 * tanγ * amin) * sS ^ 2 / 2 := by ring
+      rw [e]
+      linarith
+    have hnn : 0 ≤ tanγ * (amin * sS * sS) := by positivity
+    exact ⟨by linarith, by linarith⟩
+
+/-! ### Theorem B* -/
+
+/-- **Theorem B\* (state-constrained nonconvexity).** Constant acceleration bounds
+`0 < a_min ≤ a_max` (constant mass), gravity `-g₀ e_z` with `g₀ ≤ a_max`, gimbal `δ`, slew rate
+`ω > 0`, switch time `s* ∈ (0, tf)` with `ω s* ≤ δ`, `δ + ω s* ≤ π/2` and the smallness
+condition `hS`. Then for every state-constraint set `X` containing the glide-slope set
+(e.g. altitude only, `tanγ = 0`), the constrained landing set is **not convex**.
+The acceleration class `Acc` is arbitrary subject to: members are integrable with
+`a_min ≤ a ≤ a_max`, and the min-then-max throttle profile is admissible. -/
+theorem not_convex_constrainedLandingSet {Acc : Set (ℝ → ℝ)} {tf ω δ sS amin amax g₀ tanγ : ℝ}
+    (hsS : 0 < sS) (hsStf : sS < tf) (hω : 0 < ω) (hωs : ω * sS ≤ δ)
+    (hreg : δ + ω * sS ≤ π / 2) (hamin : 0 < amin) (h : amin ≤ amax) (hg : g₀ ≤ amax)
+    (htan : 0 ≤ tanγ)
+    (hS : (amax + 2 * tanγ * amin) * sS ^ 2 ≤ (amax - g₀) * (tf - sS) ^ 2)
+    (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf) ∧ ∀ s ∈ Icc 0 tf, amin ≤ a s ∧ a s ≤ amax)
+    (haW : aW sS amin amax ∈ Acc) {X : Set (E3 × E3)} (hX : glideSlopeSet tanγ ⊆ X) :
+    ¬ Convex ℝ (constrainedLandingSet Acc tf ω δ (-(g₀ • ez)) X) := by
+  intro hconv
+  have hδ : 0 ≤ δ := le_trans (mul_nonneg hω.le hsS.le) hωs
+  have hδπ : δ ≤ π := by linarith [Real.pi_pos, mul_nonneg hω.le hsS.le]
+  set g := -(g₀ • ez)
+  -- the two mirror witnesses
+  have mem : ∀ v : E3, ‖v‖ = 1 → ⟪v, ez⟫ = 0 →
+      landingData g (aW sS amin amax) (dW ω δ sS v) tf ∈ constrainedLandingSet Acc tf ω δ g X :=
+    fun v hv hvz => ⟨_, _, _, haW, witness_admissible hv hvz hsS hω.le hδ hδπ hωs,
+      (landingData_lands _ _ _ _).1, (landingData_lands _ _ _ _).2,
+      fun t ht => hX (witness_mem_glideSlope hv hvz hsS hsStf hω.le hδ hreg hamin h hg htan hS ht)⟩
+  have hmid := hconv (mem ex norm_ex inner_ex_ez) (mem (-ex) (by simp) (by simp))
+    (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)
+  obtain ⟨a, d, b, ha, hatt, hr, hv, -⟩ := hmid
+  -- Λ of the midpoint, computed two ways
+  have hfa : IntegrableOn (fun s => a s • d s) (Icc 0 tf) :=
+    integrableOn_smul_of_unit (hAcc a ha).1 hatt.d_meas hatt.d_unit
+  have hΛ := lambda_identity (sS := sS) hfa hr hv
+  have hΛ₁ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
+    (δ := δ) norm_ex inner_ex_ez h) (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
+  have hΛ₂ := lambda_identity (sS := sS) (integrableOn_witness (tf := tf) (sS := sS) (ω := ω)
+    (δ := δ) (by simp : ‖-ex‖ = 1) (by simp : ⟪-ex, ez⟫ = 0) h)
+    (landingData_lands g _ _ tf).1 (landingData_lands g _ _ tf).2
+  have hW := witness_W_midpoint (tf := tf) (ω := ω) (δ := δ) (sS := sS) norm_ex inner_ex_ez h
+  apply VStar_not_mem_WSet hsS hsStf hω hδ hreg hamin hAcc
+  refine ⟨a, d, b, ha, hatt, ?_⟩
+  simp only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd] at hΛ
+  rw [← hW]
+  linear_combination (norm := module) hΛ - (1 / 2 : ℝ) • hΛ₁ - (1 / 2 : ℝ) • hΛ₂
+
+/-- The switch-time conditions of Theorem B* can be met for **every** horizon `tf > 0`
+(given `0 < δ < π/2`, `ω > 0`, `g₀ < a_max`). -/
+theorem exists_switchTime {tf ω δ amin amax g₀ tanγ : ℝ} (htf : 0 < tf) (hω : 0 < ω)
+    (hδ : 0 < δ) (hδ2 : δ < π / 2) (hg : g₀ < amax) :
+    ∃ sS, 0 < sS ∧ sS < tf ∧ ω * sS ≤ δ ∧ δ + ω * sS ≤ π / 2 ∧
+      (amax + 2 * tanγ * amin) * sS ^ 2 ≤ (amax - g₀) * (tf - sS) ^ 2 := by
+  set K := amax + 2 * tanγ * amin
+  set D := amax - g₀ with hD
+  have hD0 : 0 < D := by linarith
+  set ε := D * tf / (4 * (|K| + 1)) with hεdef
+  have hK1 : 0 < |K| + 1 := by positivity
+  have hε : 0 < ε := by positivity
+  set sS := min (min (tf / 2) (δ / ω)) (min ((π / 2 - δ) / ω) ε) with hsS
+  have h1 : sS ≤ tf / 2 := (min_le_left _ _).trans (min_le_left _ _)
+  have h2 : sS ≤ δ / ω := (min_le_left _ _).trans (min_le_right _ _)
+  have h3 : sS ≤ (π / 2 - δ) / ω := (min_le_right _ _).trans (min_le_left _ _)
+  have h4 : sS ≤ ε := (min_le_right _ _).trans (min_le_right _ _)
+  have h0 : 0 < sS := lt_min (lt_min (by positivity) (by positivity))
+    (lt_min (div_pos (by linarith) hω) hε)
+  refine ⟨sS, h0, by linarith, ?_, ?_, ?_⟩
+  · have := (le_div_iff₀ hω).1 h2; linarith
+  · have := (le_div_iff₀ hω).1 h3; linarith
+  · have e1 : |K| * ε ≤ D * tf / 4 := by
+      have : |K| * ε = (D * tf / 4) * (|K| / (|K| + 1)) := by
+        rw [hεdef]; field_simp
+      rw [this]
+      exact mul_le_of_le_one_right (by positivity) ((div_le_one hK1).2 (by linarith))
+    have e2 : tf ^ 2 / 4 ≤ (tf - sS) ^ 2 := by nlinarith
+    have e3 : K * sS ^ 2 ≤ |K| * sS ^ 2 := mul_le_mul_of_nonneg_right (le_abs_self K) (sq_nonneg _)
+    have e4 : |K| * sS ^ 2 ≤ |K| * ε * sS := by
+      rw [sq, ← mul_assoc]
+      exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h4 (abs_nonneg K)) h0.le
+    have e5 : |K| * ε * sS ≤ D * tf / 4 * (tf / 2) :=
+      mul_le_mul e1 h1 h0.le (by positivity)
+    nlinarith
+
 end LcvxObstruction

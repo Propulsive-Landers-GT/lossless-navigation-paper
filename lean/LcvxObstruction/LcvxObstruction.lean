@@ -2,4 +2,6 @@ import LcvxObstruction.Abstract
 import LcvxObstruction.Sphere
 import LcvxObstruction.Model
 import LcvxObstruction.Nonconvex
+import LcvxObstruction.DiveBrake
+import LcvxObstruction.TheoremD
 import LcvxObstruction.Main
