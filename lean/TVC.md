@@ -13,6 +13,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 | `DiveBrakeMass.lean` | `LcvxObstruction` | B* core and witness for **any** acceleration class with a face maximiser |
 | `DiveBrakeMassModel.lean` | `LcvxObstruction` | B* for the explicit mass-depletion model `AccMass` (α > 0), every horizon |
 | `DiveBrakeMassVariants.lean` | `LcvxObstruction` | the same for upright landing (T′) and kinematic 6DOF (free / upright terminal attitude) |
+| `DiveBrakeQuant.lean` | `LcvxObstruction` | quantitative B* (Step 7): explicit distance from the witness midpoint to the landing set, constant bounds |
 | `FreeTimeBStar.lean` | `LcvxObstruction` | B* with free final time on a compact window (Cor. 10.4), constant bounds and mass depletion |
 | `TVC/Axioms.lean` | — | `#print axioms` for all of the above (not imported from the root) |
 
@@ -133,9 +134,26 @@ by `not_convex_constrainedLandingSet_mass`: `0 < s* < tf`, `ωs* ≤ δ`, `δ + 
 fixed-horizon sets, and that union is not convex, so (Theorem A) no single uniform convex relaxation of the free-time problem is
 lossless. (The line-search variant RR-LS is in `FreeTime.lean`; its concrete hypotheses (H2)/(H3) are not instantiated here.)
 
+## 3b. B*, quantitative (math/02 §10.3 Step 7; CLAIMS row P-B*)
+
+Constant acceleration bounds `0 < a_min ≤ a_max` (any class `Acc` whose members satisfy them), `0 < δ ≤ π/4`, `ωs* ≤ δ`,
+`0 < s* < t_f`. Notation: `ϑ = a_min sin δ/(4a_max)`, `τ = ϑs*`, `c₁ = 1/(ωτ)`, `γ_X = (5/32) a_min sin δ s*²`,
+`W_b = a_max(t_f − s*)²/2`, `Λ(θ) = r₀ + s*v₀`, `θ_m` = midpoint of the two mirror dive-then-brake witnesses (min-then-max
+throttle).
+
+| Lean | Content | Step 7 |
+|---|---|---|
+| `le_sqrt_of_forall_amgm`, `norm_lateral_le_amgm` | AM-GM replacements for Cauchy–Schwarz | (v) |
+| `brake_lateral_le` | `‖B_h‖ ≤ √(2W_b η_b)`, `η_b = ∫_{(s*,tf]}(s−s*)a(1−d_z)` | (v) |
+| `cos_sub_cos_ge` | `(y−x) sin m ≤ cos x − cos y` for `−π/2 ≤ m ≤ x ≤ y ≤ π/2` (MVT) | (iii) |
+| `dive_lateral_ge` | `γ_X − η_d/(ωτ) ≤ ‖X_h‖`, `η_d = X_z − ∫_{[0,s*]}(s*−s)a cos(δ+ωs)`, via the tilted reference `c_τ = b(τ)` | (i)–(iv) |
+| `lambda_dist_ge` | for every `θ ∈ F_tf` (unconstrained) and every `η₀ ≥ 0` with `(1+c₁)η₀ + √(2W_bη₀) ≤ γ_X`: `η₀ ≤ ‖Λ(θ) − Λ(θ_m)‖` | (vi) |
+| `norm_lambda_le`, `landingSet_dist_ge` | `η₀/(1+s*) ≤ ‖θ − θ_m‖` (max-norm on `ℝ³ × ℝ³`; math/02 uses `√(1+s*²)` with the Euclidean product norm) | distance form |
+| `exists_eta0`, `midpoint_not_mem_closure_landingSet` | an explicit `η₀ > 0` exists; `θ_m ∉ closure F_tf` | "x̄* ∉ cl F" (δ ≤ π/4) |
+
 ## 4. Not formalized (honest list)
 
 * TVC-1: the analytic reduction (`TVC1Reduction`), the witness, the certified numerics (`TVC1Certificate`), and a concrete
   trajectory-level pure-TVC landing set. Lean checks only the logical skeleton and the finite-dimensional S-procedure step.
 * FLAT with varying `ε(m)`; FLAT link to a trajectory-level `F_TVC` (taken as hypothesis in `convex_tvcSet_iff`).
-* B*: quantitative bound (Step 7), envelope version (§10.6); free final time is formalized only on compact windows (unbounded free time has no such face, Cor. 10.4 remark).
+* B*: quantitative bound for the mass-depletion class (Step 7 is formalized for constant bounds only), envelope version (§10.6); free final time is formalized only on compact windows (unbounded free time has no such face, Cor. 10.4 remark).

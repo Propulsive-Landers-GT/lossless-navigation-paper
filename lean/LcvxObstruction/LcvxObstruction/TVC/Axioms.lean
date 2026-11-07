@@ -3,6 +3,7 @@ import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
 import LcvxObstruction.TVC.Model
 import LcvxObstruction.FreeTimeBStar
+import LcvxObstruction.DiveBrakeQuant
 
 /-! `#print axioms` for the main theorems of the `TVC/` files (expected: only
 `[propext, Classical.choice, Quot.sound]`). Not imported from the root; run with
@@ -55,3 +56,10 @@ import LcvxObstruction.FreeTimeBStar
 #print axioms LcvxObstruction.TVC.ellE_eq_Wz
 #print axioms LcvxObstruction.TVC.tvc1_model_ctrl
 #print axioms LcvxObstruction.constrainedLandingSet_mass_nonempty
+
+-- B*, quantitative (`DiveBrakeQuant.lean`)
+#print axioms LcvxObstruction.brake_lateral_le
+#print axioms LcvxObstruction.dive_lateral_ge
+#print axioms LcvxObstruction.lambda_dist_ge
+#print axioms LcvxObstruction.landingSet_dist_ge
+#print axioms LcvxObstruction.midpoint_not_mem_closure_landingSet

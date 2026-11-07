@@ -11,6 +11,7 @@ reports `[propext, Classical.choice, Quot.sound]`.
 |---|---|---|
 | 1. FLAT (centre of percussion) | **DONE.** Zero-roll identity (in `Fin 3 → ℝ` and in `EuclideanSpace ℝ (Fin 3)`), the roll-rate version with the gyroscopic term, roll-rate conservation, and the boundary translation `F_TVC = F_y − shift`. | `TVC.cop_identity`, `TVC.cop_identity_E3`, `TVC.cop_identity_roll`, `TVC.euler_roll_const`, `TVC.convex_tvcSet_iff` |
 | 2. TVC-1 skeleton | **DONE.** S-procedure/Finsler in finite dimensions, separability over tilt components, the rotation-midpoint argument with the Theorem A link, and a concrete pure-TVC landing-set model with `R_π` invariance, ordinary ⊆ relaxed and the landing identity. Numerics enter only as `structure TVC1Certificate`, documented as verified by `numerics/verify-tvc/exact_cert.py` and `moment_check.py`. The analytic reduction (math/06 §4.0–4.4, Lemma 4.6′) enters as `structure TVC1Reduction`. **That reduction is not formalized.** | `TVC.sprocedure_finsler(_sum)`, `TVC.gain_le_of_certificate`, `TVC.tvc1_skeleton`, `TVC.tvc1_main`, `TVC.tvc1_model` / `TVC.tvc1_model_ctrl` (concrete sets; reduction stated for controls, gain `W_z(u) − J₀`), `TVC.tvcLandingSet_rot`, pointwise lemmas in `TVC/Pointwise.lean` |
+| (extra) quantitative B* | **DONE** for constant bounds, δ ≤ π/4 (Step 7): `η₀/(1+s*) ≤ dist(θ_m, F)`, `θ_m ∉ closure F`. | `lambda_dist_ge`, `landingSet_dist_ge`, `midpoint_not_mem_closure_landingSet` |
 | 3. B* with mass depletion α > 0 | **DONE, beyond scope:** every horizon, plus upright landing, kinematic 6DOF, and free final time on compact windows. | `no_lossless_relaxation_constrained_5dof_mass`, `…_upright_5dof_mass`, `…_6dof_mass`, `…_upright_6dof_mass`, `no_lossless_relaxation_freeTime_5dof(_mass)`, non-vacuity `constrainedLandingSet_mass_nonempty` |
 
 ## B* with α > 0: what broke, and the fix
@@ -45,14 +46,14 @@ reports `[propext, Classical.choice, Quot.sound]`.
   unlimited.
 - **FLAT.** The identity is proved as a pointwise algebraic identity with constant ε. Varying ε(m) is not covered. The FLAT
   identity is not wired into `TVC/Model.lean`, since the model uses `r̈ = u − g₀e_z` directly.
-- **B\*.** The quantitative bound (Step 7) and the envelope version (§10.6) are not formalized. `ρ₁ = ρ₂` is excluded only for
+- **B\*.** The quantitative bound (Step 7) is formalized for constant bounds only, not for the mass class. The envelope version (§10.6) is not formalized. `ρ₁ = ρ₂` is excluded only for
   convenience.
 - **Stale docs.** `lean/MODEL.md` §6 and `comms/reports/lean.md` still list "B* with α > 0" as a gap. Those files belong to
   [lean], so I did not edit them. `lean/TVC.md` §3 supersedes that bullet.
 
 ## Files (all committed, no AI attribution)
 `lean/LcvxObstruction/LcvxObstruction/TVC/{CentreOfPercussion,Certificate,Pointwise,Model,Axioms}.lean`,
-`lean/LcvxObstruction/LcvxObstruction/{DiveBrakeMass,DiveBrakeMassModel,DiveBrakeMassVariants,FreeTimeBStar}.lean`,
+`lean/LcvxObstruction/LcvxObstruction/{DiveBrakeMass,DiveBrakeMassModel,DiveBrakeMassVariants,FreeTimeBStar,DiveBrakeQuant}.lean`,
 root imports in `lean/LcvxObstruction/LcvxObstruction.lean`, `lean/TVC.md`, `comms/briefs/lean-tvc.md`, this report.
 `comms/CLAIMS.md` rows B*, P-B*, FLAT, TVC-1 were updated (status column), and BOARD milestones were posted. Both files are
 shared and contain other agents' uncommitted edits, so I left them for the orchestrator to commit.
