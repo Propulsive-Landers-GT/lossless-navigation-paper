@@ -4,4 +4,5 @@ import LcvxObstruction.Model
 import LcvxObstruction.Nonconvex
 import LcvxObstruction.DiveBrake
 import LcvxObstruction.TheoremD
+import LcvxObstruction.FreeTime
 import LcvxObstruction.Main
