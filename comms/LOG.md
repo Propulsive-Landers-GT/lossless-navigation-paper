@@ -97,3 +97,6 @@
 - 00:33 redteam-lift concurs: CSD2 refuted (with gimbal); exact ~55/56 incl. all GTPL in-air targets ⇒ certificate only.
   Note (orchestrator): only degree-2 is refuted, and only with gimbal; "no finite order exact" is not proven. The small-N order-2
   Lasserre certification is with verifier-sdp (numerics is done).
+- 00:34 proof-sdp: case-12 gap is a discretization artifact (unit-d discrete model forbids chattering); convexified-lens
+  model exact on case 12. CSD2′ OPEN. Proved Thm 2.1/2.4 (exact ⇔ PSD stress ⇔ local min in R⁴), Thm 4.1 (coplanar data ⇒
+  planar LICQ local min is certified global, w/ glide slope). Sent CSD2′ to verifier-sdp to attack.
