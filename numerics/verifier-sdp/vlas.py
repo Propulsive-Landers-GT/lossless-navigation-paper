@@ -53,6 +53,7 @@ def lasserre2(P, solver="CLARABEL", tol=1e-8, verbose=False):
         return terms
 
     cons = [y[idx[()]] == 1]
+    eq_rows = []
     Mm = mat_from(B2, lambda a, b: [(1.0, key(a, b))])
     cons.append((Mm + Mm.T) / 2 >> 0)
     for (Q, q, c, kind) in P.cons:
@@ -61,9 +62,22 @@ def lasserre2(P, solver="CLARABEL", tol=1e-8, verbose=False):
             L = mat_from(B1, lambda a, b: [(cf, key(mo, a, b)) for cf, mo in t])
             cons.append((L + L.T) / 2 >> 0)
         else:
+            eq_rows.append(t)
+    if eq_rows:
+        rr, cc, vv = [], [], []
+        r = 0
+        for t in eq_rows:
             for beta in B2:
-                cons.append(sum(cf * y[idx[key(mo, beta)]] for cf, mo in t) == 0)
-    obj = sum(cf * y[idx[mo]] for cf, mo in poly_terms(P.obj))
+                for cf, mo in t:
+                    rr.append(r); cc.append(idx[key(mo, beta)]); vv.append(cf)
+                r += 1
+        E = sp.csr_matrix((vv, (rr, cc)), shape=(r, ny))
+        cons.append(E @ y == 0)
+    ot = poly_terms(P.obj)
+    cobj = np.zeros(ny)
+    for cf, mo in ot:
+        cobj[idx[mo]] += cf
+    obj = cobj @ y
     pr = cp.Problem(cp.Minimize(obj), cons)
     if solver == "CLARABEL":
         pr.solve(solver="CLARABEL", tol_gap_abs=tol, tol_gap_rel=tol, tol_feas=tol, max_iter=500, verbose=verbose)

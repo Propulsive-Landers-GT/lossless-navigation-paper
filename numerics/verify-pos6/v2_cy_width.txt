@@ -1,0 +1,26 @@
+mu_c = 1.8916 1/s (GTPL wet, rho1=400 N, delta=15 deg)
+tf=0.5 const-min phi0-psi0=+0.000: width 9.0186e-01  bound 9.0596e-01  ratio 0.995
+tf=0.5 const-min phi0-psi0=+0.131: width 9.0215e-01  bound 9.0596e-01  ratio 0.996
+tf=0.5 const-max phi0-psi0=+0.000: width 7.3133e-01  bound 9.0596e-01  ratio 0.807
+tf=0.5 const-max phi0-psi0=+0.131: width 7.3178e-01  bound 9.0596e-01  ratio 0.808
+tf=0.5 slew      phi0-psi0=+0.000: width 8.9481e-01  bound 9.0596e-01  ratio 0.988
+tf=0.5 slew      phi0-psi0=+0.131: width 8.9510e-01  bound 9.0596e-01  ratio 0.988
+tf=0.5 primer    phi0-psi0=+0.000: width 9.0186e-01  bound 9.0596e-01  ratio 0.995
+tf=0.5 primer    phi0-psi0=+0.131: width 9.0221e-01  bound 9.0596e-01  ratio 0.996
+tf=1.0 const-min phi0-psi0=+0.000: width 3.0082e-01  bound 3.0573e-01  ratio 0.984
+tf=1.0 const-min phi0-psi0=+0.131: width 3.0106e-01  bound 3.0573e-01  ratio 0.985
+tf=1.0 const-max phi0-psi0=+0.000: width 1.5251e-01  bound 3.0573e-01  ratio 0.499
+tf=1.0 const-max phi0-psi0=+0.131: width 1.5266e-01  bound 3.0573e-01  ratio 0.499
+tf=1.0 slew      phi0-psi0=+0.000: width 2.7344e-01  bound 3.0573e-01  ratio 0.894
+tf=1.0 slew      phi0-psi0=+0.131: width 2.7365e-01  bound 3.0573e-01  ratio 0.895
+tf=1.0 primer    phi0-psi0=+0.000: width 2.3334e-01  bound 3.0573e-01  ratio 0.763
+tf=1.0 primer    phi0-psi0=+0.131: width 2.3359e-01  bound 3.0573e-01  ratio 0.764
+tf=2.0 const-min phi0-psi0=+0.000: width 4.2997e-02  bound 4.5087e-02  ratio 0.954
+tf=2.0 const-min phi0-psi0=+0.131: width 4.3042e-02  bound 4.5087e-02  ratio 0.955
+tf=2.0 const-max phi0-psi0=+0.000: width 7.2560e-03  bound 4.5087e-02  ratio 0.161
+tf=2.0 const-max phi0-psi0=+0.131: width 7.2638e-03  bound 4.5087e-02  ratio 0.161
+tf=2.0 slew      phi0-psi0=+0.000: width 2.3270e-02  bound 4.5087e-02  ratio 0.516
+tf=2.0 slew      phi0-psi0=+0.131: width 2.3293e-02  bound 4.5087e-02  ratio 0.517
+tf=2.0 primer    phi0-psi0=+0.000: width 1.1256e-02  bound 4.5087e-02  ratio 0.250
+tf=2.0 primer    phi0-psi0=+0.131: width 1.1267e-02  bound 4.5087e-02  ratio 0.250
+GTPL tf=7 s bound: rho1=400 N -> 3.518e-06 rad/s; rho1=300 N (flight-code value) -> 1.796e-05 rad/s

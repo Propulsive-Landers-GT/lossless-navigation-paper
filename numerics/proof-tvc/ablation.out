@@ -1,0 +1,12 @@
+    solver objective 8.39826e-05
+ideal: no remainders, zeta=xi=0, tau=0, kap->0, no curvature remainder, no caps rho=0.003: 8.3983e-05
+    solver objective 7.50172e-05
+ideal: no remainders, zeta=xi=0, tau=0, kap->0, no curvature remainder, no caps rho=0.03: 7.5017e-05
++ tau=0.03 taup=0.01 (remainder floors)                      rho=0.003: none
++ tau=0.03 taup=0.01 (remainder floors)                      rho=0.03: none
++ eta1=2, xi=0.05 (Delta p caps)                             rho=0.003: none
++ eta1=2, xi=0.05 (Delta p caps)                             rho=0.03: none
++ zeta=0.05                                                  rho=0.003: none
++ zeta=0.05                                                  rho=0.03: none
++ r_theta=0.2 (late torque split)                            rho=0.003: none
++ r_theta=0.2 (late torque split)                            rho=0.03: none

@@ -1,0 +1,8 @@
+B N=24 cvx40 term=False wtf=3.142: 24 checked, gaps 0, worst rel -1.00e+00, 59s
+B N=24 cvx40 term=False wtf=4.712: 24 checked, gaps 0, worst rel -1.00e+00, 57s
+B N=24 cvx40 term=False wtf=6.283: 24 checked, gaps 0, worst rel -1.00e+00, 57s
+B N=24 cvx40 term=False wtf=9.425: 24 checked, gaps 0, worst rel -1.00e+00, 49s
+B N=24 cvx15 term=False wtf=3.142: 24 checked, gaps 0, worst rel -1.00e+00, 74s
+B N=24 cvx15 term=False wtf=4.712: 24 checked, gaps 0, worst rel -1.00e+00, 64s
+B N=24 cvx15 term=False wtf=6.283: 24 checked, gaps 0, worst rel -1.00e+00, 58s
+B N=24 cvx15 term=False wtf=9.425: 24 checked, gaps 0, worst rel -1.00e+00, 38s

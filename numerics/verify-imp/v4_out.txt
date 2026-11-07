@@ -1,0 +1,2 @@
+delta=0 T=2 w=0.2: sup found gain - Cm|pi|^2 = 0.03427  vs B = 0.06370  -> holds: True
+delta=10 T=2 w=0.1: sup found gain - Cm|pi|^2 = 0.44168  vs B = 0.52809  -> holds: True

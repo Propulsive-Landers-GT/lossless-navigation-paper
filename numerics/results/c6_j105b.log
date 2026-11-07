@@ -1,0 +1,3 @@
+N=5 a1=11.0 nv=27 order=2: #moments=2650
+equalities: 617 rows, rank 557
+Clarabel failed; trying SCS

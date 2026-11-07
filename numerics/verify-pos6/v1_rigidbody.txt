@@ -1,0 +1,10 @@
+max residuals over 2000 random states (any roll rate):
+  L0          7.60e-14
+  L1          5.68e-13
+  cop         8.88e-15
+  cop_noroll  2.87e+00
+  (cop_noroll is the size of the roll correction that the w3=0 identity omits)
+  |b x bdot - R w_perp| = 8.326672684688674e-17
+corner angle, Cardan (GTPL: tx=sin th cos ph, ty=sin ph, tz=cos th cos ph): 21.091 deg = arccos(cos^2 15deg) = 21.091
+corner angle, tangent parametrisation: 20.754 deg
+inscribed cone of the Cardan box: 15.000 deg

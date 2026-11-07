@@ -183,6 +183,10 @@ body equals conv{(x,‖x‖²) : x ∈ L} on its lower side.
   **Π_4 ≠ Π_3 (numerically): Conjecture CSD2 is FALSE in general.** Rigorous status: the SDP is a valid
   lower bound and the 4D realization is exact. The only uncertified step is the 3D global optimum
   (an NLP). A small-N analog plus an order-2 Lasserre bound would make it a theorem.
+  [numerics] c5_smallN.py: at N=3 and N=4 there is no gap (rank-4 optima occur, but they are degenerate
+  faces and the NLP matches to 1e-8). At N=5, a1=11 there are gaps of 5–15% (e.g. j=105: SDP 0.3241 vs
+  3D NLP 0.3813). A correlatively-sparse order-2 lower bound (c6_lasserre_sparse.py) is running to
+  certify them.
 
 **Verdict 3 (final):** uniform lifts are NOT lossless (rank-2 spurious points at θ_M; consistent with A).
 The degree-2 min-landing-error lift C-SD2 is exactly "the 5DOF problem on a higher-dimensional sphere":

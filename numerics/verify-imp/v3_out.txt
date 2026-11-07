@@ -1,0 +1,16 @@
+--- table rows (demo vehicle m0=100, rho=1200/2500) ---
+d=   0 T=2 w=0.2 al=0.0: t1/T=0.29282 gain_w=0.07758 B=0.06370 (E4=0.01507) M=1.388e-02 Cm=0.04575 r_S=0.450 |p_w|=0.936 S0=True S1=True S2=True
+d=   0 T=4 w=0.1 al=0.0: t1/T=0.29282 gain_w=0.15517 B=0.12741 (E4=0.03014) M=2.776e-02 Cm=0.04575 r_S=1.799 |p_w|=3.742 S0=True S1=True S2=True
+d=   5 T=2 w=0.15 al=0.0: t1/T=0.27352 gain_w=0.25050 B=0.23476 (E4=0.01569) M=1.574e-02 Cm=0.04555 r_S=0.480 |p_w|=1.789 S0=True S1=True S2=True
+d=  10 T=2 w=0.1 al=0.0: t1/T=0.26237 gain_w=0.53864 B=0.52809 (E4=0.01425) M=1.055e-02 Cm=0.04556 r_S=0.393 |p_w|=2.595 S0=True S1=True S2=True
+d=  10 T=4 w=0.05 al=0.0: t1/T=0.26237 gain_w=1.07728 B=1.05617 (E4=0.02850) M=2.110e-02 Cm=0.04556 r_S=1.572 |p_w|=10.380 S0=True S1=True S2=True
+d=   5 T=2 w=0.15 al=0.000566: t1/T=0.27417 gain_w=0.25217 B=0.25240 (E4=0.01612) M=-2.223e-04 Cm=0.04579 r_S=nan |p_w|=1.801 S0=True S1=True S2=True
+--- fixed thrust rho1=rho2=1200, delta=0 ---
+d=   0 T=2 w=0.2 al=0.0: t1/T=0.29282 gain_w=0.07758 B=0.06370 (E4=0.01507) M=1.388e-02 Cm=0.04167 r_S=0.471 |p_w|=0.936 S0=True S1=True S2=True
+d=   0 T=4 w=0.1 al=0.0: t1/T=0.29282 gain_w=0.15517 B=0.12741 (E4=0.03014) M=2.776e-02 Cm=0.04167 r_S=1.885 |p_w|=3.742 S0=True S1=True S2=True
+--- certified Omega ranges at T=2 ---
+delta=0: certified Omega in (0, 0.55]  (any certified: 55 grid points)
+delta=5: certified Omega in (0, 0.46]  (any certified: 46 grid points)
+delta=10: certified Omega in (0, 0.00]  (any certified: 32 grid points)
+delta=15: certified Omega in (0, 0.00]  (any certified: 0 grid points)
+delta=20: certified Omega in (0, 0.00]  (any certified: 0 grid points)

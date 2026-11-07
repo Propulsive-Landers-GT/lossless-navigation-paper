@@ -1,0 +1,16 @@
+=== Thm Q table (rho1=400, m0=80, alpha=5.66e-4, delta=15deg) ===
+w=0.3 tf=5 regime=True G=19.77 Mz=12.10 gap=7.67 GammaF=7.61
+w=0.5 tf=5 regime=True G=14.89 Mz=1.06 gap=13.83 GammaF=13.72
+w=0.3 tf=8.5 regime=True G=24.99 Mz=0.91 gap=24.08 GammaF=23.75
+
+=== Thm Q_T gamma_T (rho1=400, m0=80) ===
+tf=6 w=0.3 d=15 al=0: regime(d+w tf/2<=pi/2)=True gammaT=3.241 Mz=21.96  (alpha=0 analytic lb=0.0573)  m0-al*rho1*tf=80.0 m0-al*1000*tf=80.0
+tf=6 w=0.3 d=15 al=0.000566: regime(d+w tf/2<=pi/2)=True gammaT=3.268 Mz=22.15  (alpha=0 analytic lb=0.0578)  m0-al*rho1*tf=78.6 m0-al*1000*tf=76.6
+tf=6 w=0.3 d=15 al=0.03: regime(d+w tf/2<=pi/2)=True gammaT=3.854 Mz=59.78  (alpha=0 analytic lb=0.1560)  m0-al*rho1*tf=8.0 m0-al*1000*tf=-100.0
+tf=10 w=0.3 d=15 al=0.000566: regime(d+w tf/2<=pi/2)=False gammaT=10.774 Mz=24.45  (alpha=0 analytic lb=0.2806)  m0-al*rho1*tf=77.7 m0-al*1000*tf=74.3
+
+=== Thm B* constants (GTPL, math/02 Rem 10.2) ===
+5 {'s': np.float64(0.65449847), 'S1': np.True_, 'S2': np.True_, 'S3': np.True_, 'theta': np.float64(0.02496633), 'gX': np.float64(0.08661708), 'c1': np.float64(152.99478566), 'c1_alt': np.float64(152.99478566), 'Wb': np.float64(122.34925199), 'eta0': 2.771e-05, 'dist': np.float64(2.319e-05)}
+7 {'s': np.float64(0.65449847), 'S1': np.True_, 'S2': np.True_, 'S3': np.True_, 'theta': np.float64(0.0246001), 'gX': np.float64(0.08661708), 'c1': np.float64(155.27246389), 'c1_alt': np.float64(155.27246389), 'Wb': np.float64(264.77149368), 'eta0': 1.349e-05, 'dist': np.float64(1.128e-05)}
+12 {'s': np.float64(0.65449847), 'S1': np.True_, 'S2': np.True_, 'S3': np.True_, 'theta': np.float64(0.02368453), 'gX': np.float64(0.08661708), 'c1': np.float64(161.27482802), 'c1_alt': np.float64(161.27482802), 'Wb': np.float64(879.14165787), 'eta0': 4.2e-06, 'dist': np.float64(3.51e-06)}
+c1 without s* would be 101.62558997228422  vs correct 155.27246389170418

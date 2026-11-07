@@ -1,0 +1,12 @@
+[B0] SDP 7.74092424 best3D 7.74092424 gap -5.15e-14 rank(G)=4 ev4..6=4.2e-03,7.1e-10,5.1e-10 rate duals [1.3e+01 5.9e+00 7.5e-10 7.5e-10 5.4e+00 1.0e+01] rate-saturated=False
+[B1] SDP 6.52626413 best3D 6.52626413 gap +2.65e-12 rank(G)=4 ev4..6=3.7e-03,2.0e-10,1.3e-10 rate duals [1.2e+01 5.6e+00 2.5e-10 2.5e-10 5.0e+00 9.6e+00] rate-saturated=False
+[B2] SDP 8.87958827 best3D 8.87958827 gap +9.87e-12 rank(G)=4 ev4..6=4.4e-03,6.4e-10,3.5e-10 rate duals [1.4e+01 6.6e+00 1.4e-09 1.4e-09 6.2e+00 1.2e+01] rate-saturated=False
+[B3] SDP 8.88432787 best3D 8.88432787 gap +2.14e-13 rank(G)=4 ev4..6=4.4e-03,1.2e-09,8.5e-10 rate duals [1.4e+01 6.5e+00 5.4e-11 5.4e-11 6.0e+00 1.2e+01] rate-saturated=False
+[B4] SDP 5.93442927 best3D 5.93442927 gap +2.51e-11 rank(G)=4 ev4..6=4.7e-03,3.1e-10,2.4e-10 rate duals [1.1e+01 5.2e+00 2.2e-09 2.2e-09 4.7e+00 9.2e+00] rate-saturated=False
+[B5] SDP 6.43430542 best3D 6.43430542 gap +7.46e-12 rank(G)=4 ev4..6=4.3e-03,3.0e-10,2.0e-10 rate duals [1.2e+01 5.6e+00 7.5e-10 7.5e-10 5.1e+00 9.9e+00] rate-saturated=False
+[B6] SDP 4.79991643 best3D 4.79991643 gap -8.77e-12 rank(G)=4 ev4..6=3.3e-03,8.5e-11,7.2e-11 rate duals [9.9e+00 4.6e+00 9.0e-11 9.0e-11 4.1e+00 8.0e+00] rate-saturated=False
+[B7] SDP 7.42603009 best3D 7.42603009 gap +6.48e-12 rank(G)=4 ev4..6=4.1e-03,6.6e-10,5.4e-10 rate duals [1.3e+01 6.0e+00 7.1e-10 7.1e-10 5.5e+00 1.1e+01] rate-saturated=False
+[B8] SDP 6.84170840 best3D 6.84170840 gap +3.71e-12 rank(G)=4 ev4..6=4.2e-03,3.8e-10,2.3e-10 rate duals [1.2e+01 5.8e+00 5.9e-10 5.9e-10 5.3e+00 1.0e+01] rate-saturated=False
+[B9] SDP 8.65300034 best3D 8.65300034 gap +6.80e-12 rank(G)=4 ev4..6=4.5e-03,7.5e-10,6.3e-10 rate duals [1.3e+01 6.4e+00 1.4e-09 1.4e-09 6.1e+00 1.2e+01] rate-saturated=False
+[B10] SDP 5.25304492 best3D 5.25304492 gap +3.29e-13 rank(G)=4 ev4..6=4.1e-03,3.8e-10,2.6e-10 rate duals [1.1e+01 5.1e+00 2.7e-10 2.7e-10 4.8e+00 9.5e+00] rate-saturated=False
+[B11] SDP 10.00603464 best3D 10.00603464 gap +1.62e-11 rank(G)=4 ev4..6=4.7e-03,5.3e-10,3.4e-10 rate duals [1.4e+01 6.9e+00 2.8e-09 2.8e-09 6.5e+00 1.3e+01] rate-saturated=False

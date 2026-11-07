@@ -1,0 +1,5 @@
+delta=2: certified Omega from 0.0010 to 0.520; M at Omega=1e-3: 1.923e-05
+delta=5: certified Omega from 0.0040 to 0.460; M at Omega=1e-3: -1.177e-04
+delta=7: certified Omega from 0.0094 to 0.420; M at Omega=1e-3: -5.943e-04
+delta=10: certified Omega from 0.0378 to 0.340; M at Omega=1e-3: -2.696e-03
+delta=12: certified Omega from 0.0700 to 0.270; M at Omega=1e-3: -5.693e-03

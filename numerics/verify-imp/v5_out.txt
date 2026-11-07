@@ -1,0 +1,14 @@
+=== P0-F (delta<pi/4, T<pi/2-2delta), sigma in [T/2,T], split at -tau ===
+d=0 T=0.6: (A-B)(T/2)=-1.70e-02 (A-B)(T)=+8.56e-03 sigma_c/T=0.6680 betaL=-0.4008 betaR=-0.0024 V=1.064616e-02/1.064615e-02 <p,I> L=-0.07926 R=-0.02121 separated=True
+d=5 T=0.6: (A-B)(T/2)=-1.30e-02 (A-B)(T)=+7.97e-03 sigma_c/T=0.6719 betaL=-0.4031 betaR=-0.0012 V=2.458582e-02/2.458581e-02 <p,I> L=-0.14707 R=-0.09056 separated=True
+d=15 T=0.6: (A-B)(T/2)=-1.38e-02 (A-B)(T)=+6.09e-03 sigma_c/T=0.6880 betaL=-0.4128 betaR=+0.0062 V=5.207422e-02/5.207421e-02 <p,I> L=-0.27336 R=-0.22206 separated=True
+d=15 T=0.9: (A-B)(T/2)=-4.33e-02 (A-B)(T)=+1.69e-02 sigma_c/T=0.6955 betaL=-0.6259 betaR=+0.0038 V=1.294956e-01/1.294956e-01 <p,I> L=-0.45710 R=-0.35275 separated=True
+d=30 T=0.4: (A-B)(T/2)=-5.21e-03 (A-B)(T)=+8.46e-04 sigma_c/T=0.7384 betaL=-0.2953 betaR=+0.0242 V=3.963450e-02/3.963450e-02 <p,I> L=-0.27372 R=-0.25608 separated=True
+d=40 T=0.1: (A-B)(T/2)=-9.68e-05 (A-B)(T)=+5.17e-06 sigma_c/T=0.8075 betaL=-0.0807 betaR=+0.0162 V=3.223849e-03/3.223849e-03 <p,I> L=-0.08000 R=-0.07917 separated=True
+min f(h)/h^3 on (0, pi/4] = 0.2813581640587135
+
+=== P0-X (0<delta<pi/4, T<min(2delta, pi/2-2delta)) ===
+d=15 T=0.1: x*=0.7101 sigma_c/T=0.6466 betaL=+0.0006 betaR=+0.0647 <p,I> L=0.01721 R=0.02013 sep=True  TW_proof=2.157  TW_at_sigma_c=1.837
+d=15 T=0.3: x*=0.7096 sigma_c/T=0.6367 betaL=+0.0074 betaR=+0.1910 <p,I> L=0.05178 R=0.07576 sep=True  TW_proof=2.380  TW_at_sigma_c=1.987
+d=15 T=0.5: x*=0.7091 sigma_c/T=0.6237 betaL=+0.0253 betaR=+0.3118 <p,I> L=0.09215 R=0.15056 sep=True  TW_proof=2.779  TW_at_sigma_c=2.262
+d=30 T=0.3: x*=0.7096 sigma_c/T=0.5379 betaL=+0.0181 betaR=+0.1614 <p,I> L=0.12041 R=0.13261 sep=True  TW_proof=2.964  TW_at_sigma_c=2.071

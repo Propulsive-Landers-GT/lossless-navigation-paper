@@ -1,0 +1,3 @@
+gamma_X=0.08662 c1=147.58 Wb=251.66 eta0=1.419e-05 V*=250.65425
+min |dLambda| over families: (np.float64(0.011935022488588251), ('brake', np.float64(0.0015), np.float64(0.0002831159584957277), np.float64(0.011931664056499092)))  >= eta0? True
+exact brake canceller: eps=1.453e-03 rad, eta=2.655e-04 m, |W_h|=5.55e-17, ratio eta/eta0=18.7, ok=True

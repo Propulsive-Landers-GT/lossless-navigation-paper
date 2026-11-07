@@ -149,6 +149,9 @@ class Gim:
         ff = ca.Function("f", [x, p], [self.mu[0] * ca.sumsqr(dv - tv) + self.mu[1] * ca.sumsqr(dr - tr)])
         if not hasattr(self, "_nlps"):
             self._nlps = {}
+        lam = ca.SX.sym("lam", len(g))
+        Lag = f + ca.dot(lam, ca.vertcat(*g))
+        self._hess = ca.Function("H", [x, p, lam], [ca.hessian(Lag, x)[0]])
         self._nlps[key] = (S, gf, ff, np.array(lb, float), np.array(ub, float), nv)
         return self._nlps[key]
 
@@ -157,9 +160,18 @@ class Gim:
         p = np.r_[wv, wr, lam]
         r = S(x0=x0, p=p, lbg=lb, ubg=ub)
         x = np.array(r["x"]).ravel()
+        self._last_lam = np.array(r["lam_g"]).ravel()
         gv = np.array(gf(x)).ravel()
         viol = float(max(0.0, np.max(lb - gv), np.max(gv - ub)))
         return x, float(ff(x, p)), viol
+
+    def stress_min(self, x, wv, wr):
+        """re-solve from x (dim 3) to get multipliers; lambda_min of the Hessian of the Lagrangian
+        (= stress matrix Q (x) I_3 for these isotropic problems) and the min over the tangent-free space."""
+        x, f, v = self.solve(x, wv, wr)
+        H = np.array(self._hess(x, np.r_[wv, wr, 0.0], self._last_lam))
+        ev = np.linalg.eigvalsh((H + H.T) / 2)
+        return float(ev[0]), float(ev[-1]), f, v
 
     def random_start(self, rng, wv=None):
         N = self.N

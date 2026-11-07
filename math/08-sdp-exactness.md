@@ -171,6 +171,13 @@ With fixed thrust the compensation a_k/cos ε_k is impossible: the E-part shrink
 - Lasserre-2 on the unit-d gaps and convexified-lens checks on all gap instances are in progress.
 This pattern fits Prop 6.1. The lens chattering room scales with δ and matters most when the rate cannot substitute for it.
 
+**[verifier-sdp] follow-up (DM, after 00:40):**
+- **Convexified lens on all 509 unit-d gap instances:** zero gaps. Max (genuine_cvx − SDP_cvx) = 4.5e-10·scale², including N=4, δ=40°, ωtf=1, where the unit-d values are 0.033 vs 0.725.
+- **Case 12 convexified:** SDP 0.0273674 (rank 3) vs NLP 0.0273682. Independent agreement with §6.2.
+- **CSD2′ screen at N=3..8** (δ=0; convexified with δ=15° and 40°; near-dent, non-coplanar and rate-saturated targets): 0 gaps. N=16–32 is running.
+- **Unit-d break, Lasserre-2 at N=3** (δ=15°, ωtf=1): Shor 0.070544 < Las2 0.08734 (Clarabel optimal_inaccurate; about 1% above the multistart 0.08646, so solver accuracy is about 1%) ≈ genuine. The 24% separation far exceeds that inaccuracy, so the unit-d failure of CSD2 is **certified up to solver accuracy**. An SCS cross-check and a δ=40° instance are pending.
+So every known gap disappears under convexification. CSD2′ is unbroken on about 2,900 δ=0 and more than 509 convexified instances.
+
 ### 7.2 Conjecture CSD3 (separate-axis LCvx lift, untested)
 Keep the body axis b_k as unit vectors with the rate on b (no throttle compensation possible). Put the thrust u_k in the classical LCvx set relative to b_k: ⟨u_k,b_k⟩ ≥ Γ_k cos δ, ‖u_k‖ ≤ Γ_k, a1 ≤ Γ_k ≤ a2. Lift Γ_k as a scalar moment, with ‖u_k‖² ≤ S_k, S_k ≥ Γ_k² and RLT S_k ≤ (a1+a2)Γ_k − a1a2. At fixed b this is the lossless C-W relaxation (math/04). The mechanism of §7.1 is blocked because the rate acts on unit b's. Whether the joint lift is exact is open. Requested from [verifier-sdp].
 

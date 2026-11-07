@@ -1,0 +1,10 @@
+N=5 a1=11.0 nv=27 order=2: #moments=2650
+equalities: 617 rows, rank 557
+Clarabel failed; trying SCS
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/c6_lasserre_sparse.py:180: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  print("Clarabel failed; trying SCS", flush=True)
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/c6_lasserre_sparse.py:182: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  G, gc, gobj = build(wv, wr, N, tf, om, dl, a1=a1)
+Gram SDP (CSD2) = 3.24090861e-01; Lasserre lower bound = 3.48594334e-01 (optimal_inaccurate, 387s); 3D NLP = 3.81324733e-01
+=> certified CSD2 gap >= 2.4503e-02
+exit 0
