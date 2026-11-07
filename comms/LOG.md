@@ -69,3 +69,8 @@
   Shor lift tight but lossy (1e-4..1e-3 rel) — certificate only; Theorem A-opt (value-lossless on F ⇒ V=V** on F) + Prop T.
 - adversary-6dof: FLAT identity confirmed (needs ε const, ω3≡0); translate requires prescribed terminal attitude; rigorous
   pure-TVC nonconvexity for tilt-free terminal. OPEN: upright terminal + altitude (the GTPL case) → launched proof-tvc.
+- 23:32 (system clock; earlier agent timestamps partly invented). adversary report final (math/01): A & B* SURVIVE with scope
+  (continuous time, affine data entry, detection-sound lossless); gap under r_z≥0 ≈1e-5 m rigorous / ≈1 cm heuristic ⇒ a
+  PRACTICALLY significant impossibility for GTPL is NOT established. Open loopholes: exact-only-on-F for min-fuel; rotating
+  frame (⇔ Lemma S). Coning closes the dent at long horizons with tilt cap (small-angle evidence). Discretized LCvx not exact
+  either ⇒ statements in continuous time. Machine load ~180/10 cores ⇒ compute budget imposed.
