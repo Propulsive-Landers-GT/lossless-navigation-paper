@@ -1,0 +1,13 @@
+# Brief: PROOF-TVC (research mathematician agent)
+
+Workspace: /Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research. Read comms/PROTOCOL.md, comms/AGENTS.md, comms/BOARD.md (esp. [adversary-6dof] posts 00:40, 01:30, 01:45), comms/CLAIMS.md (rows B6*, FLAT, B*), comms/threads/6dof-models.md, math/adversary-6dof-report.md, math/02-impossibility-rigorous.md (B*, quantitative version), math/redteam-reform.md §3.4, math/04-positive-results.md (C-6, C-Y), context/vehicle.md, math/checks/flat_output_tvc.py.
+
+OPEN PROBLEM (most important remaining case for the real vehicle): prove (or refute) that for the PURE-TVC rigid body — gimbal deflection μ (|μ| ≤ μ_max, cone or ±15° box) the only pitch/yaw torque source (J_t ω̇ = −L b × T_⊥), roll held by RCS (ω3 ≡ 0), thrust T ∈ [ρ1, ρ2] with ρ1 < m g (GTPL ρ1/(m0 g) ≈ 0.51) — the soft-landing feasible set F_tf of initial (r0, v0) (b(0)=e_z, ω(0)=0 given), terminal r(tf)=0, v(tf)=0, b(tf)=e_z, ω(tf)=0, altitude r_z ≥ 0 (glide slope optional), is NONCONVEX ⇒ "no uniform state-linear lossless convexification" for the real GTPL 6DOF problem. Also free final time if possible (line-search lemma RR-LS).
+
+Known tools:
+- Center-of-percussion identity y = r + ε b, ε = J_t/(mL): ÿ = (T cos μ/m − ε‖ω‖²) b − g exactly (ε const, ω3≡0). With b, ω prescribed at both ends F_TVC is a translate of F_y.
+- [adversary-6dof] planar comparison ω_p := ‖ω‖ (sign-chattering gimbal at full |μ| admissible w/o gimbal-rate limit): f_p=f, φ_p = geodesic length ≥ polar angle, ω(tf) preserved. Proves nonconvexity with terminal tilt FREE, breaks under b(tf)=e_z.
+- B* for M1 used gimbal (ωs* ≤ δ), gap ~1e-5 m for GTPL. In flat coordinates effective gimbal 0 ⇒ need different witness.
+Ideas: (1) two-phase comparison / unfolding onto a meridian preserving speed profile and b(tf)=e_z; exposed-face functional favoring tilt early, verticality late; equality forces planarity. (2) exposed face with bang-bang planar tilt-out/tilt-back maximizers + symmetry/strictness (midpoint of u and −u unreachable). (3) quantitative ball-bound inequality. Handle varying ε(m) (terms 2ε̇ḃ + ε̈b) or restrict to constant mass with remark.
+
+Deliverables: numerics in numerics/proof-tvc/ (own venv; import numerics/adversary-6dof sim, don't edit). Coordinate with [adversary-6dof] (DM ad0b31b3fb8ad5d4e). Write math/06-pure-tvc.md (theorem, rigorous proof, regime, GTPL constants, gap size), register claims in CLAIMS.md, post DISCOVERY/BREAK on BOARD, message main with verdict, append "pure TVC" Lean-ready lemma list to math/03-lean-blueprint.md, write comms/reports/proof-tvc.md. Return verdict and what remains open.

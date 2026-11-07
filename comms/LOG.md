@@ -60,3 +60,12 @@
 - ~01:45. redteam-reform DONE (math/redteam-reform.md): all LCvx-slack routes FAIL; chord-rate & orbitope lifts FAIL; B has no
   algebraic hole (scope hole fixed by B* w/ small s*); RR-LS line-search lemma written; pure-TVC exact class is measure-zero
   (b̈ = k(b−d) unstable, √k≈2–3 s⁻¹); ρ1=0: velocity set convex (theorem), full F OPEN (→ possibility-rho0).
+- ~02:00. proof DONE (math/02 v2, math/03): B* rigorous w/ altitude+glide slope, all tf, upright landing, free tf (bounded),
+  kinematic/indep-torque 6DOF — but gap ~1e-5 m for GTPL (uses gimbal; thin dent is physical). Thm D w/ state-linear class.
+  Open: Lemma S (soft per-instance), pure TVC, ρ1=0.
+- ORCHESTRATOR VERIFIED: lean Main.lean builds; no_lossless_relaxation_5dof (+ optimisation form, box class) depend only on
+  [propext, Classical.choice, Quot.sound]. Scope: M1, b(0)=e_z, no altitude constraint, fixed tf, δ+ωtf ≤ π/2.
+- redteam-lift: F-W applies (b stays genuine); α=0 relaxation exact given b; theorem must state affine data entry; degree-2
+  Shor lift tight but lossy (1e-4..1e-3 rel) — certificate only; Theorem A-opt (value-lossless on F ⇒ V=V** on F) + Prop T.
+- adversary-6dof: FLAT identity confirmed (needs ε const, ω3≡0); translate requires prescribed terminal attitude; rigorous
+  pure-TVC nonconvexity for tilt-free terminal. OPEN: upright terminal + altitude (the GTPL case) → launched proof-tvc.
