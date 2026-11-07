@@ -22,9 +22,11 @@ def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0
     cE = np.cos(phib0(ss))                       # early cos lower bound
     A1 = a1*np.cos(de)/(1+cE); B1 = eps/cE**2
     # absorption constant of the Delta p contributions (speed and tilt) into Pen_E (coefficient cE)
-    c_abs_v = B1*(1+1/kap)*beta**2*dpmax*ss**2/2/cE
-    c_abs_t = A1*(1+1/kap)*beta**2*dpmax*ss**4/2/cE      # tilt: phi <= int v, (int beta Y)^2 <= s^2 beta^2 Y(s)^2-type bound
-    c_abs = c_abs_v + c_abs_t
+    base_abs = (B1*beta**2*dpmax*ss**2/2 + A1*beta**2*dpmax*ss**4/2)/cE   # tilt: phi <= int v, (int beta Y)^2 <= s^2 beta^2 Y(s)^2
+    if kap is None or (1+1/kap)*base_abs > 0.5:      # choose the splitting so that the absorbed fraction is <= 0.5
+        kap = max(kap or 0.0, 1/(0.5/base_abs - 1)) if base_abs < 0.5 else None
+    assert kap is not None, "Delta-p absorption impossible (s* too large)"
+    c_abs = (1+1/kap)*base_abs
     assert c_abs < 0.9, c_abs
     s = np.linspace(0, ss, M)
     E0 = np.trapezoid((ss-s)*(A1*(1+kap)*(K1*s**2/2)**2 + B1*(1+kap)*K1**2*s**2), s)*1.001

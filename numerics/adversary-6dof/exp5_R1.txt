@@ -1,0 +1,3 @@
+CasADi - 2026-11-07 01:47:01 WARNING("solver:nlp_g failed: NaN detected for output g, at (row 364, col 0).") [.../casadi/core/oracle_function.cpp:411]
+CasADi - 2026-11-07 01:47:01 WARNING("solver:nlp_g failed: NaN detected for output g, at (row 392, col 0).") [.../casadi/core/oracle_function.cpp:411]
+CasADi - 2026-11-07 01:47:01 WARNING("solver:nlp_g failed: NaN detected for output g, at (row 1386, col 0).") [.../casadi/core/oracle_function.cpp:411]

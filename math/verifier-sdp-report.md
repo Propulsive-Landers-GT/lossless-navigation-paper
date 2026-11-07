@@ -170,6 +170,13 @@ conv(lens) = ball ∩ {⟨d, b_k⟩ ≥ cos δ} ∩ {⟨d, b_{k+1}⟩ ≥ cos δ
   - Every d=b optimum with a rank > 3 SDP has λ_min ≈ 0 (±6e-11): PSD and singular, matching the non-unique optimal faces.
   - In 34/34 cases: gap ⇔ stress not PSD.
 
+- **[proof-csd2p] index identity** (math/09; their `index_check.py` run on my N=16–48 banks: 346 instances, d=b/cvx15/cvx40). Results in `results/idx_full.jsonl`.
+  - neg(Q) = 0 in all 346.
+  - Identity neg Q = neg Z − p₀: 178/178 under their filters (C_yw nonsingular, primer plane defined, asym < 1e-6). Sturm bound: 150/150.
+  - No instance with k ≥ p₀+2.
+  - After filtering, all 35 residual k = p₀+1 instances have neg Z = k−1.
+  - Caveat: 12 δ=0 optima have k=2, p₀=1, neg Z = 2 yet neg Q = 0 and no gap. All 12 have a non-symmetric C_yw (asym 1e-3 to 1), so the symmetric-C_yw hypothesis is not automatic at genuine optima.
+
 **Verdict (b): CSD2′ is UNBROKEN.** The δ=0 lift and the convexified-lens lift are numerically exact on everything I could construct. The unit-d failure is a discretization artifact: the lift realizes in-interval chattering through E⊥ tilts of d, which the unit-d discrete model forbids and continuous time allows.
 
 ## 6. Variable throttle
@@ -216,9 +223,9 @@ The natural lift has z = (a_k, U_k = a_k b_k) and constraints ‖U_k‖² = a_k�
 - So **path (glide-slope) constraints can break the exactness of the degree-2 lift even at δ=0**. This is an extension beyond CSD2/CSD2′ as stated, which cover only the unconstrained problem. Not certified (N=12 is too large for my Lasserre-2).
 
 ### 7.3 Min-fuel with variable throttle (`run_ext.py fuel`; a ∈ [0.5, 1], N ∈ {6, 8, 12}, ωtf ∈ {0.5, 1.5, 3})
-- **Linear landing** (first-moment readout = q): the SDP is **feasible at the unreachable midpoint M** (and returns fuel 0.5 = min), so it is **lossy in feasibility**. This is exactly Theorem A/D for a state-linear relaxation.
-- **Lifted landing** (second-moment landing error ≤ ε = 1e-8): the SDP is correctly **infeasible** at M on 12 of 13 unreachable targets.
-- At reachable targets: 41 instances; 37 agree with the genuine min-fuel to ≤ 1e-3; 4 show gaps up to 0.66%, with high SDP rank (7–23).
+- **Linear landing** (first-moment readout = q): the SDP is **feasible at the unreachable midpoint M**, returning fuel 0.5 = the minimum in 9/9 cases (Clarabel status optimal_inaccurate, because the face is degenerate). Feasibility is guaranteed analytically: the 50/50 mixture of the two lifted extreme arcs is a feasible lifted point. So this relaxation is **lossy in feasibility**, exactly Theorem A/D for a state-linear relaxation.
+- **Lifted landing** (second-moment landing error ≤ ε = 1e-8): the SDP is correctly **infeasible** at 16 of 18 unreachable-candidate targets. The 2 exceptions are both at N=12, ωtf=0.5 (M_a1 and M+up). There the dent is tiny (dist² ~1e-6 of scale), so the ε = 1e-8 tolerance makes the test inconclusive.
+- At reachable targets: 52 instances; 47 agree with the genuine min-fuel to ≤ 1e-3; 5 show gaps up to 0.66%, with high SDP rank (7–23).
 - Consistent with §6: the throttle lift is lossy. These small min-fuel gaps are the same mechanism, damped because min-fuel solutions sit mostly at a = a1.
 - **No exact min-fuel formulation results.**
 

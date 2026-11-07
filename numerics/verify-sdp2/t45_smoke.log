@@ -1,0 +1,6 @@
+[1] cvx40 T=1 N=5 down mix wtf=3.50 gap=-6.3e-07 res=6e-09 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[(0.0049, -0.0, 1)] t=0s
+[2] d00 T=1 N=7 mass short wtf=0.90 gap=+3.1e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=0s
+[3] cvx25 T=1 N=7 const short wtf=2.76 gap=-4.4e-11 res=1e-08 crit=+0.98 negQ=0 negZ=0(0:6) p0=0 k=2 others=[] t=0s
+[4] cvx25 T=1 N=9 mass rand wtf=3.50 gap=-2.3e-10 res=1e-08 crit=+0.97 negQ=0 negZ=0(0:4) p0=0 k=0 others=[] t=0s
+[5] cvx15 T=1 N=9 const over wtf=5.00 gap=-1.6e-12 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=2 others=[] t=1s
+[6] cvx25 T=0 N=9 mass rand wtf=1.00 gap=-1.3e-11 res=3e-07 crit=+0.94 negQ=0 negZ=0(0:2) p0=0 k=3 others=[] t=1s

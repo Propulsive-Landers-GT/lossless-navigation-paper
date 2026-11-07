@@ -1,0 +1,250 @@
+[1] cvx40 T=0 N=7 ramp over wtf=0.70 gap=+5.8e-13 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=0s
+[2] d00 T=0 N=9 mass mix wtf=2.00 gap=-9.9e-09 res=1e-10 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[] t=0s
+[3] cvx40 T=0 N=7 down rand wtf=2.00 gap=-2.8e-11 res=1e-09 crit=-0.00 negQ=0 negZ=1(0:3) p0=1 k=2 others=[] t=0s
+[4] d00 T=0 N=9 mass short wtf=1.33 gap=-3.9e-13 res=7e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=0s
+[5] cvx40 T=0 N=7 ramp short wtf=1.16 gap=-1.7e-10 res=5e-09 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=0s
+[6] cvx15 T=0 N=9 ramp mix wtf=2.00 gap=-9.0e-14 res=5e-08 crit=-0.00 negQ=0 negZ=2(0:3) p0=2 k=2 others=[(4.902, -0.0, 1)] t=1s
+[7] cvx15 T=0 N=9 mass rand wtf=1.00 gap=+1.2e-10 res=3e-07 crit=+0.41 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=1s
+[8] cvx15 T=0 N=9 down over wtf=2.00 gap=+2.0e-12 res=5e-07 crit=+0.69 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=2s
+[9] cvx40 T=0 N=9 ramp short wtf=0.68 gap=-1.5e-10 res=1e-09 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=2s
+[10] cvx15 T=0 N=9 mass short wtf=0.99 gap=-2.9e-10 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:4) p0=0 k=2 others=[] t=2s
+[11] cvx40 T=0 N=5 down short wtf=0.84 gap=-2.4e-11 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=2 others=[] t=2s
+[12] d00 T=0 N=7 ramp mix wtf=1.00 gap=-9.7e-09 res=4e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0192, -0.0, 1)] t=2s
+[13] cvx15 T=0 N=5 mass short wtf=0.62 gap=-8.3e-12 res=9e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=2s
+[14] d00 T=0 N=9 const over wtf=1.50 gap=+1.2e-11 res=1e-09 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=2s
+[15] cvx25 T=0 N=5 ramp over wtf=0.70 gap=+1.1e-10 res=4e-08 crit=+0.51 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=2s
+[16] cvx15 T=0 N=9 mass mix wtf=1.50 gap=-9.1e-08 res=2e-08 crit=-0.00 negQ=0 negZ=2(0:3) p0=2 k=2 others=[(0.027, -0.0, 1)] t=3s
+[17] cvx25 T=0 N=7 down mix wtf=0.70 gap=-7.5e-09 res=1e-10 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.2976, -0.0, 1)] t=3s
+[18] cvx40 T=0 N=9 const rand wtf=2.00 gap=-8.9e-11 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:8) p0=0 k=0 others=[] t=3s
+[19] d00 T=0 N=9 const short wtf=1.04 gap=-2.5e-11 res=1e-10 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=4s
+[20] d00 T=0 N=9 mass rand wtf=1.50 gap=-8.4e-13 res=9e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=4s
+[21] cvx25 T=0 N=5 ramp rand wtf=1.00 gap=-3.8e-10 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=4s
+[22] cvx25 T=0 N=9 mass rand wtf=0.70 gap=-2.2e-10 res=3e-09 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=4s
+[23] cvx15 T=0 N=9 const short wtf=0.59 gap=-3.2e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=4s
+[24] cvx15 T=0 N=7 mass rand wtf=2.00 gap=-5.1e-10 res=9e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=2 others=[] t=4s
+[25] cvx40 T=0 N=7 ramp short wtf=1.13 gap=-2.2e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=4s
+[26] cvx40 T=0 N=9 down short wtf=1.25 gap=-2.5e-11 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=4 others=[] t=4s
+[27] cvx40 T=0 N=9 down over wtf=1.00 gap=-6.1e-13 res=5e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=5s
+[28] cvx40 T=0 N=5 ramp over wtf=2.00 gap=-6.9e-11 res=2e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=5s
+[29] d00 T=0 N=5 mass short wtf=0.66 gap=+1.9e-10 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=5s
+[30] cvx15 T=0 N=5 mass mix wtf=0.70 gap=-3.5e-08 res=7e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=3 others=[(0.0003, -0.0, 1)] t=5s
+[31] cvx40 T=0 N=7 const mix wtf=2.00 gap=-3.8e-06 res=5e-12 crit=-0.00 negQ=0 negZ=2(0:2) p0=2 k=2 others=[(0.0008, -0.0, 1)] t=5s
+[32] d00 T=0 N=9 down short wtf=1.46 gap=+9.2e-11 res=4e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=6s
+[33] cvx25 T=0 N=5 mass over wtf=1.50 gap=+7.1e-11 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=6s
+[34] cvx15 T=0 N=5 down over wtf=1.00 gap=+2.9e-12 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=6s
+[35] cvx40 T=0 N=9 down short wtf=1.45 gap=-1.4e-10 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=6s
+[36] cvx40 T=0 N=7 const short wtf=1.15 gap=-2.0e-11 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=6s
+[37] cvx15 T=0 N=9 mass over wtf=2.00 gap=-8.2e-13 res=5e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=6s
+[38] cvx15 T=0 N=5 down short wtf=1.43 gap=+1.8e-11 res=4e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=2 others=[] t=6s
+[39] cvx25 T=0 N=7 ramp over wtf=1.50 gap=-1.8e-13 res=9e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=3 others=[] t=6s
+[40] cvx25 T=0 N=5 down short wtf=0.52 gap=+2.7e-12 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=6s
+[41] cvx15 T=0 N=5 down short wtf=1.23 gap=-6.3e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=1 others=[] t=6s
+[42] cvx15 T=0 N=5 ramp mix wtf=0.70 gap=-1.2e-07 res=2e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=3 others=[] t=7s
+[43] cvx15 T=0 N=7 down mix wtf=0.70 gap=-1.7e-08 res=3e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.1034, -0.0, 1)] t=8s
+[44] d00 T=0 N=9 const short wtf=1.15 gap=+3.3e-11 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=8s
+[45] cvx40 T=0 N=9 down short wtf=1.26 gap=-3.6e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=8s
+[46] cvx15 T=0 N=5 ramp short wtf=1.45 gap=-4.0e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:4) p0=0 k=1 others=[] t=8s
+[47] d00 T=0 N=5 ramp over wtf=2.00 gap=+1.6e-11 res=4e-08 crit=+0.61 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=8s
+[48] d00 T=0 N=9 ramp rand wtf=1.00 gap=+9.5e-13 res=1e-07 crit=+0.33 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=8s
+[49] d00 T=0 N=5 const short wtf=0.91 gap=-9.2e-13 res=7e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=8s
+[50] cvx15 T=0 N=9 down over wtf=0.70 gap=+1.1e-11 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=9s
+[51] cvx15 T=0 N=9 const mix wtf=1.00 gap=-3.4e-11 res=5e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.5511, -0.0, 1)] t=9s
+[52] cvx40 T=0 N=9 const short wtf=0.81 gap=-1.4e-09 res=4e-09 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=9s
+[53] cvx15 T=0 N=5 mass short wtf=0.57 gap=+6.3e-11 res=5e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=9s
+[54] cvx40 T=0 N=9 mass mix wtf=1.00 gap=-3.1e-10 res=5e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0282, -0.0, 1)] t=11s
+[55] cvx15 T=0 N=7 ramp short wtf=1.35 gap=-1.0e-13 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=3 others=[] t=11s
+[56] cvx40 T=0 N=7 down short wtf=1.33 gap=-4.7e-12 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=11s
+[57] cvx40 T=0 N=7 down mix wtf=1.50 gap=+7.0e-02 res=2e+02 crit=+1.00 negQ=0 negZ=0(0:14) p0=1 k=0 others=[] t=11s
+[58] cvx25 T=0 N=7 const short wtf=1.45 gap=-8.0e-12 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=11s
+[59] d00 T=0 N=7 const short wtf=1.08 gap=+4.0e-12 res=5e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=2 others=[] t=12s
+[60] cvx15 T=0 N=9 ramp mix wtf=1.00 gap=+5.3e-01 res=7e+02 crit=+1.00 negQ=0 negZ=0(0:16) p0=1 k=0 others=[] t=12s
+[61] cvx25 T=0 N=9 mass short wtf=0.59 gap=-2.0e-11 res=4e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=12s
+[62] cvx40 T=0 N=7 const mix wtf=1.00 gap=+3.9e-01 res=7e-01 crit=+0.35 negQ=0 negZ=0(0:14) p0=1 k=0 others=[] t=12s
+[63] cvx40 T=0 N=5 ramp over wtf=1.50 gap=-1.8e-13 res=2e-08 crit=+0.99 negQ=0 negZ=0(0:5) p0=0 k=1 others=[] t=12s
+[64] cvx15 T=0 N=9 mass mix wtf=1.50 gap=-9.3e-07 res=9e-09 crit=-0.00 negQ=0 negZ=2(0:2) p0=2 k=2 others=[(0.0006, -0.0, 1)] t=13s
+[65] cvx15 T=0 N=9 const short wtf=0.84 gap=-1.1e-10 res=1e-06 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=13s
+[66] cvx25 T=0 N=5 mass rand wtf=1.50 gap=-4.8e-11 res=4e-11 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=13s
+[67] cvx25 T=0 N=9 ramp over wtf=2.00 gap=-6.9e-11 res=1e-08 crit=+0.95 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=13s
+[68] cvx15 T=0 N=9 ramp over wtf=0.70 gap=+1.3e-11 res=1e-06 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=13s
+[69] cvx25 T=0 N=7 const over wtf=2.00 gap=-7.9e-12 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:2) p0=1 k=2 others=[] t=13s
+[70] cvx25 T=0 N=5 down short wtf=1.16 gap=-2.0e-12 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=1 others=[] t=13s
+[71] d00 T=0 N=7 mass over wtf=1.00 gap=+2.1e-10 res=1e-08 crit=+0.21 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=13s
+[72] cvx40 T=0 N=7 const mix wtf=2.00 gap=+1.0e-01 res=1e+02 crit=+1.00 negQ=0 negZ=0(0:14) p0=1 k=0 others=[] t=14s
+[73] cvx15 T=0 N=9 const short wtf=0.96 gap=-3.2e-11 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=14s
+[74] cvx25 T=0 N=5 down short wtf=1.34 gap=-1.4e-11 res=1e-07 crit=+0.98 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=14s
+[75] cvx15 T=0 N=5 down short wtf=1.03 gap=+9.9e-12 res=9e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=0 others=[] t=14s
+[76] d00 T=0 N=5 down over wtf=2.00 gap=+4.1e-12 res=5e-09 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=14s
+[77] cvx40 T=0 N=9 ramp short wtf=1.20 gap=-3.1e-09 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=1 others=[] t=14s
+[78] cvx40 T=0 N=5 down rand wtf=1.00 gap=+1.4e-12 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[(18.4184, -0.0, 1)] t=14s
+[79] cvx40 T=0 N=7 down short wtf=1.03 gap=-1.1e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=1 others=[] t=14s
+[80] cvx25 T=0 N=5 down short wtf=0.89 gap=+5.1e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=14s
+[81] cvx25 T=0 N=5 const over wtf=1.00 gap=-2.2e-11 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=14s
+[82] d00 T=0 N=5 down short wtf=1.41 gap=+1.2e-11 res=5e-10 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=14s
+[83] cvx25 T=0 N=9 ramp over wtf=1.00 gap=-2.7e-13 res=2e-08 crit=+0.97 negQ=0 negZ=0(0:2) p0=0 k=2 others=[] t=15s
+[84] d00 T=0 N=7 const mix wtf=1.50 gap=-7.8e-07 res=5e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[] t=15s
+[85] cvx40 T=0 N=5 ramp short wtf=0.74 gap=+1.7e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=0 others=[] t=15s
+[86] d00 T=0 N=5 ramp short wtf=1.11 gap=+1.1e-11 res=3e-09 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=3 others=[] t=15s
+[87] d00 T=0 N=9 ramp short wtf=0.85 gap=+7.1e-11 res=1e-10 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=15s
+[88] d00 T=0 N=7 const over wtf=1.00 gap=+3.4e-11 res=7e-07 crit=+0.60 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=15s
+[89] cvx15 T=0 N=7 const rand wtf=2.00 gap=-1.8e-10 res=5e-08 crit=+0.93 negQ=0 negZ=0(0:4) p0=0 k=1 others=[] t=15s
+[90] cvx15 T=0 N=7 const rand wtf=2.00 gap=-1.7e-10 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:6) p0=0 k=1 others=[] t=15s
+[91] cvx15 T=0 N=7 down rand wtf=1.50 gap=-1.3e-09 res=6e-08 crit=+0.99 negQ=0 negZ=0(0:3) p0=0 k=1 others=[] t=15s
+[92] d00 T=0 N=9 down short wtf=1.22 gap=+7.2e-11 res=4e-09 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=2 others=[] t=15s
+[93] cvx40 T=0 N=9 mass short wtf=1.30 gap=-2.8e-11 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=15s
+[94] cvx40 T=0 N=9 mass mix wtf=1.50 gap=+1.2e-01 res=2e+03 crit=+0.61 negQ=0 negZ=0(0:18) p0=2 k=0 others=[] t=15s
+[95] cvx40 T=0 N=5 ramp rand wtf=1.50 gap=-1.0e-10 res=3e-09 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=15s
+[96] cvx25 T=0 N=7 down over wtf=1.00 gap=-5.8e-13 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=15s
+[97] cvx15 T=0 N=9 mass short wtf=1.20 gap=-3.5e-12 res=5e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=16s
+[98] cvx40 T=0 N=7 ramp short wtf=1.17 gap=-5.6e-10 res=8e-09 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=16s
+[99] cvx25 T=0 N=5 ramp rand wtf=1.50 gap=-1.8e-11 res=5e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=16s
+[100] cvx15 T=0 N=9 const short wtf=0.66 gap=-1.7e-11 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=16s
+[101] cvx15 T=0 N=9 const short wtf=0.85 gap=-9.7e-13 res=9e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=16s
+[102] cvx40 T=0 N=5 down over wtf=0.70 gap=-1.8e-10 res=4e-09 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=16s
+[103] cvx15 T=0 N=5 down short wtf=0.67 gap=-2.2e-11 res=4e-07 crit=+1.00 negQ=0 negZ=0(0:4) p0=0 k=0 others=[] t=16s
+[104] cvx25 T=0 N=5 ramp rand wtf=1.50 gap=-2.4e-12 res=9e-08 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=16s
+[105] cvx40 T=0 N=9 const over wtf=0.70 gap=-1.2e-09 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=17s
+[106] cvx15 T=0 N=5 const over wtf=2.00 gap=+5.8e-13 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=17s
+[107] cvx25 T=0 N=9 ramp rand wtf=2.00 gap=-1.7e-10 res=5e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=18s
+[108] d00 T=0 N=9 ramp short wtf=1.33 gap=+8.8e-13 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=2 others=[] t=18s
+[109] cvx15 T=0 N=7 down over wtf=2.00 gap=-7.5e-11 res=4e-11 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=18s
+[110] d00 T=0 N=7 mass short wtf=1.32 gap=+9.5e-14 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=18s
+[111] d00 T=0 N=5 ramp short wtf=1.39 gap=+9.4e-12 res=5e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=1 others=[] t=18s
+[112] cvx25 T=0 N=5 mass short wtf=0.69 gap=+7.4e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=0 others=[] t=18s
+[113] d00 T=0 N=7 down over wtf=1.50 gap=+7.1e-11 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=18s
+[114] cvx15 T=0 N=7 down short wtf=0.72 gap=-1.7e-11 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=18s
+[115] cvx15 T=0 N=9 mass over wtf=1.00 gap=-1.5e-12 res=3e-07 crit=+0.13 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=18s
+[116] cvx15 T=0 N=9 const short wtf=0.74 gap=-7.3e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=19s
+[117] cvx40 T=0 N=7 const over wtf=2.00 gap=-4.9e-11 res=4e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=19s
+[118] d00 T=0 N=9 mass short wtf=0.93 gap=+1.7e-10 res=3e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=19s
+[119] cvx25 T=0 N=7 mass rand wtf=1.50 gap=-6.8e-10 res=4e-08 crit=+0.26 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=19s
+[120] cvx25 T=0 N=5 mass short wtf=0.62 gap=-5.0e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=0 others=[] t=19s
+[121] cvx15 T=0 N=5 down rand wtf=1.50 gap=-8.7e-12 res=1e-09 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[(10.7561, -0.0, 1)] t=19s
+[122] d00 T=0 N=7 const over wtf=1.50 gap=-5.2e-13 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=19s
+[123] d00 T=0 N=7 down mix wtf=2.00 gap=-2.8e-09 res=1e-12 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=19s
+[124] cvx25 T=0 N=7 down rand wtf=2.00 gap=-6.4e-09 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=19s
+[125] cvx40 T=0 N=9 const over wtf=1.50 gap=-5.1e-11 res=3e-07 crit=+0.93 negQ=0 negZ=0(0:2) p0=0 k=4 others=[] t=20s
+[126] cvx15 T=0 N=5 mass rand wtf=0.70 gap=+2.9e-10 res=2e-07 crit=+0.10 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=20s
+[127] cvx25 T=0 N=5 down over wtf=1.00 gap=+3.1e-12 res=5e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=20s
+[128] cvx25 T=0 N=5 down short wtf=1.05 gap=-7.5e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=1 others=[] t=20s
+[129] cvx15 T=0 N=9 ramp short wtf=0.73 gap=-5.5e-11 res=5e-08 crit=+1.00 negQ=0 negZ=0(0:8) p0=0 k=1 others=[] t=20s
+[130] cvx25 T=0 N=9 down short wtf=0.58 gap=-6.3e-12 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=20s
+[131] cvx25 T=0 N=9 down short wtf=0.54 gap=-8.6e-12 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=20s
+[132] d00 T=0 N=5 const mix wtf=0.70 gap=-2.6e-08 res=4e-12 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=3 others=[] t=20s
+[133] cvx25 T=0 N=5 down over wtf=0.70 gap=-1.9e-11 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=20s
+[134] d00 T=0 N=5 const mix wtf=2.00 gap=-5.1e-10 res=4e-09 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=21s
+[135] d00 T=0 N=7 ramp short wtf=0.70 gap=+4.8e-13 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=21s
+[136] d00 T=0 N=9 ramp over wtf=1.00 gap=+3.4e-11 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=21s
+[137] d00 T=0 N=5 ramp short wtf=1.39 gap=+4.0e-13 res=4e-09 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=1 others=[] t=21s
+[138] cvx25 T=0 N=7 mass short wtf=0.53 gap=-3.4e-12 res=9e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=21s
+[139] cvx15 T=0 N=7 mass short wtf=1.06 gap=-1.6e-11 res=5e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=21s
+[140] cvx25 T=0 N=5 mass mix wtf=1.50 gap=-7.1e-11 res=3e-12 crit=-0.00 negQ=0 negZ=2(0:2) p0=2 k=2 others=[(2.3056, -0.0, 1)] t=21s
+[141] cvx25 T=0 N=7 ramp rand wtf=0.70 gap=+2.6e-10 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[(4.6431, -0.0, 1)] t=21s
+[142] cvx40 T=0 N=5 ramp short wtf=0.84 gap=-1.3e-10 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=21s
+[143] cvx25 T=0 N=9 const over wtf=2.00 gap=-2.9e-13 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=21s
+[144] cvx25 T=0 N=7 ramp short wtf=1.37 gap=+2.0e-12 res=3e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=21s
+[145] d00 T=0 N=7 down mix wtf=1.50 gap=-3.6e-10 res=3e-13 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=22s
+[146] d00 T=0 N=5 down short wtf=1.06 gap=+1.3e-11 res=5e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=22s
+[147] cvx15 T=0 N=7 const mix wtf=1.00 gap=-7.5e-12 res=2e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.2887, -0.0, 1)] t=22s
+[148] cvx25 T=0 N=5 down over wtf=2.00 gap=-2.9e-12 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=23s
+[149] cvx25 T=0 N=7 down rand wtf=1.50 gap=-3.4e-12 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=23s
+[150] d00 T=0 N=9 down short wtf=0.85 gap=+5.7e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=23s
+[151] cvx15 T=0 N=7 const over wtf=2.00 gap=-1.1e-12 res=3e-07 crit=-0.00 negQ=0 negZ=1(0:2) p0=1 k=3 others=[] t=23s
+[152] cvx40 T=0 N=7 down over wtf=1.00 gap=-5.5e-11 res=5e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=3 others=[] t=23s
+[153] d00 T=0 N=5 ramp mix wtf=1.50 gap=-3.3e-10 res=8e-10 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=1 others=[] t=23s
+[154] cvx15 T=0 N=7 mass short wtf=0.84 gap=-2.7e-12 res=8e-08 crit=+0.98 negQ=0 negZ=0(0:7) p0=0 k=1 others=[] t=23s
+[155] cvx25 T=0 N=9 mass over wtf=1.50 gap=-2.7e-11 res=7e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=23s
+[156] cvx40 T=0 N=9 const short wtf=1.05 gap=-4.1e-11 res=9e-09 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=23s
+[157] d00 T=0 N=5 mass short wtf=1.15 gap=-4.6e-12 res=2e-09 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=24s
+[158] cvx25 T=0 N=9 ramp over wtf=0.70 gap=+6.4e-13 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=24s
+[159] cvx40 T=0 N=9 const rand wtf=1.50 gap=-1.4e-10 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=2 others=[] t=24s
+[160] cvx40 T=0 N=5 mass over wtf=1.50 gap=-1.7e-11 res=2e-08 crit=+0.00 negQ=0 negZ=1(0:2) p0=1 k=0 others=[] t=24s
+[161] cvx25 T=0 N=9 ramp rand wtf=1.50 gap=-2.3e-11 res=3e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.5118, -0.0, 1)] t=25s
+[162] cvx15 T=0 N=5 ramp short wtf=0.62 gap=-3.7e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=25s
+[163] d00 T=0 N=9 mass short wtf=0.70 gap=-3.1e-12 res=3e-10 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=25s
+[164] cvx40 T=0 N=5 const short wtf=0.57 gap=-5.2e-11 res=4e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=25s
+[165] cvx25 T=0 N=9 const rand wtf=0.70 gap=-2.4e-11 res=3e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=25s
+[166] cvx40 T=0 N=7 mass over wtf=1.00 gap=-1.6e-10 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=25s
+[167] cvx40 T=0 N=9 mass short wtf=0.54 gap=+1.1e-11 res=7e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=25s
+[168] cvx25 T=0 N=7 down short wtf=0.86 gap=-2.6e-11 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=26s
+[169] d00 T=0 N=5 mass over wtf=1.50 gap=+5.9e-11 res=2e-08 crit=-0.00 negQ=0 negZ=1(0:0) p0=1 k=1 others=[] t=26s
+[170] cvx25 T=0 N=7 ramp over wtf=0.70 gap=-7.3e-13 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=26s
+[171] cvx15 T=0 N=7 const short wtf=0.71 gap=-1.6e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=1 others=[] t=26s
+[172] cvx40 T=0 N=9 down short wtf=1.28 gap=-3.2e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=26s
+[173] cvx40 T=0 N=5 const mix wtf=2.00 gap=-6.2e-08 res=2e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0162, -0.0, 1)] t=26s
+[174] cvx15 T=0 N=7 ramp over wtf=0.70 gap=+1.5e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=26s
+[175] cvx40 T=0 N=9 ramp mix wtf=2.00 gap=+3.7e-01 res=8e-01 crit=+0.41 negQ=0 negZ=0(0:18) p0=1 k=0 others=[] t=26s
+[176] cvx40 T=0 N=5 down short wtf=1.44 gap=+5.6e-12 res=3e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=26s
+[177] cvx25 T=0 N=9 mass rand wtf=1.50 gap=-1.8e-12 res=1e-09 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=27s
+[178] cvx15 T=0 N=7 mass short wtf=0.57 gap=-5.9e-12 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=27s
+[179] cvx25 T=0 N=9 const mix wtf=2.00 gap=-3.6e-11 res=4e-09 crit=-0.00 negQ=0 negZ=2(0:2) p0=2 k=2 others=[(0.2501, -0.0, 1)] t=30s
+[180] d00 T=0 N=5 ramp rand wtf=0.70 gap=-6.3e-10 res=3e-08 crit=+0.19 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=30s
+[181] cvx15 T=0 N=5 down short wtf=0.59 gap=+3.0e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=30s
+[182] cvx40 T=0 N=9 down short wtf=0.76 gap=-2.0e-11 res=7e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=30s
+[183] cvx15 T=0 N=5 down short wtf=0.77 gap=+9.8e-12 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=30s
+[184] d00 T=0 N=9 down mix wtf=2.00 gap=-6.5e-09 res=1e-10 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[] t=31s
+[185] cvx15 T=0 N=7 ramp rand wtf=1.00 gap=-1.4e-10 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:6) p0=0 k=0 others=[] t=31s
+[186] cvx25 T=0 N=9 const over wtf=2.00 gap=-1.1e-10 res=1e-09 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=0 others=[] t=31s
+[187] cvx15 T=0 N=7 down over wtf=2.00 gap=-3.9e-12 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=31s
+[188] cvx15 T=0 N=5 const mix wtf=0.70 gap=-4.9e-07 res=2e-09 crit=-0.00 negQ=0 negZ=1(0:3) p0=2 k=2 others=[] t=31s
+[189] d00 T=0 N=9 ramp short wtf=0.56 gap=+6.9e-11 res=3e-10 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=2 others=[] t=31s
+[190] cvx25 T=0 N=7 mass short wtf=1.38 gap=-2.4e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=31s
+[191] cvx15 T=0 N=5 down over wtf=1.00 gap=+2.7e-12 res=4e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=31s
+[192] cvx15 T=0 N=7 const rand wtf=2.00 gap=+8.3e-12 res=3e-11 crit=-0.00 negQ=0 negZ=1(0:2) p0=1 k=2 others=[] t=31s
+[193] cvx15 T=0 N=5 mass rand wtf=0.70 gap=-9.7e-13 res=2e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=31s
+[194] cvx25 T=0 N=7 const short wtf=0.79 gap=-3.9e-12 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=0 others=[] t=32s
+[195] cvx40 T=0 N=5 ramp mix wtf=1.00 gap=+7.9e-01 res=9e+03 crit=+1.00 negQ=0 negZ=0(0:10) p0=1 k=0 others=[] t=32s
+[196] cvx25 T=0 N=5 const short wtf=1.17 gap=-1.4e-10 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=32s
+[197] cvx15 T=0 N=7 const short wtf=1.27 gap=-1.1e-11 res=7e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=1 others=[] t=32s
+[198] cvx40 T=0 N=5 mass rand wtf=0.70 gap=-2.0e-10 res=2e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=32s
+[199] d00 T=0 N=7 mass short wtf=1.45 gap=-1.6e-11 res=2e-09 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=1 others=[] t=32s
+[200] d00 T=0 N=9 const short wtf=0.71 gap=+1.7e-11 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=32s
+[201] d00 T=0 N=9 down over wtf=1.00 gap=+3.4e-13 res=6e-07 crit=+0.34 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=32s
+[202] cvx25 T=0 N=9 mass rand wtf=0.70 gap=+1.1e-13 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=32s
+[203] cvx15 T=0 N=7 const over wtf=1.00 gap=-2.1e-13 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=32s
+[204] cvx25 T=0 N=7 ramp mix wtf=2.00 gap=-1.5e-09 res=6e-14 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.6425, -0.0, 1)] t=33s
+[205] d00 T=0 N=5 ramp over wtf=0.70 gap=+3.9e-12 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=33s
+[206] cvx40 T=0 N=9 ramp over wtf=1.50 gap=-1.2e-10 res=2e-08 crit=+0.95 negQ=0 negZ=0(0:2) p0=0 k=3 others=[] t=33s
+[207] cvx15 T=0 N=5 mass short wtf=0.72 gap=+2.0e-11 res=1e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=33s
+[208] cvx25 T=0 N=5 mass rand wtf=1.50 gap=-2.7e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=2 others=[] t=33s
+[209] d00 T=0 N=7 down over wtf=0.70 gap=-1.4e-12 res=4e-07 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=33s
+[210] cvx40 T=0 N=7 mass short wtf=0.55 gap=+8.6e-12 res=4e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=33s
+[211] cvx25 T=0 N=7 ramp short wtf=0.70 gap=+1.2e-11 res=3e-07 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=0 others=[] t=33s
+[212] cvx40 T=0 N=7 ramp rand wtf=2.00 gap=-3.7e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=33s
+[213] d00 T=0 N=5 mass short wtf=0.74 gap=+1.1e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=33s
+[214] cvx40 T=0 N=5 ramp short wtf=1.48 gap=-4.8e-12 res=5e-08 crit=+0.99 negQ=0 negZ=0(0:5) p0=0 k=1 others=[] t=33s
+[215] cvx25 T=0 N=5 ramp mix wtf=1.50 gap=-2.6e-09 res=3e-14 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.304, -0.0, 1)] t=34s
+[216] d00 T=0 N=7 down mix wtf=2.00 gap=-2.6e-06 res=7e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[] t=34s
+[217] d00 T=0 N=5 const mix wtf=1.50 gap=-2.2e-10 res=6e-11 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=34s
+[218] cvx15 T=0 N=9 ramp short wtf=0.53 gap=-6.9e-10 res=3e-08 crit=+1.00 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=34s
+[219] cvx15 T=0 N=9 ramp over wtf=2.00 gap=-1.7e-13 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=34s
+[220] cvx15 T=0 N=5 down over wtf=1.00 gap=-8.2e-13 res=4e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=34s
+[221] cvx40 T=0 N=7 down over wtf=1.50 gap=-6.8e-11 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:2) p0=0 k=0 others=[] t=35s
+[222] cvx40 T=0 N=9 ramp short wtf=1.35 gap=-2.1e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=35s
+[223] cvx25 T=0 N=5 mass rand wtf=0.70 gap=-6.6e-10 res=3e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=2 others=[] t=35s
+[224] cvx40 T=0 N=5 down short wtf=1.34 gap=-6.5e-12 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=35s
+[225] cvx25 T=0 N=9 down rand wtf=2.00 gap=-2.9e-10 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=1 others=[] t=35s
+[226] cvx40 T=0 N=7 const short wtf=1.15 gap=-7.9e-12 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:6) p0=0 k=0 others=[] t=35s
+[227] cvx15 T=0 N=9 const over wtf=2.00 gap=-2.5e-11 res=7e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=35s
+[228] cvx40 T=0 N=7 mass over wtf=1.00 gap=-8.8e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:3) p0=0 k=0 others=[] t=35s
+[229] cvx40 T=0 N=9 const short wtf=0.67 gap=-1.0e-10 res=6e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=36s
+[230] d00 T=0 N=9 ramp short wtf=1.12 gap=+9.1e-11 res=6e-13 crit=+1.00 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=36s
+[231] cvx15 T=0 N=9 mass mix wtf=1.50 gap=-1.0e-09 res=1e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0217, -0.0, 1)] t=37s
+[232] d00 T=0 N=5 down mix wtf=1.00 gap=-8.2e-05 res=4e-08 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=37s
+[233] cvx25 T=0 N=5 down short wtf=1.11 gap=+2.2e-09 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=37s
+[234] d00 T=0 N=5 mass mix wtf=0.70 gap=-4.3e-09 res=2e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0902, -0.0, 1)] t=37s
+[235] cvx15 T=0 N=7 const rand wtf=1.00 gap=-6.0e-11 res=1e-07 crit=-0.00 negQ=0 negZ=1(0:2) p0=1 k=2 others=[] t=37s
+[236] cvx40 T=0 N=7 mass rand wtf=1.50 gap=-9.1e-11 res=1e-08 crit=-0.00 negQ=0 negZ=1(0:2) p0=1 k=2 others=[] t=38s
+[237] cvx15 T=0 N=9 const rand wtf=1.00 gap=-6.2e-12 res=9e-08 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=38s
+[238] cvx25 T=0 N=7 down mix wtf=1.50 gap=+9.2e-02 res=7e+02 crit=+1.00 negQ=0 negZ=0(0:14) p0=1 k=0 others=[] t=38s
+[239] cvx40 T=0 N=9 ramp rand wtf=2.00 gap=-3.6e-13 res=8e-09 crit=-0.00 negQ=0 negZ=1(0:4) p0=1 k=1 others=[] t=38s
+[240] cvx15 T=0 N=9 mass mix wtf=0.70 gap=-3.9e-10 res=4e-08 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.4641, -0.0, 1)] t=39s
+[241] cvx25 T=0 N=9 const short wtf=0.62 gap=-1.2e-11 res=8e-08 crit=+1.00 negQ=0 negZ=0(0:9) p0=0 k=0 others=[] t=39s
+[242] cvx25 T=0 N=5 ramp over wtf=1.00 gap=-2.9e-11 res=1e-07 crit=+0.98 negQ=0 negZ=0(0:1) p0=0 k=0 others=[] t=39s
+[243] d00 T=0 N=9 ramp mix wtf=1.00 gap=-3.3e-09 res=3e-10 crit=-0.00 negQ=0 negZ=2(0:0) p0=2 k=2 others=[] t=39s
+[244] cvx40 T=0 N=5 const short wtf=1.37 gap=+2.3e-11 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=40s
+[245] d00 T=0 N=5 mass over wtf=0.70 gap=-1.5e-07 res=2e-07 crit=+0.51 negQ=0 negZ=0(0:0) p0=0 k=0 others=[] t=40s
+[246] cvx40 T=0 N=5 mass short wtf=0.68 gap=+1.1e-11 res=2e-08 crit=+1.00 negQ=0 negZ=0(0:5) p0=0 k=0 others=[] t=40s
+[247] cvx25 T=0 N=9 down short wtf=0.69 gap=+1.4e-10 res=2e-07 crit=+1.00 negQ=0 negZ=0(0:4) p0=0 k=0 others=[] t=40s
+[248] cvx25 T=0 N=7 const over wtf=0.70 gap=-2.1e-13 res=2e-07 crit=-0.00 negQ=0 negZ=1(0:1) p0=1 k=1 others=[] t=40s
+[249] cvx15 T=0 N=5 const mix wtf=0.70 gap=-2.4e-08 res=6e-09 crit=-0.00 negQ=0 negZ=2(0:1) p0=2 k=2 others=[(0.0605, -0.0, 1)] t=40s
+[250] cvx25 T=0 N=7 down short wtf=0.83 gap=+1.5e-12 res=1e-07 crit=+1.00 negQ=0 negZ=0(0:7) p0=0 k=0 others=[] t=40s

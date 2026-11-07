@@ -1,0 +1,5 @@
+N=24 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=1 (zero 0) p0=1 negQ=0 identity=OK Cyw eig=[-1.  0.] asym=0e+00 res=6e-14 rel=-1e-09
+N=32 d=b wtf=3.60 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=3e-16 res=3e-14 rel=-2e-09
+N=24 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=3e-14 res=2e-13 rel=-7e-08
+N=16 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.056] asym=2e-17 res=1e-13 rel=+1e-08
+N=24 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=1 (zero 9) p0=1 negQ=0 identity=OK Cyw eig=[-1.  0.] asym=7e-13 res=2e-11 rel=-3e-06

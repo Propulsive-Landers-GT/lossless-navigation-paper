@@ -1,0 +1,17 @@
+case 0 set A N=16: SDP=2.307067 gen=2.307067 relgap=-1.3e-07 res=3e-07 negQ=0 minQ=-9.3e-18 crit=-0.00 k=2 negZ=2 zeroZ=7 p0=2 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 1 set A N=16: SDP=1056.815 gen=1056.814 relgap=-1.4e-07 res=3e-05 negQ=0 minQ=+2.9e-04 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-9.9e-02 T5hyps=True
+case 2 set A N=16: SDP=34.74825 gen=34.74825 relgap=-1.9e-08 res=1e-05 negQ=0 minQ=-2.4e-16 crit=-0.00 k=2 negZ=2 zeroZ=2 p0=2 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 3 set A N=16: SDP=812.5552 gen=812.5551 relgap=-8.9e-08 res=5e-05 negQ=0 minQ=+8.4e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-7.6e-02 T5hyps=True
+case 4 set A N=16: SDP=53.25457 gen=53.25457 relgap=-4.4e-08 res=5e-07 negQ=0 minQ=+0.0e+00 crit=+0.98 k=4 negZ=0 zeroZ=15 p0=0 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 5 set A N=24: SDP=48.68243 gen=48.68243 relgap=-4.4e-08 res=2e-06 negQ=0 minQ=+5.8e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-3.5e-02 T5hyps=True
+case 6 set A N=24: SDP=19.2833 gen=19.2833 relgap=-7.9e-09 res=4e-07 negQ=0 minQ=-7.8e-16 crit=-0.00 k=2 negZ=1 zeroZ=14 p0=1 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 7 set A N=24: SDP=239.6899 gen=239.6899 relgap=-2.7e-08 res=2e-05 negQ=0 minQ=+2.4e-04 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-5.9e-02 T5hyps=True
+case 8 set A N=24: SDP=57.83102 gen=57.83102 relgap=-2.1e-09 res=2e-06 negQ=0 minQ=-2.2e-16 crit=-0.00 k=2 negZ=2 zeroZ=3 p0=2 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 9 set A N=24: SDP=25.97419 gen=25.97419 relgap=-2.3e-09 res=1e-06 negQ=0 minQ=-9.6e-16 crit=-0.00 k=2 negZ=2 zeroZ=9 p0=2 Dpos=True Soff=+0.0e+00 T5hyps=False
+case 10 set B N=16: SDP=112.8393 gen=112.8393 relgap=-2.5e-08 res=1e-07 negQ=0 minQ=+1.6e-04 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-8.9e-02 T5hyps=True
+case 11 set B N=16: SDP=32.79991 gen=32.79991 relgap=-7.1e-09 res=6e-07 negQ=0 minQ=+4.0e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-1.2e-01 T5hyps=True
+case 12 set B N=16: SDP=0.02736776 gen=0.02736764 relgap=-4.4e-06 res=8e-08 negQ=0 minQ=+1.4e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=False Soff=+0.0e+00 T5hyps=False
+case 13 set B N=16: SDP=2.323185 gen=2.323185 relgap=-5.4e-08 res=1e-07 negQ=0 minQ=+2.8e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=False Soff=+0.0e+00 T5hyps=False
+case 15 set B N=16: SDP=41.37529 gen=41.37529 relgap=-4.6e-09 res=7e-06 negQ=0 minQ=+1.1e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-1.2e-01 T5hyps=True
+case 16 set B N=16: SDP=79.3579 gen=79.3579 relgap=-2.2e-08 res=3e-05 negQ=0 minQ=+7.1e-05 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-8.5e-02 T5hyps=True
+case 21 set C N=24: SDP=46.38407 gen=46.38407 relgap=-1.3e-10 res=2e-06 negQ=0 minQ=+1.3e-04 crit=-0.00 k=2 negZ=2 zeroZ=0 p0=2 Dpos=True Soff=-1.4e-01 T5hyps=True

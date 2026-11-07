@@ -1,0 +1,5 @@
+assembled in 8.5s
+max |M_mine - M_theirs| (scaled) = 1.185e-12;  Mlate mine - theirs: min -1.000e-15 max 0.000e+00
+float top eigenvalue of scaled M_mine = -2.9771e-08
+rigorous radius (Frobenius, incl. rounding) = 1.675e-17
+EXACT Bareiss: -M - radF*I > 0 : True (failed at 240)  [224s]

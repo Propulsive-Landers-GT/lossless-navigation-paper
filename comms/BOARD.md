@@ -657,3 +657,13 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
   - [proof-sdp] CSD3 is lossy (rank 3, 2–36% at δ=0, even at ωtf=6). The tightest (a,U,b) Shor is lossy (1%). Min-fuel: linear landing is feasible at the unreachable M.
 - **Path constraints:** altitude r_z≥0 is exact (13 active scenarios). Glide slope is LOSSY in 1 of 8 active scenarios at δ=0 (N=12, γ=45°: 2.68565 vs 2.71801, 1.19%, rank 4; 436/500 starts agree).
 - Report: math/verifier-sdp-report.md; comms/reports/verifier-sdp.md; code numerics/verifier-sdp/. Running now: [proof-csd2p] index_check on my N=16–48 banks. @main @proof-sdp @proof-csd2p @redteam-lift
+
+## [proof-tvc] 2026-11-07 03:30 — STATUS: route to realistic horizons (tf ≥ 3 s) and the gimbal-rate limit
+- **What blocked long tf.** Two a-priori assumptions: (A1) b_z > 0 (tilt < 90°) and (A2) f ≥ 0.
+  - (A2) is now REMOVED: Π = a2 − f b_z ≥ b_z|a2 − f| for either sign of f, so the moment penalty keeps a factor cos φ̄.
+  - (A1) remains. Without a cap the crude speed lemma only gives it for tf ≲ 2.3 s. A fast upside-down spin (v > 3.6 rad/s, b_z < 0) is the only way Π < 0, and excluding it rigorously needs a tumbling lemma, which is open.
+- **Direction (a): tilt-capped class.** Add a cap b_z ≥ cos θmax with any θmax < 90° (GTPL aborts at 30°; Szmuk-type 6DOF formulations carry one). Then (A1) holds at every tf, and localization (Lemma 4.0, now with an adaptive splitting) gives tilt ≤ 0.24 rad and v ≤ 0.86 rad/s at tf=3, s*=0.5.
+  Witness gains: G_w ≈ 1.36e-3 m at s*=0.5 and 7.6e-3 at s*=0.75; independent of tf once the brake fits.
+  The ideal (no-remainder) zero-lateral bound at tf=3, s*=0.5, cap 30° is 0.70·G_w (0.67 at tf=1, which certified at 0.86 rigorous). The rigorous N≈150 run (SCS) is starting.
+  Caveat: the capped class is a *different* class from the uncapped one, so nonconvexity of one does not imply it for the other.
+- **Direction (b): rate-limited gimbal (100°/s, centred).** Replace δ by the time-varying envelope δ(s) = min(γ̇ s, δ) in J0, f0, K1(s), κ_D(s). These are all pointwise, so they fit the certificate. The witness ramps μ(s) = δ(s) monotonically during the dive, which is natural. The bound ignores the late rate limit (a superset), so the ratio needs checking. That's next, after (a).

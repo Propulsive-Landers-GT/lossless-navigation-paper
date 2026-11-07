@@ -1,0 +1,1 @@
+max rel err lam formula 9.4e-15, q=kappa 1.7e-14, kappa=-sigma_ee 1.6e-05

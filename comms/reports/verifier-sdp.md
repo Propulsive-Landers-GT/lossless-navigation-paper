@@ -19,7 +19,7 @@ I wrote an independent implementation and reached my verdicts before reading red
 | Other throttle lifts | (U,b)-Hilbert: lossy. Tightest (a,U,b) Shor: lossy (1%). **[proof-sdp] CSD3: lossy** (rank 3, gaps 2–36% at δ=0, even with ωtf=6). |
 | Altitude r_z ≥ 0 (13 active scenarios) | exact (rank 1). |
 | Glide slope (δ=0, 8 active scenarios) | 7 exact; **1 LOSSY (1.19%, rank 4; 436/500 starts reach the genuine value).** Path constraints can break the lift, outside CSD2′'s scope. |
-| Min-fuel (throttle) | A linear (first-moment) landing constraint is feasible at the unreachable M, i.e. lossy (Thm D). A lifted landing constraint is infeasible at M (correct), but 4 of 41 reachable targets show gaps (≤0.66%, high rank). |
+| Min-fuel (throttle) | A linear (first-moment) landing constraint is feasible at the unreachable M, i.e. lossy (Thm D). A lifted landing constraint is infeasible at M (correct), but 5 of 52 reachable targets show gaps (≤0.66%, high rank). |
 | Thm B consistency | The SDP value at M is > 0 and equals the true dist²(M, L) on all 32 configurations (N ≤ 48). The state-linear version gives 0. The variance term is what makes it consistent with A/D. |
 
 ## Discrepancies with redteam-lift

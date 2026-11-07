@@ -67,7 +67,7 @@ $$v_{0h}=-\textstyle\int (fh+\gamma_{3h}),\qquad r_{0h}=\int s(fh+\gamma_{3h}).$
 Baseline (vertical body, chattering gimbal early, full throttle late):
 $J_0:=-a_1\cos\delta\,\frac{s^{*2}}2+a_2\frac{(t_f-s^*)^2}2$. A control's **gain** is $W_z-J_0$.
 
-**Theorem TVC-1.** Assume (PT1)–(PT6) and (A1) $\bar\varphi(t_f/2)<\pi/2$, (A2) $a_1\cos\delta>\varepsilon\bar v(t_f/2)^2$. Suppose there is an explicit planar control $c_w$ (§4.8), landing upright at rest and satisfying $\mathcal X$, whose gain is $G_w$. Suppose also that a certificate $(\lambda,\rho,\rho_c)$ (Def. 4.5) gives a bound $U_{\rm tot}$ with
+**Theorem TVC-1.** Assume (PT1)–(PT6) and (A1) $\bar\varphi(t_f/2)<\pi/2$, (A2) $a_1\cos\delta>\varepsilon\bar v(t_f/2)^2$ (A2 holds at the certified $t_f=1$ instances; it can be dropped altogether, §5.6). Suppose there is an explicit planar control $c_w$ (§4.8), landing upright at rest and satisfying $\mathcal X$, whose gain is $G_w$. Suppose also that a certificate $(\lambda,\rho,\rho_c)$ (Def. 4.5) gives a bound $U_{\rm tot}$ with
 $$G_w>U_{\rm tot}.$$
 Then $\theta_w,R_\pi\theta_w\in F^{\mathcal X}_{t_f}$ and $\theta_m\notin F_{t_f}$. So $F^{\mathcal X}_{t_f}$ is not convex, and by Theorem A (math/02 §2) no uniform convex relaxation of the pure-TVC landing problem with affine data entry is lossless at this horizon. Quantitatively, $\operatorname{dist}(\theta_m,F_{t_f})\ge d_*$, where $d_*$ solves $G_w-d\sqrt{1+s^{*2}}=U_{\rm tot}(d)$ (§4.9).
 
@@ -107,11 +107,11 @@ With $E=[0,s^*]$ and $L=(s^*,t_f]$,
 $$W_z-J_0=\int_E|w|\,(a_1\cos\delta-fb_z)\;-\;\int_L w\,\Pi\;+\;\int w\,\gamma_{3z},\qquad \Pi:=a_2-fb_z .$$
 
 ### 4.2 Pointwise majorants
-Let $\Delta p=p-a_1\cos\delta\ge0$. By (A1) $b_z\ge\cos\bar\varphi>0$, and by (A2) $f\ge a_1\cos\delta-\varepsilon\bar v^2>0$.
+Let $\Delta p=p-a_1\cos\delta\ge0$. By (A1) $b_z\ge\cos\bar\varphi>0$. ((A2) $f\ge0$ was used in v1 only for $\Pi\ge|a_2-f|$; v2 uses $\Pi\ge b_z|a_2-f|$ instead, see §5.6.)
 - *Early:* $a_1\cos\delta-fb_z=a_1\cos\delta(1-b_z)+\varepsilon v^2b_z-\Delta p\,b_z\le \frac{a_1\cos\delta}{1+\cos\bar\varphi}|h|^2+\frac{\varepsilon}{\cos^2\bar\varphi}|\dot h|^2-\cos\bar\varphi\,\Delta p$. This uses $1-b_z=|h|^2/(1+b_z)$ and $v^2=|\dot h|^2+\dot b_z^2\le|\dot h|^2/b_z^2$.
 - *Late:* $\Pi=(a_2-pb_z)+\varepsilon v^2b_z$. Let $P:=\sqrt{a_2^2-|q|^2}\ge p$. Then
 $a_2-pb_z\ge a_2-\sqrt{(a_2^2-|q|^2)(1-|h|^2)}\ge\frac{|q|^2b_z^2+a_2^2|h|^2}{2a_2}$, using $a_2-\sqrt Y\ge(a_2^2-Y)/(2a_2)$. Hence
-$\Pi\ge\frac{\cos^2\bar\varphi}{2a_2}|q|^2+\frac{a_2}2|h|^2+\varepsilon\cos\bar\varphi|\dot h|^2$. Also, since $f\ge0$, $\Pi=(a_2-f)+f(1-b_z)\ge|a_2-f|$.
+$\Pi\ge\frac{\cos^2\bar\varphi}{2a_2}|q|^2+\frac{a_2}2|h|^2+\varepsilon\cos\bar\varphi|\dot h|^2$. Also $\Pi\ge b_z|a_2-f|$ for either sign of $f$, and $\Pi\ge|a_2-f|$ when $f\ge0$ (§5.6).
   ([adversary-6dof] checked (a): TRUE; it needs $a\le a_2$, i.e. constant mass, and Jensen for relaxed controls.)
 - *Gyroscopic (R1 only):* $\gamma_{3z}=\varepsilon\frac{J_a}{J_t}\omega_3(h\times\dot h)_z$, so $|w\gamma_{3z}|\le|w|\,\varepsilon\frac{J_a}{J_t}\bar\omega_3\,\tfrac12(g|h|^2+|\dot h|^2/g)$ for any $g>0$.
 
@@ -185,15 +185,36 @@ The box satisfies $\mathcal C_{\rm box}(b)\subseteq\mathcal C_{\delta^*}(b)$ wit
 The witness has $\min_{t<t_f} r_z/\|r_h\|$ as in the table, so every $\gamma_{gs}$ with $\tan\gamma_{gs}$ below it is covered. The competitor bound uses no state constraint.
 ### 5.3 Gimbal-rate limit
 The competitor class shrinks, so $U_{\rm tot}$ stays valid. The witness must be rate-feasible from a centred gimbal. `witness_ratelim.py` optimizes it (state $\mu$, $|\dot\mu|\le100^\circ$/s, free throttle): for a gimbal centred at $t=0$ and slewing at 100°/s, the best witness found has gain $-4.8\cdot10^{-3}$ against $J_0$. The baseline $J_0$ assumes instantaneous full deflection on $E$. Reaching 15° takes 0.15 s, 60% of the dive, and that alone costs about $a_1(1-\cos\delta)\int(s^*-s)\approx5\cdot10^{-3}$. **The rate-limited class therefore needs its own certificate**, with the baseline replaced by the rate-limited optimum of the vertical problem. Open. (The optimizer also fails to recover the unlimited witness at $10^5$°/s, so these rate-limited numbers are inconclusive as an optimum. The baseline mismatch is the robust part.)
+
+*Rate-limited class: why a new certificate is needed (analysis).* Even against the rate-limited baseline $J_0^{\rm rl}=-\int_E(s^*-s)a_1\cos\delta(s)+a_2(t_f-s^*)^2/2$, with $\delta(s)=\min(\dot\gamma s,\delta)$, the best rate-limited witness has a **negative** gain: $-1.5\cdot10^{-3}$ ($t_f=1$, $s^*=0.25$) and $-7.4\cdot10^{-3}$ ($t_f=3$, $s^*=0.5$); see `witness_rl.py`. The reason is that without chattering, early deflection produces torque, so the deflection credit in $J_0^{\rm rl}$ is unattainable. The correct baseline is the vertical one, $J_0^{\rm vert}=-\int_E(s^*-s)a_1+a_2(t_f-s^*)^2/2$. The deflection credit $a_1-\sqrt{a_1^2-\varepsilon^2|\ddot h|^2}\le\varepsilon^2|\ddot h|^2/(a_1(1+\cos\delta))$ then enters $\mathcal Q$ as a gain term **quadratic in $\ddot h$**. With only $|\ddot h|\le K$, the S-procedure must pay for it pointwise: high-frequency $\ddot h$ yields this gain at no tilt cost, which is exactly chattering. So the rate limit itself has to enter the bound. **Route (open):** add the jerk constraint $|\dddot h|\lesssim a\dot\gamma/\varepsilon$, which comes from $|\dot\mu|\le\dot\gamma$, with its own S-procedure multiplier. Discretize with continuous piecewise-linear $\ddot h$; remainders become cell-local again. This is a genuine extension of the certificate and has not been done.
+
 ### 5.4 Free final time
 By RR-LS (math/redteam-reform §4) it suffices that $\theta_m(t^\circ)\notin\bigcup_{t\in W}F_t$. Since $\Lambda$ does not depend on the horizon, a competitor at horizon $t$ satisfies $\ell(\theta)\le J_0(t)+\kappa(t)+U_{\rm tot}(t)$. Here $J_0(t)+\kappa(t)$ is increasing in $t$ (derivative $A_b(t-s^*)>0$). Taking $t^\circ=t_b$ gives a sufficient condition:
 $$G_w(t_b)>\max_{t\in[t_a,t_b]}\Big[U_{\rm tot}(t)-\tfrac{A_b}2\big((t_b-s^*)^2-(t-s^*)^2\big)\Big].$$
 This needs certificates on a continuum of $t$. We have checked it only on a grid, so TVC-F remains conditional.
+### 5.6 Long horizons ($t_f\ge3$ s)
+**(A2) removed.** $\Pi=a_2-fb_z\ge b_z|a_2-f|$ for either sign of $f$: if $f\ge0$, $\Pi=(a_2-f)+f(1-b_z)$; if $f<0$, $\Pi=a_2+|f|b_z\ge b_z(a_2+|f|)$. The moment penalty therefore uses $\omega_D=\zeta\cos\bar\varphi$ late. No assumption $f\ge0$ is needed anywhere.
+**(A1) remains.** We need $b_z>0$ throughout.
+- Without a cap, the crude speed lemma gives (A1) only for $K_2t_f^2/8<\pi/2$, i.e. $t_f\lesssim2.3$ s.
+- With $b_z\ge0$ one has $\Pi\ge0$. When $b_z<0$, $\Pi<0$ requires $\varepsilon v^2>a_2+a_1\cos\delta$, i.e. $v>3.6$ rad/s, a fast upside-down spin.
+- A lemma excluding tumbling for competitors with gain $\ge0$ would remove (A1) altogether. It is open; the obstacle is that $v$ has no a-priori bound beyond $K_2\min(s,t_f-s)$.
+
+**Tilt-capped class.** If the problem class includes a tilt cap $b_z\ge\cos\theta_{\max}$ with any $\theta_{\max}<90^\circ$, then (A1) holds at every horizon. GTPL's flight software aborts at 30°, and Szmuk-type 6DOF formulations carry such a cap. Lemma 4.0 then localizes, with the splitting $\kappa$ chosen adaptively so that $c_{\rm abs}\le\frac12$. GTPL, cap 30°:
+
+| $t_f$ | $s^*$ | $G_w$ (m) | ideal zero-lateral bound / $G_w$ | rigorous certificate |
+|---|---|---|---|---|
+| 1 | 0.25 | 7.27e-5 | 0.67 | PASS (§3) |
+| 3 | 0.5 | 1.358e-3 | 0.70 | T3_PLACEHOLDER |
+| 5 | 0.5 | 1.359e-3 | — | — |
+| 5 | 0.75 | 7.58e-3 | — | localization gives $\bar v=2.0$ rad/s, tilt bound reaches the cap |
+
+The witness gain depends on $s^*$ but not on $t_f$, once the brake phase is long enough to return upright. **Caveat:** the capped class is a different problem class. Nonconvexity of $F^{\rm cap}$ does not imply nonconvexity of the uncapped $F$, and vice versa.
+
 ### 5.5 Variable $\varepsilon$, mass depletion
 Not covered. With $\alpha>0$, $\varepsilon(m(t))$ gives $\ddot y$ the extra terms $2\dot\varepsilon\dot b+\ddot\varepsilon b$, and $\ddot\varepsilon$ contains $\dot T$, which is unbounded for relaxed throttle. The late baseline also moves by $\alpha\rho_2(\rho_2-\rho_1)s^*/m^2\cdot\int_Lw\approx4\cdot10^{-3}$ m, which is far larger than the gap. A certificate for the $\alpha>0$ class needs the competitor's own mass history inside Pen ([adversary-6dof] A2). **Open.** TVC-1 is a theorem about the constant-mass class. That class is the standard LCvx idealization, but it is not literally GTPL.
 
 ## 6. What remains open
-1. **Realistic horizons (5–8 s).** (A1)/(A2) fail for $t_f\gtrsim1.5$ s with the crude a-priori bounds of Lemma 2.2. A localization lemma would extend the method: a competitor with gain $\ge0$ has small late tilt and rate, by an energy bound plus Lipschitz bootstrap. The certificate would also need to scale, roughly $N\propto t_f$, and the SDP cost grows with $N$.
+1. **Realistic horizons (5–8 s), uncapped.** (A2) is removed (§5.6). (A1), i.e. $b_z>0$, fails for $t_f\gtrsim2.3$ s with the crude a-priori bounds of Lemma 2.2; the tilt-capped class (§5.6) avoids it. A localization lemma would extend the method: a competitor with gain $\ge0$ has small late tilt and rate, by an energy bound plus Lipschitz bootstrap. The certificate would also need to scale, roughly $N\propto t_f$, and the SDP cost grows with $N$.
 2. Mass depletion / varying $\varepsilon$ (§5.5).
 3. A rate-limited witness that beats $U_{\rm tot}$, or a bound tailored to the rate-limited class (§5.3).
 4. Non-axisymmetric $J$, aerodynamic torque, wind (wind breaks the $R_\pi$ symmetry).
