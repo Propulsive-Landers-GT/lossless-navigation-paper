@@ -73,9 +73,10 @@ solver noise ($\le0.016$~m).
 \item \emph{Long horizons and coning.} On the pure-dive face with a $30^\circ$ tilt cap, the 3-D slice gap falls to 0.69/0.50/0.106~m/s
 at $t_f=8/12/20$~s (planar: 0.70/0.80/0.82), and at $t_f=20$~s the optimizer cones through $359^\circ$ on the cap. Coning fills
 about 87\% of capped dents, but not all of them.
-\item \emph{Pure TVC, upright at rest.} Full rigid body, $\pm15^\circ$ box gimbal at $100^\circ$/s, roll free, $r_z\ge0$, upright at rest at
-touchdown, face $\ell=r_{0z}+s^*v_{0z}$ with $s^*=1$~s: zero-lateral optimum below the free optimum by $2.8\times10^{-2}$~m
-($t_f=5$~s) and $3.3\times10^{-2}$~m ($t_f=7$~s).
+\item \emph{Pure TVC, upright at rest.} Full rigid body, $\pm15^\circ$ box gimbal at $100^\circ$/s from centred, mass depletion, roll free,
+$r_z\ge0$, upright at rest at touchdown, face $\ell=r_{0z}+s^*v_{0z}$: the zero-lateral optimum lies below the free optimum by
+$1.26\times10^{-2}$~m ($t_f=3$~s, $s^*=0.75$~s), $4.8\times10^{-3}$~m ($t_f=5$~s, $s^*=0.5$~s), $2.8\times10^{-2}$~m ($t_f=5$~s, $s^*=1$~s) and
+$3.3\times10^{-2}$~m ($t_f=7$~s, $s^*=1$~s). The rigorous counterpart is \cref{thm:TVC1}, at $t_f=1$~s only.
 \end{itemize}
 
 \begin{table}[t]\centering\small
@@ -89,7 +90,8 @@ Slice (S), dive-then-brake & M1 & 4 / 8 & 0.016 / 0.009 m in $\ell$; offsets 1.5
 Pure-dive face (hop, $r_{0z}=0$) & M1 & 4 / 8 & 0.65 / 2.94 (weighted m/s) \\
 Hop landing-set hole & M1 & 4 & up to 4.99 m \\
 Hop landing-set hole & M3 (TVC) & 4 & 1.74 m \\
-Dive-then-brake, upright at rest & PT (6-DOF) & 5 / 7 & 0.028 / 0.033 m \\
+Dive-then-brake, upright at rest & PT (6-DOF) & 3 / 5 / 7 & 0.013 / 0.028 / 0.033 m \\
+Same, certified (\cref{thm:TVC1}; const.\ mass) & PT (6-DOF) & 1 & $\ge9.6\times10^{-6}$ m (proved) \\
 In-air descent (50 m, $-5$ m/s) & M1 & 7 & none detected ($\le0.016$ m) \\\bottomrule
 \end{tabular}
 \end{table}

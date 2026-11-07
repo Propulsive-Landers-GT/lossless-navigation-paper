@@ -367,13 +367,14 @@ axisymmetric inertia, and \emph{unlimited gimbal rate}. Use the GTPL wet constan
 $J_t=63.6$~kg\,m$^2$, $L=0.589$~m, $\delta=15^\circ$). Start from $b(0)=\ez$, $\Omega(0)=0$; land at rest and upright,
 $r(t_f)=v(t_f)=0$, $b(t_f)=\ez$, $\Omega_\perp(t_f)=0$; impose $r_z\ge0$ and a glide slope along the trajectory. Take $t_f=1$~s and the
 dive-then-brake face with $s^*=0.25$~s. Then $\FX$ is nonconvex: an explicit witness pair $\theta_w,R_\pi\theta_w\in\FX$ has a midpoint
-$\theta_m\notin\Ft$. The certified margins and distances are:
+$\theta_m\notin\Ft$. The certified margins (witness gain minus the bound on every zero-lateral competitor, in metres of $\ell$) and
+distances are:
 \begin{center}\small
 \begin{tabular}{@{}lcc@{}}\toprule
-gimbal / competitor class & margin $(G_w-U_{\rm tot})/G_w$ & $\dist(\theta_m,\Ft)\ge$ \\\midrule
-cone $15^\circ$, roll held & 13.70\% & $9.63\times10^{-6}$~m\\
-Cardan box $\pm15^\circ$ (corner $21.09^\circ$), roll held & 5.40\% & $7.34\times10^{-6}$~m\\
-cone $15^\circ$, free roll via RCS ($|\tau_3|\le3$~N\,m) & 3.99\% & $2.81\times10^{-6}$~m\\\bottomrule
+gimbal / competitor class & margin $G_w-U_{\rm tot}$ & $\dist(\theta_m,\Ft)\ge$ \\\midrule
+cone $15^\circ$, roll held & $9.96\times10^{-6}$~m (13.7\%) & $9.63\times10^{-6}$~m\\
+Cardan box $\pm15^\circ$ (corner $21.09^\circ$), roll held & $7.57\times10^{-6}$~m (5.4\%) & $7.34\times10^{-6}$~m\\
+cone $15^\circ$, free roll via RCS ($|\tau_3|\le3$~N\,m) & $2.90\times10^{-6}$~m (4.0\%) & $2.81\times10^{-6}$~m\\\bottomrule
 \end{tabular}
 \end{center}
 By \cref{thm:A}, no uniform convex relaxation with affine data entry is lossless for this pure-TVC landing problem at this
@@ -392,26 +393,42 @@ cell basis, with Wirtinger-type cell-local remainders and a localization lemma t
 for competitors with nonnegative gain. The witness is an explicit ordinary control, a fast $\pm\delta$ bang-bang realization with
 exact terminal correction, whose gain $G_w$ is evaluated in interval (Arb) arithmetic.
 The independent referee rebuilt every certificate matrix by exact polynomial integration (rationals and Arb balls) and decided
-definiteness by exact integer Sylvester minors. The referee also made two repairs, both carried out and verified:
+definiteness by exact integer Sylvester minors. Three repairs were made, and all were carried out and verified:
 (W1) the originally stored witness was a relaxed (chattering) control and was replaced by the explicit bang-bang one;
-(W2) the gyroscopic weight in the free-roll case was replaced by a rigorous upper weight.
+(W2) the gyroscopic weight in the free-roll case was replaced by a rigorous upper weight;
+(W3) the cell-local remainder constants now use the true supremum rather than a maximum over quadrature nodes.
 \end{proof}
 
 \paragraph{Scope, honestly.}
 \begin{itemize}[leftmargin=*,itemsep=1pt]
 \item \emph{The gap is thin.} The certified distance is about $10^{-5}$~m, for the same reason as \cref{rem:thin}.
-\item \emph{Unlimited gimbal rate is essential.} The bang-bang witness needs sub-millisecond gimbal reversals. Against a
-$100^\circ$/s gimbal-rate limit, the best rate-limited witness found so far has negative gain against the unlimited-rate
-baseline. A certificate tailored to the rate-limited class (adding a jerk constraint with its own multiplier) is open.
+\item \emph{Unlimited gimbal rate is essential to the certificate.} The bang-bang witness needs sub-millisecond gimbal reversals.
+Against a $100^\circ$/s gimbal-rate limit, the deflection credit in the unlimited-rate baseline is unattainable.
 \item \emph{Constant mass only.} Mass depletion makes $\varepsilon$ time-varying and moves the baseline by more than the gap.
-\item \emph{Horizon.} Only $t_f=1$~s is certified. For $t_f\gtrsim1.5$--$2.3$~s the a~priori tilt bound no longer keeps the body
-above the horizontal, and tumbling competitors are not excluded. At realistic horizons the evidence is numerical: gaps of about
-3~cm at $t_f=5$ and $7$~s, with full rigid-body dynamics, a $100^\circ$/s box gimbal, $r_z\ge0$ and upright touchdown.
-\item \emph{Free final time} is covered only conditionally, via \cref{lem:LS}.
-\item \emph{In progress: the tilt-capped class.} If the problem includes a tilt cap $b_z\ge\cos\theta_{\max}$ with $\theta_{\max}<90^\circ$ (the
-GTPL flight software aborts at $30^\circ$), the tilt bound holds at every horizon. Witness gains at $t_f=3$--$5$~s are
-$1.4\times10^{-3}$--$7.6\times10^{-3}$~m, and the ideal zero-lateral bound is about $0.7\,G_w$ at $t_f=3$~s. A rigorous certificate at
-$t_f\ge3$~s is not yet available. Note that the capped class is a different problem class from the uncapped one.
+\item \emph{Horizon.} Only $t_f=1$~s is certified.
+\end{itemize}
+\emph{The fully realistic model, numerically.} The model here combines a $\pm15^\circ$ Cardan box gimbal rate-limited to $100^\circ$/s
+from centred, mass depletion, free roll, $r_z\ge0$ and an upright-at-rest touchdown. In it, the zero-lateral maximum of the
+dive-then-brake face lies strictly below the free maximum at every horizon tried:
+\begin{center}\small
+\begin{tabular}{@{}cccc@{}}\toprule
+$t_f=3$~s, $s^*=0.75$~s & $t_f=5$~s, $s^*=0.5$~s & $t_f=5$~s, $s^*=1$~s & $t_f=7$~s, $s^*=1$~s\\\midrule
+$1.26\times10^{-2}$~m & $4.8\times10^{-3}$~m & $2.8\times10^{-2}$~m & $3.3\times10^{-2}$~m\\\bottomrule
+\end{tabular}
+\end{center}
+These are local solutions of discretized NLPs, not certificates. The status of the realistic model is therefore
+\emph{nonconvex numerically, unproved}.\Snum
+
+\emph{Open.}
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \emph{A certificate for $t_f\ge2$~s.} The structural obstacle is that throttle near $s^*$, which is free to first order, shifts the
+lateral initial velocity. This costs a factor of about 300 in the current majorant. A possible route is a penalty localized
+relative to $G_w$, combined with a state-space Riccati certificate.
+\item \emph{A rate-limited certificate,} adding the jerk constraint implied by the gimbal-rate limit with its own S-procedure
+multiplier.
+\item \emph{Mass depletion; free final time} (covered only conditionally, via \cref{lem:LS}).
+\item \emph{A lemma excluding tumbling competitors} for uncapped horizons $t_f>2.3$~s, where the a~priori tilt bound no longer keeps the
+body above the horizontal.
 \end{itemize}
 Other evidence for pure TVC: a torque-coupled hop instance has a 1.74~m hole in its landing set (\cref{sec:numerics}), and with
 $\rho_1=0$ pure TVC is nonconvex in a strong-torque, small-gimbal asymptotic regime \pnote{P0-TVC}.

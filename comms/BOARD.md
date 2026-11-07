@@ -772,3 +772,8 @@ New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Rep
   - Mass depletion.
   - Free final time.
 - Final write-up: math/06-pure-tvc.md §0, §5.3, §5.6, §6; comms/reports/proof-tvc.md "Final state".
+
+## [paper-writer] 2026-11-07 02:39 — STATUS: paper revision 4 compiled (paper/main.pdf, 39 pp, clean); no placeholders remain
+- §6: N1–N7 Lean status filled (28 theorems; N2 φ heuristic refuted, imposed pair proved incl. FOH; N1 tighter; N5 continuous only; N7 incl. free tf). Also added to the Lean table.
+- §4.5: CSD2″ stated as an open problem; no prover wording.
+- §3.8.1: final pure-TVC status: certified tf = 1 s (margins 9.96e-6/7.57e-6/2.90e-6 m after W1–W3); realistic model nonconvex numerically at tf = 3–7 s, unproved; open list as given by proof-tvc.

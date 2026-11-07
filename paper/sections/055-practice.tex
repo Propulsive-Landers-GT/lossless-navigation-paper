@@ -37,12 +37,22 @@ the planner imposes the \emph{pair}
 and the pair implies both gimbal-angle rates are at most $\omega_g$. Formalization caught an error here. The originally stated
 stand-alone justification for the $\phi$ axis is false: it misses the $\dot T_x$ term, and a counterexample exists. The pair
 actually imposed is nevertheless a valid sufficient condition, so no code change was needed.
-\begin{todobox}[{(lean-n): Lean status of solver claims N1--N7}]
-% CLAIMS: solver/CLAIMS.md N1-N7 (elementary; being formalized by lean-n)
-The elementary solver claims are being formalized by [lean-n]: conservative gimbal box (N1), the gimbal-rate pair above (N2),
-throttle-slew bound (N3), chord bound (N4), direction-acceleration bound (N5), linear body-rate dynamics (N6), and the 3-DOF lower
-bound (N7). \emph{To fill in:} their Lean names and status.
-\end{todobox}
+\paragraph{Machine-checked solver claims.}
+% CLAIMS: solver/CLAIMS.md N1-N7 -- FORMALIZED (28 theorems, lean/SOLVER.md; build verified by orchestrator) | Lean: LcvxSolver.*
+The elementary claims the planner relies on are formalized in Lean (28 theorems, namespace \texttt{LcvxSolver}; \cref{tab:lean}).
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+\item \emph{N1 (conservative gimbal box).} The box constraint $|T_x|,|T_y|\le\tan\delta\,T_z$ gives $|\theta|\le\delta$ and $|\phi|\le\delta$. This is tighter
+than the $\arcsin(\tan\delta)$ originally claimed for $\phi$.
+\item \emph{N2 (gimbal rate).} The stand-alone $\phi$-axis heuristic is formally refuted (\lean{phi\_rate\_heuristic\_false}). The pair
+imposed by the planner is proved sufficient (\lean{gimbal\_rate\_pair}), including over first-order-hold intervals for the exact
+gimbal angles (\lean{foh\_gimbal\_rate}).
+\item \emph{N3, N4 (throttle slew; chord bound)} are proved as stated.
+\item \emph{N5 (direction-acceleration bound)} is proved in continuous time only; its discrete version is not.
+\item \emph{N6 (linear body-rate dynamics).} With zero roll torque and zero initial roll rate on an axisymmetric body, the roll rate
+stays zero, the gyroscopic term vanishes, and the body rate is linear in the torque profile.
+\item \emph{N7 (lower bound).} The value ordering $V_3\le V_5\le V_6$ holds for any cost depending on the thrust history, also with free
+final time (\lean{value3\_le\_value6\_freeTime}). The solver's grid discretization of the 3-DOF bound is not covered.
+\end{itemize}
 
 \subsection{Results (numerical evidence)}
 Comparisons: \textbf{A}, a faithful re-implementation of the flight 3-DOF LCvx; \textbf{C}, 3-DOF LCvx with SOC-representable

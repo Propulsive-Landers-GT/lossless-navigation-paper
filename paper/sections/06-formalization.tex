@@ -65,6 +65,12 @@ Discrete KKT, purification (C-K) & \lean{discrete\_lossless\_nodewise}, \lean{zo
 \Cref{prop:master} (master inequality) & \lean{Slice.master\_inequality}, \lean{Slice.master\_inequality\_fixed}, \lean{Slice.dent} (\texttt{Slice/Master}) & constant mass; constant-$\bar c(T)$ variant; no state constraints \\
 \Cref{thm:S}: Lemma S and hard-landing Theorem D, explicit instance & \lean{Slice.lemmaS}, \lean{Slice.instL\_norm\_ge}, \lean{Slice.theoremD\_hard\_landing} (\texttt{Slice/LemmaS}) & $a\equiv12$, $g_0=9.81$, $\delta=0$, $\omega=0.1$, $\omega t_f\approx0.35$, any $\X\supseteq\{r_z\ge0\}$, all 3-D paths; dent $\ge1$~m; ``hold'' S-turn witness \\
 \Cref{thm:Aopt}, \cref{prop:T} (abstract) & \lean{Slice.CostRelaxation.aOpt}, \lean{aOpt\_finset}, \lean{value\_le\_convexCombination}, \lean{no\_valueLossless\_of\_strict}, \lean{StateLinearRelaxation.lossy\_of\_gap} (\texttt{Slice/AOpt}) & abstract; Prop T's model facts not formalized \\
+\multicolumn{3}{@{}l}{\emph{Solver claims} (namespace \texttt{LcvxSolver}, \texttt{lean/SOLVER.md}; 28 theorems; \cref{sec:practice})}\\
+N1 gimbal box & \lean{gimbal\_box\_angles}, \lean{axial\_floor} (\texttt{Gimbal}) & $|\theta|,|\phi|\le\delta$ (tighter than claimed) \\
+N2 gimbal rate & \lean{theta\_rate\_bound}, \lean{phi\_rate\_heuristic\_false}, \lean{phi\_rate\_bound\_standalone}, \lean{gimbal\_rate\_pair}, \lean{foh\_gimbal\_rate} (\texttt{Gimbal}) & stand-alone $\phi$ heuristic refuted; imposed pair sufficient, incl.\ FOH intervals \\
+N3--N5 & \lean{throttle\_slew\_foh}, \lean{chord\_bound}, \lean{dir\_accel\_bound\_calculus} (\texttt{Vectors}) & N5 continuous time only \\
+N6 & \lean{gyro\_vanish}, \lean{euler\_axisymmetric}, \lean{euler\_axisymmetric\_integral} (\texttt{Gyro}) & axisymmetric, zero roll torque \\
+N7 & \lean{relaxation\_lower\_bound}, \lean{value3\_le\_value6}, \lean{value3\_le\_value6\_freeTime} (\texttt{Relaxation}) & $V_3\le V_5\le V_6$, also free $t_f$; grid discretization not covered \\\midrule
 \Cref{lem:LS} (abstract) & \lean{not\_lineSearch\_lossless}, \lean{symmetric\_supply}, \lean{not\_lineSearch\_lossless\_of\_symmetry} (\texttt{FreeTime}) & abstract (i)--(ii); the instantiation from B$^*$ (\cref{cor:LS}) is not formalized \\\bottomrule
 \end{tabular}
 \end{table}

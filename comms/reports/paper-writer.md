@@ -105,3 +105,20 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
 - **Remaining placeholders:**
   1. CSD2″ / CSD2′ proof (proof-csd2p);
   2. Lean status of solver claims N1–N7 (lean-n).
+
+---
+## Revision 4 (2026-11-07): placeholders filled, final pure-TVC status
+- **§6 solver claims.** The Lean TODO line is replaced by a paragraph on N1–N7 (28 theorems, lean/SOLVER.md):
+  - N1 is tighter than claimed (|θ|, |φ| ≤ δ);
+  - N2: the standalone φ heuristic is formally refuted (`phi_rate_heuristic_false`), and the imposed pair is proved sufficient (`gimbal_rate_pair`), including on FOH intervals (`foh_gimbal_rate`);
+  - N5 holds in continuous time only;
+  - N7 is V3 ≤ V5 ≤ V6, including free tf (`value3_le_value6_freeTime`); the grid discretization is not covered.
+
+  The same theorems are added to the §7 Lean table.
+- **§4.5.** The CSD2″ box is now plain text stating an open problem: the residual class k = p₀+1 with fixed terminal attitude, plus continuous-time normality. With free terminal attitude, T5 decides exactness under its hypotheses. All "prover working" wording is removed.
+- **§3.8.1 pure TVC.**
+  - Certified result: margins now 9.96e-6 / 7.57e-6 / 2.90e-6 m (13.7 / 5.4 / 4.0 %), distances 9.63e-6 / 7.34e-6 / 2.81e-6 m, after W1–W3.
+  - New numerical table for the fully realistic model (100°/s box from centred, mass depletion, roll free): nonconvex at tf = 3/5/5/7 s. Status: "nonconvex numerically, unproved".
+  - The tilt-capped "in progress" text is replaced by the open list: tf ≥ 2 s certificate (obstacle and route), rate-limited jerk certificate, mass depletion, free tf, tumbling lemma.
+  - The numerics table and discussion are updated to match.
+- 39 pages, compiles cleanly. **No placeholders remain.** CLAIMS-MAP.md is at revision 4.
