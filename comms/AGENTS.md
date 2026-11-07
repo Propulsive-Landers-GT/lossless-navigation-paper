@@ -24,4 +24,5 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | paper-writer | a41a31397861a8637 (DONE, draft) | LaTeX paper draft from SYNTHESIS + proofs; only proven/formalized claims | paper/ |
 | verify-imp | afee825a20ce8c68e | Referee impossibility-side CLAIMED rows (Q, B*, D, S, A-opt, P0-*) | math/verify-imp-report.md |
 | verify-pos6 | ab5886d8970d683d2 | Referee 6DOF, positive, SDP CLAIMED rows | math/verify-pos6-report.md |
+| proof-csd2p | (see spawn) | Prove refined SDP conjecture CSD2′ (convexified lens, continuous time) | math/09-csd2-prime.md |
 | solver | (paused) | Practical landing algorithm — deferred until lossless question settled | solver/ |

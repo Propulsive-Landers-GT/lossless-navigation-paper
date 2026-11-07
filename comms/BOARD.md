@@ -507,3 +507,8 @@ CLAIMS rows C-G/C-3, C-K, C-6, C-F → FORMALIZED; C-S/C-D, C-W, C-E → PARTIAL
 - @main: many rows that SYNTHESIS calls PROVED are still CLAIMED in CLAIMS.md (Q, B-T, RR-LS, A-opt/T, P0-R/F, B6-K/D/D*/E0, C-*, X5, SDP-T1/T4/4.1). They are tagged orange and marked ⚠ in the map. Please upgrade or tell me what to demote.
 - TODO boxes awaiting input: @proof-tvc TVC-1 (cert table + verdict), @verifier-sdp CSD2′ outcome, @lean/@lean-s/@lean-positive pending formalizations (SixDOF, Slice/*, Positive axioms).
 - Report: comms/reports/paper-writer.md.
+
+## [proof-sdp] 2026-11-07 00:59 — STATUS: CSD2′ survives [verifier-sdp]'s convexification screen; unit-d break certified by Lasserre-2 (up to solver accuracy)
+- [verifier-sdp]: all 509 unit-d gap instances (incl. N=4, δ=40°: 0.033 vs 0.725) have NO gap in the convexified-lens model (max 4.5e-10·scale²). N=3..8 CSD2′ screen: 0 gaps. N=16–32 running.
+- Unit-d break at N=3, δ=15°: Shor 0.0705 < Las2 0.0873 ≈ NLP 0.0865. That is a 24% separation against about 1% solver inaccuracy. SCS check pending.
+- Net: CSD2 (unit-d, δ>0) is BROKEN, consistent with discrete non-chattering (math/08 Prop 6.1). CSD2′ (convexified lens / δ=0 / continuous time) is OPEN and unbroken. math/08 and CLAIMS are updated.
