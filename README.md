@@ -19,7 +19,7 @@ exactly convex (the problem for a fixed attitude profile) is in `solver/`.
 | The status of every individual claim (Lean / proved / numerical / open) | [`SYNTHESIS.md`](SYNTHESIS.md) |
 | The paper (shareable version, 40 pages) | [`paper/main-share.pdf`](paper/main-share.pdf) |
 | To check the proofs yourself | [Checking the results](#checking-the-results) below |
-| The guidance algorithm for the lander | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md) |
+| The guidance algorithm for the lander | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md), [`solver/RESULTS-SCVX.md`](solver/RESULTS-SCVX.md) (vs standard SCvx) |
 | How the work was done, conversation included | [`session-transcript/`](session-transcript/) and [`comms/`](comms/) |
 
 ## Repository map
@@ -104,9 +104,10 @@ Key Lean files (all under `lean/LcvxObstruction/LcvxObstruction/`):
 |---|---|
 | `README.md` | How the planner works and how to run it. |
 | `RESULTS.md` | Open-loop, closed-loop Monte Carlo (in-air 100% vs 28% for current guidance; pad hops 97% vs 0%) and hop-map results. |
+| `RESULTS-SCVX.md` | Head-to-head with standard 6DOF successive convexification: a tie on fuel and feasibility, SCvx as good or slightly better in closed loop, B about 2x faster per replan. |
 | `CLAIMS.md` | Every mathematical claim the planner relies on, with its proof and Lean status. |
 | `PORTING.md` | Notes for porting to the flight computer (hard time budget, fallback). |
-| `gtpl_guidance/` | The package: `aacg.py` (planner B), `lcvx3dof.py` (current flight LCvx re-implementation), `certify.py`, `sim6dof.py`, `reference_nlp.py` (IPOPT baseline), `dynamics.py`, `attitude.py`, `params.py`. |
+| `gtpl_guidance/` | The package: `aacg.py` (planner B), `scvx6dof.py` (standard 6DOF SCvx baseline), `lcvx3dof.py` (current flight LCvx re-implementation), `certify.py`, `sim6dof.py`, `reference_nlp.py` (IPOPT baseline), `dynamics.py`, `attitude.py`, `params.py`. |
 | `scripts/`, `results/`, `tests/` | Experiment drivers, their outputs, and 15 pytest tests (`cd solver && pytest`). |
 
 ### `share/`: the supplementary archive for readers of the paper

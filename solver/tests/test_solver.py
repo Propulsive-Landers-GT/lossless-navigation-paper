@@ -178,3 +178,14 @@ def test_closed_loop_B_lands():
     x0 = np.concatenate([r0, v0, R_to_quat(np.eye(3)), np.zeros(3), [80.0]])
     out = simulate(x0, TGT, PlannerB(VEH, CFG, TGT, 7.8), VEH, SimOptions(wind=(1.5, 0, 0), thrust_noise=0.02))
     assert out['success'], {k: v for k, v in out.items() if k != 'infos'}
+
+
+def test_scvx_baseline_matches_B_and_is_certified(plan_S3):
+    """Standard 6DOF SCvx (baseline S) converges on scenario S3 to a certified plan with the same fuel as B."""
+    from gtpl_guidance.scvx6dof import SCvx6DOF
+    r0, v0, pB = plan_S3
+    pS = SCvx6DOF(VEH, CFG).plan(r0, v0, 80.0, np.eye(3), np.zeros(3), TGT, 7.6, init='linear', max_iter=100)
+    assert pS.status == 'converged'
+    c = certify_B(pS, VEH, CFG, r0, v0, 80.0, np.eye(3), np.zeros(3), TGT)
+    assert c['passed'], c['checks']
+    assert abs(pS.fuel - pB.fuel) / pB.fuel < 1e-3

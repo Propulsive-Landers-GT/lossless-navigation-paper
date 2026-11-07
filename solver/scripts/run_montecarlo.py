@@ -1,4 +1,5 @@
-"""Closed-loop Monte Carlo of guidance options A (flight code), B (recommended), C (3DOF + rate limits).
+"""Closed-loop Monte Carlo of guidance options A (flight code), B (recommended), C (3DOF + rate limits),
+S (standard 6DOF SCvx baseline; e.g. --methods B,S --tag _scvx).
 
 Usage: OMP_NUM_THREADS=1 .venv/bin/python scripts/run_montecarlo.py --scenario inair --n 40 --workers 2
 Writes results/mc_<scenario>.json (one record per run and method).
@@ -17,7 +18,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 warnings.filterwarnings('ignore')
 
 from gtpl_guidance.params import default_vehicle, default_config
-from gtpl_guidance.guidance import PlannerA, PlannerB, PlannerC, min_tf_B, min_tf_C, min_tf_3dof
+from gtpl_guidance.guidance import PlannerA, PlannerB, PlannerC, PlannerS, min_tf_B, min_tf_C, min_tf_3dof
 from gtpl_guidance.sim6dof import simulate, SimOptions
 from gtpl_guidance.rotations import R_to_quat, expm_so3
 
@@ -63,7 +64,7 @@ def run_case(args):
     t0 = time.time()
     tf3 = min_tf_3dof(r0, v0, m0, target, veh, cfg)
     tfB = tfC = None
-    if 'B' in methods:
+    if 'B' in methods or 'S' in methods:
         tfB, _ = min_tf_B(r0, v0, m0, R0, w0, target, veh, cfg, lo=tf3)
     if 'C' in methods:
         tfC = min_tf_C(r0, v0, m0, target, veh, cfg, lo=tf3)
@@ -76,6 +77,11 @@ def run_case(args):
                 recs.append(dict(case=i, method='B', failed='no feasible tf'))
                 continue
             pl = PlannerB(veh, cfg, target, tfB + TF_MARGIN)
+        elif meth == 'S':   # same problem and the same final time as B
+            if tfB is None:
+                recs.append(dict(case=i, method='S', failed='no feasible tf'))
+                continue
+            pl = PlannerS(veh, cfg, target, tfB + TF_MARGIN)
         else:
             if tfC is None:
                 recs.append(dict(case=i, method='C', failed='no feasible tf'))
@@ -111,10 +117,11 @@ def main():
     ap.add_argument('--start', type=int, default=0)
     ap.add_argument('--workers', type=int, default=2)
     ap.add_argument('--methods', default='A,B,C')
+    ap.add_argument('--tag', default='')
     a = ap.parse_args()
     methods = a.methods.split(',')
     jobs = [(a.scenario, i, methods) for i in range(a.start, a.start + a.n)]
-    path = os.path.join(os.path.dirname(__file__), '..', 'results', f'mc_{a.scenario}.json')
+    path = os.path.join(os.path.dirname(__file__), '..', 'results', f'mc_{a.scenario}{a.tag}.json')
     allrecs = []
     with Pool(min(a.workers, 2)) as pool:
         for recs in pool.imap_unordered(run_case, jobs):

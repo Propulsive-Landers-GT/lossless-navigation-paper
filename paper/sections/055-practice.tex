@@ -71,6 +71,13 @@ replans; success means touchdown $\le1$~m/s, lateral error $\le1$~m, tilt $\le5^
 $100\%$, with median touchdown speeds $2.42$, $0.48$ and $0.20$~m/s (\cref{fig:mcinair}). Pad hops (30 runs): A $0\%$, C $100\%$ at $+23\%$
 fuel, B $97\%$ (the one failure skimmed the altitude floor; that is a formulation issue for hops). B's solver time per replan
 averaged 0.2--0.4~s, with 9--60 small SOCPs per plan.
+\item \emph{Against standard 6-DOF successive convexification.} A textbook SCvx baseline (full quaternion rigid body
+linearized about the current trajectory, virtual control, trust region with the usual ratio test
+\cite{szmuk2018gnc,reynolds2020ptr}) was given the same model, constraints, certificate and replanning rules. It ties with B
+on optimality (both within $0.03\%$ of IPOPT on 16 open-loop problems, all certified) and on the hop feasibility map (both 20/20).
+In closed loop it was as good or slightly better: in-air $100\%$ (median touchdown $0.13$~m/s against B's $0.20$), hops $100\%$
+against B's $97\%$, at about twice B's solver time per replan ($0.62$ against $0.33$~s mean in-air). B therefore does not
+outperform standard SCvx on these tests; its advantages are speed and that every accepted iterate is flyable.
 \item \emph{The impossibility, visible in practice.} On a grid of 20 pad-hop targets (launch speeds 5--7~m/s, landing offsets
 0--6~m, $t_f=4$~s), the 3-DOF relaxation and the flight LCvx report ``optimal'' at all 20. Neither B nor IPOPT finds a flyable plan
 at 11 of them: all 8 targets with launch speed $\ge6.5$~m/s, plus 3 targets 6~m away. B and IPOPT agree on feasibility in all 20

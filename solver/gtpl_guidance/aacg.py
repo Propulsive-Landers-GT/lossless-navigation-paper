@@ -300,7 +300,8 @@ class AACG:
             inner = self.solve_inner(att, alpha, m_s, r0, v0, target)
             if inner is None:
                 return self._result(None, None, None, None, m0, tf, 'infeasible', 0, t_wall, [])
-        hist = [dict(it=0, merit=inner['merit'], fuel=inner['fuel'], **inner['defect'], Delta=Delta0)]
+        hist = [dict(it=0, merit=inner['merit'], fuel=inner['fuel'], **inner['defect'], Delta=Delta0,
+                     n_solves=self.n_solves, solve_time=self.solve_time)]
         Delta = Delta0
         it = 0
         for it in range(1, max_iter + 1):
@@ -324,7 +325,8 @@ class AACG:
                 m_s = integrate_mass(g, np.linalg.norm(inner_c['T_body'], axis=1), m0, veh.alpha)
                 if rho > 0.75:
                     Delta = min(2 * Delta, 0.5)
-                hist.append(dict(it=it, merit=inner['merit'], fuel=inner['fuel'], **inner['defect'], Delta=Delta))
+                hist.append(dict(it=it, merit=inner['merit'], fuel=inner['fuel'], **inner['defect'], Delta=Delta,
+                                 n_solves=self.n_solves, solve_time=self.solve_time))
                 if actual < tol * (1 + abs(inner['merit'])) and self._feasible(inner):
                     break
             else:

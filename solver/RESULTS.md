@@ -222,7 +222,9 @@ Initial conditions:
 | solver work per replan | 1 SOCP × t_f scan | 9–60 SOCPs (anytime) | 1 SOCP | IPOPT, 1–3 s per start |
 | complexity | existing | about 500 lines of Python (planner + certificate) | about 20 lines on top of A | about 200 lines (CasADi) |
 
-**B is the simplest option that is both certifiably feasible and within a few percent of the optimum.**
+**B is certifiably feasible and within a few percent of the optimum.** A later head-to-head with standard 6DOF
+successive convexification (SCvx) found the two tie on optimality and feasibility, and SCvx was as good or slightly
+better in closed loop at about 2× the solver time per replan: see [RESULTS-SCVX.md](RESULTS-SCVX.md).
 
 - C is simpler, and closed-loop tracking hides much of its inconsistency. But it cannot be certified, it is
   infeasible at fuel-optimal times, and it lands 2–6× less precisely (touchdown speed / lateral error).

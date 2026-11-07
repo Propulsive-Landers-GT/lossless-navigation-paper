@@ -61,6 +61,10 @@ tried, but not yet proved.
   97% (current 0%).
 - **Tests and Lean:** 15 pytest tests pass. The algorithm's 7 elementary math claims are Lean-checked. Formalizing them
   caught one wrong documented condition; the code was already correct.
+- **Compared with standard 6DOF successive convexification** (`solver/RESULTS-SCVX.md`): planner B does **not** beat
+  it. They tie on fuel (both within 0.03 % of IPOPT) and every plan from both is certified flyable. In closed loop
+  standard SCvx landed 100 % in-air and 100 % of hops (B: 100 % / 97 %), at about 2× B's solver time per replan.
+  Either works for the lander; B is faster, SCvx is the better-known method.
 - **Also worth fixing:** the flight MPC's inertia and lever arm overstate angular authority by ~4.6×
   (`context/vehicle.md`).
 

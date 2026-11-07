@@ -31,6 +31,12 @@ What it achieved here (details in RESULTS.md):
 - The current flight LCvx (baseline A) asks for thrust below the 400 N minimum and for direction changes the gimbal
   cannot produce. In closed loop it succeeds in 28 % of in-air descents and in no pad hop.
 
+**Compared with standard 6DOF successive convexification (SCvx)** ([RESULTS-SCVX.md](RESULTS-SCVX.md)): B does *not*
+outperform it. Both are within 0.03 % of the IPOPT optimum and 100 % certified open loop. In closed loop the standard
+SCvx baseline (`gtpl_guidance/scvx6dof.py`) landed 40/40 in-air and 30/30 hops versus B's 40/40 and 29/30, with
+slightly lower touchdown speeds in-air, but took about twice B's solver time per replan (0.62 vs 0.33 s mean).
+Either is a sound choice; B's edge is speed and anytime feasibility.
+
 ## Why we need this: what is wrong with the current guidance
 
 The flight code (`guidance/LosslessConvexification`) solves a **3DOF** problem: a point mass whose thrust vector can
