@@ -1,0 +1,57 @@
+# Is 5DOF / 6DOF lossless convexification possible? — living synthesis
+
+Orchestrator-maintained. Every item links to the file with the proof. Status keys:
+**LEAN** = machine-checked (sorry-free, standard axioms only) · **PROVED** = rigorous proof that survived adversarial attack ·
+**NUMERICAL** = strong numerical evidence only · **OPEN**.
+
+## Short answer (current)
+
+1. **Impossible in the LCvx sense.** Classical LCvx keeps the physical state (r, v, m) as decision variables, enters
+   boundary data affinely, and relaxes the control constraints. No relaxation of that kind can be lossless for 5DOF
+   with a finite attitude rate and a minimum throttle ρ1 > 0. The obstruction: the set of feasible boundary conditions is
+   nonconvex, because the vehicle cannot "chatter" its thrust direction (math/00, math/02).
+2. **The obstruction is genuine but, under ground constraints, thin for GTPL.** With r_z ≥ 0 the proven dent is
+   ≈1e-5 m (rigorous) to ≈1 cm (heuristic) for the kinematic model. Large (m/s-level) gaps exist only for
+   trajectories that would start underground (math/01, math/02 §10).
+3. **Possible in other senses:**
+   - **Fixed attitude profile:** given b(t), the convex relaxation is exact (Thm C, math/04). On the real TVC vehicle,
+     given b(t), the problem is exactly convex with no relaxation needed (C-6).
+   - **Per instance:** the nonconvexity is entirely the choice of attitude profile (C-U).
+   - **Infinite-dimensional lifts:** occupation-measure LPs with point-mass data entry are exact (generic; not practical).
+   - **Candidate tractable exact convex program:** a degree-2 SDP (Shor) lift is numerically exact for
+     *fixed-thrust* 5DOF min-landing-error (Conjecture CSD2; being independently verified and proved).
+
+## Results table
+
+| ID | Statement | Model / scope | Status | Where |
+|---|---|---|---|---|
+| A | Lossless uniform convex relaxation (affine data entry) ⇒ feasible boundary-data set convex | abstract | **LEAN** | lean/…/Abstract.lean |
+| B | Midpoint of extreme min-throttle arcs unreachable ⇒ F_tf nonconvex | M1 kinematic 5DOF, no altitude constraint, δ+ωtf ≤ π/2 | **LEAN** (`no_lossless_relaxation_5dof`) | lean/…/Main.lean |
+| Q | Quantitative gap Γ (ball bound) ⇒ no ε-lossless relaxation for ε<Γ | M1, no altitude constraint | PROVED | math/02 |
+| B* | Dive-then-brake exposed face ⇒ F nonconvex with altitude/glide slope, any tf, upright landing, bounded free-tf window | M1; kinematic 6DOF; independent-torque 6DOF | PROVED (Lean pending) | math/02 §10, math/01 §B* |
+| RR-LS | Line search over tf cannot rescue LCvx (needs B*'s braking condition / time window) | M1 | PROVED (Lean pending) | math/redteam-reform.md §4 |
+| A-opt, T | Value-lossless on F ⇒ V = V** on F; cost ∫b·e_z violates it | abstract / M1 | PROVED | math/redteam-lift.md §7 |
+| D | Per-instance min-landing-error: state-linear relaxations lossy | M1 | PROVED for terminal-error cost; hard-v(tf)=0 version needs Lemma S | math/02, threads/theorem-D.md |
+| S | Straight-below landing infeasible, offset feasible (vertical instance) | M1, r_z ≥ 0 | OPEN (proof-s) | math/07 (pending) |
+| FLAT | Centre-of-percussion identity: pure TVC ≡ zero-gimbal, torque-limited point thrust along b | pure TVC, ω3 ≡ 0, ε const | identity verified numerically (5e-15) | math/checks/flat_output_tvc.py |
+| B6-TVC | Pure-TVC F nonconvex | terminal r=v=0, ω⊥(tf)=0, tilt free | PROVED (adversary-6dof) | math/adversary-6dof-report.md |
+| B6-TVC-up | Pure-TVC F nonconvex, upright at rest + r_z ≥ 0 (**the real GTPL case**) | pure TVC | OPEN (proof-tvc) | math/06 (pending) |
+| C | LCvx exact given attitude profile b(t); strong form under PMP + checkable non-degeneracy | M1 | PROVED (Lean in progress) | math/04, math/05 |
+| C-Y | 3DOF LCvx optimum exactly 6DOF-flyable for GTPL essentially never | pure TVC | PROVED | math/04 |
+| X5 | Pointing cone ≤ gimbal ⇒ 5DOF = 3DOF, LCvx exact | M1 only (pure TVC: effective gimbal 0) | PROVED | math/redteam-reform.md |
+| ρ0 | With ρ1 = 0: velocity set convex; full F? | M1 | velocity: PROVED; full F: OPEN (possibility-rho0) | math/redteam-reform.md, math/possibility-rho0.md |
+| CSD2 | Degree-2 SDP lift exact for fixed-thrust min-landing-error | M1, fixed thrust | NUMERICAL (verifier-sdp, proof-sdp running) | math/redteam-lift.md, math/08 (pending) |
+
+## What breaks LCvx, in one paragraph
+LCvx works for 3DOF because the thrust direction is a free control. The relaxed (filled-in) thrust set is achievable
+on average by rapid switching (Lyapunov/Aumann), so the reachable set is already convex. In 5DOF the thrust direction
+is tied to a body axis that rotates at a finite rate (or with finite angular acceleration on the real TVC vehicle),
+so it cannot switch. With a minimum throttle, "wasting" vertical impulse requires tilting, and maximal tilt forces a
+single tilt direction. The average of a left-tilting and a right-tilting maneuver is therefore not flyable, yet any
+convex program that contains both must contain their average.
+
+## Practical implications for GTPL (preliminary; practical phase deferred)
+- The current 3DOF guidance asks for thrust-direction changes ~10³× faster than the vehicle can rotate, and is not
+  relaxation-tight on min-thrust arcs (context/vehicle.md).
+- The theory points to: an attitude-profile outer loop + an exactly convex inner problem (C-6/C-U), with SDP-lift
+  certificates (if CSD2 holds) to certify global optimality or infeasibility.

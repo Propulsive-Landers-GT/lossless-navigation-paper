@@ -17,4 +17,4 @@ problem for the GTPL monoprop lander, or prove that it cannot — and machine-ch
 | `lean/LcvxObstruction/` | Lean 4 + Mathlib formalization |
 | `paper/` | Paper draft (LaTeX) |
 
-Start with `math/00-model-catalog-and-proof-sketch.md`.
+Start with `SYNTHESIS.md` (current answer), then `comms/LOG.md`.
