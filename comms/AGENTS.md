@@ -21,5 +21,7 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | verifier-sdp | a1cc9c46da966f49c | Independent numerical attempt to break SDP-lift exactness (CSD2) | numerics/verifier-sdp/, math/verifier-sdp-report.md |
 | proof-sdp | ae94d2bcd8785d34a (DONE) | Prove/disprove CSD2 (degree-2 Shor lift exact for fixed-thrust 5DOF min-landing-error), extend to throttle | math/08-sdp-exactness.md |
 | lean-s | a40abab87ad7b4bb3 | Lean: A-opt/Prop T, Wirtinger lemma, Lemma S, Thm D w/ penalty | lean/LcvxObstruction/LcvxObstruction/Slice/ |
-| paper-writer | a41a31397861a8637 | LaTeX paper draft from SYNTHESIS + proofs; only proven/formalized claims | paper/ |
+| paper-writer | a41a31397861a8637 (DONE, draft) | LaTeX paper draft from SYNTHESIS + proofs; only proven/formalized claims | paper/ |
+| verify-imp | afee825a20ce8c68e | Referee impossibility-side CLAIMED rows (Q, B*, D, S, A-opt, P0-*) | math/verify-imp-report.md |
+| verify-pos6 | ab5886d8970d683d2 | Referee 6DOF, positive, SDP CLAIMED rows | math/verify-pos6-report.md |
 | solver | (paused) | Practical landing algorithm — deferred until lossless question settled | solver/ |

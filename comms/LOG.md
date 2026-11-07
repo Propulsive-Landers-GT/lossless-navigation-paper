@@ -104,3 +104,4 @@
 - 00:38 proof-s hop verdict: NOT PROVED (quadratic/Shor certificates provably too loose: tilts ~1 rad, lifted paths). Rigorous: reduction, upright-pad limit 7.20/7.28 m/s, explicit offset witnesses (4.6–6.6 m off). Ring for v0z∈(7.727,7.742] numerical. Needs 2D rigidity or validated B&B.
 - 00:38 Launched paper-writer (paper/, CLAIMS-MAP.md; placeholders for in-progress results).
 - 00:54 lean-positive DONE: 35 theorems sorry-free; ORCHESTRATOR VERIFIED C3_headline & convex_origFeas axioms = standard 3. Gaps listed in lean/POSITIVE.md.
+- 00:57 paper-writer DONE: paper/main.pdf (30 pp) compiles; CLAIMS-MAP.md. Flagged many SYNTHESIS-'PROVED' rows still CLAIMED in registry ⇒ launched verify-imp + verify-pos6 referees for an independent confirmation sweep.
