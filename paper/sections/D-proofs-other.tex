@@ -20,6 +20,24 @@ $A-V(h)\le-f(h)$ with $f(h)=\sin2h-h\cos2h+\sin h-2h\ge h^3(\tfrac12-\tfrac23h^2
 two groups of maximizers are compact, disjoint, and separated by $\ip{\hat p}{I}$: the left group coasts late, while the right group thrusts
 late and less early. A convex face cannot be a disjoint union of two nonempty compact sets, because convex sets are connected. \qed
 
+\subsection{Theorem E$_0$ (pure TVC, rest-terminal rate, tilt free)}
+Adapted from \texttt{math/adversary-6dof-report.md} \S6, with the repairs of the independent referee. Constant mass, so
+$\kappa=L/J_t=1/(\varepsilon m)$ is constant. Roll rate zero is a model restriction. Write $f=T\cos\mu/m-\varepsilon\norm{\Omega_\perp}^2$ for the
+axial drive of the centre of percussion $y$ (\cref{lem:cop}). In the regime (H-f), (H-$\pi$), $f>0$ and the tilt stays below $\pi/2$.
+Let $\mathcal A$ be the comparison class in which the transverse angular acceleration is bounded by $\kappa T\sin\mu$ with the gimbal
+deflection relaxed (its sign may chatter), and $\mathcal P\subseteq\mathcal A$ the planar meridional profiles.
+(L1)~Rigidity: a body axis whose tilt equals the length of its path is a meridian. (L2)~Comparison: $I_z(q)$ is bounded below by its
+value on the planar profile with angular speed $\norm{\Omega_q}$, with equality iff the tilt equals the path length. (L3)~Every
+minimizer of $I_z$ over $\mathcal P$ tilts on a set of positive measure. (L4)~$I_z$ attains its infimum on $\mathcal P$ (weak-$*$ compactness
+of the throttle and Arzel\`a--Ascoli). Hence every $\mathcal A$-minimizer of $I_z$ is meridional along one azimuth $u$ with nonzero lateral
+increment.
+\emph{Closure step.} The minimizer $p^*$ uses chattering gimbal signs, so it need not be physical. On a grid of cells, use ordinary
+in-plane gimbal deflections $\pm\mu$ with a duty cycle chosen so that each cell's integrated lateral torque equals that of $p^*$. Then the
+body rate agrees with that of $p^*$ at every node, including $\Omega_\perp(t_f)=0$, and the axis stays planar. The axial thrust is
+unchanged, so $I(p_n)\to I(p^*)$, and the landing conditions on $r,v$ are absorbed into the data. Thus $I(p^*)$ and $R_\pi I(p^*)$ lie in
+the velocity projection of $\cl\Ft$. If $\cl\Ft$ were convex, the midpoint $I_z(p^*)\ez$ would lie in it, and by compactness of the
+relaxed trajectory set it would be the increment of some $q\in\mathcal A$ minimizing $I_z$ with zero lateral part, a contradiction. \qed
+
 \subsection{Theorem C-W (fixed attitude)}
 Adapted from \texttt{math/04} \S3. The extreme points of the cap $K_\Gamma(b)$ are exactly its spherical part
 $S_\Gamma(b)=\{\norm T=\Gamma,\ \angle(T,b)\le\delta\}$, and $K_\Gamma=\conv S_\Gamma$ (Krein--Milman; Lean: \lean{extremePoints\_cap},

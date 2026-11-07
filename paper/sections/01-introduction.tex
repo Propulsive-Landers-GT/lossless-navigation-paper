@@ -41,6 +41,23 @@ the boundary data enter affinely. That is exactly the LCvx situation. The rest o
 removes the idealizations one by one (state constraints, minimum throttle, terminal attitude, final time, 6-DOF),
 quantifies the size of the obstruction, and describes what can still be convexified exactly.
 
+\paragraph{Headline result.}
+The following statement is machine-checked in Lean~4 with Mathlib (\cref{sec:lean}). Its proof is Theorem~A combined with
+Theorem~B$^*$ (\cref{sec:Bstar}).
+\begin{maintheorem}[machine-checked]
+% CLAIMS: A + B*, P-B* (CONFIRMED; FORMALIZED) | Lean: no_lossless_relaxation_constrained_5dof, no_losslessFor_relaxation_constrained_5dof, no_lossless_relaxation_constrained_upright_5dof, no_lossless_relaxation_constrained_6dof, no_lossless_relaxation_constrained_upright_6dof
+Consider 5-DOF powered descent with rate-limited thrust axis ($\angle(b(s),b(s'))\le\omega|s-s'|$, $b(0)=\ez$), gimbal cone
+$\angle(d,b)\le\delta$ with $0<\delta<\pi/2$, thrust acceleration between constants $0<a_{\min}\le a_{\max}$ with $g_0<a_{\max}$, and
+soft landing at $t_f$ with $r_z\ge0$ and a glide slope $\tan\gamma\,\norm{r_h}\le r_z$ along the whole trajectory (or any state constraint whose admissible set $\X$
+contains this cone, e.g.\ altitude only). Then for every $t_f>0$ and every $\omega>0$, no convex set $C\subseteq\R^6\times Y$ ($Y$ an arbitrary real vector
+space) is lossless for the set of feasible initial positions and velocities, in the feasibility form or in the LCvx
+optimization form for any cost. The same holds with an upright terminal attitude $b(t_f)=\ez$, and for kinematic 6-DOF
+attitude (paths of proper rotations with body rate at most $\omega$ and free roll angle), with free or upright terminal attitude.
+\end{maintheorem}
+The constant acceleration bounds make the formal statement exact for constant mass. A pen-and-paper version with mass depletion,
+free final time on compact windows and an explicit (tiny) quantitative gap is proved and independently refereed
+(\cref{thm:Bstar}).
+
 \paragraph{Contributions.}
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
 \item \emph{Definitions} (\cref{sec:formulation}). We define uniform and state-linear convex relaxations with
@@ -64,8 +81,10 @@ coplanar subclass, together with counterexamples to exactness in general.
 \item \emph{Numerics} (\cref{sec:numerics}). Gap laws, results beyond the proven regimes, and the size of the
 obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
 pad-launched hops.
-\item \emph{Formalization} (\cref{sec:lean}). Theorem~A, Theorem~B, the state-constrained Theorem~B$^*$, the abstract
-Theorem~D and the line-search lemma are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}.
+\item \emph{Formalization} (\cref{sec:lean}). The Main Theorem above (state-constrained Theorem~B$^*$ with Theorem~A, in 5-DOF and
+kinematic 6-DOF, with free or upright terminal attitude), Theorem~B with explicit mass depletion, the abstract Theorem~D, the
+line-search lemma, the Wirtinger lemma and master inequality, Theorem~A-opt, and an explicit instance of Lemma~S with the resulting
+hard-landing Theorem~D are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}.
 External theorems used on the positive side (the maximum principle and Aumann's theorem) enter only as explicit
 hypotheses.
 \end{enumerate}

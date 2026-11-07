@@ -20,7 +20,7 @@ $a(s)\ge a_1(s):=\rho_1/(m_0-\alpha\rho_1s)$, the acceleration at constant minim
 \subsection{Attitude models}\label{sec:models}
 The body (thrust) axis is $b(t)\in\Sph$. The gimbal constraint is $\angle(d(t),b(t))\le\delta$ with
 $\delta\in[0,\pi/2)$. A body-fixed box gimbal $\pm\delta$ per axis is handled by replacing $\delta$ by the corner angle
-$\delta^*$ in obstruction arguments ($\delta^*\approx21.2^\circ$ for $\pm15^\circ$) and by the inscribed angle where a
+$\delta^*$ in obstruction arguments ($\delta^*=21.09^\circ$ for a $\pm15^\circ$ Cardan gimbal) and by the inscribed angle where a
 witness needs it \pnote{math/adversary-6dof-report.md, V7}.
 \begin{description}[leftmargin=1.2em,style=nextline,itemsep=3pt]
 \item[M0 (3-DOF LCvx baseline).] No attitude; optional pointing cone $\angle(d,\hat n)\le\theta_p$ about a fixed axis.
@@ -44,7 +44,7 @@ Roll does not move the thrust axis of an axisymmetric vehicle. 5-DOF (translatio
 therefore the natural primary model, and 6-DOF results follow by projection and lifting (\cref{sec:6dof}).
 
 \begin{lemma}[Centre-of-percussion identity {\pnote{math/02, Lemma~6.4}}]\label{lem:cop}
-% CLAIMS: P-K3, FLAT (identity CONFIRMED for eps const, roll rate 0) | Lean: none
+% CLAIMS: P-K3 (CONFIRMED by verify-pos6, incl. roll term), FLAT (identity CONFIRMED) | Lean: none
 Consider model PT with constant mass $m$, axisymmetric $J$, roll rate $\varpi=\ip{\Omega}{b}$ and
 $\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
 \[
@@ -52,7 +52,7 @@ $\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
 \qquad \mu=\angle(d,b).
 \]
 With zero roll rate the lateral gimbal force cancels exactly: $y$ is driven by a thrust along $b$ (effective gimbal
-$0$) whose magnitude is reduced by the centripetal term.\Spending
+$0$) whose magnitude is reduced by the centripetal term.\Sproved
 \end{lemma}
 For the motivating vehicle, $\varepsilon\approx1.35$~m. The identity is the basis of both the pure-TVC obstruction
 (\cref{sec:tvc}) and the pure-TVC positive result (\cref{thm:C6}).

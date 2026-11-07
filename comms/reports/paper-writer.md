@@ -49,3 +49,34 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
    - "Inner discretization ⇒ NLP distances are upper bounds" is stated in the paper wherever numerics are cited.
 5. **Bibliography:** paper/refs.bib is curated from literature/refs.bib (39 entries). I added 5 standard references not in the lit-review bib: Shor 1987, Lasserre 2001, Pontryagin et al. 1962, de Moura–Ullrich (Lean 4, CADE 2021), and mathlib (CPP 2020). They are marked in the file and should be checked. acikmese2013flight carries the lit-review's UNVERIFIED note.
 6. **Vehicle:** context/vehicle.md says the vehicle is a hybrid, not a monoprop. The paper says only "small throttleable TVC lander" and uses the central parameter set (80 kg, 400–1000 N, ±15° box, J⊥ 63.6, L 0.589).
+
+---
+## Revision 2 (2026-11-07, after referee reports and new Lean results)
+- **Referee repairs applied.** All NEEDS FIX items from math/verify-imp-report.md and math/verify-pos6-report.md:
+  - Q_T scope (only the in-hypothesis value is quoted);
+  - Cor 3.11 window (s* < t_a, (S1)–(S3) at t_a with a_max at t_b, m0−αρ2 t_b ≥ m_dry; the ρ1-fuel window is explicitly rejected);
+  - Cor D.1 (δ ≤ π/4; extra vertical constraints must be satisfied by the witness);
+  - Thm S Ω-ranges with positive lower ends, and the reason for them;
+  - A-opt (conv V over finite mixtures, not V**);
+  - Prop T (variant T; variant F with ωtf);
+  - P0-R tent (convex ≤ π/2, nonconvex up to π, open beyond);
+  - P0-X threshold values;
+  - E₀ (constant mass, roll restriction, strict regime, duty-cycle closure step written in App. D);
+  - C-S (meagre in the admissible class; BV adjoint under velocity constraints);
+  - C-W′ touchdown-Slater caveat;
+  - C-U without path constraints;
+  - X5 with ωtf ≥ ∠(b0,b_f);
+  - Thm 4.8 without the glide-slope clause (Gram-linear constraints only; glide slope a posteriori);
+  - Prop 5.1 rank ≤ 4 only for 3D data (≤ 5 coplanar), with the added step;
+  - Prop 6.1 consequence toned down;
+  - Cardan corner angle 21.09°;
+  - C-Y 3.5e-6 / 1.8e-5 rad/s (the paper never contained the "TVC torque may be added" remark).
+- **Tags.** CONFIRMED rows are now tagged "proved; independently refereed". Repaired rows are tagged "proved; refereed, statement as repaired". Only TRIV (Prop 2.7) and P-3 (Rem 3.22) keep the orange "not refereed" tag.
+- **Headline.** A machine-checked Main Theorem is stated in the introduction and pointed to from the abstract:
+  - `no_lossless_relaxation_constrained_5dof` and its LCvx form;
+  - the `_upright_5dof`, `_constrained_6dof` and `_upright_6dof` versions.
+- **Lean table (§6).** Rewritten with Upright.lean, SixDOF.lean, MassModel.lean (`no_lossless_relaxation_5dof_mass`), `position_eq_integral_velocity`, and Slice/* (Lemma W, master inequality, `Slice.lemmaS` + `theoremD_hard_landing` for the explicit fixed-thrust instance, abstract A-opt and Prop T). The pending-Lean placeholder is removed.
+- **Remaining placeholders:**
+  1. pure TVC upright at rest with r_z ≥ 0 (TVC-1, proof-tvc);
+  2. Conjecture CSD2′ (evidence updated: 0 gaps on 509 former unit-d gap instances; prover running).
+- The PDF is now 33 pages and compiles cleanly. paper/CLAIMS-MAP.md is rewritten (revision 2).

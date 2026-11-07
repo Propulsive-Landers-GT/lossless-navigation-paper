@@ -8,7 +8,18 @@ no \texttt{sorry} and no \texttt{axiom}. For every headline theorem, \texttt{\#p
 \[
 \texttt{[propext, Classical.choice, Quot.sound]},
 \]
-the standard axioms of classical Lean mathematics. For the impossibility side this was checked after a full \texttt{lake build} at commit \texttt{eb2f850}. For the positive side it is the audit file \texttt{Positive/Axioms.lean}, whose output is recorded in \texttt{lean/POSITIVE.md}.
+the standard axioms of classical Lean mathematics. This was verified by the orchestrator after a full \texttt{lake build}
+(commit \texttt{19ffe1a}; outputs in \texttt{comms/reports/lean.md}), and for the positive side by the audit file
+\texttt{Positive/Axioms.lean} (output in \texttt{lean/POSITIVE.md}).
+
+\paragraph{Headline theorem.} The Main Theorem of \cref{sec:intro} is \lean{no\_lossless\_relaxation\_constrained\_5dof} together
+with its LCvx (optimization) form \lean{no\_losslessFor\_relaxation\_constrained\_5dof}, the upright-landing version
+\lean{no\_lossless\_relaxation\_constrained\_upright\_5dof}, and the kinematic 6-DOF versions
+\lean{no\_lossless\_relaxation\_constrained\_6dof} and \lean{no\_lossless\_relaxation\_constrained\_upright\_6dof}. Their hypotheses
+are: constant acceleration bounds $0<a_{\min}\le a_{\max}$ with $g_0<a_{\max}$, $0<\delta<\pi/2$, $\omega>0$, any $t_f>0$, $\tan\gamma\ge0$,
+and any state-constraint set containing the glide-slope cone $\{r_z\ge0,\ \tan\gamma\norm{r_h}\le r_z\}$. The 6-DOF attitude is a path of
+proper rotations $A(s)$ with $A(0)\ez=\ez$ in which every body-fixed direction turns at rate at most $\omega$ (total body rate
+$\le\omega$), with free roll angle. The non-vacuity lemma \lean{constrainedLandingSet\_nonempty} shows the constrained set is nonempty.
 
 \subsection{What is formalized}
 \Cref{tab:lean} lists the formal theorems that correspond to statements in this paper. A row-by-row faithfulness map from each
@@ -24,7 +35,10 @@ $\angle(b(s),b(s'))\le\omega|s-s'|$, measurable unit $d$, gimbal $\angle(d,b)\le
 which changes no integral. The admissible thrust accelerations form an abstract class \lean{Acc}. Theorem B assumes only
 $a\ge a_1$ for a continuous $a_1>0$ (so it covers mass depletion through $a_1(s)=\rho_1/(m_0-\alpha\rho_1s)$). Theorem B$^*$ assumes a
 box $a_{\min}\le a\le a_{\max}$ with constant bounds, which is exact for constant mass.
-\item Positions and velocities are given in closed (Cauchy) form, $r(t)=r_0+tv_0+\tfrac{t^2}2g+\int_0^t(t-s)\,a\,d$.
+\item Positions and velocities are given in closed (Cauchy) form, $r(t)=r_0+tv_0+\tfrac{t^2}2g+\int_0^t(t-s)\,a\,d$, and
+\lean{position\_eq\_integral\_velocity} proves that this equals $r_0+\int_0^tv$.
+\item \lean{AccMass} is the explicit mass-depletion model ($\dot m=-\alpha T$, $a=T/m$, dry-mass limit); \lean{accMass\_spec} derives
+$a\ge a_1$ from it.
 \item \lean{StateLinearRelaxation} is \cref{def:statelinear} with an affine readout and a convex penalty that is nonnegative on $C$.
 \end{itemize}
 
@@ -36,7 +50,10 @@ Paper & Lean name (file) & Formal scope \\\midrule
 \Cref{thm:A}, \cref{prop:opt-feas} & \lean{theoremA}, \lean{not\_isLossless\_of\_not\_convex}, \lean{not\_isLosslessFor\_of\_not\_convex}, \lean{IsLosslessFor.isLossless} (\texttt{Abstract}) & any $\Theta,Y$, any cost \\
 Spherical triangle inequality and rigidity & \lean{inner\_triangle}, \lean{inner\_triangle\_eq\_lateral}, \lean{lateral\_eq\_of\_inner\_ge} (\texttt{Sphere}) & inner-product form with equality case \\
 \Cref{thm:B} (variant F) & \lean{not\_convex\_reachSet}, \lean{not\_convex\_landingSet}, \lean{no\_lossless\_relaxation\_5dof}, \lean{no\_losslessFor\_relaxation\_5dof}, \lean{landingSet\_nonempty} (\texttt{Nonconvex}, \texttt{Main}) & $\delta+\omega t_f\le\pi/2$, any continuous $a_1>0$, any $g$, no state constraints, $b(t_f)$ free \\
-\Cref{thm:Bstar} (qualitative) & \lean{VStar\_not\_mem\_WSet}, \lean{witness\_mem\_glideSlope}, \lean{not\_convex\_constrainedLandingSet}, \lean{exists\_switchTime}, \lean{no\_lossless\_relaxation\_constrained\_5dof}, \lean{no\_losslessFor\_relaxation\_constrained\_5dof}, \lean{constrainedLandingSet\_nonempty} (\texttt{DiveBrake}, \texttt{Main}) & constant acceleration bounds ($\alpha=0$), $g_0<a_{\max}$, every $t_f>0$, every $\X\supseteq$ glide-slope set, $b(t_f)$ free \\
+\textbf{Main Theorem}; \cref{thm:Bstar} (qualitative) & \lean{no\_lossless\_relaxation\_constrained\_5dof}, \lean{no\_losslessFor\_relaxation\_constrained\_5dof}, \lean{not\_convex\_constrainedLandingSet}, \lean{VStar\_not\_mem\_WSet}, \lean{witness\_mem\_glideSlope}, \lean{exists\_switchTime}, \lean{constrainedLandingSet\_nonempty} (\texttt{DiveBrake}, \texttt{Main}) & constant acceleration bounds, $g_0<a_{\max}$, $0<\delta<\pi/2$, every $t_f>0$, every $\X\supseteq$ glide-slope set, $b(t_f)$ free \\
+\textbf{Main Theorem}, upright (T$'$) & \lean{not\_convex\_constrainedLandingSetUp}, \lean{witness\_admissible\_upright}, \lean{no\_lossless\_relaxation\_constrained\_upright\_5dof} (\texttt{Upright}) & as above with $b(t_f)=\ez$; $2s^*\le t_f$ supplied for every $t_f$ \\
+\textbf{Main Theorem}, 6-DOF; \cref{thm:6kin} & \lean{Attitude6Admissible.toM1}, \lean{lift\_admissible}, \lean{not\_convex\_landingSet6}, \lean{not\_convex\_constrainedLandingSet6}, \lean{not\_convex\_constrainedLandingSet6Up}, \lean{no\_lossless\_relaxation\_constrained\_6dof}, \lean{no\_lossless\_relaxation\_constrained\_upright\_6dof} (\texttt{SixDOF}, \texttt{Upright}) & kinematic: proper rotations, total body rate $\le\omega$, free roll angle; free or upright terminal attitude \\
+\Cref{thm:B} with mass depletion & \lean{AccMass}, \lean{accMass\_spec}, \lean{no\_lossless\_relaxation\_5dof\_mass} (\texttt{MassModel}) & $0<\rho_1\le\rho_2$, $\alpha\ge0$, $0<m_{dry}\le m_0-\alpha\rho_1t_f$, $\delta+\omega t_f\le\pi/2$, no state constraints \\
 \Cref{thm:D} (abstract) & \lean{StateLinearRelaxation.convexHull\_subset}, \lean{minError\_lossy}, \lean{convex\_superset\_gap} (\texttt{TheoremD}) & abstract; concrete instance not formalized \\
 \multicolumn{3}{@{}l}{\emph{Positive side} (namespace \texttt{LcvxPositive}, files \texttt{Positive/}; 35 audited theorems)}\\
 Cap lemma (C-G, C-3, uniqueness, sharpness, extreme points) & \lean{normal\_of\_max\_of\_norm\_lt}, \lean{norm\_eq\_or\_antiRay\_of\_isMaxOn\_cap}, \lean{isMaxOn\_cap\_unique}, \lean{extremePoints\_cap}, \lean{C3\_headline} (\texttt{Cap}) & any real inner-product space; $\R^3$ headline \\
@@ -44,7 +61,11 @@ Cap lemma (C-G, C-3, uniqueness, sharpness, extreme points) & \lean{normal\_of\_
 \Cref{thm:CW} (feasibility), C-F & \lean{relaxed\_subset\_original}, \lean{origFeas\_eq\_relFeas}, \lean{convex\_origFeas} (\texttt{Convexity}) & Aumann as hypothesis; constant mass; no state constraints \\
 Discrete KKT, purification (C-K) & \lean{discrete\_lossless\_nodewise}, \lean{zoh\_pairing}, \lean{purification\_count}, \lean{purification\_three} (\texttt{Discrete}) & KKT assumed; $\le3$ lossy nodes \\
 \Cref{thm:C6} & \lean{torque\_balance\_iff}, \lean{throttle\_interval}, \lean{convex\_tvcSet}, \lean{convex\_feasData\_M3b} (\texttt{TVC}, \texttt{Convexity}) & constant mass; the two halves joined in prose \\\midrule
-\Cref{lem:LS} (abstract) & \lean{not\_lineSearch\_lossless}, \lean{symmetric\_supply}, \lean{not\_lineSearch\_lossless\_of\_symmetry} (\texttt{FreeTime}) & abstract (i)--(ii); sorry-free (commit \texttt{517f1bb}); axiom check after next full build \\\bottomrule
+\Cref{lem:W} & \lean{Slice.periodic\_wirtinger}, \lean{Slice.wirtinger\_scalar}, \lean{Slice.wirtinger\_lipschitz} (\texttt{Slice/Wirtinger}) & periodic Wirtinger via Mathlib Parseval; vector form for $\R^N$-valued Lipschitz paths \\
+\Cref{prop:master} (master inequality) & \lean{Slice.master\_inequality}, \lean{Slice.master\_inequality\_fixed}, \lean{Slice.dent} (\texttt{Slice/Master}) & constant mass; constant-$\bar c(T)$ variant; no state constraints \\
+\Cref{thm:S}: Lemma S and hard-landing Theorem D, explicit instance & \lean{Slice.lemmaS}, \lean{Slice.instL\_norm\_ge}, \lean{Slice.theoremD\_hard\_landing} (\texttt{Slice/LemmaS}) & $a\equiv12$, $g_0=9.81$, $\delta=0$, $\omega=0.1$, $\omega t_f\approx0.35$, any $\X\supseteq\{r_z\ge0\}$, all 3-D paths; dent $\ge1$~m; ``hold'' S-turn witness \\
+\Cref{thm:Aopt}, \cref{prop:T} (abstract) & \lean{Slice.CostRelaxation.aOpt}, \lean{aOpt\_finset}, \lean{value\_le\_convexCombination}, \lean{no\_valueLossless\_of\_strict}, \lean{StateLinearRelaxation.lossy\_of\_gap} (\texttt{Slice/AOpt}) & abstract; Prop T's model facts not formalized \\
+\Cref{lem:LS} (abstract) & \lean{not\_lineSearch\_lossless}, \lean{symmetric\_supply}, \lean{not\_lineSearch\_lossless\_of\_symmetry} (\texttt{FreeTime}) & abstract (i)--(ii); the instantiation from B$^*$ (\cref{cor:LS}) is not formalized \\\bottomrule
 \end{tabular}
 \end{table}
 
@@ -59,23 +80,13 @@ and the a.e.\ minimum condition of (H-PMP). Aumann's theorem enters as \lean{Aum
 adjoint ODEs are assumed globally differentiable; C-S(2) is constant-mass only; ``$\mathrm P_0$-optimal'' is reduced to pointwise
 feasibility; C-E is discrete-time; and C-W is constant-mass and unconstrained.
 
-\begin{todobox}[{(lean, lean-s, lean-positive): formalizations still pending}]
-\textbf{Not yet committed or not yet axiom-audited at the time of writing:}
-\begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \texttt{SixDOF.lean} (\cref{thm:6kin}): \lean{not\_convex\_landingSet6}, \lean{not\_convex\_constrainedLandingSet6}. Status per [lean]'s DM: PENDING. [lean]'s final report (\texttt{comms/reports/lean.md}) already lists it as proven, but the file is uncommitted.
-\item \texttt{Slice/} (lean-s): \lean{periodic\_wirtinger}, \lean{wirtinger\_scalar}, \lean{wirtinger\_lipschitz} (\cref{lem:W}); \lean{master\_inequality},
-\lean{dent} (master inequality of \cref{thm:S}, constant mass); \lean{mixing}, \lean{aOpt}, \lean{no\_valueLossless\_of\_strict} (\cref{thm:Aopt}).
-Lemma S itself (the witness and $0\notin\cl L$) and Theorem B$^*$ beyond the qualitative constant-mass form are not formalized.
-\item \texttt{Positive/} (lean-positive): committed (\texttt{455a288}) and audited (axioms clean, \texttt{lean/POSITIVE.md}), listed in \cref{tab:lean}; not yet in the
-root import list, so it is not covered by the root \texttt{lake build}.
-\end{itemize}
-\textbf{To fill in:} move each item into \cref{tab:lean} once it is committed with a clean \texttt{\#print axioms}.
-\end{todobox}
+
 
 \subsection{What is not formalized}
-Mass depletion in Theorem B$^*$; the terminal-attitude variants (T) and (T$'$); free final time for B$^*$ (the abstract line-search
-lemma is formalized, the supply of its hypotheses from B$^*$ is not); all quantitative gaps (\cref{thm:Q}, the B$^*$ bound,
-$\varepsilon$-losslessness); 6-DOF and torque models; the centre-of-percussion identity; $\rho_1=0$; the SDP results; the equivalence of
-the closed-form trajectory with $r_0+\int v$ (standard Fubini). The physical scope caveat of \cref{sec:Bstar} also applies to the
+Mass depletion in Theorem B$^*$ (the min-then-max witness has a history-dependent acceleration); the tent variant (T) of the
+unconstrained Theorem B; free final time for B$^*$ (the abstract line-search lemma is formalized, the supply of its hypotheses from B$^*$
+is not); all quantitative gaps (\cref{thm:Q}, the B$^*$ bound, $\varepsilon$-losslessness); torque-limited and pure-TVC 6-DOF models; the
+centre-of-percussion identity; $\rho_1=0$; the SDP results; Cor.~D.1; Lemma S beyond the single explicit fixed-thrust instance (throttle, gimbal $\delta>0$, mass depletion, glide slope), and the
+model facts behind Proposition T. The physical scope caveat of \cref{sec:Bstar} also applies to the
 formal Theorem B: its witnesses start below ground for a vehicle that cannot hover at minimum throttle. The formal Theorem B$^*$ is
 the statement that covers the altitude-constrained problem.

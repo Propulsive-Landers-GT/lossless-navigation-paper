@@ -22,9 +22,9 @@ $\norm{\tilde f-\bar{\tilde f}}^2\le(T/2\pi)^2\norm{\dot{\tilde f}}^2=(T/2\pi)^2
 $E_4=a_{10}(1+\varepsilon_m)^2\int_0^T(\frac1{1+\cos\tau(s)}-c_0)\sin^2\tau(s)\,ds$, $B=a_{10}c_0T(\frac\Omega{2\pi}+\delta_e)^2+E_4$,
 $A'=c_0/a_{10}$, $\kappa_0=\cos\bar\tau/((a_2-a_{10})\sin^2\bar\tau)$ and $C_m=A'\kappa_0/(\kappa_0-A')$ ($C_m=A'$ if $\rho_1=\rho_2$):
 \begin{proposition}[Master inequality {\pnote{math/07, Prop.~M}}]\label{prop:master}
-% CLAIMS: S-M (CLAIMED / SURVIVED adversary) | Lean: master_inequality (variant (c), constant mass), master_inequality_fixed, dent (Slice/Master.lean; PENDING)
+% CLAIMS: S-M (CONFIRMED by verify-imp; FORMALIZED for constant mass) | Lean: master_inequality (variant (c), constant mass), master_inequality_fixed, dent (Slice/Master.lean; PENDING)
 If $\bar\tau<\pi/2$ and $\kappa_0>A'$, every admissible M1 trajectory (any 3-D attitude path, throttle, $\alpha\ge0$) satisfies
-$\mathrm{gain}\le B+C_m\norm{\pi_{m(F)}}^2$.\Sproved
+$\mathrm{gain}\le B+C_m\norm{\pi_{m(F)}}^2$.\Sproved\ \Sleanpart{constant mass, variant with constant $\bar c(T)$}
 \end{proposition}
 \begin{proof}[Proof sketch]
 (1) A pointwise majorant $-a\,d_z\le-a_1+a_1\bar c|d_h|^2-(a-a_1)\cos\tau$ with $\bar c=1/(1+\cos\tau)$ splits off the throttle surplus
@@ -59,6 +59,10 @@ $10^\circ$ & 2 & 0.20 & $1.06\times10^{-2}$ & 0.39 & 2.59\\
 $10^\circ$ & 4 & 0.20 & $2.11\times10^{-2}$ & 1.57 & 10.38\\\bottomrule
 \end{tabular}
 \end{table}
+For $\delta>0$ the certified range of $\Omega$ has a positive lower end: as $\Omega\to0$ at fixed $\delta$, $\mathrm{gain}_w\to a_{10}T(1-\cos\delta)$
+while $B\to a_{10}T\cdot2\sin^2(\delta/2)\cdot2/(1+\cos\delta)$, which is larger, so $M<0$. At $T=2$~s the certified ranges are $(0,0.55]$
+($\delta=0$), $[0.004,0.46]$ ($5^\circ$), $[0.009,0.42]$ ($7^\circ$), $[0.038,0.34]$ ($10^\circ$) and $[0.070,0.27]$ ($12^\circ$) (independent referee
+computation). All rows of \cref{tab:S} lie inside them.
 With $\alpha=5.66\times10^{-4}$ the $\delta=5^\circ$ row fails narrowly, because $\varepsilon_m$ enters $\delta_e$ linearly. That is a weakness of the constants,
 not of the geometry. For $\delta\ge15^\circ$ the analytic constants do not certify; a discretized S-procedure SDP suggests $\delta=15^\circ$
 holds with an 8\% margin (numerical).

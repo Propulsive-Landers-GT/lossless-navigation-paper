@@ -6,7 +6,7 @@
 \begin{enumerate}[leftmargin=*,itemsep=3pt]
 \item \emph{Do not expect a single LCvx-type SOCP for attitude-rate-limited landing.} Within the class of convex programs on the
 physical state with affine data entry, exactness is impossible, and this cannot be fixed by adding slacks, cuts, lifted
-variables, discretization or a line search over $t_f$ (\cref{thm:A,thm:Bstar,lem:LS,thm:D}). Any such program, if it contains all
+variables, discretization or a line search over $t_f$ (\cref{thm:A,thm:Bstar,lem:LS,thm:D}); the state-constrained core of this statement is machine-checked. Any such program, if it contains all
 genuine trajectories, accepts boundary data that no flyable trajectory can land from. The flight software then has no way to
 detect infeasibility from the convex program alone.
 \item \emph{Outer attitude loop, exact convex inner problem.} The nonconvexity lies entirely in the choice of attitude profile
@@ -39,7 +39,7 @@ rigidity argument or validated branch-and-bound is needed. The $\rho_1=0$ landin
 $T/W\approx1.27$.
 \item \emph{CSD2$'$.} Is the degree-2 lift exact in continuous time with fixed thrust, or for the convexified-lens and $\delta=0$
 discretizations? Is there a tractable exact lift with variable throttle (e.g.\ the separate-axis lift CSD3)?
-\item \emph{Minimum-fuel value-losslessness.} Is $V=V^{**}$ on $F$ for minimum fuel? Theorem A-opt reduces this to a convexity
+\item \emph{Minimum-fuel value-losslessness.} Does $V$ agree with its convex envelope $\conv V$ on $F$ for minimum fuel? Theorem A-opt reduces this to a convexity
 question, and numerics show no violation. A positive answer would still not give an LCvx in the detection-sound sense.
 \item \emph{Long horizons and coning.} At long horizons with tilt caps, coning fills most but not all of the dents. Whether
 nonconvexity persists for all horizons in the tent variant, and at faces with long capped plateaus, is open.
