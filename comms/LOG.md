@@ -123,3 +123,4 @@
 - 02:10 solver interim: planner B within 0.04% of IPOPT 6DOF, 8/8 certified; closed loop A 28% / C 95% / B 100%; pad-hop: 3DOF accepts infeasible landings. adversary-6dof: TVC-1 v2 SURVIVES. proof-tvc: tilt-capped class route for tf≥3 s, rate-limited gimbal next.
 - 02:20 solver-v2 DONE (B recommended; 15 tests pass, orchestrator-verified). Launched lean-n (N1–N7, incl. checking the heuristic φ-axis gimbal-rate condition) and paper rev 3 (TVC certified, SDP refereed, practical section).
 - 02:22 lean-n BREAK (minor): solver claim N2 φ-axis heuristic FALSE standalone (counterexample, missing Ṫ_x term). Correct: (a) |φ̇| ≤ (|Ṫy|+t|Ṫz|+t²|Ṫx|)/Tz; (b) solver's actual θ+φ constraint PAIR implies |φ̇| ≤ ω_plan ⇒ planner B valid, no code change; wording fix only. Being formalized.
+- 02:25 paper rev 3 DONE (38 pp). Orchestrator corrections to SYNTHESIS from source: T5 hypotheses hold at 188/898 (≈21%), not 80%; pad-hop false feasibility 11/20, not 8.

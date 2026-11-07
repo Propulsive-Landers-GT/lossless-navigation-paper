@@ -7,11 +7,16 @@ Brief: comms/briefs/proof-tvc.md. Write-up: math/06-pure-tvc.md. Numerics: numer
 
 | case | G_w (m) | U_tot (m) | margin | dist(θ_m, F) ≥ |
 |---|---|---|---|---|
-| cone 15°, roll held (ω3≡0), N=120 | 7.269e-5 | 6.274e-5 | 13.7% | 9.6e-6 m |
-| Cardan box ±15° (δ*=21.09°), roll held, N=60 | 1.404e-4 | 1.329e-4 | 5.4% | 7.3e-6 m |
-| cone, competitors may use the roll RCS (ω3 free), N=120 | 7.269e-5 | 6.980e-5 | 4.0% | 2.8e-6 m |
+| cone 15°, roll held (ω3≡0), N=120 | 7.2691e-5 | 6.2736e-5 | 13.7% | 9.6e-6 m |
+| Cardan box ±15° (δ*=21.09°), roll held, N=60 | 1.4043e-4 | 1.3286e-4 | 5.4% | 7.3e-6 m |
+| cone, competitors may use the roll RCS (ω3 free), N=120 | 7.2691e-5 | 6.9798e-5 | 4.0% | 2.8e-6 m |
 
-Each certificate was re-verified in a fresh process with no solver (eigenvalue and Cholesky checks, U recomputed): `numerics/proof-tvc/verify_cert.py`. The gap is genuinely thin, about 1e-5 m, consistent with B* (math/02 Rem. 10.2).
+Status: **CONFIRMED**. [adversary-6dof] verdict SURVIVES. [verify-tvc] CERTIFIED in exact rational/interval arithmetic (math/verify-tvc-report.md; exact integer Sylvester minors) after repairs W1, W2, W3, all applied:
+- W1: the witness is now an ordinary bang-bang control (found independently by [adversary-6dof]); the old witness assumed chattering on partial-torque cells.
+- W2: exact upper weight for the free-roll gyro term.
+- W3: endpoint sups in the remainders.
+
+Certified margins in dist(θ_m, F): 9.96e-6 m (cone), 7.57e-6 m (box), 2.90e-6 m (free roll). `verify_cert.py` is a float re-check only. The gap is genuinely thin, about 1e-5 m, consistent with B* (math/02 Rem. 10.2).
 
 ## Method (what is new)
 - **No planarity, rigidity or maximizer characterization.** In flat coordinates y = r + εb, the face functional ℓ = r0z + s* v0z (B*-type, dive then brake) becomes W_z = ∫(s−s*) f b_z. Every competitor with zero lateral data (r0h = v0h = 0, as at the rotation midpoint θ_m) is bounded as follows:
@@ -36,8 +41,17 @@ Each certificate was re-verified in a fresh process with no solver (eigenvalue a
 
 ## What remains open
 1. **Mass depletion α>0 / varying ε(m)** (GTPL α=5.66e-4). The late baseline moves by ~4e-3 m, far more than the gap. A certificate for the α>0 class has to carry the competitor's own mass history in the penalty. TVC-1 holds for the constant-mass class, the standard LCvx idealization but not literally GTPL.
-2. **Gimbal-rate limit (100°/s, centred).** Needs a class-specific baseline and certificate.
-3. **Realistic horizons (5–8 s).** The crude a-priori (A1)/(A2) fail for tf ≳ 1.5 s, and the SDP size grows with tf. [adversary-6dof]'s numerics show clear gaps of 2.8e-2 m (tf=5) and 3.3e-2 m (tf=7), about 100× the tf=1 gap, so certification there should be easier once (A1)/(A2) are replaced by a bootstrapped localization.
+2. **Gimbal-rate limit (100°/s, centred).** Even against the rate-limited baseline, the best witness gain is negative (−1.5e-3 at tf=1): without chattering, deflection costs torque. The certificate must use the rate limit itself, via a jerk multiplier |h'''| ≤ aγ̇/ε (math/06 §5.3). Not implemented.
+3. **Realistic horizons.** What is done:
+   - (A2) dropped via Π ≥ b_z|a2−f|.
+   - Bootstrap localization; any tilt cap < 90° behaves like 30°.
+   - The ideal zero-lateral ratio stays at 0.70 at tf=3.
+   
+   But the rigorous runs at tf=2 (uncapped) and tf=3 (capped) FAIL, for two reasons:
+   - (i) The moment-shift term: the localized tilt at s* is about 6× the witness tilt, so ρ0 must stay near 0.05.
+   - (ii) The discretization floor needs N ≳ 150, where dense interior-point solvers are too big and SCS too inaccurate.
+   
+   Next: localization relative to G_w with a time-sliced Agmon bound near s*, and a banded SDP or higher-degree cell basis. Uncapped tf > 2.3 s also needs a tumbling-exclusion lemma for (A1). [adversary-6dof]'s numerics show gaps of 2.8e-2/3.3e-2 m at tf=5/7.
 4. **Free final time.** Reduced to a condition on a continuum of horizons via RR-LS (math/06 §5.4); not certified.
 5. **Formal verification of the SDP certificate** (rational LDLᵀ or interval arithmetic). The rest is Lean-ready (math/03 §Pure TVC).
 6. **A non-thin altitude-feasible face** (practical ε-impossibility). Still none known.

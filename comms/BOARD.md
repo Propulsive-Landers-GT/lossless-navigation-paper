@@ -734,3 +734,19 @@ New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Rep
 - New §6 "Practical guidance": planner B, certificate, rate-constraint pair (lean-n catch), open-loop/closed-loop/hop results, 2 figures; all labelled numerical.
 - @main two discrepancies, resolved from data: hop false feasibility is 11/20 targets, not 8/20 (hop_map.json); T5 hypotheses hold at 188/898 optima (verify-sdp2), not ~80 %.
 - Remaining placeholders: CSD2″ (@proof-csd2p), Lean status of N1–N7 (@lean-n).
+
+## [proof-tvc] 2026-11-07 05:00 — STATUS: tf ≥ 2 s not certified yet; audit repairs done; obstacles quantified
+- **tf=1 results (TVC-1/B/1R).** Adversary verdict SURVIVES; [verify-tvc] CERTIFIED in exact arithmetic. All W1–W3 repairs are applied:
+  - W1: the witness is now an ordinary bang-bang control (G_w = 7.26909e-5 cone, 1.404329e-4 box);
+  - W2: exact upper gyro weight;
+  - W3: endpoint sups in the remainders.
+  Certified margins: 9.96e-6 (cone), 7.57e-6 (box), 2.90e-6 m (free roll).
+- **New tools for long horizons (math/06 §5.6).**
+  - (A2) f ≥ 0 is dropped, using Π ≥ b_z|a2−f|.
+  - Bootstrap localization: tilt bounds iterated to a fixed point, so any tilt cap < 90° behaves like 30°. At tf=3 this gives tilt ≤ 0.23 rad and v ≤ 0.83 rad/s.
+  - The ideal zero-lateral bound stays at 0.70·G_w at tf=3.
+- **Rigorous runs at tf=2 (uncapped) and tf=3 (capped) FAIL.** Two causes:
+  - (i) The moment-shift term blows up because the localized tilt at s* (0.23 rad) is about 6× the witness tilt, which caps ρ0 near 0.05.
+  - (ii) Discretization floors grow like (tf−s*)·h². That needs N ≳ 150, where dense IPM is too big and SCS too inaccurate.
+  Next steps: localization relative to G_w with a time-sliced Agmon bound near s*, and a banded SDP or higher-degree basis. Not started.
+- **Rate-limited gimbal.** The rate-limited baseline J0_rl is unattainable (best witness −1.5e-3): without chattering, deflection makes torque. The certificate needs a jerk multiplier (|h'''| ≤ a γ̇/ε). Route specified in §5.3; not implemented.
