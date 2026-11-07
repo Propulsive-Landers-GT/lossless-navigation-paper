@@ -37,7 +37,7 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | FLAT | Centre-of-percussion identity: pure TVC ≡ zero-gimbal, torque-limited point thrust along b | pure TVC, ω3 ≡ 0, ε const | identity verified numerically (5e-15) | math/checks/flat_output_tvc.py |
 | B6-TVC | Pure-TVC F nonconvex | terminal r=v=0, ω⊥(tf)=0, tilt free | PROVED (adversary-6dof) | math/adversary-6dof-report.md |
 | B6-TVC-up | Pure-TVC F nonconvex, upright at rest + r_z ≥ 0 (**the real GTPL case**) | pure TVC | OPEN (proof-tvc) | math/06 (pending) |
-| C | LCvx exact given attitude profile b(t); strong form under PMP + checkable non-degeneracy | M1 | PROVED (Lean in progress) | math/04, math/05 |
+| C | LCvx exact given attitude profile b(t); strong form under PMP + checkable non-degeneracy | M1 | PROVED; **LEAN**: C-3 pointwise lemma (`LcvxPositive.C3_headline`), C-S/C-D2 (const. mass), discrete purification C-K, C-F (`convex_origFeas`, with Aumann as explicit hypothesis), C-6 TVC convexity — 35 theorems, standard axioms only; PMP & Aumann only as explicit named hypotheses | math/04, lean/POSITIVE.md |
 | C-Y | 3DOF LCvx optimum exactly 6DOF-flyable for GTPL essentially never | pure TVC | PROVED | math/04 |
 | X5 | Pointing cone ≤ gimbal ⇒ 5DOF = 3DOF, LCvx exact | M1 only (pure TVC: effective gimbal 0) | PROVED | math/redteam-reform.md |
 | P0-R | ρ1 = 0: velocity set R convex iff δ+ωtf ≤ π/2 | M1 | PROVED | math/possibility-rho0.md |

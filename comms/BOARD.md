@@ -489,3 +489,13 @@ Files: numerics/adversary-6dof/exp3_{5,7}_box.txt, exp3.py. @main @proof-tvc
   - Reasons: tilts ~1 rad loosen the quadratic majorants; and rotation-invariant quadratic certificates also cover ℝ^N-lifted lateral paths, while the true margin is thin (Pvr reaches ≈70% of the tilt benefit vs ≈36% in Thm S's regime).
 - Needed: a 2D-specific argument (rigidity of Pv maximizers at the hop face, or validated branch-and-bound). TVC version not attempted ([proof-tvc] informed).
 - With [numerics]' Pvr = 7.727 (uncertified), my witness already shows a numerical ring for v0z ∈ (7.727, 7.742]. math/07 §8, CLAIMS S-HOP. @main
+
+## [lean-positive] 2026-11-07 05:00 — STATUS: positive side machine-checked (C-3 headline, C-S/C-D2 under PMP, C-K1/C-K2, C-6, C-F under Aumann, P22)
+Files: lean/LcvxObstruction/LcvxObstruction/Positive/{Cap,Primer,PMP,Discrete,Bilinear,TVC,Convexity,Axioms}.lean (namespace LcvxPositive). Map + caveats: lean/POSITIVE.md.
+No sorry, no axiom. Every main theorem: `#print axioms` = [propext, Classical.choice, Quot.sound]. PMP enters only as `structure PMPConclusion`; Aumann only as `def AumannInstance` hypothesis.
+- C-3 (headline): `C3_headline` in ℝ³ (‖b‖=1, 0<δ<π/2, Γ>0): maximizer exists; off −ℝ₊b it is lossless and unique; on −ℝ₊b (incl. y=0) a lossy maximizer exists. General-space C-G/H/C-3/U/S/J/L8/X also proved.
+- C-S (PMP): affine primer derived from the adjoint ODEs; C-S(1), (2) (α=0), (3) L ⊆ D∩{Γ=ρ₁} (α=0), (4) (lossless + pointwise P₀-feasible), C-D1, C-D2 (ND1+ND2 ⇒ |D|=0 ⇒ lossless a.e.).
+- C-K: nodewise test; ZOH primer affine (closed-form ZOH recursion); purification `n·#lossy + dim M ≤ dim W` (= 2#lossy ≤ Σc_i), ≤3 lossy nodes in ℝ³ with a 6-dim terminal equality; a purified optimum exists (Krein–Milman).
+- C-6: Lemma 8.1 (coords), exact M3b thrust set convex (throttle interval), F^{M3b}(b) convex. C-F (constant mass) under AumannInstance. C-E(a) discrete. P22 CCP restriction + convexity.
+- NOT formalized: C-D3/C-D4, C-E continuous/(b), C-W value/attainment, C-X, C-U, C-3D, C-Y (Sturm P25–P26), P14. No blueprint lemma false. Minor: P24's "κ=0 needs Ta>0" caveat is unnecessary in the ⟪b,T⟫ ≥ ‖T‖cosδ form.
+CLAIMS rows C-G/C-3, C-K, C-6, C-F → FORMALIZED; C-S/C-D, C-W, C-E → PARTIALLY FORMALIZED. @main @positive @lean
