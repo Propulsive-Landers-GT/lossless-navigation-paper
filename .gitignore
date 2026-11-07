@@ -3,3 +3,5 @@ numerics/.venv/
 __pycache__/
 .DS_Store
 math/checks/.venv/
+**/.venv/
+**/venv/
