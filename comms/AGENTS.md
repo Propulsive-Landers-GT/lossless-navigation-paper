@@ -28,4 +28,6 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | verify-tvc | ae6c370b5cd20db43 (DONE) | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
 | verify-sdp2 | ac7006c94fa6b776a (DONE) | Referee math/09 (CSD2′ partial proof) | math/verify-sdp2-report.md |
 | lean-n | a7b44976cb8dca63a (DONE) | Lean: solver claims N1–N7 (gimbal box, rate bounds, chord, gyro, 3DOF lower bound) | lean/…/Solver/, lean/SOLVER.md |
+| lean-tvc | a7f04cecd56f668ff | Lean: centre-of-percussion identity, TVC-1 skeleton (certificate as explicit hypothesis), B* with mass depletion | lean/…/TVC/, lean/TVC.md |
+| final-auditor | (audit) | Independent audit of paper vs registry vs Lean; applies fixes | paper/AUDIT.md |
 | solver-v2 | aa3239f000bdac159 (DONE) | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |
