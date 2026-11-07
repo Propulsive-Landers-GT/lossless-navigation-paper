@@ -69,6 +69,9 @@ not functions of the affine readout (moment/Shor lifts, occupation-measure LPs).
 | `velocity g v₀ a d t` | `v₀ + t•g + ∫₀ᵗ a•d` | the solution of v̇ = a d + g, v(0) = v₀ |
 | `position g r₀ v₀ a d t` | `r₀ + t•v₀ + (t²/2)•g + ∫₀ᵗ (t−s)•(a•d)` | the solution of r̈ = a d + g (Cauchy's formula for the double integral, i.e. Carathéodory solution) |
 | `landingSet Acc tf ω δ g` | `{(r₀,v₀) \| ∃ admissible (a,d,b), position … tf = 0 ∧ velocity … tf = 0}` | F_{t_f}: initial data from which a soft landing (r = v = 0) at time t_f is possible. Initial position and velocity are free, there are no state constraints, and the final attitude is free. |
+| `position_eq_integral_velocity` (`Trajectory.lean`) | `position g r₀ v₀ a d t = r₀ + ∫₀ᵗ velocity g v₀ a d` for `t ≥ 0`, `a•d` integrable (via Fubini, `integral_primitive`) | the closed form really is the double integral of the acceleration |
+| `AccMass ρ₁ ρ₂ α m₀ m_dry tf` (`MassModel.lean`) | `{a \| a integrable ∧ ∃ T integrable, ρ₁ ≤ T ≤ ρ₂, m_dry ≤ m(t) := m₀ − α∫₀ᵗT, a = T/m on [0,tf]}` | explicit mass-depletion model ṁ = −αT, a = T/m, dry-mass limit |
+| `accMass_spec`, `aMinMass_mem`, `aMinMass_props` | every `a ∈ AccMass` has `a ≥ a₁ := ρ₁/(m₀ − αρ₁ s)`; `a₁ ∈ AccMass` (T ≡ ρ₁) if `m_dry ≤ m₀ − αρ₁ tf`; `a₁` continuous, > 0 | math/02 Lemma 4.3 |
 | `snd_image_landingSet` | `Prod.snd '' F = {−w − tf•g \| w ∈ R}` | proj_{v₀} F_{t_f} = −g t_f − R (math/02 Lemma 3.1) |
 | `convex_reachSet_of_convex_landingSet` | `Convex F → Convex R` | |
 
@@ -84,6 +87,7 @@ not functions of the affine readout (moment/Shor lifts, occupation-measure LPs).
 | `midpointM_not_mem_reachSet` | `M ∉ R` | key step |
 | `not_convex_reachSet`, `not_convex_landingSet` | `¬ Convex R`, `¬ Convex F_tf` (any gravity `g`) | **Theorem B** |
 | `no_lossless_relaxation_5dof` (+ `_lower`, `_box`, `no_losslessFor_…`) | `¬ R.IsLossless (landingSet …)` for every `Y` and every uniform convex relaxation `R` | **Main theorem, unconstrained** |
+| `no_lossless_relaxation_5dof_mass` (`MassModel.lean`) | the same for `Acc = AccMass ρ₁ ρ₂ α m₀ m_dry tf` (hyp.: `0 < ρ₁ ≤ ρ₂`, `α ≥ 0`, `0 < m_dry ≤ m₀ − αρ₁ tf`) | **Main theorem, unconstrained, explicit mass depletion** |
 
 Hypotheses: `0 < tf`, `0 < ω`, `0 ≤ δ`, `δ + ω tf ≤ π/2`, `a₁` continuous with `a₁ > 0` on [0,t_f]
 (neither constancy nor monotonicity of a₁ is needed), every `a ∈ Acc` integrable with `a ≥ a₁`, and
@@ -162,12 +166,12 @@ torque-limited (M3a/M4-dyn) and gimbal-torque-coupled pure-TVC (M3b) models are 
   constant mass, and also for any model whose acceleration class is a box with constant bounds
   containing the min-then-max profile. With α > 0 the min-then-max witness has a history-dependent
   acceleration, and math/02 Step 3 needs a separate comparison argument that is not formalized.
-  Theorem B (unconstrained) does cover α > 0 through `AccLower` with a₁(s) = ρ₁/(m₀ − αρ₁s) (the
-  derivation a ≥ a₁ from the mass ODE is also not formalized).
+  Theorem B (unconstrained) does cover α > 0, including the derivation of a ≥ a₁ from the mass
+  model (`MassModel.lean`).
 * **Terminal attitude** b(t_f) = e_z (variant T / T') is not formalized. b(t_f) is free in all theorems.
 * **Free final time** (Cor. 10.4) and the **quantitative gaps** (ball bound Thm Q, ε-lossless
   Cor. 5.2) are not formalized.
 * **6DOF**: only the kinematic rate-limited model (§5b). The M3a/M4 torque envelopes, the TVC flat
   output and the center-of-percussion identity are not formalized.
-* `position` is defined by Cauchy's closed form, not as `r₀ + ∫ v`. The equivalence (Fubini) is standard
-  and not proved here.
+* (Resolved) `position` is defined by Cauchy's closed form; `position_eq_integral_velocity` proves it
+  equals `r₀ + ∫ v`.
