@@ -95,6 +95,8 @@ tried, but not yet proved.
 | Proofs | `math/00`–`math/09`, referee reports `math/verify-*.md` |
 | Practical guidance code | `solver/` (README, RESULTS, PORTING, CLAIMS) |
 | Agent communication | `comms/` (BOARD, CLAIMS registry, threads, briefs, reports, LOG) |
+| Full session transcript (conversation + every subagent) | `session-transcript/session-export.zip` |
+| Complete map of the repository | `README.md` |
 
 Nothing was pushed anywhere. Everything is committed in the local git repo `GTPL/lcvx-5dof-research`. No sibling GTPL
 repo was modified.
