@@ -23,3 +23,4 @@ import LcvxObstruction.Solver.Gimbal
 import LcvxObstruction.Solver.Vectors
 import LcvxObstruction.Solver.Gyro
 import LcvxObstruction.Solver.Relaxation
+import LcvxObstruction.TVC.CentreOfPercussion
