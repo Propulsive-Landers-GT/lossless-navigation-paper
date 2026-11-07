@@ -1,6 +1,7 @@
 import LcvxObstruction.TVC.CentreOfPercussion
 import LcvxObstruction.TVC.Certificate
 import LcvxObstruction.TVC.Pointwise
+import LcvxObstruction.DiveBrakeMassModel
 
 /-! `#print axioms` for the main theorems of the `TVC/` files (expected: only
 `[propext, Classical.choice, Quot.sound]`). Not imported from the root; run with
@@ -23,3 +24,13 @@ import LcvxObstruction.TVC.Pointwise
 #print axioms LcvxObstruction.TVC.sq_add_le_split
 #print axioms LcvxObstruction.TVC.sq_sub_pos_ge_split
 #print axioms LcvxObstruction.TVC.relaxed_contains_ordinary
+
+-- B* with mass depletion (`DiveBrakeMass.lean`, `DiveBrakeMassModel.lean`)
+#print axioms LcvxObstruction.PhiMax_not_mem_WSet
+#print axioms LcvxObstruction.not_convex_constrainedLandingSet_of_max
+#print axioms LcvxObstruction.dive_identity
+#print axioms LcvxObstruction.exists_sigma_compare
+#print axioms LcvxObstruction.exists_max_phiFace_mass
+#print axioms LcvxObstruction.not_convex_constrainedLandingSet_mass
+#print axioms LcvxObstruction.no_lossless_relaxation_constrained_5dof_mass
+#print axioms LcvxObstruction.no_losslessFor_relaxation_constrained_5dof_mass
