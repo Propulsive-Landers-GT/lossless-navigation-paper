@@ -6,6 +6,13 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 
 ## Short answer (current)
 
+**Headline (machine-checked):** for the kinematic 5DOF model and the kinematic 6DOF model (proper rotations, free roll,
+attitude-rate limit ω), with throttle bounds 0 < a_min ≤ a ≤ a_max, full-throttle thrust-to-weight > 1, gimbal
+0 < δ < π/2, altitude and glide-slope constraints, upright or free touchdown attitude, and ANY final time tf > 0:
+no uniform convex relaxation (boundary data entering jointly convexly, any lifted variables) is lossless, for any
+cost. Lean 4/Mathlib, sorry-free, axioms = [propext, Classical.choice, Quot.sound]
+(`LcvxObstruction.no_lossless_relaxation_constrained_{5dof,upright_5dof,6dof,upright_6dof}`).
+
 1. **Impossible in the LCvx sense.** Classical LCvx keeps the physical state (r, v, m) as decision variables, enters
    boundary data affinely, and relaxes the control constraints. No relaxation of that kind can be lossless for 5DOF
    with a finite attitude rate — with a minimum throttle ρ1 > 0 (B, B*), and even with ρ1 = 0 (P0-F: the vehicle can coast while it rotates, which creates a different nonconvex kink). The obstruction: the set of feasible boundary conditions is
@@ -28,10 +35,10 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | A | Lossless uniform convex relaxation (affine data entry) ⇒ feasible boundary-data set convex | abstract | **LEAN** | lean/…/Abstract.lean |
 | B | Midpoint of extreme min-throttle arcs unreachable ⇒ F_tf nonconvex | M1 kinematic 5DOF, no altitude constraint, δ+ωtf ≤ π/2 | **LEAN** (`no_lossless_relaxation_5dof`) | lean/…/Main.lean |
 | Q | Quantitative gap Γ (ball bound) ⇒ no ε-lossless relaxation for ε<Γ | M1, no altitude constraint | PROVED | math/02 |
-| B* | Dive-then-brake exposed face ⇒ F nonconvex with altitude/glide slope, any tf, upright landing, bounded free-tf window | M1; kinematic 6DOF; independent-torque 6DOF | PROVED (Lean pending) | math/02 §10, math/01 §B* |
-| RR-LS | Line search over tf cannot rescue LCvx (needs B*'s braking condition / time window) | M1 | PROVED (Lean pending) | math/redteam-reform.md §4 |
+| B* | Dive-then-brake exposed face ⇒ F nonconvex with altitude/glide slope, any tf, upright landing, bounded free-tf window | M1; kinematic 6DOF (proper rotations, free roll); independent-torque 6DOF | **LEAN** for M1 + kinematic 6DOF, constant acceleration bounds (constant mass), any tf>0, any constraint set ⊇ glide-slope cone, upright or free terminal attitude: `no_lossless_relaxation_constrained_5dof`, `…_upright_5dof`, `…_constrained_6dof`, `…_upright_6dof` (+ optimisation form for every cost). Orchestrator-verified: full build, standard axioms only. Not in Lean: α>0 for B*, quantitative bounds, torque-limited 6DOF | lean/…/DiveBrake.lean, Upright.lean, SixDOF.lean, Main.lean |
+| RR-LS | Line search over tf cannot rescue LCvx (needs B*'s braking condition / time window) | M1 | abstract lemma **LEAN** (FreeTime.lean); concrete instance on paper | math/redteam-reform.md §4 |
 | A-opt, T | Value-lossless on F ⇒ V = V** on F; cost ∫b·e_z violates it | abstract / M1 | PROVED | math/redteam-lift.md §7 |
-| D | Per-instance min-landing-error: state-linear relaxations lossy | M1 | PROVED for terminal-error cost; hard-v(tf)=0 version needs Lemma S | math/02, threads/theorem-D.md |
+| D | Per-instance min-landing-error: state-linear relaxations (affine readout + convex penalty) lossy | M1 | abstract theorem **LEAN** (TheoremD.lean); hard-v(tf)=0 instance via Lemma S (proved on paper) | math/02, threads/theorem-D.md |
 | S | Straight-below landing infeasible, offset feasible (vertical instance) ⇒ Theorem D with hard v(tf)=0 lossy by ≥ r_S (0.4–1.8 m) | M1; δ+ωtf<π/2; min-throttle T/W > 1/cos(δ+ωtf); certified ωtf ≤ 0.55 (δ=0) … 0.30 (δ=10°). Handles coning (Wirtinger lemma) | PROVED (adversary: no flaw) | math/07-lemma-S.md |
 | S-GTPL | Lemma S at GTPL constants (hovering possible at min throttle) | M1 | NUMERICAL (gap ≈1 cm in ℓ; optimizers land 1.5–2.4 m off-axis) | math/07, numerics s1 |
 | FLAT | Centre-of-percussion identity: pure TVC ≡ zero-gimbal, torque-limited point thrust along b | pure TVC, ω3 ≡ 0, ε const | identity verified numerically (5e-15) | math/checks/flat_output_tvc.py |

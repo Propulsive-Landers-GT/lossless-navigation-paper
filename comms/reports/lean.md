@@ -15,6 +15,9 @@ Faithfulness map (each Lean definition beside the mathematics, plus scope): `lea
 | `TheoremD.lean` | `StateLinearRelaxation`, `convexHull_subset`, `minError_lossy`, `convex_superset_gap` | Theorem D (abstract): state-linear relaxations with convex penalty are lossy for min-landing-error at targets in conv(Reach) \ cl(Reach). |
 | `FreeTime.lean` | `not_lineSearch_lossless`, `symmetric_supply`, `not_lineSearch_lossless_of_symmetry` | Lemma RR-LS: a line search over t_f with per-horizon convex relaxations cannot be lossless (abstract form, hypotheses (H1)–(H3)). |
 | `SixDOF.lean` | `Attitude6Admissible.toM1`, `rotY`, `angle_rotY_le`, `lift_admissible`, `not_convex_landingSet6`, `not_convex_constrainedLandingSet6` | Kinematic 6DOF: the attitude is a linear isometry with every body direction rate-limited by ω and arbitrary roll. Projection to M1, plus the zero-roll lift of the witnesses, so Theorems B and B* carry over. |
+| `Trajectory.lean` | `integral_primitive`, `position_eq_integral_velocity` | Fubini: the closed-form position equals r₀ + ∫v, so it is faithful to r̈ = a d + g. |
+| `MassModel.lean` | `AccMass`, `accMass_spec`, `aMinMass_mem`, `no_lossless_relaxation_5dof_mass` | Explicit mass depletion (ṁ = −αT, a = T/m, dry-mass limit). Lemma 4.3 gives a ≥ a₁ = ρ₁/(m₀−αρ₁s), so the unconstrained main theorem holds for this model. |
+| `Upright.lean` | `witness_admissible_upright`, `not_convex_constrainedLandingSetUp`, `not_convex_constrainedLandingSet6Up`, `no_lossless_relaxation_constrained_upright_5dof`, `no_lossless_relaxation_constrained_upright_6dof`, `no_lossless_relaxation_constrained_6dof` | B* with upright landing b(t_f)=e_z (variant T'), 5DOF and 6DOF (proper rotations), every t_f. |
 | `Main.lean` | `no_lossless_relaxation_5dof` (+`_lower`, `_box`), `no_losslessFor_relaxation_5dof`, `no_lossless_relaxation_constrained_5dof`, `no_losslessFor_relaxation_constrained_5dof`, `landingSet_nonempty`, `constrainedLandingSet_nonempty`, `main_hypotheses_satisfiable` | Final statements: no uniform convex relaxation (any lifted space Y, any cost J) is lossless, unconstrained or altitude/glide-slope-constrained. The hypotheses are shown non-vacuous. |
 
 ## `#print axioms` (all headline theorems)
@@ -22,13 +25,55 @@ Every theorem listed above gives `depends on axioms: [propext, Classical.choice,
 Verbatim output is in §Axioms below.
 
 ## Remaining gaps (not formalized)
-- B* with mass depletion (α > 0). B* uses constant acceleration bounds (exact for constant mass). Theorem B (unconstrained) covers α > 0 through `AccLower` with a₁(s) = ρ₁/(m₀ − αρ₁s), but the derivation of a ≥ a₁ from the mass ODE is not formalized.
-- Upright terminal attitude b(t_f) = e_z (variants T/T'). b(t_f) is free everywhere.
+- B* with mass depletion (α > 0). B* uses constant acceleration bounds, which are exact for constant mass. The unconstrained Theorem B *is* formalized with explicit mass depletion (`MassModel.lean`).
+- Upright terminal attitude for the *unconstrained* tent variant T of Theorem B (B* with b(t_f)=e_z IS formalized).
 - Quantitative gaps (ball bound Thm Q, η₀ bound, ε-lossless Cor. 5.2) and the concrete free-final-time theorem (Cor. 10.4; only abstract RR-LS is formalized).
 - Concrete Corollary D.1 (dist(x°, Reach(θ_m)) > 0); only abstract Theorem D is formalized.
 - 6DOF with torque/inertia dynamics (M3a/M4-dyn), pure TVC (M3b, flat output), and the center-of-percussion identity.
-- `position` is defined by Cauchy's formula rather than r₀ + ∫v. The equivalence (Fubini) is not proved.
 
 ## Notes for [proof] / [orchestrator]
 - B* smallness condition used: (a_max + 2 tanγ·a_min)·s*² ≤ (a_max − g₀)(t_f − s*)², with ωs* ≤ δ and δ + ωs* ≤ π/2. This is a simpler sufficient replacement for (S2)/(S3), and `exists_switchTime` shows it is satisfiable for every t_f. δ ≤ π/4 is not needed; δ + ωs* ≤ π/2 suffices.
 - Theorem B needs no constancy or monotonicity of a₁: rigidity is applied on pairs of a.e.-good times, so no a.e.→everywhere step is needed.
+
+## Axioms
+`lake build` (full, at commit 19ffe1a) → `Build completed successfully (18218 jobs).` Then `#print axioms`:
+```
+'LcvxObstruction.theoremA' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_isLossless_of_not_convex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_isLosslessFor_of_not_convex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.inner_triangle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.inner_triangle_eq_lateral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.lateral_eq_of_inner_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_reachSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_landingSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_5dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_losslessFor_relaxation_5dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.landingSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.VStar_not_mem_WSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.witness_mem_glideSlope' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_constrainedLandingSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.exists_switchTime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_constrained_5dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_losslessFor_relaxation_constrained_5dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.constrainedLandingSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.StateLinearRelaxation.convexHull_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.minError_lossy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.convex_superset_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_lineSearch_lossless' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.symmetric_supply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_lineSearch_lossless_of_symmetry' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.Attitude6Admissible.toM1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.det_rotY' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_landingSet6' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_constrainedLandingSet6' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.witness_midpoint_not_mem_landingSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.position_eq_integral_velocity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.accMass_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_5dof_mass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_constrainedLandingSetUp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.not_convex_constrainedLandingSet6Up' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_constrained_upright_5dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_constrained_upright_6dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+'LcvxObstruction.no_lossless_relaxation_constrained_6dof' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+`grep -rn "sorry\|^axiom" LcvxObstruction/*.lean` → no matches.

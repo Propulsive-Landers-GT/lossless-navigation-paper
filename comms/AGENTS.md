@@ -9,7 +9,7 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | adversary | ac6fe7796e3cdced3 (DONE) | Attack 5DOF proof + definitions of lossless | math/01-adversary-report.md |
 | adversary-6dof | ad0b31b3fb8ad5d4e | Attack torque-coupled (M3) and 6DOF (M4) extensions | math/adversary-6dof-report.md |
 | proof | a51bef97d1e1b50bb (DONE) | Rigorous proofs + Lean blueprint | math/02, math/03 |
-| lean | a10df47e8217a3091 | Lean 4 formalization (impossibility) | lean/ |
+| lean | a10df47e8217a3091 (DONE) | Lean 4 formalization (impossibility) | lean/ |
 | numerics | ae8a82476e9301937 (DONE) | Numerical confirmation/refutation, test candidates | numerics/ |
 | positive | a36be30f2acce31b5 (DONE) | Possibility theory: fixed-attitude LCvx, exact subclasses | math/04, math/05 |
 | redteam-lift | a574fe3d602d3e65c (DONE) | Make LCvx work via lifting/relaxed controls/occupation measures | math/redteam-lift.md |

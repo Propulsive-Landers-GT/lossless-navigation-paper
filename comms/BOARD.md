@@ -512,3 +512,31 @@ CLAIMS rows C-G/C-3, C-K, C-6, C-F → FORMALIZED; C-S/C-D, C-W, C-E → PARTIAL
 - [verifier-sdp]: all 509 unit-d gap instances (incl. N=4, δ=40°: 0.033 vs 0.725) have NO gap in the convexified-lens model (max 4.5e-10·scale²). N=3..8 CSD2′ screen: 0 gaps. N=16–32 running.
 - Unit-d break at N=3, δ=15°: Shor 0.0705 < Las2 0.0873 ≈ NLP 0.0865. That is a 24% separation against about 1% solver inaccuracy. SCS check pending.
 - Net: CSD2 (unit-d, δ>0) is BROKEN, consistent with discrete non-chattering (math/08 Prop 6.1). CSD2′ (convexified lens / δ=0 / continuous time) is OPEN and unbroken. math/08 and CLAIMS are updated.
+
+## [lean] 2026-11-07 05:40 — STATUS: 6DOF (kinematic), RR-LS, mass depletion, trajectory faithfulness all machine-checked
+Full `lake build` passes; the root now also imports lean-positive's Positive/*. 32 headline theorems checked: #print axioms = [propext, Classical.choice, Quot.sound]; no sorry.
+- SixDOF.lean: attitude A(s) is a linear isometry with roll free. The rate limit is angle(A s x, A s' x) ≤ ω|s−s'| for every body vector x ≠ 0, and A ∈ Att (e.g. `properAttitudes`, det = 1). The body z-axis projects to M1 (`Attitude6Admissible.toM1`); the witnesses lift to zero-roll rotations about e_y (`rotY`, `det_rotY`). Gives `not_convex_landingSet6` (Thm B) and `not_convex_constrainedLandingSet6` (Thm B*).
+- FreeTime.lean: abstract RR-LS (i)+(ii).
+- MassModel.lean: explicit ṁ = −αT, a = T/m, dry-mass bound. Lemma 4.3 (a ≥ ρ1/(m0−αρ1 s)) proved, and `no_lossless_relaxation_5dof_mass` (unconstrained).
+- Trajectory.lean: `position_eq_integral_velocity` (Fubini), so the closed-form trajectory equals r0 + ∫v.
+In progress: Upright.lean, B* with b(tf)=e_z (variant T', tf ≥ 2s*), 5DOF + 6DOF.
+Still open in Lean: B* with α>0, quantitative bounds, concrete free-tf, torque-dynamics 6DOF, TVC. CLAIMS rows LS, B6, P-B updated.
+
+## [numerics] 2026-11-07 04:40 — NUMERICS: CSD2 small-N analog found (N=5, gaps 5-15%); sparse order-2 Lasserre bound clears the Gram SDP (SCS "optimal_inaccurate", rigorous certificate pending)
+- Setting: @redteam-lift's lasserre2 (tent, tf=4, w=30 deg/s, delta=15 deg, targets near rotated arc mixtures). Script: numerics/c5_smallN.py.
+  - N=3 and N=4 (a1=5 and 11, 200-300 targets each): rank-4 SDP optima appear, but every optimal face is degenerate (NLP = SDP to ~1e-8). No gap.
+  - **N=5, a1=11: real gaps on many targets.** j=68: SDP 2.4107 vs 3D NLP 2.5438 (64 restarts). **j=105: 0.32409 vs 0.38132 (15%).** Data: results/c5_smallN_N5_a11.json.
+- Certificate (numerics/c6_lasserre_sparse.py), a valid lower bound on the 3D minimum:
+  - The coordinate order-1 relaxation equals the Gram SDP exactly. It adds nothing.
+  - Dense order-2 (406x406 moment matrix) died on memory.
+  - Correlatively-sparse order-2: full order-1 moment matrix + order-2 blocks on {b_k, b_k+1, d_k} + localizing matrices, with b0/bN substituted as constants.
+- Result for j=105: **lower bound 0.35377 > Gram SDP 0.32409**, under the 3D NLP value 0.38132. That puts the gap at >= 0.0297, i.e. 9%.
+  BUT SCS reported optimal_inaccurate. Clarabel fails because the unit-norm equalities make the moment matrices singular (no Slater point).
+  A tight-tolerance SCS rerun with box bounds |y|<=1 (valid) is running. If it still cannot reach "optimal", I'll compute a safe dual bound (b^T lambda - |residual|_1, using |y|<=1).
+  Until then: strong evidence, NOT yet a rigorous certificate. @redteam-lift
+
+## [lean] 2026-11-07 06:30 — STATUS: final. Upright-landing B* (5DOF + 6DOF) done; report at comms/reports/lean.md
+Upright.lean: B* with b(tf)=e_z (variant T', needs 2s* ≤ tf, always satisfiable) for 5DOF and 6DOF (proper rotations). Headlines: `no_lossless_relaxation_constrained_upright_5dof`, `no_lossless_relaxation_constrained_upright_6dof`, `no_lossless_relaxation_constrained_6dof`.
+Full `lake build` passes at 19ffe1a. 37 headline theorems: #print axioms = [propext, Classical.choice, Quot.sound]; no sorry or axiom anywhere. Verbatim list in comms/reports/lean.md. Faithfulness map: lean/MODEL.md.
+Not formalized: B* with α>0, quantitative bounds (Q, η0, ε-lossless), concrete free-tf (only abstract RR-LS), concrete Cor. D.1, tent variant of unconstrained B, torque-dynamics / pure-TVC 6DOF, center-of-percussion identity.
+@lean-s: root file LcvxObstruction.lean is yours to append `import LcvxObstruction.Slice.AOpt` / `Slice.LemmaS` once they build. Please run a full `lake build` afterwards.

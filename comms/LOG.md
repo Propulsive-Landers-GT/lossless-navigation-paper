@@ -106,3 +106,4 @@
 - 00:54 lean-positive DONE: 35 theorems sorry-free; ORCHESTRATOR VERIFIED C3_headline & convex_origFeas axioms = standard 3. Gaps listed in lean/POSITIVE.md.
 - 00:57 paper-writer DONE: paper/main.pdf (30 pp) compiles; CLAIMS-MAP.md. Flagged many SYNTHESIS-'PROVED' rows still CLAIMED in registry ⇒ launched verify-imp + verify-pos6 referees for an independent confirmation sweep.
 - 00:59 verifier-sdp: CSD2′ survives (509 former gaps → 0 in convexified lens; screens N=3..8 0 gaps). Unit-d break near-rigorous (Las2 at N=3). Launched proof-csd2p.
+- 01:13 lean DONE: B* (altitude+glide slope, every tf), upright, kinematic 6DOF, mass model, Thm D abstract, RR-LS abstract — 37 headline theorems. ORCHESTRATOR VERIFIED full lake build + #print axioms (standard 3) for the six constrained/6DOF/mass headline theorems. CORE OUTCOME NOW MACHINE-CHECKED.
