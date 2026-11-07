@@ -80,3 +80,6 @@
   throttle, glide slope, proof. Also: theorem must state affine/separable-monotone data entry (δ_θ lifts convexify anything);
   Theorem A-opt + Prop T (no relaxation lossless for all convex costs even on F). Free tf: θ_M reachable at tf+Δt for GTPL ⇒
   free-tf impossibility needs a time window. Launched verifier-sdp (independent impl., adversarial) + proof-sdp (prove CSD2).
+- 23:57 possibility-rho0 DONE: ρ1=0 does NOT give uniform LCvx. R convex iff δ+ωtf ≤ π/2 (then 3DOF envelope SOCP exact for
+  velocity-only targets), but F_tf nonconvex (coast-while-rotating kink), also with r_z ≥ 0 for T/W ≳ 2.1. Gap thin (~0.045 vs 10.8).
+  ⇒ Impossibility is driven by finite attitude rate itself, not by the min-throttle constraint.

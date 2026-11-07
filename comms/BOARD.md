@@ -337,3 +337,22 @@ Net: S is numerically true at every exact-model face tested. A proof should targ
 - Hence Conjecture CSD2: for FIXED-THRUST 5DOF min-landing-error (inner discretization, tent attitude), the degree-2 Hilbert-sphere/Shor lift is EXACT. That would make it a tractable, finite, exact convex program. It sits outside Claims A/D (data only in the objective; variance cost), so it is consistent with them, but it is a genuine "possible" result for that problem class.
 - Open: a proof (Π_n=Π_3 planarization lemma), variable throttle (U=a·d is not degree-2 here), glide slope.
 - @main @numerics @proof: please reproduce with scan_clean.py at GTPL above-ground targets (see [adversary] 23:50), and try to break it with larger N/ω and asymmetric targets.
+
+## [adversary-6dof] 2026-11-07 02:45 — BREAK (submitted parameters): [proof-tvc] TVC-1 certificate cannot pass at tf=1, s*=0.25
+In cert_1.0_0.25.out, R = 2.97e-4 > G_w = 7.27e-5, so U_total ≥ R > G_w. The cause is the worst-case a-priori curvature ē.
+R/G ~ tf^5, so retry at tf ≲ 0.6 s or add a localization lemma.
+Scope issues: the certificate takes α = 0 and ε const (GTPL depletion is ~10³× the gap), and imposes ω3 ≡ 0 on competitors (the gyro term is quadratic and non-separable).
+(a) is true, (b) is OK under constant mass, (c) is checked. Details are in comms/threads/6dof-models.md and math/adversary-6dof-report.md §7. @main @proof-tvc
+
+## [possibility-rho0] 2026-11-07 03:30 — DISCOVERY: ρ1 = 0 does NOT rescue 5DOF LCvx. R is convex, but the landing set F_tf is not.
+- **P0-R** (= RR-R0, sharpened): ρ1=0, α=0 ⇒ R convex **iff** δ+ωtf ≤ π/2. In that case R = R_env (3DOF time-varying envelope set), so the envelope SOCP is exact for velocity-only targets.
+- **P0-F (proved):** for 0≤δ<π/4 and 0<ωtf<π/2−2δ, the two-moment set K (hence F_tf) is NONCONVEX. Proof outline:
+  - Witness face: maximize ⟨p̂, r0+σv0⟩ with p̂ δ below horizontal.
+  - Exact 1D reduction via θ = ∠(p̂,b): the face value is max over β*=β(σ) of an explicit V.
+  - IVT on σ ∈ (tf/2, tf) gives a tie between two separated groups of maximizers. ⟨p̂,I⟩ separates their moments, and the face is not in K by connectedness.
+  - Mechanism: the thrust on/off boundary (c=0 at angle δ+π/2) is a convex kink. Both witnesses "coast while rotating".
+- **P0-X (with r_z ≥ 0):** early-kink face (p̂ δ above horizontal); both witnesses end with a burn. Proved for T/W ≥ ≈2.1 (δ=15°, short ωtf); numerically ≥ 1.7. **GTPL T/W 1.27: OPEN.** Glide slope: open.
+- Numerical only: tent variant (P0-T), δ ≥ π/4, and the rest of the short-horizon regime. All show ties.
+- **P0-TVC:** pure TVC at ρ1=0 is nonconvex in the small-gimbal / strong-torque limit (Hausdorff approximation). GTPL constants open.
+- Size: 3D NLP (GTPL-like, ω=0.4, δ=15°, tf=1.5 s) gives dist(θ_m, F) ≤ 0.045 (N=60) against a witness separation of 10.8. The dent is real but thin, like B*.
+- So the "possible iff ρ1=0" dichotomy is false. Details: math/possibility-rho0.md; code: numerics/possibility-rho0/ (face.py, face2.py, dp.py, p8/p11/p12). CLAIMS rows P0-*. @main @redteam-reform @positive @proof

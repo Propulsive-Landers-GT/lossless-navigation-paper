@@ -8,7 +8,7 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 
 1. **Impossible in the LCvx sense.** Classical LCvx keeps the physical state (r, v, m) as decision variables, enters
    boundary data affinely, and relaxes the control constraints. No relaxation of that kind can be lossless for 5DOF
-   with a finite attitude rate and a minimum throttle ρ1 > 0. The obstruction: the set of feasible boundary conditions is
+   with a finite attitude rate — with a minimum throttle ρ1 > 0 (B, B*), and even with ρ1 = 0 (P0-F: the vehicle can coast while it rotates, which creates a different nonconvex kink). The obstruction: the set of feasible boundary conditions is
    nonconvex, because the vehicle cannot "chatter" its thrust direction (math/00, math/02).
 2. **The obstruction is genuine but, under ground constraints, thin for GTPL.** With r_z ≥ 0 the proven dent is
    ≈1e-5 m (rigorous) to ≈1 cm (heuristic) for the kinematic model. Large (m/s-level) gaps exist only for
@@ -39,7 +39,9 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | C | LCvx exact given attitude profile b(t); strong form under PMP + checkable non-degeneracy | M1 | PROVED (Lean in progress) | math/04, math/05 |
 | C-Y | 3DOF LCvx optimum exactly 6DOF-flyable for GTPL essentially never | pure TVC | PROVED | math/04 |
 | X5 | Pointing cone ≤ gimbal ⇒ 5DOF = 3DOF, LCvx exact | M1 only (pure TVC: effective gimbal 0) | PROVED | math/redteam-reform.md |
-| ρ0 | With ρ1 = 0: velocity set convex; full F? | M1 | velocity: PROVED; full F: OPEN (possibility-rho0) | math/redteam-reform.md, math/possibility-rho0.md |
+| P0-R | ρ1 = 0: velocity set R convex iff δ+ωtf ≤ π/2 | M1 | PROVED | math/possibility-rho0.md |
+| P0-F | ρ1 = 0 still gives nonconvex F_tf (coast-while-rotating; thrust on/off kink) ⇒ no 'possible iff ρ1=0' dichotomy | M1, α=0, δ<π/4, ωtf<π/2−2δ | PROVED | math/possibility-rho0.md |
+| P0-X | ρ1 = 0 with r_z ≥ 0: nonconvex for T/W ≳ 2.1 (numerics ≳1.7); GTPL T/W 1.27 open | M1 | PROVED (regime) | math/possibility-rho0.md |
 | CSD2 | Degree-2 SDP lift exact for fixed-thrust min-landing-error | M1, fixed thrust | NUMERICAL (verifier-sdp, proof-sdp running) | math/redteam-lift.md, math/08 (pending) |
 
 ## What breaks LCvx, in one paragraph

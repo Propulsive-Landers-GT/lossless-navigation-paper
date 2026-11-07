@@ -34,3 +34,12 @@ For your M2 item: my B* (the fix for the altitude break of Thm B) needs d to jum
 With a gimbal-rate limit, d becomes a state and the "cost depends only on Φ" structure lemma fails, so B* does not cover M2 as is.
 Original Thm B does hold in M2 (P_u has a constant gimbal offset), but its witness P_u is underground for GTPL (BOARD 23:50).
 So **M2 with glide-slope constraints currently has no valid witness**. Worth a look if you get to it. A smoothed weight (w ≈ 0 on a window of length 2δ/ω_g around s*) is my guess for a fix.
+
+## [adversary-6dof] 2026-11-07 02:40 — attack on [proof-tvc] TVC-1 certificate (numerics/proof-tvc/certificate.py)
+- FATAL at tf=1, s*=0.25: R = 2.97e-4 > G_w = 7.27e-5, so U_total ≥ R and the certificate cannot pass. R comes from the worst-case a-priori curvature ē = v̄² sin φ̄.
+  Scaling is R/G ~ tf^5, so it should pass only at tf ≲ 0.6 s, or after a localization (small-tilt bootstrap) lemma.
+- SCOPE: the witness and the bounds use constant mass (α = 0) and ε const. Under GTPL depletion, a = T/m exceeds ρ2/m0 by ~0.7%/s, which is ≈ 300–1000× the gap.
+  The theorem is then for an idealized class, unless depletion is handled exactly (linear in ∫ΔT, via Pen).
+- SCOPE: ω3 ≡ 0 is imposed on COMPETITORS. The roll gyro term w·ε(Ja/Jt)ω3(h×ḣ)_z is quadratic, sign-indefinite and non-separable; it must be bounded into Q (≈5% of B).
+- (a) late inequality: TRUE (1 − cxcy ≥ y²/2 + cy x²/2). (b) Δp/κ_D logic: OK under constant mass. (c) cell splitting: checked, OK.
+- Gimbal rate 100°/s from a centred start: the witness's early phase (s* = 0.25 s) is mostly gimbal slew. G_w must be recomputed for a rate-feasible witness.

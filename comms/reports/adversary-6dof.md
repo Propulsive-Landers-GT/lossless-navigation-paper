@@ -35,6 +35,10 @@ gimbal, gimbal-rate limit, terminal upright-at-rest option, altitude constraint;
 - Flat-output identity y = r + εb: confirmed (residual 9e-9).
 - FLAT conclusion: BROKEN as stated (terminal-condition mismatch) and FIXED as Theorem E₀ (terminal ω=0, tilt free; Lean-ready, report §6).
 
+## Attack on [proof-tvc] TVC-1 (upright at rest, r_z ≥ 0)
+- Fails at the submitted tf = 1 s: the remainder R = 2.97e-4 exceeds the witness gain 7.27e-5. R/G ~ tf^5, so retry at tf ≲ 0.6 s or add a localization lemma.
+- It also assumes α = 0 and ω3 ≡ 0 for competitors. Inequalities (a)–(c) are checked OK.
+
 ## Recommendation to main
 The final theorem may claim the obstruction for kinematic 5DOF/6DOF and for independent-torque rigid bodies (Thm D/D*).
 It may also claim pure TVC with terminal ω⊥(tf)=0 and tilt free (Thm E₀; needs ε const, ω3≡0, unlimited gimbal rate). It must state that the GTPL soft-landing case (pure TVC, upright at rest, r_z ≥ 0, 100°/s gimbal) has numerical support only (claim B6-E, = Conj B3b, now with [proof-tvc]). Quantitative ε-lossless bounds must use the TVC gap.
