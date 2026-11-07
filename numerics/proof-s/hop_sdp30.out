@@ -1,0 +1,10 @@
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-s/hop_sdp.py:28: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  pr=cp.Problem(cp.Minimize(om**2*h*cp.sum(rho)+dp**2*h*cp.sum(sig)),[M>>0]); pr.solve(solver=cp.CLARABEL)
+N=30 s*=2.0 Pvr: Qmax=1.0474 V0=15.0000 => v0z <= 8.0237
+N=30 s*=2.0 Pv: Qmax=1.5488 V0=15.0000 => v0z <= 8.2744
+N=30 s*=2.2 Pvr: Qmax=1.8956 V0=8.1500 => v0z <= 8.1322
+N=30 s*=2.2 Pv: Qmax=2.3941 V0=8.1500 => v0z <= 8.3588
+N=30 s*=2.4 Pvr: Qmax=1.7700 V0=1.6000 => v0z <= 7.9419
+N=30 s*=2.4 Pv: Qmax=2.8855 V0=1.6000 => v0z <= 8.4067
+N=30 s*=2.6 Pvr: Qmax=2.8976 V0=-4.6500 => v0z <= 8.3783
+N=30 s*=2.6 Pv: Qmax=4.2589 V0=-4.6500 => v0z <= 8.9019

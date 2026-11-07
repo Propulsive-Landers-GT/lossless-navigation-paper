@@ -24,6 +24,7 @@ def nlp_cvx(wv, wr, N, tf, om, dl, a1, x0s, starts=0, seed=0):
     for x0 in inits:
         r = minimize(f, x0, method='SLSQP', constraints=[{'type': 'ineq', 'fun': g}], options={'maxiter': 3000, 'ftol': 1e-15})
         if np.min(g(r.x)) > -1e-9 and r.fun < best[0]: best = (r.fun, r.x)
+    if best[1] is None: return np.inf, None, None
     Bs, Ds = unpack(best[1]); return best[0], Bs, Ds
 
 if __name__ == "__main__":

@@ -102,3 +102,4 @@
   planar LICQ local min is certified global, w/ glide slope). Sent CSD2′ to verifier-sdp to attack.
 - 00:35 proof-sdp DONE. Variable-throttle degree-2 lift CERTIFIED lossy at N=3 (Lasserre-2). δ=0: ~2,900 targets, no gap. CSD2′ check running in verifier-sdp (watch δ=40°, N=4 instance).
 - 00:38 proof-s hop verdict: NOT PROVED (quadratic/Shor certificates provably too loose: tilts ~1 rad, lifted paths). Rigorous: reduction, upright-pad limit 7.20/7.28 m/s, explicit offset witnesses (4.6–6.6 m off). Ring for v0z∈(7.727,7.742] numerical. Needs 2D rigidity or validated B&B.
+- 00:38 Launched paper-writer (paper/, CLAIMS-MAP.md; placeholders for in-progress results).

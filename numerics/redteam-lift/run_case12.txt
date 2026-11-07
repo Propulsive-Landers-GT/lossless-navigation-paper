@@ -1,0 +1,4 @@
+  p.solve(solver=cp.CLARABEL, tol_gap_abs=1e-11, tol_gap_rel=1e-11, tol_feas=1e-11); Gv = G.value
+SDP 0.027528994371095905 optimal_inaccurate eig [27.72181  4.72526  1.47483  0.0781   0.       0.     ]
+factored dim=4; cost=0.0275278; max rate excess=2.1e-07; max gimbal excess=1.2e-07; norms 5.2e-09,9.6e-09
+4D polish from SDP factor: 0.027528994222654198

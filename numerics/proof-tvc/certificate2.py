@@ -121,17 +121,23 @@ def solve_cert(D, rho, rhoc):
     Wd = D['Wdiag']
     lam = cp.Variable(N)
     lam2 = cp.hstack([lam, lam]); M2 = np.concatenate([D['Mlate'], D['Mlate']])
-    LK = sum(lam[k]*((1+tau)*D['Lk'][k]) for k in range(N))
+    if os.environ.get("FASTL", "0") == "1":
+        # lam_k <= lam_max on every cell, and L_k is PSD: replace sum lam_k L_k by the fixed PSD bound lam_max * sum L_k
+        A = A + (1+tau)*par['lam_max']*sum(D['Lk'])
+        LK = 0
+    else:
+        LK = sum(lam[k]*((1+tau)*D['Lk'][k]) for k in range(N))
     Mx = A + LK - cp.diag(cp.multiply(Wd, lam2 + M2))
     prob = cp.Problem(cp.Minimize(h*cp.sum(cp.multiply(lam, D['Nb2']))),
                       [lam >= lam_lb, lam <= D['lam_ub'], (Mx+Mx.T)/2 << 0])
-    try: prob.solve(solver='CLARABEL')
+    try: prob.solve(solver='CLARABEL', verbose=os.environ.get("VERB","0")=="1")
     except Exception as e:
         print("solver error", e); return None
     if lam.value is None: return None
     lv = np.clip(lam.value, lam_lb, D['lam_ub'])
     def top(lv):
-        Mv = A + (1+tau)*sum(lv[k]*D['Lk'][k] for k in range(N)) - np.diag(Wd*np.concatenate([lv+D['Mlate']]*2))
+        LKv = 0 if os.environ.get("FASTL", "0") == "1" else (1+tau)*sum(lv[k]*D['Lk'][k] for k in range(N))
+        Mv = A + LKv - np.diag(Wd*np.concatenate([lv+D['Mlate']]*2))
         # scale-invariant check: symmetric diagonal scaling by Wd^{-1/2}
         Sc = 1/np.sqrt(Wd); Mv = (Mv+Mv.T)/2*Sc[:, None]*Sc[None, :]
         return np.linalg.eigvalsh(Mv).max()
@@ -159,7 +165,7 @@ if __name__ == "__main__":
     else:
         nv = optimize(P, tf, ss, N=100, starts=6)[1]; np.save(wfile, nv)
     ev = evaluate(P, tf, ss, nv)
-    par = dict(PAR); par['roll'] = os.environ.get("ROLL", "0") == "1"
+    par = dict(PAR); par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
     print(f"[{gim} delta={deg:.2f}] tf={tf} s*={ss} N={N} roll-competitors={par['roll']}: witness G_w={ev['G']:.6e}, "
           f"max tilt {np.degrees(ev['maxtilt']):.3f} deg, max v_z(t<tf)={ev['maxvz']:.3e}, min r_z/|r_h|={ev['rzrel']:.3e}, "
           f"r0={ev['r0']}, v0={ev['v0']}", flush=True)

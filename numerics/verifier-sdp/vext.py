@@ -51,7 +51,7 @@ def weights(N, tf, accel=None):
 
 # ------------------------------------------------------------------ fixed thrust (+ gimbal)
 def fixed_thrust(N, tf, omega, Q, readout="rv", terminal=True, delta=None, accel=None, mu=(1.0, 1.0),
-                 path=None, both=False):
+                 path=None, both=False, cvx=False):
     """ZOH: b_k on [t_k,t_k+1), k=0..N-1; b_0 = e_z; terminal => b_N = e_z (only via rate).
     delta=None: thrust along b.  delta>0: thrust direction d_k with <d_k,b_k> >= cos(delta).
     path: callable(m, thrust_vecs, b_vecs) -> list of extra (Q,q,c,kind) constraints + convex_z fn."""
@@ -73,7 +73,8 @@ def fixed_thrust(N, tf, omega, Q, readout="rv", terminal=True, delta=None, accel
         d = [vvar(m, 3 * nb + 3 * k) for k in range(N)]
         cd = np.cos(delta)
         for k in range(N):
-            Qn, qn, cn = vdot(d[k], d[k]); cons.append((Qn, qn, cn - 1.0, "=="))
+            Qn, qn, cn = vdot(d[k], d[k])
+            cons.append((-Qn, -qn, 1.0 - cn, ">=") if cvx else (Qn, qn, cn - 1.0, "=="))
             Qg, qg, cg = vdot(d[k], b[k]); cons.append((Qg, qg, cg - cd, ">="))
             if both and k + 1 < len(b):   # 'inner' discretization: d_k within delta of b_k AND b_{k+1}
                 Qg, qg, cg = vdot(d[k], b[k + 1]); cons.append((Qg, qg, cg - cd, ">="))

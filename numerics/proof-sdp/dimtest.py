@@ -23,7 +23,7 @@ def sdp(wv, wr, N, tf, om, dl, a1=5.0, cvx=False):
     def sq(c, w):
         m = [cp.sum(cp.multiply(c, cp.hstack([G[D(k), i] for k in range(N)]))) for i in range(3)]
         return cp.sum(cp.multiply(np.outer(c, c), G[np.ix_(di, di)])) - 2 * sum(w[i] * m[i] for i in range(3)) + float(w @ w)
-    p = cp.Problem(cp.Minimize(sq(cv, wv) + sq(cr, wr)), cons); p.solve(solver=cp.CLARABEL)
+    p = cp.Problem(cp.Minimize(sq(cv, wv) + sq(cr, wr)), cons); p.solve(solver=cp.CLARABEL, tol_gap_abs=1e-11, tol_gap_rel=1e-11, tol_feas=1e-11, max_iter=400)
     ev = np.sort(np.linalg.eigvalsh(G.value))[::-1]
     return p.value, p.status, ev, G.value
 

@@ -12,7 +12,8 @@ import casadi as ca
 
 
 class Gim:
-    def __init__(self, N, tf, omega, delta, a=1.0, both=True, terminal=True, readout="rv"):
+    def __init__(self, N, tf, omega, delta, a=1.0, both=True, terminal=True, readout="rv", cvx=False):
+        self.cvx = cvx   # convexified lens: ||d_k|| <= 1 instead of = 1 (discrete relaxed controls)
         self.N, self.tf, self.om, self.delta, self.a = N, tf, omega, delta, a
         self.h = tf / N
         self.cr = np.cos(min(omega * self.h, np.pi))
@@ -32,7 +33,11 @@ class Gim:
         Z = cp.Variable((n + 3, n + 3), symmetric=True)
         wv = cp.Parameter(3); wr = cp.Parameter(3)
         ez = n + 2
-        cons = [Z >> 0, Z[n:, n:] == np.eye(3), cp.diag(Z[:n, :n]) == 1]
+        cons = [Z >> 0, Z[n:, n:] == np.eye(3)]
+        if self.cvx and self.gim:
+            cons += [cp.diag(Z[:nb, :nb]) == 1, cp.diag(Z[nb:n, nb:n]) <= 1]
+        else:
+            cons += [cp.diag(Z[:n, :n]) == 1]
         bidx = lambda k: (k - 1) if 1 <= k <= nb else None       # None -> e_z
 
         def dot_idx(i, j):
@@ -133,7 +138,7 @@ class Gim:
                 g.append(ca.dot(B[:, k], B[:, k + 1])); lb.append(self.cr); ub.append(ca.inf)
         if self.gim:
             for k in range(N):
-                g.append(ca.sumsqr(T[:, k])); lb.append(1); ub.append(1)
+                g.append(ca.sumsqr(T[:, k])); lb.append(0 if self.cvx else 1); ub.append(1)
                 g.append(ca.dot(T[:, k], B[:, k])); lb.append(self.cd); ub.append(ca.inf)
                 if self.both and k + 1 < B.shape[1]:
                     g.append(ca.dot(T[:, k], B[:, k + 1])); lb.append(self.cd); ub.append(ca.inf)

@@ -1,0 +1,12 @@
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/c5_smallN.py:24: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  p.solve(solver=cp.CLARABEL, tol_gap_abs=1e-11, tol_gap_rel=1e-11, tol_feas=1e-11)
+N=3: 58/200 targets with SDP rank >= 4  (2s)
+  j=149: SDP=-5.766651e-09 NLP=5.140920e-21 gap=5.767e-09 rel=5.77e+03 eig4=2.177e-02
+  j=12: SDP=-4.727099e-10 NLP=4.416809e-21 gap=4.727e-10 rel=4.73e+02 eig4=5.059e-03
+  j=14: SDP=4.547474e-13 NLP=1.367260e-21 gap=-4.547e-13 rel=-4.55e-01 eig4=8.388e-03
+  j=111: SDP=6.504388e-03 NLP=6.504388e-03 gap=-2.717e-10 rel=-4.18e-08 eig4=8.664e-03
+  j=49: SDP=2.943456e-02 NLP=2.943454e-02 gap=-2.299e-08 rel=-7.81e-07 eig4=2.373e-02
+  j=112: SDP=1.533449e-03 NLP=1.533419e-03 gap=-3.082e-08 rel=-2.01e-05 eig4=5.422e-03
+  j=185: SDP=6.515946e-03 NLP=6.515686e-03 gap=-2.601e-07 rel=-3.99e-05 eig4=7.100e-03
+  j=8: SDP=2.429789e-01 NLP=2.429786e-01 gap=-3.211e-07 rel=-1.32e-06 eig4=8.304e-03
+no gap candidate

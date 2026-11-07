@@ -1,0 +1,23 @@
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-sdp/dimtest.py:26: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  p = cp.Problem(cp.Minimize(sq(cv, wv) + sq(cr, wr)), cons); p.solve(solver=cp.CLARABEL, tol_gap_abs=1e-11, tol_gap_rel=1e-11, tol_feas=1e-11, max_iter=400)
+case 0 N=16: SDP_unit=2.3070669e+00 SDP_cvx=2.3070669e+00[optimal_inaccurate] genuine_cvx=2.3070669e+00 relgap_cvx=-3.9e-10 ev4/ev1(cvx)=5.2e-04 min|d|=1.0000
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/proof-sdp/scan_cvx.py:21: RuntimeWarning: invalid value encountered in scalar divide
+  print(f"case {ci} N={N}: SDP_unit={vu:.7e} SDP_cvx={vc:.7e}[{st}] genuine_cvx={ng:.7e} relgap_cvx={(ng-vc)/max(ng,1e-12):+.1e} ev4/ev1(cvx)={evc[3]/evc[0]:.1e} min|d|={(np.min(np.linalg.norm(Ds,axis=1)) if Ds is not None else -1):.4f}", flush=True)
+case 1 N=16: SDP_unit=1.0568145e+03 SDP_cvx=1.0568145e+03[optimal_inaccurate] genuine_cvx=inf relgap_cvx=+nan ev4/ev1(cvx)=2.1e-10 min|d|=-1.0000
+case 2 N=16: SDP_unit=3.4748253e+01 SDP_cvx=3.4748253e+01[optimal_inaccurate] genuine_cvx=3.4748253e+01 relgap_cvx=-2.7e-09 ev4/ev1(cvx)=1.4e-04 min|d|=1.0000
+case 3 N=16: SDP_unit=8.1255518e+02 SDP_cvx=8.1255518e+02[optimal_inaccurate] genuine_cvx=inf relgap_cvx=+nan ev4/ev1(cvx)=1.8e-10 min|d|=-1.0000
+case 4 N=16: SDP_unit=5.3254570e+01 SDP_cvx=5.3254570e+01[optimal_inaccurate] genuine_cvx=5.3254570e+01 relgap_cvx=-7.0e-10 ev4/ev1(cvx)=7.7e-04 min|d|=1.0000
+case 5 N=24: SDP_unit=4.8682430e+01 SDP_cvx=4.8682430e+01[optimal_inaccurate] genuine_cvx=4.8682430e+01 relgap_cvx=-7.9e-10 ev4/ev1(cvx)=3.3e-10 min|d|=1.0000
+case 6 N=24: SDP_unit=1.9283299e+01 SDP_cvx=1.9283299e+01[optimal_inaccurate] genuine_cvx=1.9283299e+01 relgap_cvx=-3.5e-11 ev4/ev1(cvx)=3.7e-04 min|d|=1.0000
+case 7 N=24: SDP_unit=2.3968993e+02 SDP_cvx=2.3968993e+02[optimal_inaccurate] genuine_cvx=2.3968993e+02 relgap_cvx=-1.5e-08 ev4/ev1(cvx)=4.0e-11 min|d|=1.0000
+case 8 N=24: SDP_unit=5.7831015e+01 SDP_cvx=5.7831015e+01[optimal_inaccurate] genuine_cvx=5.7831015e+01 relgap_cvx=-9.1e-09 ev4/ev1(cvx)=7.3e-05 min|d|=1.0000
+case 9 N=24: SDP_unit=2.5974187e+01 SDP_cvx=2.5974187e+01[optimal_inaccurate] genuine_cvx=2.5974187e+01 relgap_cvx=-2.7e-10 ev4/ev1(cvx)=3.1e-04 min|d|=1.0000
+case 10 N=16: SDP_unit=1.1283929e+02 SDP_cvx=1.1283929e+02[optimal_inaccurate] genuine_cvx=1.1283929e+02 relgap_cvx=-6.3e-10 ev4/ev1(cvx)=2.8e-10 min|d|=1.0000
+case 11 N=16: SDP_unit=3.2799907e+01 SDP_cvx=3.2799907e+01[optimal_inaccurate] genuine_cvx=inf relgap_cvx=+nan ev4/ev1(cvx)=2.6e-10 min|d|=-1.0000
+case 12 N=16: SDP_unit=2.7528461e-02 SDP_cvx=2.7367637e-02[optimal_inaccurate] genuine_cvx=2.7367637e-02 relgap_cvx=-1.2e-08 ev4/ev1(cvx)=1.4e-10 min|d|=0.9703
+case 13 N=16: SDP_unit=2.3244711e+00 SDP_cvx=2.3231847e+00[optimal_inaccurate] genuine_cvx=2.3231844e+00 relgap_cvx=-1.3e-07 ev4/ev1(cvx)=4.4e-10 min|d|=0.9883
+case 14 N=16: SDP_unit=3.3602009e-06 SDP_cvx=-9.0949470e-12[optimal_inaccurate] genuine_cvx=5.0226254e-14 relgap_cvx=+9.1e+00 ev4/ev1(cvx)=1.9e-04 min|d|=0.9712
+case 15 N=16: SDP_unit=4.1375286e+01 SDP_cvx=4.1375286e+01[optimal_inaccurate] genuine_cvx=4.1375286e+01 relgap_cvx=-3.5e-10 ev4/ev1(cvx)=6.0e-10 min|d|=1.0000
+case 16 N=16: SDP_unit=7.9357904e+01 SDP_cvx=7.9357904e+01[optimal_inaccurate] genuine_cvx=7.9357904e+01 relgap_cvx=-1.8e-09 ev4/ev1(cvx)=5.6e-10 min|d|=1.0000
+case 17 N=16: SDP_unit=1.3642421e-11 SDP_cvx=6.3664629e-12[optimal_inaccurate] genuine_cvx=2.9544388e-14 relgap_cvx=-6.3e+00 ev4/ev1(cvx)=6.4e-04 min|d|=0.9752
+case 21 N=24: SDP_unit=4.6384072e+01 SDP_cvx=4.6384072e+01[optimal_inaccurate] genuine_cvx=4.6384072e+01 relgap_cvx=-1.6e-09 ev4/ev1(cvx)=1.3e-10 min|d|=1.0000
