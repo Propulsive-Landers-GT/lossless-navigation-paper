@@ -1,0 +1,15 @@
+# Brief: LEAN-N (Lean 4/Mathlib formalization agent)
+
+Workspace: /Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research. First save this brief to comms/briefs/lean-n.md, read comms/PROTOCOL.md (compute budget), solver/CLAIMS.md (the claims list, esp. rows marked NEW: N1–N7), lean/MODEL.md, lean/POSITIVE.md (existing names, e.g. torque_balance_iff, throttle_interval, bilinear_restriction).
+
+Setup: `source ~/.elan/env`; project lean/LcvxObstruction (Mathlib cache present; NEVER `lake update`). All other Lean agents are finished, so you may run `lake build`. Put your files under lean/LcvxObstruction/LcvxObstruction/Solver/ and add their imports to the root LcvxObstruction.lean at the end (make sure the full `lake build` stays green).
+
+Formalize the elementary claims the practical guidance algorithm relies on:
+- N1 (conservative gimbal box): |T_x| ≤ tan δ·T_z and |T_y| ≤ tan δ·T_z (T_z > 0, 0 ≤ δ < π/2) imply, in the convention d = (sin θ cos φ, sin φ, cos θ cos φ) with T = ‖T‖ d, |θ| ≤ δ and |φ| ≤ arcsin(tan δ) (state precisely; prove it).
+- N2 (gimbal-rate sufficient condition): for the θ axis, θ̇ = (Ṫ_x T_z − T_x Ṫ_z)/(T_x² + T_z²), and with T_z ≥ T_floor > 0, |T_x| ≤ tan δ·T_z: |θ̇| ≤ (|Ṫ_x| + tan δ |Ṫ_z|)/T_floor. Then TRY to prove the analogous bound for the φ axis (currently heuristic in the solver). Work out on paper what is actually true for φ = arcsin(T_y/‖T‖) and prove the correct sufficient condition; if the solver's heuristic is false, give a counterexample and the right condition, and post it on the BOARD (this is important: the solver currently relies on it, re-checked numerically).
+- N3: |d‖T‖/dt| ≤ ‖Ṫ‖ ≤ |Ṫ_x| + |Ṫ_y| + |Ṫ_z| (state for differentiable T with T ≠ 0, or as a Lipschitz/difference-quotient statement).
+- N4 (chord bound): ‖a‖, ‖b‖ ≥ ρ ≥ 0 and angle(a,b) = θ ∈ [0, π] ⇒ ‖a − b‖ ≥ 2ρ sin(θ/2) (in a real inner product space; use InnerProductGeometry.angle).
+- N5 (continuous-time direction-acceleration bound): T = Γ e, Γ ≥ ρ > 0, ‖e‖ = 1, ‖Ṫ‖ ≤ D₁, ‖T̈‖ ≤ D₂, ‖ė‖ ≤ ω ⇒ ‖Π_e ë‖ ≤ (D₂ + 2 D₁ ω)/ρ (pointwise algebraic version: given vectors satisfying the derivative relations is fine).
+- N6 (gyroscopic term vanishes): for J = diag(J_t, J_t, J_z) and ω with ω₃ = 0: ω × (J ω) = 0; and ω̇₃ = (J_t − J_t) ω₁ω₂ / J_z = 0 so ω₃ stays 0 (state the algebraic identity and the ODE consequence as far as reasonable).
+- N7 (3DOF relaxation is a lower bound): abstract version: if F₆ ⊆ F₃ (every 6DOF-feasible plan maps to a 3DOF-feasible plan with the same cost), then inf over F₃ ≤ inf over F₆ — plus a statement connecting it to the existing Model definitions if natural.
+Rules: no `sorry`, no new `axiom`; `#print axioms` on each (standard three only). Write lean/SOLVER.md mapping each Lean theorem to the solver/CLAIMS.md row, update solver/CLAIMS.md "Lean status" column (only that column) and comms/CLAIMS.md (add rows N1–N7 with status FORMALIZED or the corrected statement). Post a BOARD summary (signed [lean-n]); message main immediately if any claim is FALSE. Commit your files (no AI attribution trailers). Write comms/reports/lean-n.md. Return a summary.

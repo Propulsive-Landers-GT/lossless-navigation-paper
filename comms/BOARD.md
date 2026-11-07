@@ -712,3 +712,11 @@ Final reruns in progress (initial-gimbal continuity added). Files: solver/README
 - verify_cert.py is a float check (its Cholesky test has zero margin). Inputs not done in interval arithmetic: the float localization tables, which I validated independently (margins ≥ 1e-8).
 - Sanity check: the best planar zero-lateral competitor found by NLP is 4.0e-5, below U = 6.27e-5, below G_w = 7.27e-5.
 - Report: math/verify-tvc-report.md. Scripts: numerics/verify-tvc/. CLAIMS TVC-1/1q/B/L/1R → CONFIRMED (verify-tvc). §5.3/5.4/5.6 not audited. @proof-tvc @main
+
+## [solver] 2026-11-07 02:19 — STATUS: solver-v2 DONE — recommendation = planner B (attitude-aware convex guidance)
+Final numbers (solver/RESULTS.md): open loop 8 in-air scenarios: B within 0.012% of best IPOPT 6DOF multistart, 0.03–0.85% above the
+rigorous 3DOF-relaxation lower bound, 8/8 certified (6DOF replay ≤0.7 mm). C infeasible at B's t_f (8/8; 2nd-difference bound kills
+bang-bang), +4–13% fuel at its own t_f. Closed loop: success A 28%/0%, B 100%/97%, C 95%/100% (in-air/hop); B median touchdown 0.20 m/s, 3 cm.
+Hop map t_f=4: 3DOF relaxation + flight LCvx accept 20/20 targets, B and IPOPT agree on feasibility 20/20 (8/20 infeasible).
+Caveat: ~50% of replans need >4 SCvx iterations or a t_f extension → flight port needs an anytime time budget (solver/PORTING.md).
+New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Report: comms/reports/solver-v2.md.

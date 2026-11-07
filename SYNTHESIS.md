@@ -69,13 +69,17 @@ so it cannot switch. With a minimum throttle, "wasting" vertical impulse require
 single tilt direction. The average of a left-tilting and a right-tilting maneuver is therefore not flyable, yet any
 convex program that contains both must contain their average.
 
-## Practical implications for GTPL (solver-v2; interim, final reruns in progress)
+## Practical implications for GTPL (solver-v2; final)
 - **Recommended planner B (attitude-aware convex guidance):** 3DOF warm start → SCvx steps on the body angular-
   acceleration profile, each followed by the EXACT convex inner SOCP given attitude (C-6). Every accepted iterate is
   flyable; certificate = fine-grid physical limits + open-loop 6DOF replay. Open loop: within 0.04% of the best
   nonconvex 6DOF optimum (IPOPT multistart), 8/8 certified.
-- **Closed loop** (6DOF, centre-of-percussion LQR tracker, 1 Hz replans, wind/noise/Isp error, 40 in-air runs;
-  success = |v|≤1 m/s, ≤1 m, ≤5°): current flight LCvx (A) 28%, 3DOF + rate limits (C) 95%, **B 100%** (median 0.20 m/s, 4 cm).
+- **Closed loop** (6DOF, same tracker for all, 1 Hz replans, wind/noise/Isp error; success = |v|≤1 m/s, ≤1 m, ≤5°):
+  in-air (40 runs): current flight LCvx (A) 28%, 3DOF + rate limits (C) 95%, **B 100%** (median 0.20 m/s, 3 cm; worst 0.38 m/s, 9 cm);
+  pad hop (30 runs): A 0%, C 100% (+23% fuel), **B 97%**. Open loop: B within 0.012% of IPOPT 6DOF, ≤0.85% above the 3DOF lower bound.
+- **Compute:** mean 0.37 s / max 1.33 s per replan (loaded Mac); flight port needs a hard time budget + fallback to last certified plan (solver/PORTING.md).
+- **Also fix regardless of guidance:** the flight MPC overstates angular authority ~4.6× (inertia/lever arm mismatch).
+- 15 pytest tests pass (orchestrator-verified). Solver's new elementary claims N1–N7 being formalized (lean-n).
 - **Pad hops:** the 3DOF relaxation accepts landings (v0z ≥ 6.5 m/s at tf=4) for which no flyable plan exists, the
   nonconvexity showing up in practice. Documented failure mode of B: one stall where IPOPT finds a plan.
 - Details: solver/README.md, solver/RESULTS.md.

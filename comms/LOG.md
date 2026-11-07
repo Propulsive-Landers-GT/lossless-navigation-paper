@@ -121,3 +121,4 @@
 - 02:02 verify-sdp2 DONE: 0 BROKEN in math/09. T5 free-b(tf) sharper (exact iff k≤p₀). C_yw symmetric at every KKT (rotation invariance) — artifact confirmed. Fixes listed in report §9.
 - 02:09 verify-tvc DONE: pure-TVC tf=1 certificate CERTIFIED in exact arithmetic after repairs W1 (witness was chattering → explicit bang-bang, needs unlimited gimbal rate) and W2 (free-roll gyro weight). Rows TVC-1,1q,B,L,1R CONFIRMED.
 - 02:10 solver interim: planner B within 0.04% of IPOPT 6DOF, 8/8 certified; closed loop A 28% / C 95% / B 100%; pad-hop: 3DOF accepts infeasible landings. adversary-6dof: TVC-1 v2 SURVIVES. proof-tvc: tilt-capped class route for tf≥3 s, rate-limited gimbal next.
+- 02:20 solver-v2 DONE (B recommended; 15 tests pass, orchestrator-verified). Launched lean-n (N1–N7, incl. checking the heuristic φ-axis gimbal-rate condition) and paper rev 3 (TVC certified, SDP refereed, practical section).

@@ -27,4 +27,5 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | proof-csd2p | a913db127233c94a0 (DONE) | Prove refined SDP conjecture CSD2′ (convexified lens, continuous time) | math/09-csd2-prime.md |
 | verify-tvc | ae6c370b5cd20db43 (DONE) | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
 | verify-sdp2 | ac7006c94fa6b776a (DONE) | Referee math/09 (CSD2′ partial proof) | math/verify-sdp2-report.md |
-| solver-v2 | aa3239f000bdac159 | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |
+| lean-n | a7b44976cb8dca63a | Lean: solver claims N1–N7 (gimbal box, rate bounds, chord, gyro, 3DOF lower bound) | lean/…/Solver/, lean/SOLVER.md |
+| solver-v2 | aa3239f000bdac159 (DONE) | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |
