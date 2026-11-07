@@ -92,7 +92,10 @@ adversarial dent/rim/far/perpendicular-lateral families, N up to 48 and ωtf pas
    - The cost is affine in (mean, second moment). It is not a convex function of the physical readout (mean): the variance term ⟨C,G⟩ − ‖Γx‖² is concave in x. So Theorem D's class (convex f(readout) + convex penalty) does not cover it, and Theorem A does not apply (no constraint on data).
    - Exactness can fail only through lifted points outside that second-moment body, i.e. genuinely higher-dimensional chains (rank > 3 Gram matrices). This is exactly the Hilbert-sphere picture: SDP = the same problem on S^{D−1}, D = n+3.
 2. **M is unreachable, certified.** The triangle-inequality and rigidity argument of Theorem B is dimension-free, so M ∉ L_D for every D. Hence the SDP value at q = M is strictly positive.
-   - Numbers: FILL.
+   - Numbers: 32 configurations, N ∈ {8, 16, 32, 48} × ωtf ∈ {0.4, 1.2, 3.0, 5.5} × {r, (r,v)}, with b_N = e_z. The SDP value at M is > 0 in all of them, from 5.5e-6 (N=8, ωtf=0.4, r; scale² = 0.25, so 2e-5·scale², about 4 orders above the noise) to 0.242 (N=48, ωtf=5.5, (r,v)).
+   - Clarabel is optimal everywhere and SCS agrees (to 1e-7 relative at N ≤ 16).
+   - The SDP value also equals the genuine dist²(M, L) from multistart, to ≤ 4e-7 relative. So the SDP gives the exact unreachability margin, not merely a positive bound.
+   - The SDP solution at M has rank 4–5: a mixture of rotated optimal arcs, by the symmetry about e_z. Its value splits as ‖Γx* − M‖² ("bias") plus the variance term; e.g. N=16, ωtf=3, (r,v): 0.0719 + 0.0065.
    - The state-linear relaxation (same lifted feasible set, cost ‖Γx − M‖² on first moments only) gives 0 at M. This is exactly the Theorem-D obstruction.
 
 ## 4. Gimbal δ > 0, unit-d inner discretization: LOSSY
@@ -183,7 +186,11 @@ The natural lift has z = (a_k, U_k = a_k b_k) and constraints ‖U_k‖² = a_k�
 - **Other throttle lifts:**
   - (U,b)-Hilbert lift, s_k = ⟨U_k, b_k⟩ ∈ [a1, a2], ‖U_k‖² ≤ (a1+a2)s_k − a1a2: 0.3044 vs 0.4753. It is lossy even at ω = ∞ (0.1228 vs 0.1332), because the U-ball around s·b acts like a gimbal.
   - Tightest degree-2 Shor in (a, U, b) (U = a b as quadratic equalities, plus everything above): 0.47071 vs 0.47529. Nearly closed, still lossy (1%), rank 6.
-  - **[proof-sdp] CSD3**: Gram of (u, b, e) plus scalars Γ_k, S_k, with ⟨u,b⟩ ≥ Γ cos δ, ‖u‖² ≤ S, S ≥ Γ², S ≤ (a1+a2)Γ − a1a2. It is **lossy**: at N=4 the gap is 2–35% for δ=0 and 0.005–17% for δ=15°, across ωtf = 1, 2, 6, with rank 3 (e4/e1 ~1e-10). The loss is therefore already inside R³: ‖u‖² ≤ S with S > Γ² lets u leave the axis/cone. Genuine-orig = genuine-CW to 1e-5, i.e. C-W is lossless at the genuine level, so the loss is in the lift. FILL N=6..12 totals.
+  - **[proof-sdp] CSD3**: Gram of (u, b, e) plus scalars Γ_k, S_k, with ⟨u,b⟩ ≥ Γ cos δ, ‖u‖² ≤ S, S ≥ Γ², S ≤ (a1+a2)Γ − a1a2. Tested at N = 4, 6, 8 (12 targets each for δ = 0 and δ = 15°, ωtf ∈ {1, 2, 6}) plus 2 at N=12. It is **lossy**:
+    - δ = 0: relative gap 2–36% on every instance;
+    - δ = 15°: up to 18%; only 2 of 36 are exact.
+    - The SDP is mostly rank 3 (e4/e1 ≤ 1e-8 at δ=0), so the loss is already inside R³: ‖u‖² ≤ S with S > Γ² (a variance of Γ) lets u leave the b-axis/cone and exceed its magnitude.
+    - Genuine-orig equals genuine-CW to ≤ 1.2e-5, so the C-W relaxation is lossless at the genuine level and the loss is entirely in the lift.
 
 **Verdict (c): the throttle lift is lossy, and the gap grows with N. (d) CSD3 is lossy, even without a binding rate limit.**
 
@@ -197,4 +204,18 @@ FILL (run_ext.py altitude / fuel).
 - `results/*.jsonl|json|log`.
 
 ## 9. Comparison with [redteam-lift] (read only after the verdicts above)
-FILL
+Read: `math/redteam-lift.md` §3.2 and §8, and CLAIMS row L-SD2.
+
+**Agreements**
+- Same formulation: b_0, b_N substituted. Their diagnosis of the early "gaps" as Slater failure matches what I see: I never imposed b_0, b_N by Gram equalities, and Clarabel also cannot reach 1e-10 on the well-posed form ("inaccurate"), so I run at 1e-9.
+- Hilbert-sphere picture (their S1/S2 = my §3). Their θ_M certificate (q_SDP = 53.6 > 0 at N=16, (r,v), in their units) matches my §3: I find q_SDP(M) > 0 on all 32 configurations, and moreover equal to the genuine dist²(M, L).
+- Case 12: their factorization into an explicit 4D chain (0.02752899) matches mine (0.027529).
+
+**Discrepancies / refinements**
+1. **Scope of CSD2.**
+   - L-SD2 states CSD2 for "fixed-thrust 5DOF" but tests the unit-d gimbal inner discretization (δ = 15°, 40°). Their final §3.2 verdict is "CSD2 FALSE in general (Π_4 ≠ Π_3)".
+   - My data separate the cases. For δ = 0 (the brief's model) and for the convexified lens (CSD2′) there is no gap anywhere. The failure is specific to the unit-d lens discretization: all 509 unit-d gaps vanish in the convexified model, and stress PSD ⇔ exact in 34/34.
+   - So "Π_4 ≠ Π_3" holds for the unit-d discrete model only. It is not evidence against exactness in continuous time.
+2. **Small N.** [numerics] c5_smallN (cited by redteam-lift) found no gap at N=3,4 and gaps at N=5. At their parameters (ωtf = 2.09, δ=15°) I agree: 0/60 at N=3,4 and 8/60 at N=5. At smaller ωtf (=1) or larger δ (40°), gaps are frequent already at N=3, which makes the order-2 Lasserre certificate cheap (15 variables). I supply it in §4.3.
+3. **Throttle.** redteam-lift reports "free throttle gives the same values: throttle does not enter the dent" (velocity-only reachable-set geometry, dimlift.py). That is a statement about Π_n, not about a lift. Every degree-2 throttle lift I built is lossy, by up to 68% at N=16, growing with N. Their §8 limit ("fixed thrust only") is therefore confirmed in a strong form.
+4. **"~45 targets exact" (L-SD2 row).** Consistent with my unit-d screen at large ωtf, where gaps are rare. Their 35 scan_clean targets sit in the regime (ωtf ≥ 2, δ=15°) where I also see few gaps at N ≥ 16 (≤ 4/20, ≤ 0.5%).

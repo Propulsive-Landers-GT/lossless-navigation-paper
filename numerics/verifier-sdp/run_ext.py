@@ -158,19 +158,24 @@ def block_altitude(fout, rng):
         if Fa.best_of(starts_fixed(Fa, N, rng, 12, omega=omega))["z"] is None:
             continue
         found += 1
-        tang = np.tan(np.radians(60))
+        tang = np.tan(np.radians(75))     # glide-slope cone half-angle 75 deg from vertical
+        FG2 = fixed_thrust(N, tf, omega, Q, readout="rv", accel=accel, path=altitude_path(r0, v0, g, a, "G2", tang=tang))
+        bG = FG2.best_of(starts_fixed(FG2, N, rng, 24, omega=omega, extra=[b0["z"]]))
         for variant in ("A", "B", "G", "G2"):
             Fv = fixed_thrust(N, tf, omega, Q, readout="rv", accel=accel,
                               path=altitude_path(r0, v0, g, a, variant, tang=tang))
             t0 = time.time()
             s = Fv.sdp()
-            b = Fv.best_of(starts_fixed(Fv, N, rng, 24, omega=omega, extra=[b0["z"]]))
+            if variant in ("A", "B"):
+                b = Fv.best_of(starts_fixed(Fv, N, rng, 24, omega=omega, extra=[b0["z"]]))
+            else:
+                b = bG      # genuine glide-slope problem (exact quadratic cone constraint + altitude)
             dg, rg = gapstr(s["val"], b["f"])
             dump(fout, block="altitude", N=N, tf=tf, omega=omega, r0=r0.tolist(), v0=v0.tolist(), variant=variant,
                  unconstrained=b0["f"], minalt_uncon=float(gv.min()), L=s["val"], st=s["status"], rank=s["rank"],
                  ev=s["ev"][:6].tolist(), U=b["f"], absgap=dg, relgap=rg, secs=time.time() - t0)
             print(f"altitude #{found} N={N} tf={tf} w={omega} var={variant}: uncon={b0['f']:.6g} (minalt {gv.min():.3f}) "
-                  f"L={s['val']:.8g}[{s['status'][:4]}] U={b['f']:.8g} rel={rg:.2e} rank={s['rank']}", flush=True)
+                  f"L={s['val']:.8g}[{str(s['status'])[:4]}] U={b['f']:.8g} rel={rg:.2e} rank={s['rank']}", flush=True)
 
 
 # ------------------------------------------------------------------------------------- min fuel

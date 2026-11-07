@@ -1,7 +1,7 @@
 """[proof-csd2p] Hemisphere (Picone) certificate for CSD2' (math/09 Thm 3.1 / 3.3) and the discrete stress check.
 Given a genuine 3D configuration (b_0..b_N, d_0..d_{N-1}) of the Gim model (verifier-sdp/vgim.py layout):
   primer P_k = -(gv_k y_v + gr_k y_r),  y = readout - target;
-  criterion:  exists c with <b_k,c> > 0 (all k, incl. b_0=b_N=e_z), <d_k,c> > 0, <P_k,c> >= 0  (LP).
+  criterion:  exists c with <b_k,c> > 0 (all k, incl. b_0=b_N=e_z), <P_k,c> >= 0  (LP); d-slots eliminated by Schur (mu_d>=0).
 If it holds (and the configuration is KKT), the Z-matrix part of the stress is PSD => Q >= 0 => lift exact.
 stress(): recovers multipliers by bounded least squares and returns eig(Q) (cross-check)."""
 import os, sys
@@ -24,7 +24,7 @@ def primer(G, D, wv, wr):
 def criterion(G, x, wv, wr):
     B, D = unpack(G, x); P, yv, yr = primer(G, D, wv, wr)
     sc = np.linalg.norm(P, axis=1).max() + 1e-300
-    rows = [-np.r_[b, -1.0] for b in B] + ([-np.r_[d / max(np.linalg.norm(d), 1e-12), -1.0] for d in D] if G.gim else [])
+    rows = [-np.r_[b, -1.0] for b in B]   # d-slots are Schur-eliminated (needs mu_d >= 0: convexified lens)
     rows += [-np.r_[p / sc, 0.0] for p in P]
     A = np.array(rows); bnd = [(-1, 1)] * 3 + [(None, 1)]
     r = linprog(np.r_[0, 0, 0, -1.0], A_ub=A, b_ub=np.zeros(len(A)), bounds=bnd, method="highs")
@@ -82,3 +82,21 @@ def stress(G, x, wv, wr, act_tol=1e-6):
     for (i, j), l in zip(act, lam):
         if j is not None: Q[i, j] -= l / 2; Q[j, i] -= l / 2
     return np.linalg.eigvalsh(Q), res
+
+def jacobi_m(G, x, wv, wr):
+    """m = unit normal of the primer plane span(y_v,y_r) with <e_z,m> >= 0; returns h_m = <b_k,m> (k=0..N) and #sign changes."""
+    B, D = unpack(G, x); P, yv, yr = primer(G, D, wv, wr)
+    m = np.cross(yv, yr); nm = np.linalg.norm(m)
+    if nm < 1e-12 * max(np.linalg.norm(yv) * np.linalg.norm(yr), 1e-300):
+        return None, -1
+    m /= nm
+    if m @ EZ < 0: m = -m
+    h = B @ m
+    s = np.sign(h[np.abs(h) > 1e-9])
+    return h, int(np.sum(s[1:] != s[:-1]))
+
+def zindex(G, x, wv, wr):
+    """number of negative eigenvalues of the local (Z-matrix) part Z = Q - C of the stress, and of Q."""
+    import numpy.linalg as la
+    ev, res = stress(G, x, wv, wr)
+    return ev, res

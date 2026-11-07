@@ -581,3 +581,14 @@ N=48 wtf=1.2 T=0 r zoh const far                      L=0.322001999[opti] S=nan[
 N=48 wtf=1.2 T=0 r zoh const near-bdry out            L=0.000100000008[opti] S=nan[skip] U=0.000100000023 rel=1.47e-07 abs=5.9e-11 rk=4/3 perp=3.1e-04
 N=48 wtf=1.2 T=0 r zoh const random                   L=0.0746872248[opti] S=nan[skip] U=0.0746872239 rel=-1.19e-08 abs=-3.6e-09 rk=4/3 perp=3.1e-04
 N=48 wtf=1.2 T=0 r zoh const random                   L=0.133132664[opti] S=nan[skip] U=0.133132662 rel=-1.28e-08 abs=-6.8e-09 rk=4/3 perp=3.1e-04
+N=48 wtf=1.2 T=0 r zoh rand  M                        L=0.00283265933[opti] S=0.00282835069[opti] U=0.0028326587 rel=-2.20e-07 abs=-2.1e-09 rk=5/4 perp=4.7e+00
+N=48 wtf=1.2 T=0 r zoh rand  face s=0.5 h=0.0         L=0.00128038703[opti] S=nan[skip] U=0.00128038702 rel=-8.77e-09 abs=-3.9e-11 rk=5/3 perp=9.7e-03
+N=48 wtf=1.2 T=0 r zoh rand  face s=0.9 h=0.0         L=6.8316348e-05[opti] S=nan[skip] U=6.83161774e-05 rel=-2.50e-06 abs=-5.9e-10 rk=5/3 perp=9.9e-03
+N=48 wtf=1.2 T=0 r zoh rand  face s=0.97 h=0.002      L=2.46624016e-06[opti] S=nan[skip] U=2.46615413e-06 rel=-3.49e-05 abs=-3.0e-10 rk=5/3 perp=9.7e-03
+N=48 wtf=1.2 T=0 r zoh rand  face s=0.5 h=-0.05       L=0.00379489574[opti] S=nan[skip] U=0.00379489569 rel=-1.20e-08 abs=-1.6e-10 rk=5/3 perp=2.7e-03
+N=48 wtf=1.2 T=0 r zoh rand  far                      L=0.549176514[opti] S=nan[skip] U=0.549176514 rel=-2.39e-11 abs=-4.5e-11 rk=4/3 perp=3.1e-04
+N=48 wtf=1.2 T=0 r zoh rand  near-bdry out            L=0.00011663619[opti] S=nan[skip] U=0.000116636188 rel=-2.12e-08 abs=-8.5e-12 rk=4/3 perp=3.2e-04
+N=48 wtf=1.2 T=0 r zoh rand  far                      L=0.354298144[opti] S=nan[skip] U=0.354298141 rel=-7.37e-09 abs=-9.0e-09 rk=4/3 perp=3.1e-04
+N=48 wtf=1.2 T=0 r zoh rand  near-bdry out            L=0.000116636316[opti] S=nan[skip] U=0.000116636201 rel=-9.88e-07 abs=-4.0e-10 rk=4/3 perp=3.1e-04
+N=48 wtf=1.2 T=0 r zoh rand  random                   L=0.00071475218[opti] S=nan[skip] U=0.000714752238 rel=8.16e-08 abs=2.0e-10 rk=4/3 perp=3.1e-04
+N=48 wtf=1.2 T=0 r zoh rand  random                   L=0.0790373223[opti] S=nan[skip] U=0.079037321 rel=-1.75e-08 abs=-4.7e-09 rk=4/3 perp=3.1e-04

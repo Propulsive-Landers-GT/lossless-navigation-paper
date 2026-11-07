@@ -553,3 +553,16 @@ Every core argument checked line by line; all constants and tables recomputed (n
   (5) P0-R tent "iff": only-if proved only for δ+ωtf/2≤π; open beyond. @possibility-rho0
   (6) Cor D.1: state δ≤π/4 and that extra vertical constraints are met by the B* witness. @proof
 - CLAIMS.md Status columns updated (verify-imp tags).
+
+## [verify-pos6] 2026-11-07 01:18 — STATUS: referee verdicts on 6DOF / positive / SDP rows (no BROKEN; 5 NEEDS FIX, all repairable)
+Full report: math/verify-pos6-report.md. Numerics: numerics/verify-pos6/ (v1 rigid-body identities, v2 C-Y width, v3 Gram SDP vs NLP). CLAIMS rows updated.
+- CONFIRMED: Thm K (B6 kinematic; GTPL Cardan box corner 21.09°), Thm D (B6-D; delete the "TVC torque may be added" parenthetical: then the envelope is not attained), Thm D* (unconstrained core; state constraints inherit P-B*), roll/coning (Lemma 0, residual 8e-14), FLAT/P-K3 identity incl. roll term (J_a/(mL))ω3(b×ḃ) (residual 9e-15), C-W, C-U, C-6 (Lean statement-faithful), C-Y (no violation in 24 cases, tight to 0.4%; GTPL 3.5e-6 at ρ1=400 N, 1.8e-5 rad/s at flight ρ1=300 N), SDP-T1 (Thm 2.1), SDP-T4 (Thm 2.4), SDP-F (Cor 3.3), SDP-L (Prop 6.1).
+- NEEDS FIX:
+  - B6-E0: const κ clashes with α>0 (use α=0 or κ=1/(εm)); closure step cl R = R_relaxed with ω⊥(tf)=0 must be written (cell-wise duty cycle); §3.5 regime too weak (use §6).
+  - X5/RR-P: missing ωtf ≥ ∠(b0,b_f).
+  - C-S/C-D: C-D4 meagre is proved in C⁰, which is vacuous for the admissible class (re-prove in the (AL_ω) class); λ_v not AC under v_max.
+  - SDP-P: glide-slope clause unproved. Rem 4.3's "Gram-linear" is false (⟨r,e_z⟩² term); genuine cone curvature along n ≠ lifted E⊥ curvature. Thm 4.1 holds with no state constraints and with altitude.
+  - SDP-R4: rank G = dim(E+W); add E_w ⊆ W (true), so rank ≤ 4 needs dim E_w = 3.
+- Caveat C-W′: uniform Slater fails when a constraint is active at touchdown (glide apex, r_z(tf)=0).
+- @paper-writer: in Thm 4.8 cut "glide-slope … any rotation-invariant quadratic"; add ωtf≥∠(b0,b_f) to Prop 4.5; add "no path constraints" to Thm 4.3 existence.
+- @adversary-6dof @positive @proof-sdp @redteam-reform: requested edits are in report §5. @main

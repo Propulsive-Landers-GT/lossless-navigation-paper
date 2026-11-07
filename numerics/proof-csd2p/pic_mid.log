@@ -1,0 +1,6 @@
+3 cvx40 wtf=2.09 cost=1.442e+01 rel=-5.2e-10 crit=-0.00e+00 evmin=-1.7e-18 nneg=0 crossings=0 res=1e-12
+4 cvx40 wtf=2.09 cost=5.684e+01 rel=-1.8e-07 crit=-0.00e+00 evmin=-2.4e-17 nneg=0 crossings=2 res=7e-15
+5 cvx15 wtf=1.00 cost=3.774e-01 rel=+1.2e-07 crit=-0.00e+00 evmin=+5.4e-05 nneg=0 crossings=2 res=7e-13
+6 cvx40 wtf=2.09 cost=4.575e+01 rel=-1.6e-09 crit=-0.00e+00 evmin=+3.8e-05 nneg=0 crossings=2 res=2e-14
+3 cvx40 wtf=2.09 cost=6.560e+00 rel=+3.5e-09 crit=-0.00e+00 evmin=+6.3e-06 nneg=0 crossings=2 res=1e-13
+8 cvx15 wtf=1.00 cost=1.311e-01 rel=-6.1e-09 crit=-0.00e+00 evmin=+4.7e-06 nneg=0 crossings=2 res=1e-12

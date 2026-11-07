@@ -1,0 +1,5 @@
+altitude #1 N=16 tf=2.0 w=0.8 var=A: uncon=1.15895 (minalt -0.095) L=1.3918912[opti] U=1.3918912 rel=2.32e-08 rank=1
+altitude #1 N=16 tf=2.0 w=0.8 var=B: uncon=1.15895 (minalt -0.095) L=1.3918911[opti] U=1.3918912 rel=6.25e-08 rank=1
+altitude #1 N=16 tf=2.0 w=0.8 var=G: uncon=1.15895 (minalt -0.095) L=inf[infe] U=inf rel=nan rank=-1
+altitude #1 N=16 tf=2.0 w=0.8 var=G2: uncon=1.15895 (minalt -0.095) L=nan[erro] U=inf rel=nan rank=-1
+altitude #2 N=12 tf=4.0 w=0.8 var=A: uncon=0.293435 (minalt -0.136) L=0.98402133[opti] U=0.98402133 rel=7.87e-10 rank=1
