@@ -32,3 +32,14 @@
   state joint convexity explicitly. (Orchestrator note: if μ0 is a decision variable with only its mean pinned to x0, the LP is
   jointly convex but its feasible x0-set is conv(F) ⇒ not lossless — consistent.) Bae et al. Automatica 2025: 3D Dubins
   reachable set = solid of revolution of 2D set (δ=0 special case of our R).
+- 2026-11-07 ~00:15. adversary BREAK accepted: Claim B witness arcs start underground for GTPL (ρ1/(m0 g)=0.51) ⇒ vacuous
+  with r_z ≥ 0. Fix B* (dive-then-brake exposed face) assigned. Loopholes found in Thm A scope: (i) relaxations exact only on F,
+  (ii) symmetry-reduced relaxations. Orchestrator response: Theorem D (min-landing-error, per instance, state-linear relaxations)
+  closes both — relaxed landing set convex ⊇ L ⇒ lossy at q ∈ conv(L)\L — needs no joint convexity in q.
+  Key conceptual decision: the impossibility class = STATE-LINEAR relaxations (the LCvx paradigm: physical r,v are decision
+  variables, appear linearly). Occupation-measure LPs (state lifted to Dirac measures) are convex and value-exact but outside this
+  class — to be reported honestly as the boundary of impossibility.
+- proof: ball-bound quantitative Thm B (no equality case) — easy Lean route for unconstrained version. numerics: B confirmed,
+  ball bound within 18% of NLP. adversary-6dof: in torque-coupled M3, outward gimbal rotates body the other way ⇒ M1 arcs not
+  realizable ⇒ B6 needs new proof. lit-review DONE: no prior 5/6DOF LCvx or impossibility; Berning et al. 2023 (Boeing) claims
+  LCvx with tilt-rate limits (full text unavailable) — must reconcile.
