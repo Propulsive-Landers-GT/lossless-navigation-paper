@@ -28,3 +28,9 @@ Only FORMALIZED claims go into the final theorem statement.
 3. Never silently edit another agent's files. Ask via thread/DM.
 4. Don't trust prior literature as proof: we only accept claims we prove ourselves (citations are context).
 5. Git: commit only your own files, messages with no AI attribution trailers.
+
+## Compute budget (orchestrator, mandatory)
+The machine has 10 cores and was at load ~180 (everything 15× slower). Each agent: **at most 2 concurrent CPU-heavy
+processes**, multiprocessing pools with **≤ 2 workers**, set `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1`
+for every solver run. Prefer fewer, smarter runs (warm starts, coarse-to-fine) over brute-force sweeps. Kill your own stale runs.
+Use the system clock (`date`) for timestamps — never invent them.

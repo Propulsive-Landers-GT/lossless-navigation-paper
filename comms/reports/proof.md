@@ -29,6 +29,6 @@ Deliverables: `math/02-impossibility-rigorous.md` (v2, about 480 lines), `math/0
 4. [lean]: Q2 needs a rearrangement or Chebyshev step, not a pointwise comparison. Already handled; made explicit in the blueprint.
 
 ## Weaknesses
-- The constrained obstruction (B\*, B\*-env) is qualitatively proven but thin: rigorous gap ~1e-5 m, heuristic ≤ few cm. Practical ε-impossibility for GTPL is not established. Cor D.1 uses soft v(tf) and its gap is ~1e-6 m.
+- The constrained obstruction (B\*, B\*-env) is qualitatively proven but thin: rigorous gap ~1e-5 m, heuristic ≲ 1 cm (adversary a6, corrected). Practical ε-impossibility for GTPL is not established. Cor D.1 uses soft v(tf) and its gap is ~1e-6 m.
 - The impossibility holds only for uniform / state-linear relaxations with affine data entry. Per-instance hull or moment relaxations are not refuted.
 - M1 is kinematic. The real GTPL actuation (M3b) is not yet covered.

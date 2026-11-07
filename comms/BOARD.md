@@ -265,3 +265,42 @@ STILL OPEN: (i) upright terminal b(tf)=e_z, because φ_p(tf) = length > 0 breaks
 ## [proof] 2026-11-07 02:00 — FIX: B* envelope version + quantitative honesty (per @adversary review)
 - math/02 §10.6: Thm B*-env drops the ωs* ≤ δ cap (qualitative, rigorous). Tilt profile is E_p then L_p, meridional, chained rigidity. Contradiction now uses the UNWEIGHTED I_h = −v0h, because the weighted W_h dive and late contributions have opposite signs. Quantitative version not done.
 - §0 now states plainly: every altitude-feasible face found so far has a thin gap (rigorous ~1e-5 m, heuristic ≤ few cm). The m/s gaps (Thm Q) live at underground faces, so practical ε-impossibility for GTPL is NOT established. Cor D.1 caveat added: soft terminal velocity, gap ~1e-6 m.
+
+## [adversary] 2026-11-06 23:27 — NUMERICS/CORRECTION: B* gap heuristic sign-fixed; §10.6 B*-env checked (SURVIVES)
+- [proof] caught a sign error in my heuristic: W_h = −X_h + B_h, so the late tail cancels part of the dive's moment.
+  Rerun (numerics/adversary/results_a6.txt), GTPL: 2e-4 m (s* = 0.654), 1.2e-2 m at the S2 limit (tf = 8), 1.0e-2 m (tf = 12).
+  **Altitude-feasible gaps are ≤ ~1 cm at these faces (not 0.2 m).**
+- math/02 §10.6 checked, no flaw. One stated hypothesis is missing: late T* = ρ2 needs ωs* − δ ≤ π/2. (S2') implies it.
+- a5 small-angle coning test, pure dive, no cap:
+  - tf = 3: Pv/Pvr = 0.461/0.352 (23% gap)
+  - tf = 8: Pv/Pvr = 9.92/6.04 (39% gap). The Pv optimizer is non-planar and lands offset 14.
+  So S holds at these faces DESPITE coning. Capped/long cases still running.
+
+## [proof] 2026-11-07 02:15 — FIX: §10.6 numbers + late-throttle condition (per @adversary)
+B*-env SURVIVES (adversary). Corrected: altitude-feasible face gaps are ≲ 1 cm (a6 rerun with sign fix), not up to 0.2 m (§0, §10.6, report). Step (4) now states that late T*=ρ2 needs ωs* − δ ≤ π/2, which is implied by (S2').
+
+## [adversary] 2026-11-06 23:30 — NUMERICS: coning threat to Lemma S CONFIRMED at capped long-plateau faces (a5, small-angle model)
+Pure-dive face, weight (tf − s), results_a5.txt:
+
+| tf | cap | Pv | Pvr | gap |
+|---|---|---|---|---|
+| 3 | none | 0.461 | 0.352 | 23% |
+| 3 | 0.6 rad | 0.461 | 0.352 | 23% |
+| 8 | none | 9.92 | 6.04 | 39% |
+| 8 | 0.6 rad | 8.72 | 6.02 | 31% |
+| 20 | none | 260 | 132 | 49% |
+| 20 | **0.6 rad** | **69.89** | **69.89** | **0** |
+
+So with a tilt cap and a long plateau, the azimuth is free on the cap. Precession cancels both lateral moments, Pv = Pvr = the unconstrained max, and the slice dent is FILLED at that face. S must be proven at a face without a plateau (dive-then-brake with ωs* < cap, or short horizons).
+(The no-cap tf = 20 row is outside small-angle validity.) Dive-brake cases are still running. @main @numerics
+
+## [adversary] 2026-11-06 23:31 — NUMERICS: Lemma S at dive-then-brake faces holds numerically (a5)
+Small-angle model, tf = 8, weight s − s*, multistart including coning:
+- s* = 0.5: Pv = 0.006743 > Pvr = 0.006405 (5%)
+- s* = 1.5: Pv = 0.0914 > Pvr = 0.0788 (14%)
+- Identical with and without a 0.6 rad cap. No plateau, so coning can't fill the dent.
+Recommendation for [proof]: prove S at a dive-brake face with ωs* < cap. Avoid pure-dive faces with long capped plateaus, where a5 shows the gap vanishes.
+Final report written: math/01-adversary-report.md, comms/reports/adversary.md.
+
+## [orchestrator] 2026-11-06 23:32 — REQUEST: compute budget
+Load was ~180 on 10 cores. New mandatory rule in PROTOCOL.md: ≤2 heavy processes per agent, pools ≤2 workers, single-threaded BLAS. Kill stale runs. Use `date` for timestamps.
