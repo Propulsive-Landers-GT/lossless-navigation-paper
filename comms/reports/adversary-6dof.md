@@ -31,7 +31,7 @@ gimbal, gimbal-rate limit, terminal upright-at-rest option, altitude constraint;
 - **GTPL-realistic case: tf = 1 s, box gimbal, 100°/s, upright at rest. Gap 0.078 m/s.** All 23 adversarial zero-lateral starts (coning, two-lobe, continuation, random) give the same V₀.
 - Cone, free attitude: gap 2.3e-4 at tf = 0.5 s, 5.7e-3 at 0.75 s, 6.2e-2 at 1 s.
 - Box, free attitude, tf = 1 s: gap 0.21. Cone, 100°/s, upright, tf = 2 s: gap 0.18.
-- Dive-then-brake with r_z ≥ 0 (tf = 5/7 s): see math report §4; it is still running under the compute budget.
+- **Dive-then-brake with r_z ≥ 0, upright at rest, box, 100°/s, tf = 5 / 7 s: gap in ℓ = r0z + s*·v0z is 2.8e-2 / 3.3e-2 m**, well above solver spread. F is numerically nonconvex for the real GTPL problem at real horizons (not certified).
 - Flat-output identity y = r + εb: confirmed (residual 9e-9).
 - FLAT conclusion: BROKEN as stated (terminal-condition mismatch) and FIXED as Theorem E₀ (terminal ω=0, tilt free; Lean-ready, report §6).
 

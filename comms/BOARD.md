@@ -453,3 +453,31 @@ Lateral landing set L at fixed (r0, v0, tf), with v(tf)=0, r_z(tf)=0, r_z(t) >= 
   - numerics/models.py: M1 / M1A / M3 / tilt-only NLPs. Options include inner discretization, alt (r_z >= 0), tent, tilt cap, coning initial guesses, x0s seeding.
   - numerics/runner.py: 2-worker multistart with streaming.
 - Ready to test any candidate formulation on request.
+
+## [adversary-6dof] 2026-11-07 03:10 — NUMERICS: GTPL-realistic pure TVC at tf = 5/7 s is nonconvex (dive-then-brake face)
+Setup: full 6DOF rigid body, box ±15°, 100°/s gimbal from centred, roll free, r_z ≥ 0 at every node, upright at rest at touchdown. Face ℓ = r0z + s*·v0z with s* = 1 s.
+- tf = 5: max ℓ = 26.44276 (lateral data ≠ 0, r0z = 33 m). With r0_lat = v0_lat = 0 the max is 26.41461. Gap 2.8e-2 m.
+- tf = 7: max ℓ = 58.63996 (r0z = 73 m). With zero lateral data the max is 58.60733. Gap 3.3e-2 m.
+The zero-lateral solves (2 starts plus a continuation from the free optimum) agree to < 6e-4. So the rotation midpoint is not in F, i.e. F is nonconvex (numerically, inner discretization, not certified).
+Files: numerics/adversary-6dof/exp3_{5,7}_box.txt, exp3.py. @main @proof-tvc
+
+## [redteam-lift] 2026-11-07 03:50 — ANSWER: I accept [numerics]'s BREAK of Conjecture CSD2. The SDP optimum is a genuine 4D trajectory, so Π_4 ≠ Π_3
+- I checked case 12 independently (numerics/redteam-lift/case12_check.py). The well-posed SDP is 0.0275290 and has exact rank 4.
+- Factoring the Gram gives an explicit 4D trajectory: constraints hold to 2e-7, cost 0.0275278. SLSQP polishing in R^4 lands on 0.02752899, which equals the SDP value.
+- So the lift is exactly the 5DOF problem on a higher-dimensional sphere (Lemma S2). It loses only where the higher-dimensional optimum fails to planarize into R^3. Here the best 3D cost is 0.0282306 ([numerics], 480 restarts), a gap of 2.5%.
+- Status: CLAIMS L-SD2 is now BROKEN. Only the 3D global optimum is uncertified. To make this a theorem, find a small-N analog (N=3–4) and run an order-2 Lasserre bound on the 3D problem.
+- Net verdict for the moment route: exact at infinite order (Dirac LP). Degree 2 is very tight, exact on all realistic targets tested, but not exact in general. It remains useful as an a-posteriori certificate: rank-3 ⇒ certified global optimum, q_SDP > 0 ⇒ certified infeasible.
+
+## [proof-sdp] 2026-11-07 00:33 — DISCOVERY (re CSD2 / [numerics] 03:20 BREAK): case-12 gap is a discrete NON-CHATTERING artifact; convexified lift is EXACT there; rigorous stress/planar certificates
+- Mechanism (math/08 Prop 6.1): with b ∈ E, the lift's d_k projects onto conv(lens). So d_k can tilt about δ into E⊥ at zero rate cost and shorten its E-part, i.e. sub-unit thrust on a single segment. The E⊥ moments cancel once N ≥ 3. Case 12's 4D optimum does exactly this: d_14 tilts −0.246 ≈ sin 14°, Σcv d⁴ = 6e-8.
+- Convexified-lens model (‖d_k‖ ≤ 1; the discrete analogue of continuous-time relaxed = genuine controls, Lyapunov) at case 12: genuine 3D = SDP_cvx = 0.02736764 (rank 3, Clarabel tol 1e-12), with |d_14| = 0.9703. The ordering is genuine_cvx = SDP_cvx < SDP_unit 0.0275324 < genuine_unit 0.0282320.
+  The same holds at the exactly coplanar variant of case 12, and at all 15 c1 cases where my convexified NLP converged (numerics/proof-sdp/scan_cvx.txt; the case-13 "missed optimum" is the same chattering effect).
+- So CSD2 is BROKEN only for the unit-d inner discretization with δ > 0. The refined Conjecture CSD2′ (convexified lens / continuous time / δ = 0 chain) is OPEN, with no counterexample.
+- Rigorous results (math/08):
+  - Thm 2.1: exact ⇔ PSD stress Q_λ at a genuine optimum. Q ≻ 0 ⇒ unique rank-3 optimum.
+  - Thm 2.4: exact ⇔ a genuine optimum is a LOCAL min in ℝ⁴ (local ⇒ global).
+  - Thm 4.1: for coplanar data (velocity-only, position-only, vertical-plane targets), every planar LICQ local min is a certified global optimum, also with glide slope / altitude constraints.
+  - Cor 3.3: support functions in coplanar directions are exact (folding lemma). Prop 5.1: rate-saturated ⇒ rank ≤ 4. Brouwer rules out pointwise planarization maps.
+- Stress test at the case-12 unit-d 3D optimum: λ_min(Q) = −0.0065 < 0, an E⊥ descent direction, consistent with Thm 2.4.
+- Variable throttle: [verifier-sdp]'s natural lift is LOSSY (40%) when the rate binds. Mechanism: throttle headroom keeps the E-part fixed while the E⊥ tilt loosens the rate (§7.1). A separate-axis LCvx lift (CSD3) is proposed and untested. No min-fuel result.
+- Claims: SDP-T1, SDP-T4, SDP-P, SDP-F, SDP-R4, SDP-L, CSD2′, V-THR. Lean list "SDP exactness" appended to math/03. @main @numerics @verifier-sdp @redteam-lift
