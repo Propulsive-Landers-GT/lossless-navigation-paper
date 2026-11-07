@@ -1,0 +1,150 @@
+N=6 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 4) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.008] asym=3e-16 res=4e-14 rel=-1e-09
+N=16 cvx15 wtf=0.50 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=2e-13 rel=+6e-09
+N=4 cvx40 wtf=1.00 k=-1 crit=-0.0e+00 negZ=0 (zero 5) p0=2 negQ=0 identity=FAIL Cyw eig=[0.001 1.   ] asym=1e-01 res=1e-13 rel=+2e-07
+N=4 cvx15 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 3) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=1e-15 res=2e-14 rel=+9e-10
+N=3 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=3e-17 res=1e-14 rel=+3e-11
+N=4 cvx15 wtf=0.50 k=0 crit=+5.7e-01 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.195] asym=2e-17 res=4e-15 rel=-5e-10
+N=6 cvx15 wtf=0.50 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=9e-15 rel=+3e-09
+N=32 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 25) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=2e-16 res=6e-14 rel=-4e-10
+N=3 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=1e-15 res=1e-13 rel=-5e-08
+N=8 d=b wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=1e-15 rel=+5e-10
+N=4 cvx15 wtf=0.50 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.031 1.   ] asym=4e-16 res=3e-11 rel=-9e-10
+N=5 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.005 1.   ] asym=9e-16 res=7e-12 rel=-7e-09
+N=6 d=b wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.001 1.   ] asym=5e-16 res=2e-14 rel=-7e-10
+N=4 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 3) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.098] asym=4e-16 res=1e-14 rel=-3e-09
+N=6 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.007 1.   ] asym=1e-15 res=3e-14 rel=-7e-10
+N=6 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.003 1.   ] asym=2e-15 res=1e-13 rel=-3e-09
+N=8 cvx15 wtf=0.50 k=0 crit=+9.9e-01 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=1e-14 rel=+2e-10
+N=16 cvx15 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.034] asym=2e-16 res=4e-13 rel=-8e-10
+N=4 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=2e-15 rel=+2e-10
+N=6 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=8e-17 res=6e-15 rel=+2e-11
+N=4 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.084] asym=1e-16 res=2e-14 rel=-1e-08
+N=4 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.035 1.   ] asym=3e-16 res=2e-13 rel=+6e-09
+N=6 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.004 1.   ] asym=3e-14 res=2e-13 rel=-3e-09
+N=4 cvx40 wtf=2.09 k=0 crit=-2.8e-14 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.002] asym=8e-17 res=3e-15 rel=-3e-11
+N=4 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.016 1.   ] asym=1e-13 res=7e-13 rel=-7e-09
+N=4 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.  0.] asym=7e-17 res=3e-15 rel=+1e-11
+N=4 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.165] asym=3e-16 res=7e-13 rel=+1e-10
+N=6 cvx40 wtf=1.00 k=0 crit=-1.1e-13 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=2e-16 res=4e-15 rel=+3e-10
+N=3 cvx40 wtf=2.09 k=-1 crit=-0.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.     0.002] asym=2e-01 res=2e-14 rel=-2e-07
+N=3 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.16 1.  ] asym=4e-16 res=3e-13 rel=-3e-10
+N=16 cvx40 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 13) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.359] asym=4e-16 res=2e-14 rel=-4e-10
+N=4 cvx40 wtf=1.00 k=0 crit=+1.7e-02 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.003] asym=2e-16 res=4e-15 rel=-1e-09
+N=3 cvx40 wtf=0.50 k=-1 crit=-2.0e-13 negZ=1 (zero 3) p0=2 negQ=0 identity=FAIL Cyw eig=[-0.  1.] asym=3e-14 res=3e-13 rel=-3e-10
+N=6 cvx15 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.043] asym=1e-16 res=3e-14 rel=+7e-10
+N=8 cvx40 wtf=0.50 k=0 crit=+9.3e-01 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=4e-15 rel=+2e-09
+N=3 cvx40 wtf=0.50 k=0 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.009] asym=2e-17 res=2e-14 rel=-6e-10
+N=6 d=b wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.001] asym=0e+00 res=6e-15 rel=+4e-10
+N=8 cvx15 wtf=1.00 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=9e-15 rel=+3e-09
+N=3 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=0e+00 res=2e-13 rel=-1e-07
+N=8 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.003 1.   ] asym=4e-15 res=3e-14 rel=-6e-09
+N=8 cvx40 wtf=3.00 k=-1 crit=-0.0e+00 negZ=0 (zero 5) p0=1 negQ=0 identity=FAIL Cyw eig=[-0.  1.] asym=6e-03 res=4e-12 rel=+1e-07
+N=24 d=b wtf=1.00 k=0 crit=+6.5e-01 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.097] asym=4e-16 res=8e-14 rel=-8e-10
+N=24 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.012 1.   ] asym=0e+00 res=2e-12 rel=-6e-09
+N=3 cvx40 wtf=0.50 k=-1 crit=-0.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.     0.001] asym=8e-02 res=4e-14 rel=-3e-08
+N=3 cvx40 wtf=3.00 k=0 crit=-0.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-0.002  1.   ] asym=3e-03 res=8e-13 rel=-4e-07
+N=4 cvx15 wtf=1.00 k=0 crit=-5.4e-14 negZ=1 (zero 2) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.003] asym=2e-16 res=1e-14 rel=+9e-09
+N=6 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.033 1.   ] asym=6e-15 res=1e-12 rel=-3e-09
+N=6 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.024 1.   ] asym=4e-15 res=6e-14 rel=-6e-09
+N=3 cvx40 wtf=1.00 k=2 crit=-1.6e-11 negZ=1 (zero 3) p0=2 negQ=0 identity=FAIL Cyw eig=[0. 1.] asym=2e-14 res=2e-11 rel=+6e-07
+N=8 cvx15 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=4e-15 rel=+3e-10
+N=6 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.003] asym=2e-15 res=5e-12 rel=-9e-10
+N=5 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.006 1.   ] asym=5e-15 res=2e-12 rel=+6e-11
+N=3 cvx15 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=2e-15 res=3e-14 rel=+2e-09
+N=16 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 12) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=6e-14 rel=+3e-10
+N=4 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.042 1.   ] asym=7e-14 res=1e-13 rel=+1e-08
+N=3 cvx40 wtf=1.00 k=-1 crit=+1.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=2e-16 res=3e-13 rel=+5e-07
+N=4 cvx15 wtf=2.09 k=0 crit=+5.1e-01 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.174] asym=2e-16 res=4e-13 rel=+1e-11
+N=4 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.002 1.   ] asym=9e-16 res=2e-14 rel=-6e-10
+N=32 cvx15 wtf=0.50 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=1e-16 res=7e-13 rel=+1e-08
+N=6 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=1e-13 res=1e-13 rel=+4e-08
+N=8 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 7) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.093] asym=0e+00 res=1e-13 rel=-1e-10
+N=4 d=b wtf=2.09 k=0 crit=+9.0e-01 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=3e-17 res=1e-16 rel=+1e-10
+N=3 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=4e-18 res=5e-15 rel=+2e-10
+N=6 cvx15 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.017 1.   ] asym=7e-16 res=6e-14 rel=-3e-09
+N=6 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.073] asym=2e-16 res=5e-14 rel=-3e-10
+N=4 d=b wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.01 1.  ] asym=4e-16 res=2e-15 rel=+2e-09
+N=3 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.016] asym=8e-17 res=7e-15 rel=-2e-10
+N=6 cvx15 wtf=0.50 k=0 crit=-0.0e+00 negZ=0 (zero 5) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=2e-02 res=5e-14 rel=-1e-07
+N=24 cvx15 wtf=1.00 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=2e-13 rel=+4e-09
+N=8 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.013 1.   ] asym=9e-17 res=2e-13 rel=-3e-09
+N=3 d=b wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.001] asym=4e-15 res=6e-12 rel=-2e-10
+N=4 cvx40 wtf=0.50 k=-1 crit=-0.0e+00 negZ=0 (zero 5) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.     0.011] asym=4e-01 res=1e-12 rel=+2e-07
+N=3 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.008 1.   ] asym=2e-15 res=1e-13 rel=-5e-09
+N=4 cvx15 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.025] asym=9e-17 res=5e-15 rel=-8e-11
+N=3 cvx40 wtf=0.50 k=0 crit=+1.8e-02 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.009] asym=4e-16 res=3e-14 rel=-2e-10
+N=3 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=2e-17 res=2e-14 rel=+4e-10
+N=6 d=b wtf=0.50 k=4 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0. 1.] asym=1e-15 res=1e-13 rel=+2e-09
+N=5 cvx40 wtf=3.00 k=-1 crit=-0.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-0.034  1.   ] asym=5e-01 res=2e-14 rel=+2e-07
+N=6 cvx15 wtf=1.00 k=0 crit=+4.6e-02 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.001] asym=3e-18 res=6e-15 rel=+8e-10
+N=3 cvx15 wtf=0.50 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.001] asym=0e+00 res=2e-13 rel=+3e-10
+N=4 cvx15 wtf=2.09 k=0 crit=-1.2e-10 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=4e-16 rel=-3e-13
+N=4 cvx15 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=3e-15 rel=+6e-11
+N=3 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.003 1.   ] asym=8e-16 res=2e-14 rel=+5e-09
+N=4 cvx40 wtf=0.50 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.    0.02] asym=7e-17 res=2e-13 rel=-4e-10
+N=16 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 11) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=9e-14 rel=+2e-10
+N=5 cvx15 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.008 1.   ] asym=2e-14 res=7e-13 rel=+1e-07
+N=3 cvx40 wtf=1.00 k=0 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.002 1.   ] asym=3e-15 res=2e-14 rel=+6e-09
+N=6 cvx15 wtf=0.50 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=1e-14 rel=-2e-10
+N=6 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 4) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=1e-16 res=7e-14 rel=+1e-10
+N=8 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.  0.] asym=2e-16 res=1e-14 rel=+7e-10
+N=4 cvx15 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 3) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=4e-17 res=8e-14 rel=+1e-09
+N=3 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.064] asym=2e-16 res=4e-13 rel=-4e-10
+N=4 cvx40 wtf=2.09 k=-1 crit=-0.0e+00 negZ=0 (zero 5) p0=2 negQ=0 identity=FAIL Cyw eig=[0.008 1.   ] asym=6e-03 res=4e-12 rel=+2e-07
+N=4 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.072 1.   ] asym=3e-15 res=2e-14 rel=+2e-09
+N=6 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.007 1.   ] asym=8e-17 res=6e-14 rel=-2e-09
+N=8 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.009 1.   ] asym=5e-15 res=3e-14 rel=-4e-09
+N=4 cvx15 wtf=1.00 k=0 crit=-0.0e+00 negZ=0 (zero 5) p0=1 negQ=0 identity=FAIL Cyw eig=[-0.001  1.   ] asym=7e-02 res=5e-12 rel=-5e-07
+N=4 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.   -0.03] asym=7e-17 res=4e-14 rel=+2e-09
+N=3 cvx40 wtf=0.50 k=0 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.02 1.  ] asym=5e-16 res=8e-15 rel=-2e-09
+N=3 cvx15 wtf=2.09 k=0 crit=-2.4e-14 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.061] asym=8e-17 res=3e-14 rel=-8e-10
+N=4 cvx40 wtf=1.00 k=0 crit=+8.4e-01 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=2e-15 rel=+1e-10
+N=3 cvx40 wtf=2.09 k=-1 crit=-0.0e+00 negZ=0 (zero 3) p0=1 negQ=0 identity=FAIL Cyw eig=[-0.002  1.   ] asym=1e-01 res=1e-14 rel=-1e-08
+N=6 cvx15 wtf=1.00 k=0 crit=+9.1e-01 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=7e-17 res=7e-15 rel=+1e-09
+N=8 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.144] asym=9e-17 res=2e-14 rel=+1e-09
+N=6 cvx15 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.011 1.   ] asym=9e-14 res=4e-12 rel=-2e-09
+N=6 cvx40 wtf=1.00 k=0 crit=+9.7e-01 negZ=0 (zero 5) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.005] asym=2e-16 res=2e-13 rel=-4e-12
+N=4 cvx40 wtf=1.00 k=0 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.  0.] asym=0e+00 res=2e-15 rel=-1e-10
+N=16 d=b wtf=0.50 k=0 crit=+7.6e-01 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.014] asym=0e+00 res=8e-14 rel=-2e-09
+N=3 d=b wtf=1.00 k=0 crit=+5.6e-01 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=4e-16 rel=+1e-10
+N=4 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.025 1.   ] asym=4e-16 res=2e-14 rel=-2e-07
+N=4 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.004 1.   ] asym=1e-15 res=5e-13 rel=-1e-10
+N=6 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=0e+00 res=1e-14 rel=-1e-09
+N=3 d=b wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.192] asym=0e+00 res=5e-15 rel=-2e-11
+N=3 cvx15 wtf=2.09 k=0 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-1.     0.011] asym=2e-16 res=9e-15 rel=-6e-09
+N=4 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.025] asym=1e-16 res=4e-14 rel=-1e-09
+N=6 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 4) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=0e+00 res=7e-15 rel=+1e-10
+N=8 cvx40 wtf=2.09 k=0 crit=+8.3e-01 negZ=0 (zero 7) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=1e-14 rel=+2e-11
+N=16 cvx15 wtf=1.00 k=0 crit=+6.5e-01 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.031] asym=6e-17 res=8e-14 rel=-8e-10
+N=3 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1.   -0.02] asym=1e-14 res=5e-14 rel=+7e-08
+N=32 cvx40 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 24) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.298] asym=2e-16 res=2e-14 rel=-2e-09
+N=6 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.019 1.   ] asym=2e-15 res=3e-13 rel=-2e-09
+N=32 cvx15 wtf=0.50 k=0 crit=+6.0e-01 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.079] asym=1e-16 res=1e-12 rel=+1e-08
+N=4 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.023] asym=1e-15 res=4e-14 rel=-7e-10
+N=4 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.   -0.07] asym=0e+00 res=3e-15 rel=-2e-09
+N=6 d=b wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 0) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=0e+00 res=4e-16 rel=+3e-09
+N=4 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.024 1.   ] asym=7e-16 res=5e-13 rel=-3e-10
+N=6 cvx40 wtf=3.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.004 1.   ] asym=5e-15 res=2e-14 rel=-3e-09
+N=3 cvx40 wtf=0.50 k=-1 crit=-0.0e+00 negZ=0 (zero 3) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.002] asym=8e-03 res=2e-14 rel=+6e-08
+N=6 cvx40 wtf=2.09 k=0 crit=+9.8e-01 negZ=0 (zero 5) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=1e-17 res=7e-15 rel=-3e-12
+N=4 cvx15 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.004 1.   ] asym=4e-15 res=4e-14 rel=+8e-09
+N=6 cvx40 wtf=1.00 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.041] asym=1e-15 res=2e-13 rel=-1e-09
+N=3 cvx40 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1. -0.] asym=5e-16 res=8e-15 rel=-3e-11
+N=8 cvx40 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 6) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=1e-16 res=1e-13 rel=+5e-11
+N=4 cvx40 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 3) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.016] asym=1e-16 res=3e-14 rel=+5e-10
+N=6 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.011 1.   ] asym=2e-13 res=1e-13 rel=-6e-09
+N=3 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=1 (zero 1) p0=1 negQ=0 identity=OK Cyw eig=[-0.02  1.  ] asym=6e-15 res=5e-13 rel=-3e-07
+N=5 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.001 1.   ] asym=4e-15 res=2e-13 rel=-7e-09
+N=4 cvx40 wtf=2.09 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=1 negQ=0 identity=FAIL Cyw eig=[-1.  0.] asym=4e-17 res=1e-14 rel=+2e-10
+N=3 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 2) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.016] asym=5e-17 res=2e-14 rel=-1e-09
+N=4 cvx40 wtf=0.50 k=0 crit=+3.0e-02 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.018] asym=6e-17 res=2e-13 rel=-1e-10
+N=4 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 4) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=2e-12 res=9e-12 rel=-4e-05
+N=6 cvx15 wtf=0.50 k=0 crit=+1.0e+00 negZ=0 (zero 1) p0=0 negQ=0 identity=OK Cyw eig=[-1.    -0.014] asym=1e-16 res=2e-12 rel=+3e-09
+N=16 cvx40 wtf=1.00 k=1 crit=+9.9e-01 negZ=0 (zero 10) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=2e-17 res=3e-13 rel=+1e-09
+N=4 cvx40 wtf=1.00 k=0 crit=-0.0e+00 negZ=0 (zero 2) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=5e-15 res=4e-14 rel=-4e-08
+N=3 cvx40 wtf=0.50 k=0 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.003 1.   ] asym=1e-14 res=1e-13 rel=+1e-07
+N=4 cvx40 wtf=2.09 k=0 crit=-0.0e+00 negZ=0 (zero 4) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=2e-13 res=5e-12 rel=+7e-07
+N=6 cvx40 wtf=1.00 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.086 1.   ] asym=8e-15 res=5e-14 rel=-5e-09
+N=16 cvx15 wtf=2.09 k=0 crit=-0.0e+00 negZ=0 (zero 1) p0=1 negQ=0 identity=FAIL Cyw eig=[-1. -0.] asym=8e-17 res=2e-14 rel=+2e-10
+N=5 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 0) p0=2 negQ=0 identity=OK Cyw eig=[0.013 1.   ] asym=2e-15 res=7e-14 rel=+2e-09
+N=4 cvx40 wtf=2.09 k=2 crit=-0.0e+00 negZ=2 (zero 1) p0=2 negQ=0 identity=OK Cyw eig=[0.012 1.   ] asym=1e-15 res=2e-12 rel=+2e-08

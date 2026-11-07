@@ -33,7 +33,11 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
     rJ = par['Ja']/par['Jt']
     assert phib0(tf/2) < np.pi/2 - 0.05, "(A1) fails"
     assert a1*np.cos(de) - eps*vb0(tf/2)**2 > 0, "(A2) fails"
-    cellmax = lambda fun, lo, hi: float(np.max(fun(np.linspace(lo, hi, 9))))   # bounds are padded piecewise-linear interpolants
+    def cellmax(fun, lo, hi):
+        if hasattr(fun, 'cells'):   # rigorous: max over all fine cells meeting [lo, hi]
+            i0 = max(int(np.floor(lo/fun.ds))-1, 0); i1 = min(int(np.ceil(hi/fun.ds))+1, len(fun.cells))
+            return float(np.max(fun.cells[i0:i1]))
+        return max(fun(lo), fun(hi), fun(min(max(tf/2, lo), hi)))   # crude bounds are unimodal with max at tf/2
     def theta_of(vb, cq3):
         er = 2*eps**2*(vb**4)/a2**2          # remainder per unit (1/theta-1), relative to A2=a2/2
         if er <= 0: return 1e-3
@@ -73,6 +77,14 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
     form = lambda m, cx, cv: (X[m].T*(wq*cx)[m])@X[m] + (Xd[m].T*(wq*cv)[m])@Xd[m]
     Kp = form(pos, cA, cB); Km = form(~pos, cA, cB)
     Lk = [form(cell == k, cL, cLd) for k in range(N)]
+    # gyro lateral-force weight c(s) >= eps (Ja/Jt) om3bar / cos(phibar); Cauchy-Schwarz with weight c:
+    # (int c|h'|)^2 <= (int c) (int c |h'|^2)
+    cnode = np.array([eps*rJ*float(om3(x))/np.cos(cellmax(phibar, x-1e-12, x+1e-12)) for x in s])
+    Vall = (Xd.T*(wq*cnode))@Xd                           # int c xdot^2
+    sgf = np.linspace(0, tf, 20001); dsf = sgf[1]-sgf[0]
+    cgy = eps*rJ*np.maximum(om3(sgf[1:]), 0)/np.cos(np.array([cellmax(phibar, a, b) for a, b in zip(sgf[:-1], sgf[1:])]))
+    wcell = np.maximum(np.abs(sgf[:-1]-ss), np.abs(sgf[1:]-ss))
+    Cg0 = float(np.sum(cgy)*dsf); Cgw = float(np.sum(wcell**2*cgy)*dsf)   # int c, int w^2 c  (weights for m0, m_w)
     # mass matrix of int n^2 on cell k: h for constant, h^3/12 for slope
     Wdiag = np.concatenate([np.full(N, h), np.full(N, h**3/12)])
     # late torque multiplier: cellwise min of c2 (a lower bound, piecewise constant)
@@ -94,7 +106,7 @@ def setup(P, tf, ss, N, par=PAR, loc=None):
             lam_ub[k] = min(lam_max, (1-xi)*(ss-tk[k+1])*np.cos(phibar(tk[k+1]))/((1+kap)*kappa_D))
         else:
             Nb2[k] = (1+kap)*K2**2
-    return dict(P=P, tf=tf, ss=ss, N=N, h=h, kss=kss, tk=tk, Kp=Kp, Km=Km, Lk=Lk, G=G, C=Cc, Mlate=Mlate,
+    return dict(cmax=float(cnode.max()) if len(cnode) else 0.0, Vall=Vall, Cg0=Cg0, Cgw=Cgw, P=P, tf=tf, ss=ss, N=N, h=h, kss=kss, tk=tk, Kp=Kp, Km=Km, Lk=Lk, G=G, C=Cc, Mlate=Mlate,
                 Wdiag=Wdiag, Nb2=Nb2, lam_ub=lam_ub, K1=K1, K2=K2, par=par, phibar=phibar, vbar=vbar,
                 s=s, wq=wq, cA=cA, cB=cB, cL=cL, cLd=cLd, side=side, cell=cell, om3=om3, rJ=rJ)
 
@@ -120,10 +132,14 @@ def solve_cert(D, rho, rhoc):
     rho0, rhow = (rho, rho) if np.isscalar(rho) else rho
     N, h, par = D['N'], D['h'], D['par']; tau, taup = par['tau'], par['taup']
     c_loc, cg = remainder_constants(D, (rho0, rhow))
+    c_loc = c_loc + (1+1/tau)*(1+1/par.get('kapg', 10.0))*(rho0*D['Cg0'] + rhow*D['Cgw'])*D['cmax']*(h/(2*np.pi))**2
     lam_lb = np.maximum(c_loc+cg-D['Mlate'], 0.0)*1.02
     if np.any(lam_lb > D['lam_ub']): return None
     Rm = np.diag([rho0, rhow])
+    kg = par.get('kapg', 10.0)
+    coefV = (1+1/kg)*(rho0*D['Cg0'] + rhow*D['Cgw'])     # (int c|h'|)^2 <= int c^2 * int |h'|^2  (gyro lateral force)
     A = (1+tau)*D['Kp'] + (1-taup)*D['Km'] - (1-par.get('taurho', 0.2))*D['G'].T@Rm@D['G'] - (1-taup)*rhoc*D['C'].T@D['C']
+    A = A + (1+tau)*coefV*D['Vall']
     A = (A+A.T)/2
     Wd = D['Wdiag']
     lam = cp.Variable(N)
@@ -176,7 +192,8 @@ def moment_term(D, rho, d=0.0, M=40001):
     vb = np.maximum(D['vbar'](sg[:-1]), D['vbar'](sg[1:]))
     E = sg[1:] <= ss
     wmax = np.maximum(np.abs(sg[:-1]-ss), np.abs(sg[1:]-ss)); wmin = np.minimum(np.abs(sg[:-1]-ss), np.abs(sg[1:]-ss))
-    gyro = eps*D['rJ']*D['om3'](sg[1:])*vb
+    gyro = 0.0*vb          # gyro lateral force is handled inside the SDP (coefV term)
+    kgf = 1+D['par'].get('kapg', 10.0) if D['par']['roll'] else 1.0
     Mv0 = np.sum(np.where(E, sph*eps*vb**2, 0))*ds + np.sum(gyro)*ds
     Mvw = np.sum(np.where(E, wmax*sph*eps*vb**2, 0))*ds + np.sum(wmax*gyro)*ds
     Dmax = a2 - a1*np.cos(de) + eps*vb.max()**2
@@ -188,7 +205,7 @@ def moment_term(D, rho, d=0.0, M=40001):
     mu0 = lambda Pen: cumG[min(np.searchsorted(cumP, Pen, side='left'), len(cumG)-1)]
     Penmax = D['Penmax']
     grid = np.linspace(0, Penmax, 20001)
-    val = lambda Pa, Pb: rho0*(d+Mv0+mu0(Pb))**2 + rhow*(d*(1+ss)+Mvw+cw*Pb)**2 - Pa
+    val = lambda Pa, Pb: kgf*(rho0*(d+Mv0+mu0(Pb))**2 + rhow*(d*(1+ss)+Mvw+cw*Pb)**2) - Pa
     best = max(val(grid[i], grid[i+1]) for i in range(len(grid)-1))
     return best
 
@@ -204,19 +221,19 @@ if __name__ == "__main__":
     else:
         nv = optimize(P, tf, ss, N=100, starts=6)[1]; np.save(wfile, nv)
     ev = evaluate(P, tf, ss, nv)
-    par = dict(PAR); par['tau'] = float(os.environ.get("TAU", par['tau'])); par['zeta'] = par['xi'] = float(os.environ.get("ZETA", par['zeta'])); par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
+    par = dict(PAR); par['tau'] = float(os.environ.get("TAU", par['tau'])); par['zeta'] = par['xi'] = float(os.environ.get("ZETA", par['zeta'])); par['kapg'] = float(os.environ.get("KAPG", 10.0)); par['roll'] = os.environ.get("ROLL", "0") == "1"; par['lam_max'] = float(os.environ.get("LAMMAX", par['lam_max']))
     print(f"[{gim} delta={deg:.2f}] tf={tf} s*={ss} N={N} roll-competitors={par['roll']}: witness G_w={ev['G']:.6e}, "
           f"max tilt {np.degrees(ev['maxtilt']):.3f} deg, max v_z(t<tf)={ev['maxvz']:.3e}, min r_z/|r_h|={ev['rzrel']:.3e}, "
           f"r0={ev['r0']}, v0={ev['v0']}", flush=True)
     loc = None
     if os.environ.get("LOC", "1") == "1":
         from localize import localize
-        vf, pf, info, _ = localize(P, tf, ss)
+        vf, pf, info, _ = localize(P, tf, ss, roll=par['roll'])
         print("  localization (Lemma 4.0):", {k: float(v) for k, v in info.items()}, flush=True)
         loc = (vf, pf)
     D = setup(P, tf, ss, N, par, loc=loc)
     cE = np.cos(D['K2']*ss**2/2)
-    D['Penmax'] = (par['xi']/(cE*(1-info['c_abs'])) + par['zeta'])*info['E0'] if loc is not None else 1e2
+    D['Penmax'] = (par['xi']/(cE*(1-info['c_abs'])) + par['zeta']*info['lat_fac'])*info['E0'] if loc is not None else 1e2
     print(f"  Penmax={D['Penmax']:.3e}", flush=True)
     best = None
     for rho in [tuple(float(y) for y in x.split(":")) for x in os.environ.get("RHOS", "1:100").split(",")]:

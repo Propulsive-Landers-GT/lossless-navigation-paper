@@ -1,0 +1,12 @@
+N=5 a1=11.0 nv=27 order=2: #moments=2650
+equalities: 617 rows, rank 557
+Clarabel failed; trying SCS
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/c6_lasserre_sparse_fast.py:186: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  pr.solve(solver=cp.SCS, eps_abs=1e-6, eps_rel=1e-6, max_iters=300000)
+safe dual bound (sign +1): -2.29896103e+05   (|r|_1 = 2.30e+05)
+safe dual bound (sign -1): -7.91260733e-02   (|r|_1 = 2.23e+02)
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/c6_lasserre_sparse_fast.py:206: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  pg = cp.Problem(cp.Minimize(gobj), gc); pg.solve(solver=cp.CLARABEL, tol_gap_abs=1e-11, tol_gap_rel=1e-11, tol_feas=1e-11)
+Gram SDP (CSD2) = 3.24090861e-01; Lasserre lower bound = 3.37367416e-01 (optimal_inaccurate, 440s); 3D NLP = 3.81324733e-01
+RIGOROUS safe bound = -7.91260733e-02  vs Gram SDP 3.24090861e-01  => not certified by the safe bound
+exit 0

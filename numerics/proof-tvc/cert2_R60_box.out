@@ -1,0 +1,8 @@
+[box delta=21.09] tf=1.0 s*=0.25 N=60 roll-competitors=False: witness G_w=1.404384e-04, max tilt 0.627 deg, max v_z(t<tf)=-6.780e-05, min r_z/|r_h|=8.371e+01, r0=[-0.01081656  1.11049332], v0=[ 0.03020645 -0.74844503]
+  localization (Lemma 4.0): {'lat_fac': 1.0, 'E0': 0.0008796690401567889, 'PenE': 0.0013208379260961883, 'c_abs': 0.33400682795602266, 'vmax': 0.4929769502733846, 'phimax': 0.08573783948588776, 'v_late_max': 0.4929769502733846, 'phi_late_max': 0.08573783948588776}
+  Penmax=2.208e-04
+    solver objective 1.31545e-04
+  rho=(1.5, 15.0) rhoc=0.1: SDP=1.31547e-04 (remainder floor 3.24e-05) topeig=-1.7e-11 moment=3.340e-06 U_total=1.34887e-04  G_w/U=1.0412
+    solver objective 1.32468e-04
+  rho=(1.0, 15.0) rhoc=0.1: SDP=1.32469e-04 (remainder floor 3.21e-05) topeig=-2.0e-11 moment=3.913e-07 U_total=1.32860e-04  G_w/U=1.0570
+RESULT tf=1.0 s*=0.25 N=60 box roll=False: G_w=1.40438e-04  U_total=1.32860e-04  margin=7.578e-06 (5.4%)  dist(theta_m,F) >= 7.332e-06  certificate=PASS

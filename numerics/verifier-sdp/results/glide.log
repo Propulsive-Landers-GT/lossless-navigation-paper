@@ -1,0 +1,12 @@
+glide #1 N=8 tf=2.0 w=0.8 cone=75.0: uncon 1.27318 | G: L=1.5012066 [opti] U=1.5012066 rel=2.64e-08 rank=1
+glide #1 N=8 tf=2.0 w=0.8 cone=75.0: uncon 1.27318 | G2: L=1.5012065 [opti] U=1.5012066 rel=9.57e-08 rank=1
+glide #2 N=8 tf=3.0 w=0.8 cone=75.0: uncon 0.901778 | G: L=0.91005285 [opti] U=0.91005297 rel=1.28e-07 rank=1
+glide #2 N=8 tf=3.0 w=0.8 cone=75.0: uncon 0.901778 | G2: L=0.91005294 [opti] U=0.91005297 rel=3.34e-08 rank=1
+glide #3 N=12 tf=4.0 w=0.8 cone=75.0: uncon 9.34857 | G: L=10.694774 [opti] U=10.694774 rel=5.43e-08 rank=1
+glide #3 N=12 tf=4.0 w=0.8 cone=75.0: uncon 9.34857 | G2: L=10.694772 [opti] U=10.694774 rel=2.47e-07 rank=1
+glide #4 N=8 tf=3.0 w=0.8 cone=45.0: uncon 1.78279 | G: L=1.7902667 [opti] U=1.7902667 rel=9.05e-09 rank=1
+glide #4 N=8 tf=3.0 w=0.8 cone=45.0: uncon 1.78279 | G2: L=1.7902667 [opti] U=1.7902667 rel=2.90e-08 rank=1
+glide #5 N=12 tf=4.0 w=0.8 cone=45.0: uncon 7.51688 | G: L=7.622965 [opti] U=7.622965 rel=6.32e-09 rank=1
+glide #5 N=12 tf=4.0 w=0.8 cone=45.0: uncon 7.51688 | G2: L=7.622965 [opti] U=7.622965 rel=5.20e-10 rank=1
+glide #6 N=12 tf=4.0 w=0.8 cone=45.0: uncon 2.11378 | G: L=2.6856511 [opti] U=2.718011 rel=1.19e-02 rank=4
+glide #6 N=12 tf=4.0 w=0.8 cone=45.0: uncon 2.11378 | G2: L=2.6856507 [opti] U=2.718011 rel=1.19e-02 rank=4

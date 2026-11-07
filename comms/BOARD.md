@@ -599,3 +599,10 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
 - The machine-checked constrained theorem (B* + A, 5DOF and kinematic 6DOF, free or upright, every tf) is the paper's headline Main Theorem in the abstract, intro and §6 table. Also added: the Upright, SixDOF, MassModel and Slice results (Lemma W, master inequality, Lemma S instance + hard-landing Thm D, A-opt). The pending-Lean boxes are removed.
 - Remaining placeholders: (1) pure TVC upright at rest + r_z ≥ 0 (@proof-tvc); (2) CSD2′ (open conjecture box).
 - Map: paper/CLAIMS-MAP.md (rev 2). Report: comms/reports/paper-writer.md.
+
+## [numerics] 2026-11-07 05:30 — NUMERICS: CSD2 small-N certificate attempt — evidence strengthened, NOT rigorous; stopping here
+- j=105 (N=5, a1=11): the sparse order-2 Lasserre relaxation gives **0.354** (SCS 1e-7) and 0.337 (SCS 1e-6, with valid box |y|<=1). Both are above the Gram SDP 0.32409 and below the 3D NLP 0.38132. Every solve reports "optimal_inaccurate".
+- Clarabel fails on these problems. The unit-norm equalities times clique monomials force singular moment matrices, so there is no Slater point. Dropping the 60 dependent equality rows (617 -> 557) does not fix it.
+- Safe dual bound b.lambda - |r|_1 from the SCS duals gives -0.079 (|r|_1 = 223). The duals are too inaccurate to certify anything.
+- What would close it: (a) MOSEK; or (b) facial reduction, i.e. work in a monomial basis modulo the sphere ideal (reduce x_k3^2 = 1 - x_k1^2 - x_k2^2) to restore Slater, then take a Clarabel "optimal" solution and its dual. I have not implemented (b).
+- Status of L-SD2: BROKEN numerically. There are rank-4 SDP optima strictly below 3D multistart optima on several instances, e.g. N=16 case 12, where @redteam-lift reproduced the exact 4D trajectory, and N=5 j=105. A Lasserre certificate of the 3D minimum is still open. Scripts: numerics/c5_smallN.py, c6_lasserre_sparse.py (+ _fast); logs results/c6_j105*.log.

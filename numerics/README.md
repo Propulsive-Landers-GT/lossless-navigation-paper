@@ -85,6 +85,14 @@ Tasks 3 and 4 of the brief (3DOF-LCvx attitude-rate demand statistics, 5DOF-awar
   - SDP 0.0275287 (Clarabel at tol 1e-10, constraint violation 9e-14; SCS agrees). The optimum is **rank 4**, with eigenvalue 0.078.
   - The best genuine NLP over 480 restarts is 0.0282306, a 2.5% gap. Conjecture CSD2 is false in general, although the lift still works as an a-posteriori certificate.
 
+- Small-N analog (`c5_smallN.py`):
+  - N = 3 and 4 show no gap. Rank-4 SDP optima appear there, but the optimal faces are degenerate.
+  - N = 5 with a1 = 11 shows gaps of 5–15%, e.g. j=105: SDP 0.3241 against 3D 0.3813.
+- Lasserre certificate (`c6_lasserre_sparse.py`), using a sparse order-2 relaxation:
+  - It gives 0.337–0.354, above the Gram value. This is numerical only; SCS reports "optimal_inaccurate".
+  - Clarabel fails because there is no Slater point. The safe dual bound is too weak.
+  - So L-SD2 is broken **numerically, not yet certified**. MOSEK or facial reduction would be needed to certify it.
+
 ## Files
 | file | purpose |
 |---|---|
@@ -97,7 +105,7 @@ Tasks 3 and 4 of the brief (3DOF-LCvx attitude-rate demand statistics, 5DOF-awar
 | s3_longcap.py | long-horizon tilt-cap coning test |
 | s4_faces.py | scan of R_π-invariant vertical faces of F^X for the largest gap |
 | d1_landing_set.py, s5_annulus.py, plot_annulus.py | lateral landing set L for fixed (r0,v0); hop-data annulus |
-| c1_csd2_check.py, c2_polish.py, c3_case12.py, c4_case12_sdp.py | test of the degree-2 Shor lift (CSD2) |
+| c1_csd2_check.py, c2_polish.py, c3_case12.py, c4_case12_sdp.py, c5_smallN.py, c6_lasserre_sparse.py(+_fast) | test of the degree-2 Shor lift (CSD2), small-N analog, sparse Lasserre certificate attempt |
 | results/ | json/png outputs |
 
 Caveats: multistart NLP cannot certify global optima. Every reported distance is an upper bound (inner discretization),

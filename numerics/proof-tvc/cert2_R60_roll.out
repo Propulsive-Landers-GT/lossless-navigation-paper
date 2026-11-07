@@ -1,0 +1,8 @@
+[cone delta=15.00] tf=1.0 s*=0.25 N=60 roll-competitors=True: witness G_w=7.269373e-05, max tilt 0.451 deg, max v_z(t<tf)=-6.780e-05, min r_z/|r_h|=1.163e+02, r0=[0.00781548 1.11581799], v0=[-0.02193461 -0.79061631]
+  localization (Lemma 4.0): {'lat_fac': 1.1764705882352942, 'E0': 0.00045437470360420047, 'PenE': 0.000539117787513863, 'c_abs': 0.1571884398406784, 'vmax': 0.3486539706473675, 'phimax': 0.06349142817289175, 'v_late_max': 0.3486539706473675, 'phi_late_max': 0.06349142817289175}
+  Penmax=1.075e-04
+    solver objective 8.83801e-05
+  rho=(1.5, 15.0) rhoc=0.1: SDP=8.83811e-05 (remainder floor 2.09e-05) topeig=-3.7e-11 moment=9.010e-08 U_total=8.84712e-05  G_w/U=0.8217
+    solver objective 8.70471e-05
+  rho=(1.0, 15.0) rhoc=0.1: SDP=8.70483e-05 (remainder floor 2.04e-05) topeig=-4.2e-11 moment=4.418e-08 U_total=8.70924e-05  G_w/U=0.8347
+RESULT tf=1.0 s*=0.25 N=60 cone roll=True: G_w=7.26937e-05  U_total=8.70924e-05  margin=-1.440e-05 (-19.8%)  dist(theta_m,F) >= 0.000e+00  certificate=FAIL

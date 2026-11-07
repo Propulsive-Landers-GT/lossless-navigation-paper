@@ -81,6 +81,8 @@ def stress(G, x, wv, wr, act_tol=1e-6):
     Q = C + np.diag(mu)
     for (i, j), l in zip(act, lam):
         if j is not None: Q[i, j] -= l / 2; Q[j, i] -= l / 2
+    if getattr(stress, 'full', False):
+        return Q, C, res
     return np.linalg.eigvalsh(Q), res
 
 def jacobi_m(G, x, wv, wr):
@@ -92,7 +94,8 @@ def jacobi_m(G, x, wv, wr):
     m /= nm
     if m @ EZ < 0: m = -m
     h = B @ m
-    s = np.sign(h[np.abs(h) > 1e-9])
+    hh = h.copy(); hh[0] = abs(hh[0]) + 1.0; hh[-1] = abs(hh[-1]) + 1.0 if G.terminal else hh[-1]   # <e_z,m> >= 0 orientation
+    s = np.sign(hh[np.abs(hh) > 1e-9])
     return h, int(np.sum(s[1:] != s[:-1]))
 
 def zindex(G, x, wv, wr):

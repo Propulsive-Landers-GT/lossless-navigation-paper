@@ -10,7 +10,7 @@ Steps (all inequalities in math/06 §4.0):
 """
 import numpy as np
 
-def localize(P, tf, ss, kap=0.1, M=4001):
+def localize(P, tf, ss, kap=0.1, M=4001, roll=False, Ja=3.74, Jt=63.6, tau_r=3.0, theta_g=0.15):
     a1, a2, de, eps = P['a1'], P['a2'], P['de'], P['eps']
     K1 = a1*np.sin(de)/eps; K2 = a2*np.sin(de)/eps
     beta = np.tan(de)/eps; dpmax = a2-a1*np.cos(de)
@@ -26,8 +26,17 @@ def localize(P, tf, ss, kap=0.1, M=4001):
     assert c_abs < 0.9, c_abs
     s = np.linspace(0, ss, M)
     E0 = np.trapezoid((ss-s)*(A1*(1+kap)*(K1*s**2/2)**2 + B1*(1+kap)*K1**2*s**2), s)*1.001
+    lat_fac = 1.0
+    if roll:
+        # (R1) gyro vertical term |w| eps (Ja/Jt) om3bar |h||hdot|: early part bounded a priori (|h|<=phibar0, |hdot|<=vbar0),
+        # late part absorbed into theta_g*Pi via AM-GM: cg|h||hd| <= cg(gam|h|^2 + |hd|^2/gam)/2 <= theta_g((a2/2)|h|^2 + eps c0 |hd|^2)
+        cgmax = eps*(Ja/Jt)*(tau_r/Ja)*tf
+        gam = np.sqrt((eps*c0)/(a2/2))
+        assert cgmax*gam/2 <= theta_g*a2/2 and cgmax/(2*gam) <= theta_g*eps*c0, "gyro absorption fails"
+        E0 += np.trapezoid((ss-s)*eps*(Ja/Jt)*(tau_r/Ja)*s*np.sin(phib0(s))*vb0(s), s)*1.001
+        lat_fac = 1/(1-theta_g)
     PenE = E0/(1-c_abs)
-    LhW = 2*E0/a2; LvW = E0/(eps*c0); LqW = 2*a2*E0/c0**2
+    LhW = 2*E0/a2*lat_fac; LvW = E0/(eps*c0)*lat_fac; LqW = 2*a2*E0/c0**2*lat_fac
     # early bounds
     etag = np.concatenate([[0], np.geomspace(1e-7, ss, 400)])
     def Ybar(x):
@@ -69,16 +78,21 @@ def localize(P, tf, ss, kap=0.1, M=4001):
             h_ag = np.inf
         hlate[jj] = min(np.sin(min(phib0(s0), np.pi/2)), h_lip, h_ag, 1.0)
     phi[L] = np.arcsin(np.minimum(hlate, 1.0))
-    # make bounds valid on cells: running max over +-2 fine points (bounds are evaluated at cell ends/nodes)
-    def padmax(a):
-        b = a.copy()
-        for k in (1, 2):
-            b[k:] = np.maximum(b[k:], a[:-k]); b[:-k] = np.maximum(b[:-k], a[k:])
-        return b
-    v = padmax(v); phi = padmax(phi)
-    vfun = lambda x: np.interp(x, sg, v) * 1.0 + 0*x
-    phifun = lambda x: np.interp(x, sg, phi)
-    info = dict(E0=E0, PenE=PenE, c_abs=c_abs, vmax=v.max(), phimax=phi.max(), v_late_max=v[L].max(), phi_late_max=phi[L].max())
+    # rigorous step-function bounds: v is K2-Lipschitz and phi is (max v)-Lipschitz, so on the fine cell
+    # [sg_i, sg_{i+1}] the true values are <= max(bound_i, bound_{i+1}) + Lip*ds.
+    vcell = np.maximum(v[:-1], v[1:]) + K2*dsg
+    pcell = np.maximum(phi[:-1], phi[1:]) + (v.max()+K2*dsg)*dsg
+    def stepfun(cellvals):
+        def f(x):
+            x = np.asarray(x, dtype=float)
+            i = np.clip(np.floor(x/dsg).astype(int), 0, len(cellvals)-1)
+            j = np.clip(np.ceil(x/dsg).astype(int)-1, 0, len(cellvals)-1)   # at a breakpoint take both cells
+            return np.maximum(cellvals[i], cellvals[j])
+        return f
+    vfun = stepfun(vcell); phifun = stepfun(pcell)
+    vfun.cells = vcell; phifun.cells = pcell; vfun.ds = dsg; phifun.ds = dsg
+    v = np.concatenate([vcell, vcell[-1:]]); phi = np.concatenate([pcell, pcell[-1:]])
+    info = dict(lat_fac=lat_fac, E0=E0, PenE=PenE, c_abs=c_abs, vmax=v.max(), phimax=phi.max(), v_late_max=v[L].max(), phi_late_max=phi[L].max())
     return vfun, phifun, info, (sg, v, phi)
 
 if __name__ == "__main__":
