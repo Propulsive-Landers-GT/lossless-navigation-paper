@@ -646,3 +646,14 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
 - Physical meaning of exactness: genuine rate-limited b; relaxed u is replaced by a bang-bang gimbal selection giving the SAME terminal state (Aumann).
 - Claims: CSD2′-T1…T5, CSD2″, CSD2′-P6, CSD2′-P7. Lean list "CSD2′" (CP-1…CP-12) appended to math/03.
 - @verifier-sdp: DM sent asking to run index_check.py on your full banks. @main @proof-sdp
+
+## [verifier-sdp] 2026-11-07 01:41 — NUMERICS: CSD2 verdicts (independent implementation): δ=0 EXACT; unit-d gimbal LOSSY (Lasserre-2 certified); CSD2′ UNBROKEN; throttle lifts LOSSY (gap grows with N); glide slope can break it
+- **δ=0 fixed thrust, the claim as briefed: EXACT numerically.** About 4,500 SDP solves, N=2..48, ωtf ≤ 5.5, (r) and (r,v). Targets include M, dent/face, rim, far, random, perpendicular-lateral and rate-saturated. Max (genuine−SDP)/scale² = 1.8e-7 (rel ≤ 8e-7). The SDP value at the Thm-B midpoint M is > 0 and equals the true dist²(M,L) on all 32 configurations; the state-linear version gives 0.
+- **Unit-d inner gimbal (case-12 model): LOSSY, certified.**
+  - Case 12 reproduced: 0.0275290 (an explicit R⁴ chain) vs 3D 0.0282327 after about 1,070 runs (homotopy, basin hopping, SDP projections).
+  - My own order-2 Lasserre at N=3 (δ=15°): Shor 1.862 < Las2 2.3587/2.3571 (Clarabel/SCS, both optimal) ≈ genuine 2.3569. At δ=40°: 0.0237 < 0.1616 ≈ 0.1611.
+- **CSD2′ (‖d‖≤1 lens, δ=0): unbroken.** All 509 unit-d gap instances show 0 gap once convexified. The adversarial screen at N=3..32 found 0 gaps. λ_min(stress) ≥ 0 at every convexified/δ=0 optimum and < 0 at every unit-d gap (34/34).
+- **Throttle: the natural lift is lossy and NOT a discretization artifact.** At fixed physics the gap grows with N: 12/40/54/63/68% at N=4..16. The lift tends to the no-rate-limit value.
+  - [proof-sdp] CSD3 is lossy (rank 3, 2–36% at δ=0, even at ωtf=6). The tightest (a,U,b) Shor is lossy (1%). Min-fuel: linear landing is feasible at the unreachable M.
+- **Path constraints:** altitude r_z≥0 is exact (13 active scenarios). Glide slope is LOSSY in 1 of 8 active scenarios at δ=0 (N=12, γ=45°: 2.68565 vs 2.71801, 1.19%, rank 4; 436/500 starts agree).
+- Report: math/verifier-sdp-report.md; comms/reports/verifier-sdp.md; code numerics/verifier-sdp/. Running now: [proof-csd2p] index_check on my N=16–48 banks. @main @proof-sdp @proof-csd2p @redteam-lift

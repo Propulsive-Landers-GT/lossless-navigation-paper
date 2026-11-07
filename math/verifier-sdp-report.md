@@ -13,7 +13,9 @@ I built my implementation and reached my verdicts before reading `math/redteam-l
 | **CSD2′**: same lift for the convexified lens (‖d_k‖ ≤ 1, i.e. discrete relaxed controls) or for δ=0 | **EXACT (numerically), unbroken** | All 509 unit-d gap instances re-solved: 0 gaps, max 4.5e-10·scale². Adversarial CSD2′ screen N=3…32 (near-dent, non-coplanar (r,v), rate-saturated): 0 gaps. Stress matrix PSD at every convexified optimum tested and negative at every unit-d gap. |
 | Variable throttle, natural degree-2 lift (U_k = a_k b_k) | **LOSSY, certified (Lasserre-2 at N=3); NOT a discretization artifact** | At fixed physics (tf=1, ω=2, a∈[0.5,1]) the gap grows with N: 12% (N=4), 40% (6), 54% (8), 63% (12), 68% (16). The lift converges to the no-rate-limit value. |
 | Throttle, other lifts: (U,b)-Hilbert lift, tightest degree-2 Shor in (a,U,b), [proof-sdp] CSD3 | **all LOSSY** | CSD3 is rank-3 yet lossy (gaps 2–35% even at δ=0, ωtf=6), so the scalar-Γ lift admits off-axis thrust inside R³. The tightest (a,U,b) Shor is nearly closed (0.4707 vs 0.4753) but not exact. |
-| Altitude / glide-slope, min-fuel | see §7 | |
+| Altitude r_z ≥ 0 (δ=0) | **EXACT** on 13 active scenarios (rank 1) | §7.1 |
+| Glide slope (δ=0) | **LOSSY in 1 of 8 active scenarios** (1.19%, rank 4, genuine value hit by 436/500 starts) | §7.2. Path constraints are outside CSD2/CSD2′ |
+| Min-fuel (throttle) | linear landing lossy (feasible at unreachable M); lifted landing correct on feasibility, small gaps (≤0.66%) | §7.3 |
 
 ## 1. Problem and SDP (my implementation)
 
@@ -198,8 +200,27 @@ The natural lift has z = (a_k, U_k = a_k b_k) and constraints ‖U_k‖² = a_k�
 
 **Verdict (c): the throttle lift is lossy, and the gap grows with N. (d) CSD3 is lossy, even without a binding rate limit.**
 
-## 7. Altitude / glide slope; min-fuel
-FILL (run_ext.py altitude / fuel).
+## 7. Altitude / glide slope; min-fuel (fixed thrust δ=0 for 7.1–7.2; throttle for 7.3)
+
+### 7.1 Altitude r_z(t_j) ≥ 0 at every node (`run_ext.py altitude`)
+- Setup: physical initial conditions (g=1, a=1.5, tf ∈ {2,4}, ω ∈ {0.3, 0.8}, N ∈ {8,12,16}). I keep only scenarios where the unconstrained optimum goes underground (min altitude −0.02 … −0.94) and the constrained problem is feasible.
+- Variants: A = linear constraint on first moments; B = A + lifted pairwise products r_z(t_i) r_z(t_j) ≥ 0.
+- Result: 13 scenarios, 26 SDPs, **exact in all** (max rel 8e-7), rank 1. The constraint is active: the cost rises, e.g. 0.293 → 0.984 and 3.82 → 10.29.
+
+### 7.2 Glide slope ‖r_xy(t_j)‖ ≤ tan γ · r_z(t_j) + altitude (`run_glide.py`, `glide_check.py`)
+- Setup: scenarios start inside the cone (γ ∈ {45°, 60°, 75°}), and only those where the constraints are active are kept.
+- Variants: G = SOC on first moments; G2 = G + lifted quadratic tan²γ r_z² − ‖r_xy‖² ≥ 0. The genuine NLP uses the exact cone.
+- Result: 8 active scenarios. **7 are exact** (rank 1). **1 is LOSSY:** N=12, tf=4, ω=0.8, γ=45°. G and G2 both give 2.68565 (rank 4) vs genuine 2.71801, a **1.19% gap**.
+  - The genuine value is robust: 436 of 500 starts hit it, including 200 Gaussian samples from the Shor moment matrix.
+  - The lifted quadratic cone constraint (G2) does not close the gap.
+- So **path (glide-slope) constraints can break the exactness of the degree-2 lift even at δ=0**. This is an extension beyond CSD2/CSD2′ as stated, which cover only the unconstrained problem. Not certified (N=12 is too large for my Lasserre-2).
+
+### 7.3 Min-fuel with variable throttle (`run_ext.py fuel`; a ∈ [0.5, 1], N ∈ {6, 8, 12}, ωtf ∈ {0.5, 1.5, 3})
+- **Linear landing** (first-moment readout = q): the SDP is **feasible at the unreachable midpoint M** (and returns fuel 0.5 = min), so it is **lossy in feasibility**. This is exactly Theorem A/D for a state-linear relaxation.
+- **Lifted landing** (second-moment landing error ≤ ε = 1e-8): the SDP is correctly **infeasible** at M on 12 of 13 unreachable targets.
+- At reachable targets: 41 instances; 37 agree with the genuine min-fuel to ≤ 1e-3; 4 show gaps up to 0.66%, with high SDP rank (7–23).
+- Consistent with §6: the throttle lift is lossy. These small min-fuel gaps are the same mechanism, damped because min-fuel solutions sit mostly at a = a1.
+- **No exact min-fuel formulation results.**
 
 ## 8. Files
 - `numerics/verifier-sdp/`:

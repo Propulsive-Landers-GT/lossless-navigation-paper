@@ -18,13 +18,13 @@ DM address = value for SendMessage `to:`. The orchestrator is `main`.
 | possibility-rho0 | a792931e985b589b0 (DONE) | Is 5DOF LCvx possible when min throttle ρ1=0? (sharp dichotomy) | math/possibility-rho0.md |
 | proof-tvc | a237537bb0f864d13 | Pure-TVC (real GTPL 6DOF) nonconvexity: upright at rest, r_z≥0 | math/06-pure-tvc.md |
 | proof-s | a8a27205fe1b681a6 (DONE) | Prove slice Lemma S (per-instance min-landing-error impossibility, hard v(tf)=0) | math/07-lemma-S.md |
-| verifier-sdp | a1cc9c46da966f49c | Independent numerical attempt to break SDP-lift exactness (CSD2) | numerics/verifier-sdp/, math/verifier-sdp-report.md |
+| verifier-sdp | a1cc9c46da966f49c (DONE) | Independent numerical attempt to break SDP-lift exactness (CSD2) | numerics/verifier-sdp/, math/verifier-sdp-report.md |
 | proof-sdp | ae94d2bcd8785d34a (DONE) | Prove/disprove CSD2 (degree-2 Shor lift exact for fixed-thrust 5DOF min-landing-error), extend to throttle | math/08-sdp-exactness.md |
 | lean-s | a40abab87ad7b4bb3 (DONE) | Lean: A-opt/Prop T, Wirtinger lemma, Lemma S, Thm D w/ penalty | lean/LcvxObstruction/LcvxObstruction/Slice/ |
 | paper-writer | a41a31397861a8637 (DONE, draft) | LaTeX paper draft from SYNTHESIS + proofs; only proven/formalized claims | paper/ |
 | verify-imp | afee825a20ce8c68e (DONE) | Referee impossibility-side CLAIMED rows (Q, B*, D, S, A-opt, P0-*) | math/verify-imp-report.md |
 | verify-pos6 | ab5886d8970d683d2 (DONE) | Referee 6DOF, positive, SDP CLAIMED rows | math/verify-pos6-report.md |
-| proof-csd2p | a913db127233c94a0 | Prove refined SDP conjecture CSD2′ (convexified lens, continuous time) | math/09-csd2-prime.md |
+| proof-csd2p | a913db127233c94a0 (DONE) | Prove refined SDP conjecture CSD2′ (convexified lens, continuous time) | math/09-csd2-prime.md |
 | verify-tvc | ae6c370b5cd20db43 | Audit pure-TVC computer-assisted proof, exact-arithmetic re-check | math/verify-tvc-report.md |
 | verify-sdp2 | ac7006c94fa6b776a | Referee math/09 (CSD2′ partial proof) | math/verify-sdp2-report.md |
 | solver-v2 | aa3239f000bdac159 | Practical deliverable: simplest certifiably-feasible landing algorithm (attitude outer loop + exact convex inner) + 6DOF closed loop | solver/ |

@@ -24,9 +24,10 @@ cost. Lean 4/Mathlib, sorry-free, axioms = [propext, Classical.choice, Quot.soun
      given b(t), the problem is exactly convex with no relaxation needed (C-6).
    - **Per instance:** the nonconvexity is entirely the choice of attitude profile (C-U).
    - **Infinite-dimensional lifts:** occupation-measure LPs with point-mass data entry are exact (generic; not practical).
-   - **Tractable SDP lift:** the degree-2 SDP (Shor) lift is NOT exact in general (fails with gimbal and with
-     variable throttle), but survives for fixed thrust with no gimbal and is exact on realistic in-air targets, which
-     makes it a global-optimality / infeasibility certificate rather than a general solution.
+   - **Tractable SDP lift (narrow 'possible'):** a degree-2 SDP lift is exact for every LINEAR objective (T2), and
+     conjecturally (CSD2′: unbroken in ~4,500 solves, proved for an a-priori class and by an index theorem except a thin
+     residual class) exact for fixed-thrust min-landing-error with a chattering gimbal. It is NOT exact with variable
+     throttle (gap grows to 68%) or with glide slope in general. So for GTPL it is a certificate tool, not a solution.
 
 ## Results table
 
@@ -50,7 +51,7 @@ cost. Lean 4/Mathlib, sorry-free, axioms = [propext, Classical.choice, Quot.soun
 | P0-R | ρ1 = 0: velocity set R convex iff δ+ωtf ≤ π/2 | M1 | PROVED | math/possibility-rho0.md |
 | P0-F | ρ1 = 0 still gives nonconvex F_tf (coast-while-rotating; thrust on/off kink) ⇒ no 'possible iff ρ1=0' dichotomy | M1, α=0, δ<π/4, ωtf<π/2−2δ | PROVED | math/possibility-rho0.md |
 | P0-X | ρ1 = 0 with r_z ≥ 0: nonconvex for T/W ≳ 2.1 (numerics ≳1.7); GTPL T/W 1.27 open | M1 | PROVED (regime) | math/possibility-rho0.md |
-| CSD2 | Degree-2 SDP lift exact for min-landing-error | M1 | Unit-d discrete model with gimbal: LOSSY (case 12, 2.5%, explicit R⁴ chain) — but proof-sdp shows this is a discretization artifact (no chattering in the discrete unit-d model; Prop 6.1). Convexified-lens model: case 12 EXACT. Refined **CSD2′** (convexified lens / δ=0 / continuous time): OPEN but strongly supported — 0 gaps on all 509 former unit-d gap instances and on adversarial screens N=3–8 (verifier-sdp); proof-csd2p attempting a proof. Variable-throttle natural lift: CERTIFIED LOSSY at N=3 (order-2 Lasserre lower bound 0.6047 = best local vs lift 0.5759). δ=0: no gap on ~2,900 targets | math/08 §7.1, BOARD |
+| CSD2 | Degree-2 SDP lift exact for min-landing-error | M1 | **Unit-d gimbal discretization: LOSSY** (Lasserre-2 certified up to solver accuracy at N=3; case 12 2.5%, explicit R⁴ chain). **CSD2′ (δ=0 or convexified lens): UNBROKEN** (~4,500 solves, N≤48; stress PSD at every exact optimum, indefinite at every unit-d gap). **Variable throttle: LOSSY and gap grows with N** (12→68%, tends to the no-rate-limit value: genuine, not an artifact). Separate-axis lift CSD3: LOSSY. Altitude r_z≥0: exact; **glide slope can break it** (1.19% in 1/8 scenarios) | math/verifier-sdp-report.md, math/08, math/09 |
 | CSD2′-T | Partial proof of CSD2′ (proof-csd2p): T2 lift exact for every LINEAR objective (all models) ⇒ SDP computes conv(reachable set) exactly; T4 a-priori exactness for vertical-shortfall targets with ωtf < π (hemisphere/Picone); T5 index theorem: exact if primer-plane crossings k ≤ p₀, beaten in R⁴ if k ≥ p₀+2, k = p₀+1 open; exact ⇒ genuine attitude + bang-bang gimbal (Aumann). 0 gaps on 384 new targets | M1, fixed thrust, convexified lens | CLAIMED — under referee (verify-sdp2) | math/09-csd2-prime.md |
 | SDP-4.1 | For coplanar data (velocity-only, position-only, vertical-plane targets), every planar LICQ local min is a certified global optimum (incl. glide slope/altitude) | M1, fixed thrust | PROVED (proof-sdp; not yet attacked) | math/08 Thm 4.1 |
 | SDP-2.4 | SDP exact ⇔ genuine optimum is a local min in ℝ⁴ ⇔ PSD stress matrix ⇒ a-posteriori certificate | M1, fixed thrust | PROVED (proof-sdp) | math/08 Thm 2.1/2.4 |

@@ -108,3 +108,5 @@ fuel N=12 wtf=0.5 reach                linear L=0.67419978[optima] U=0.67419968 
 fuel N=12 wtf=0.5 reach                lifted L=0.67409949[optima] U=0.67409917 rank=40 liftedErr=1.01e-08
 fuel N=12 wtf=0.5 reach                linear L=0.73425075[optima] U=0.73425851 rank=15 liftedErr=6.86e-04
 fuel N=12 wtf=0.5 reach                lifted L=0.73414839[optima] U=0.73415441 rank=40 liftedErr=1.00e-08
+fuel N=12 wtf=0.5 M+up                 linear L=0.52054845[optima] U=inf rank=10 liftedErr=4.04e-03
+fuel N=12 wtf=0.5 M+up                 lifted L=0.53150712[optima] U=inf rank=15 liftedErr=1.00e-08

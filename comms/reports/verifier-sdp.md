@@ -17,8 +17,9 @@ I wrote an independent implementation and reached my verdicts before reading red
 | CSD2′ (convexified lens ‖d_k‖ ≤ 1 = discrete relaxed controls, or δ=0) | **UNBROKEN.** All 509 unit-d gap instances have 0 gap after convexification (max 4.5e-10·scale²); case 12 gives 0.0273674 at rank 3. An adversarial screen at N=3..32 found 0 gaps. Stress matrix: PSD at every convexified/δ=0 optimum, negative at every unit-d gap (34/34). |
 | Variable throttle, natural lift (U=a b) | **LOSSY, certified by Las2 at N=3.** It is not a discretization artifact: at fixed physics the gap grows with N, 12/40/54/63/68% at N=4/6/8/12/16, and the lift tends to the no-rate-limit value. |
 | Other throttle lifts | (U,b)-Hilbert: lossy. Tightest (a,U,b) Shor: lossy (1%). **[proof-sdp] CSD3: lossy** (rank 3, gaps 2–36% at δ=0, even with ωtf=6). |
-| Altitude r_z ≥ 0 (12 active scenarios), glide slope | exact (rank 1) whenever feasible. See report §7. |
-| Min-fuel (throttle) | A linear (first-moment) landing constraint is feasible at the unreachable M, i.e. lossy (Thm D). A lifted landing constraint is infeasible at M (correct) but leaves small gaps at high rank. See report §7. |
+| Altitude r_z ≥ 0 (13 active scenarios) | exact (rank 1). |
+| Glide slope (δ=0, 8 active scenarios) | 7 exact; **1 LOSSY (1.19%, rank 4; 436/500 starts reach the genuine value).** Path constraints can break the lift, outside CSD2′'s scope. |
+| Min-fuel (throttle) | A linear (first-moment) landing constraint is feasible at the unreachable M, i.e. lossy (Thm D). A lifted landing constraint is infeasible at M (correct), but 4 of 41 reachable targets show gaps (≤0.66%, high rank). |
 | Thm B consistency | The SDP value at M is > 0 and equals the true dist²(M, L) on all 32 configurations (N ≤ 48). The state-linear version gives 0. The variance term is what makes it consistent with A/D. |
 
 ## Discrepancies with redteam-lift
