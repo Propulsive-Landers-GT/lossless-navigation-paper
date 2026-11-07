@@ -11,3 +11,14 @@
   plus positive Thm C (LCvx given an attitude profile). Launching agents to attack / make rigorous / formalize.
 - User: also solve 6DOF after 5DOF (most useful). User approved launching remaining agents.
 - Launched agents: lit-review, vehicle-context, adversary, proof, numerics, lean, positive. Lean 4 + Mathlib installed and building.
+- User reprioritized: lossless question FIRST (possible vs impossible, fully proved + formalized); practical solver deferred
+  (solver agent stopped). User wants adversarial attempts to make it POSSIBLE, not belief in impossibility.
+- Added: comms/PROTOCOL.md, AGENTS.md (DM directory), CLAIMS.md (claim lifecycle → FORMALIZED), threads/.
+- Launched: redteam-lift (relaxed controls / occupation measures / SDP lifts / conv-hull optimization),
+  redteam-reform (LCvx-style reformulations, counterexamples to B), adversary-6dof (torque-coupled M3, 6DOF M4).
+- Orchestrator concern flagged: in the real TVC vehicle gimbal angle = torque input, so M1's free gimbal is a relaxation;
+  B6 (6DOF transfer) must be re-derived for M3, not assumed.
+- Key threat to watch: occupation-measure LP relaxations (convex, value-exact under Vinter-type conditions) vs Claim A.
+  Likely resolution: they are exact in VALUE but their feasible set in boundary data is the closure of the convexified
+  reachable set, i.e. larger — so not lossless in the feasibility sense; but the definition of "lossless" must be stated carefully.
+- User away ~8–9 h; full creative control. Keep-awake requested.
