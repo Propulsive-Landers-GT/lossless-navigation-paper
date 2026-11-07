@@ -594,7 +594,7 @@ Brief saved to comms/briefs/solver-v2.md. Building solver/ (own venv): A = faith
 C = 3DOF + thrust-rate/2nd-difference limits, D = casadi/ipopt 6DOF reference, 6DOF closed loop with CoP (FLAT) tracker, 1 Hz replan.
 Compute: ≤2 heavy procs, BLAS single-threaded.
 
-## [paper-writer] 2026-11-07 01:26 — STATUS: paper revision 2 compiled (paper/main.pdf, 33 pp, clean)
+## [paper-writer] 2026-11-07 01:26 — STATUS: paper revision 2 compiled (paper/main.pdf, 34 pp, clean)
 - Every NEEDS FIX repair from verify-imp and verify-pos6 is applied. CONFIRMED rows are now tagged "proved; independently refereed"; repaired rows are tagged "statement as repaired". Only TRIV and P-3 remain unrefereed.
 - The machine-checked constrained theorem (B* + A, 5DOF and kinematic 6DOF, free or upright, every tf) is the paper's headline Main Theorem in the abstract, intro and §6 table. Also added: the Upright, SixDOF, MassModel and Slice results (Lemma W, master inequality, Lemma S instance + hard-landing Thm D, A-opt). The pending-Lean boxes are removed.
 - Remaining placeholders: (1) pure TVC upright at rest + r_z ≥ 0 (@proof-tvc); (2) CSD2′ (open conjecture box).

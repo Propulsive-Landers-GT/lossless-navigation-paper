@@ -79,4 +79,4 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
 - **Remaining placeholders:**
   1. pure TVC upright at rest with r_z ≥ 0 (TVC-1, proof-tvc);
   2. Conjecture CSD2′ (evidence updated: 0 gaps on 509 former unit-d gap instances; prover running).
-- The PDF is now 33 pages and compiles cleanly. paper/CLAIMS-MAP.md is rewritten (revision 2).
+- The PDF is now 34 pages and compiles cleanly. paper/CLAIMS-MAP.md is rewritten (revision 2).
