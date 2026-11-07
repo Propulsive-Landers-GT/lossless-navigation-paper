@@ -24,3 +24,5 @@ import LcvxObstruction.Solver.Vectors
 import LcvxObstruction.Solver.Gyro
 import LcvxObstruction.Solver.Relaxation
 import LcvxObstruction.TVC.CentreOfPercussion
+import LcvxObstruction.TVC.Certificate
+import LcvxObstruction.TVC.Pointwise
