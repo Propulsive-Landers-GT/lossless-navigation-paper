@@ -170,3 +170,22 @@ Scope: constant mass, constant ε = J_t/(mL), axisymmetric J, relaxed thrust-acc
 - TVC-Main. CertHolds ∧ G_w > U_tot ⇒ θ_m ∉ F ⇒ ¬Convex F^X ⇒ no lossless uniform relaxation (A1).
 
 Recommended order: K1, L2, L3, P1–P5, Q1, Q2, Q4 (pure inequalities) first; Q3 next; C and W as hypotheses.
+
+## SDP exactness (math/08-sdp-exactness.md), added by [proof-sdp]
+All finite-dimensional linear algebra. X is a real inner-product space (`InnerProductSpace ℝ X`), E is a closed subspace (finite-dim), and z : Fin m → X. Q is a symmetric m×m real matrix. The quadratic form is qf Q z := Σ_{i,j} Q i j * ⟪z i, z j⟫.
+- SE-1 (Gram PSD lift). For any z, the Gram matrix G i j = ⟪z i, z j⟫ is PSD. Conversely, a PSD matrix with I₃ block factors as a Gram matrix in EuclideanSpace ℝ (Fin (3+m)) with the first three vectors orthonormal. (Mathlib: `Matrix.PosSemidef`, `Matrix.PosSemidef.sqrt`/Cholesky.) Lemma 1.1.
+- SE-2 (vector PSD form). If Q is PSD (`Matrix.PosSemidef Q`), then qf Q z ≥ 0 for all z : Fin m → X. Proof: write X-valued z in an orthonormal basis (or use Q = Bᵀ B), qf Q z = Σ_k ‖Σ_i B k i • z i‖². Core of Thm 2.1.
+- SE-3 (weak duality / stress certificate). Hypotheses:
+  - feasibility of z in X: unit norms, ⟪z i,z j⟫ ≥ c e on edges, ⟪z i, f⟫ ≥ c_f;
+  - z* feasible in E;
+  - multipliers λ ≥ 0, μ;
+  - stationarity Σ_j Q i j • z* j = ℓ̃ i;
+  - complementary slackness;
+  - Q PSD.
+  Conclusion: cost z ≥ cost z*. Proof: cost z ≥ L z (multiplier terms ≥ 0); L z − L z* = qf Q (z − z*) ≥ 0 by SE-2 (expand, using stationarity); L z* = cost z* (CS). Pure algebra plus SE-2. Thm 2.1 (⇐).
+- SE-4 (strict stress ⇒ flat). If Q is positive definite and Σ_j Q i j • z j = ℓ̃ i with ℓ̃ i ∈ E for all i, then z i ∈ E for all i. Proof: z = (Q⁻¹ ⊗ id) ℓ̃, and E is a subspace. Cor 2.2.
+- SE-5 (folding). For a closed subspace E and a unit n ⊥ E, with F x := P_E x + ‖P_{E⊥} x‖ • n: ‖F x‖ = ‖x‖, ⟪F x, f⟫ = ⟪x, f⟫ for f ∈ E, and ⟪F x, F y⟫ ≥ ⟪x, y⟫. Proof: Pythagoras (`orthogonalProjection`, `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero`) and `real_inner_le_norm`. Lemma 3.1. Cor 3.2 follows: the folded configuration is feasible with the same linear cost.
+- SE-6 (critical normal directions). If z* i, f ∈ Π and n ⊥ Π, then for every η : Fin m → ℝ the direction y i = η i • n satisfies ⟪z* i, y j⟫ + ⟪y i, z* j⟫ = 0 and ⟪y i, f⟫ = 0, and qf Q y = ηᵀ Q η · ‖n‖². Algebra. Thm 4.1 (the SONC step is analytic; take "∀ η, ηᵀQη ≥ 0" as an explicit hypothesis `NormalSONC`, like `PMPData` in the positive blueprint). Then SE-3 closes Thm 4.1.
+- SE-7 (lens hull, Prop 6.1). For b, b′ ∈ E and dim X > dim E: {P_E d : ‖d‖ = 1, ⟪d,b⟫ ≥ c, ⟪d,b′⟫ ≥ c} = {x ∈ E : ‖x‖ ≤ 1, ⟪x,b⟫ ≥ c, ⟪x,b′⟫ ≥ c}. The ⊇ direction uses d = x + √(1−‖x‖²) • n.
+- SE-8 (KKT recursion, Prop 5.1). Linear algebra: if ν ≠ 0, μ ≠ 0, 1 + λλ′/(2μν) ≠ 0, and all right-hand sides lie in a subspace W, then the solution (b_{k+1}, d_k) of the 2-vector linear system lies in W. Induction on k.
+Recommended order: SE-5, SE-2, SE-3, SE-4, SE-6, SE-7, SE-8. SE-1 is only needed to identify the SDP with the vector problem; it can be stated as the definition of the lifted problem.

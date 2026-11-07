@@ -172,17 +172,30 @@ body equals conv{(x,‖x‖²) : x ∈ L} on its lower side.
 - The order-2 Lasserre runs (lasserre2.py) were started to certify a gap. They were stopped once the
   gap turned out to be an artifact.
 
-**Verdict 3 (revised):** uniform lifts are NOT lossless (rank-2 spurious points at θ_M; consistent with
-A). The degree-2 min-landing-error lift C-SD2 excludes the Thm B witness exactly (S1). In its well-posed
-form it is **numerically exact on every instance tested** (fixed thrust, velocity-only and full (r,v),
-three parameter sets, N up to 20). **Conjecture CSD2:** for the fixed-thrust 5DOF problem (inner
-discretization, tent attitude), C-SD2's value equals the true min landing error, i.e. Π_n = Π_3 in the
-sense of S2. If true, this is a **tractable, finite-dimensional, exact convex program** for fixed-thrust
-5DOF min-landing-error. It lies outside the scope of Claims A and D: data enter only through the
-objective, and the cost is a second-moment (variance) cost. It does not contradict them. Open: a proof
-(candidate routes: a Hilbert-sphere "planarization"/folding lemma showing that any pseudo-trajectory in
-ℝⁿ can be replaced by one in ℝ³ with the same cost; or hidden convexity in the S-lemma style), variable
-throttle (U=a·d is not degree-2 in this form), and glide-slope constraints.
+- **[numerics] case 12 (BOARD 03:20), independently checked (case12_check.py).** Fixed thrust a=11,
+  N=16, tf=4, ω=30°/s, δ=15°, an asymmetric target near a mixture of rotated extreme arcs.
+  The well-posed SDP gives 0.0275290 with eigenvalues 27.72, 4.725, 1.475, **0.0781**, 0, …, i.e. exact
+  rank 4. I factored the Gram into an explicit **4D** trajectory: rate and gimbal satisfied to ~2e-7, unit
+  norms to 1e-8, cost 0.0275278. SLSQP polishing in ℝ⁴ returns 0.02752899 = SDP. So the SDP value is
+  *attained by a genuine trajectory of the 4-dimensional problem*, as Lemma S2 predicts. In ℝ³, 480 NLP
+  restarts ([numerics]) give 0.0282306 (gap 2.5% relative).
+  So C-SD2 is exact iff the ℝ³ optimum equals the ℝ⁴ optimum, and here it apparently does not.
+  **Π_4 ≠ Π_3 (numerically): Conjecture CSD2 is FALSE in general.** Rigorous status: the SDP is a valid
+  lower bound and the 4D realization is exact. The only uncertified step is the 3D global optimum
+  (an NLP). A small-N analog plus an order-2 Lasserre bound would make it a theorem.
+
+**Verdict 3 (final):** uniform lifts are NOT lossless (rank-2 spurious points at θ_M; consistent with A).
+The degree-2 min-landing-error lift C-SD2 is exactly "the 5DOF problem on a higher-dimensional sphere":
+- it excludes the Thm B witness (S1);
+- it is exact whenever the higher-dimensional optimum planarizes into ℝ³. That was the case on ~55 of 56
+  instances tested, including all GTPL-realistic above-ground targets ([numerics] set A);
+- it is **not exact in general**: [numerics] case 12 has a 4D optimum that is 2.5% better than the best 3D
+  trajectory found.
+So it is a tractable, very tight, but lossy convexification. It is valuable as an a-posteriori certificate
+(§8): a rank-3 optimum certifies global optimality, and q_SDP > 0 certifies infeasibility. It is not a
+lossless LCvx. Finite-order exactness of the moment route therefore fails already at degree 2 on this
+instance. Higher orders converge (LHPT), but there is no finite-order guarantee. Variable throttle and
+glide slope remain open.
 
 ## 4. Changes of variables, time dilation, reparametrizing θ
 
@@ -265,9 +278,9 @@ C ⊆ Θ×Y, with θ entering affinely (or through a separable monotone map), th
 feasibility sense. There is also none that is lossless in optimal value on F for all convex costs (Prop T).
 Sharpness: (a) with Dirac/Veronese data entry, a lossless convex formulation exists (occupation LP P_δ,
 infinite-dim); (b) the order-1 truncation is exactly the affine case and is lossy by conv; (c) at degree 2,
-the min-landing-error Shor lift C-SD2 excludes the Thm B witness and is numerically exact on all tested
-fixed-thrust instances (Conjecture CSD2). That would make it a genuine tractable POSITIVE result outside
-the affine/state-linear class.*
+the min-landing-error Shor lift C-SD2 (= the problem on a higher-dimensional sphere) excludes the Thm B
+witness and is exact whenever the optimum planarizes into ℝ³ (almost all tested instances), but not in
+general ([numerics] case 12: rank-4 optimum, 2.5% gap). So it is a certificate, not a lossless LCvx.*
 
 ## 7. Lean-ready statements (finite-dimensional / abstract)
 

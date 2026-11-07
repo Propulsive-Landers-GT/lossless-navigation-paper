@@ -100,3 +100,4 @@
 - 00:34 proof-sdp: case-12 gap is a discretization artifact (unit-d discrete model forbids chattering); convexified-lens
   model exact on case 12. CSD2′ OPEN. Proved Thm 2.1/2.4 (exact ⇔ PSD stress ⇔ local min in R⁴), Thm 4.1 (coplanar data ⇒
   planar LICQ local min is certified global, w/ glide slope). Sent CSD2′ to verifier-sdp to attack.
+- 00:35 proof-sdp DONE. Variable-throttle degree-2 lift CERTIFIED lossy at N=3 (Lasserre-2). δ=0: ~2,900 targets, no gap. CSD2′ check running in verifier-sdp (watch δ=40°, N=4 instance).

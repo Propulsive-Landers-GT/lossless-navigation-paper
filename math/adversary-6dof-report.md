@@ -215,7 +215,15 @@ Test: the bottom face of R. V_min = min Δv_z, and V₀ = min{Δv_z : Δv_lat = 
 - Flat-output identity check: flat_check.py (§3.5).
 - Not completed (killed under the compute budget): N = 120 refinement, decoupled-torque sanity check, tf = 3 bottom face, and the ω(tf)=0-only check of Thm E₀.
   The inner discretization makes V₀(NLP) an upper bound on the true V₀, so a refinement study is still owed. The gap at tf = 0.5 s (2e-4) is the least reliable.
-- Dive-then-brake with r_z ≥ 0, upright at rest, box, 100°/s, tf = 5 and 7 s (exp3.py): still running under the compute budget; results go to numerics/adversary-6dof/exp3_{5,7}_box.txt. The first free-face solves give l = 26.44 (tf=5, |v0_lat| = 1.34) and 58.64 (tf=7). Caveat: [proof-tvc]'s analysis puts the B*-face gap at ~1e-4 m in l at tf ≈ 1–2 s, and the NLP is multimodal, so NLP gaps at that scale are not resolvable. Only a clear gap (≫ solver spread) would count as evidence.
+- **Dive-then-brake face with r_z ≥ 0 at every node, upright at rest, box ±15°, 100°/s gimbal from centred, roll free** (exp3.py, N = 80, s* = 1 s, maximize ℓ = r0z + s*·v0z):
+
+  | tf | max ℓ (free) | lateral data at max | r0z | max ℓ with r0_lat = v0_lat = 0 | **gap in ℓ** | spread over zero-lateral starts |
+  |---|---|---|---|---|---|---|
+  | 5 s | 26.44276 | \|v0_lat\| = 1.34, \|r0_lat\| = 1.46 | 33.4 m | 26.41461 | **2.8e-2 m** | < 1e-5 |
+  | 7 s | 58.63996 | \|v0_lat\| = 1.98, \|r0_lat\| = 2.14 | 72.8 m | 58.60733 | **3.3e-2 m** | 6e-4 |
+
+  This is the GTPL-realistic problem, with the altitude constraint and realistic horizons. The rotation-midpoint test says F is nonconvex, with a gap far above solver spread.
+  Two caveats. (i) The NLP is an inner approximation, so both maxima are lower bounds and the gap is not certified. (ii) Only 2–3 starts were run per side under the compute budget.
 
 
 ---
