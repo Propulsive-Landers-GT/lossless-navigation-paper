@@ -343,3 +343,15 @@ and continuity is handled by a cell-average split.
   1 − √(1−x²)√(1−y²) ≥ y²/2 + cos φ·x²/2. It needs a ≤ a2, b_z ≥ 0, and Jensen for relaxed gimbals.
 - (b) Δp/κ_D absorption: OK under constant mass. (c) cell-average splitting: checked, OK.
 - Gimbal-rate limits: the competitor class shrinks (fine), but the witness must be rate-feasible from a centred gimbal. With 100°/s it is not; G_w must be recomputed.
+
+### 7.1 Review of TVC-1 v2 (localization, homogeneous remainders, two moment functionals)
+- **A1 fixed.** Localization (Lemma 4.0) is checked: gain ≥ 0 ⇒ energy bound E0. The Δp absorption c_abs (via Y² ≤ sΔp_max Y and ∫(s*−s)s ≤ s*²(s*−t)/2), the η-split Ȳ, Agmon on late L² bounds, and K2-Lipschitz padding are all correct.
+  The remainders are now quadratic in (h, ḣ). Certified: U = 6.27e-5 < G_w = 7.27e-5 (cone, R0, N = 120), 1.33e-4 < 1.40e-4 (box, R0), and 6.98e-5 (cone, R1, roll free).
+- Also checked: §4.2–4.4, Pen_max, Lemma 4.6′ (Dirichlet + zero-mean Wirtinger constant (h/2π)²; interpolation remainder sup|g''|h²/8), FASTL, the hull C(b), and the altitude argument r_z > ε(1 − cos ψ).
+- **Finding:** the witness as evaluated is not ordinary. Cell 9 has |n| = 0.865 K1 but is evaluated with p = a1 cos δ (chattering).
+  The ordinary partial-deflection realization loses 6.9e-5, confirmed in my 6DOF model (gain 3.4e-6).
+  The exact bang-bang realization with fractional switching restores G = 7.2695e-5, so this is fixable. The certified table must be regenerated from the exact switching witness.
+- verify_cert.py reuses the certificate code, so it is not an independent verification. A floating-point SDP with no interval check remains a residual risk.
+- Scope: constant mass (α = 0, ε const), unlimited gimbal rate, roll-free certificate for the cone only. Realistic horizons are open.
+  My NLP shows gaps of ~3e-2 m at tf = 5–7 s, but the crude a-priori bounds (A1)/(A2) fail there before localization can start.
+- Verdict on TVC-1: **SURVIVES within its stated scope** (constant mass, unlimited gimbal rate), pending (i) the exact-switching witness and (ii) an independent or interval re-check of the SDP.

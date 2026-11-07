@@ -89,6 +89,7 @@ def F2q(c): return fmpq(c.numerator, c.denominator)
 Kp = arb_mat(n2, n2); Km = arb_mat(n2, n2); Lsum = arb_mat(n2, n2); Vall = arb_mat(n2, n2)
 G0 = [arb(0)] * n2; Gw = [arb(0)] * n2
 Mlate = [None] * N
+CG0 = arb(0); CGW = arb(0)
 csubs = []           # per sub-cell data for remainder constants
 dq = h_q / nsub
 for k in range(N):
@@ -124,9 +125,14 @@ for k in range(N):
             c2min = (1 - zeta) * A(lo_q - ss_q) * (1 - tht) * eps ** 2 * cph ** 2 / (2 * a2)
             c2lo = lowq(c2min)                                   # exact rational lower bound of the multiplier
             Mlate[k] = c2lo if Mlate[k] is None else min(Mlate[k], c2lo)
-        if roll:     # gyro lateral force: c_hat = eps rJ om3bar / cos(phibar) (sup on sub-cell), int c_hat xdot^2
-            chat = eps * rJ * o3 / cph
-            Vall += Uv * chat
+        if roll:     # gyro lateral force: c_hat(s) = eps rJ (tau_r/Ja) s / cos(phibar_sub) >= true weight (linear in s)
+            clin = eps * rJ * A(taur_q / Ja_q) / cph
+            Hs = hankel(dq, lo_q, Fr(1))
+            Vall += arb_mat(PV * Hs * PVt) * clin
+            chat = clin * A(hi_q)                                   # sup on the sub-cell (for remainders)
+            I1 = A((hi_q ** 2 - lo_q ** 2) / 2)
+            Iw = A(((hi_q - ss_q) ** 4 - (lo_q - ss_q) ** 4) / 4 + ss_q * ((hi_q - ss_q) ** 3 - (lo_q - ss_q) ** 3) / 3)
+            CG0 += clin * I1; CGW += clin * Iw                      # int c_hat, int (s-s*)^2 c_hat  (exact)
         else:
             chat = arb(0)
         # linear functionals m0 = int f0 x, m_w = int (s-s*) f0 x : exact moments of polynomials
@@ -157,11 +163,7 @@ Wd = [h] * N + [h ** 3 / 12] * N
 # ---- multipliers from the stored certificate (exact rationals) ----
 lam = [A(Q(x)) for x in th['lam']]
 # ---- gyro lateral-force weights (R1): Cg0 = int c_hat, Cgw = int w^2 c_hat (exact for the step c_hat on sub-cells) ----
-Cg0 = sum((d['chat'] * A(dq) for d in csubs), arb(0))
-Cgw = arb(0)
-for idx, d in enumerate(csubs):
-    l_q = (idx // nsub) * h_q + (idx % nsub) * dq; u_q = l_q + dq
-    Cgw += d['chat'] * A(((u_q - ss_q) ** 3 - (l_q - ss_q) ** 3) / 3)
+Cg0, Cgw = CG0, CGW
 coefV = (1 + 1 / kapg) * (rho0 * Cg0 + rhow * Cgw) if roll else arb(0)
 
 # ---- the matrix ----
@@ -199,18 +201,13 @@ for i in range(n2):          # symmetrize exactly (both halves are rigorous encl
         Bint[i][j] = Bint[j][i] = (a_ + b_) // 2
 radF = rad2.sqrt() + A(Fr(n2, 2 ** E))          # Frobenius bound on radius + rounding + symmetrization
 def bareiss_pd(Bm):
-    n = len(Bm); Mx = [row[:] for row in Bm]; prev = 1; mins = []
-    for k in range(n):
-        piv = Mx[k][k]
-        if piv <= 0: return False, k, mins
-        mins.append(piv)
-        rk = Mx[k]
-        for i in range(k + 1, n):
-            ri = Mx[i]; a_ik = ri[k]
-            for j in range(k + 1, n):
-                ri[j] = (piv * ri[j] - a_ik * rk[j]) // prev
-        prev = piv
-    return True, n, mins
+    """Sylvester's criterion, exact: every leading principal minor of the integer matrix is > 0 (FLINT fmpz det)."""
+    from flint import fmpz_mat
+    n = len(Bm); Fm = fmpz_mat(Bm)
+    for k in range(1, n + 1):
+        sub = fmpz_mat([row[:k] for row in Bm[:k]]) if k < n else Fm
+        if not sub.det() > 0: return False, k, None
+    return True, n, None
 def certify(shift_q):
     """exact check of  -M  >=  (radF + shift) I  in the scaled basis"""
     sh = highq(radF + A(shift_q))
@@ -219,10 +216,11 @@ def certify(shift_q):
     ok, k, _ = bareiss_pd(Bm)
     return ok, k
 print(f"rigorous radius (Frobenius, incl. rounding) = {float(radF.upper()):.3e}", flush=True)
-t1 = time.time(); ok, kfail = certify(Fr(0)); print(f"EXACT Bareiss: -M - radF*I > 0 : {ok} (failed at {kfail})  [{time.time()-t1:.0f}s]", flush=True)
+t1 = time.time(); ok, kfail = certify(Fr(0)); print(f"EXACT (Sylvester, FLINT integer dets): -M - radF*I > 0 : {ok} (minors checked: {kfail})  [{time.time()-t1:.0f}s]", flush=True)
 margin_shift = Fr(0)
 if ok:
-    for sh in [Fr(1, 10 ** 9), Fr(1, 10 ** 8), Fr(2, 10 ** 8), Fr(1, 10 ** 7)]:
+    for fct in (0.1, 0.5, 0.9, 0.99):
+        sh = Fr(-float(evs.max()) * fct)
         okk, _ = certify(sh)
         if okk: margin_shift = sh
         else: break

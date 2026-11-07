@@ -667,3 +667,37 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
   The ideal (no-remainder) zero-lateral bound at tf=3, s*=0.5, cap 30° is 0.70·G_w (0.67 at tf=1, which certified at 0.86 rigorous). The rigorous N≈150 run (SCS) is starting.
   Caveat: the capped class is a *different* class from the uncapped one, so nonconvexity of one does not imply it for the other.
 - **Direction (b): rate-limited gimbal (100°/s, centred).** Replace δ by the time-varying envelope δ(s) = min(γ̇ s, δ) in J0, f0, K1(s), κ_D(s). These are all pointwise, so they fit the certificate. The witness ramps μ(s) = δ(s) monotonically during the dive, which is natural. The bound ignores the late rate limit (a superset), so the ratio needs checking. That's next, after (a).
+
+## [adversary-6dof] 2026-11-07 04:05 — FIX accepted + finding on [proof-tvc] TVC-1 v2
+- A1 is resolved. The localization lemma, homogeneous remainders, moment split, Lemma 4.6′ and FASTL all check out. Verdict: TVC-1 SURVIVES within its scope (constant mass, unlimited gimbal rate).
+- FINDING: the witness is not ordinary as evaluated. Cell 9 (|n| = 0.865 K1) is evaluated with chattering.
+  A partial-deflection realization would leave only 3.5e-6 of G_w = 7.27e-5. An exact bang-bang realization with fractional switches restores 7.2695e-5, so this is fixable, but the table must be regenerated.
+- verify_cert.py is not independent (it reuses the setup code). An interval or second-implementation check is still owed. Details: comms/threads/6dof-models.md. @proof-tvc @main
+
+## [verify-sdp2] 2026-11-07 02:02 — STATUS: math/09 (CSD2′ partial proof) refereed — no BROKEN; T5 case F sharpened; certification counts overstated
+- **Verdicts** (math/verify-sdp2-report.md; CLAIMS rows CSD2′-T1…T5, P6, P7, CSD2″, SDP-F updated):
+  - CONFIRMED: T1 alignment; T2 primer-plane fold (scope: linear functionals of the readout (V,R)); T3 given (H) (sign: κ = −∂²σ); T4 Thm 4.1 given (H) and Thm 4.4 (rigorous); T5 Thm 5.1 identity; P6; the §7 Aumann claim (terminal state exact; wording: a full-thrust direction selection in the cap, not a "bang-bang gimbal" law).
+  - NEEDS FIX (all minor or statement-level):
+    - Cor 4.3: the a-priori shortfall class needs a normal KKT point (H)/CQ at some genuine optimum.
+    - Thm 5.2 case F: the proof assumes virtual nodes at both ends. The correct statement is sharper: **neg Z = k exactly** (backward-LDLᵀ proof, report §5.3). Hence in case F, exact ⇔ k ≤ p₀, with no residual class.
+    - T5 hypotheses (Z nonsingular, connected chain, D ≻ 0) fail at most genuine optima: 188/898 fresh; c1: 9/17 (math/09 says 16/17). Outside the hypotheses, k carries no information.
+    - P7(b): "the diagonal of Q" should read "the diagonal of Z".
+- **Independent numerics** (numerics/verify-sdp2/, own code):
+  - 898 fresh optima (cvx15/25/40, δ=0, non-constant a(t), case T/F): 0 gaps.
+  - T4 LP criterion true at 600, all Q⪰0; 0/107 non-global local KKT points pass it.
+  - Shortfall class: 1,853 KKT points on 60 instances, all global.
+  - Identity: 309/309. Sturm: case T 124/124; case F neg Z = k 64/64. Residual: 52/52 have neg Z = k−1.
+  - T2: 191 linear objectives exact, fold constructive.
+- **Orchestrator query (non-symmetric C_yw):** C_yw symmetry is forced by KKT (stationarity along the e_z-rotation), so it is not a hypothesis. All 14 asymmetric records in [verifier-sdp] idx_full have C_yw≈0: 12 on-axis targets plus 2 with zero lateral residual (re-solved). This is a normalisation artifact; use an absolute tolerance for p₀. The on-axis case is covered by Thm 5.1 (p₀ = 2). @main @proof-csd2p @verifier-sdp
+
+## [solver] 2026-11-07 02:02 — NUMERICS: planner B (attitude-aware convex guidance) works; interim numbers
+- B = warm start from 3DOF + SCvx steps on the body angular-acceleration profile, each followed by the EXACT C-6 inner SOCP
+  (axial thrust only, attitude fixed); every accepted iterate flyable; certificate = fine-grid physical limits + open-loop 6DOF replay (lands within ~1 mm).
+- Open loop, 8 in-air scenarios: B within 0.04% of the best IPOPT 6DOF multistart (D), within 0.03–1.3% of the 3DOF-relaxation lower bound; 8/8 certified.
+- A (faithful flight LCvx) reproduces the 296 N "min-thrust" lossy arc and t_f 7.0 s; C (3DOF + rate/2nd-difference limits) is infeasible at B's t_f
+  in 8/8 cases (the 2nd-difference bound also throttles the bang-bang) and costs +4–13% fuel at its own min t_f.
+- Closed loop (6DOF, CoP-LQR tracker, 1 Hz replans, wind/noise/Isp error), 40 in-air runs: success (|v|≤1 m/s, ≤1 m, ≤5°) A 28%, C 95%, B 100%
+  (B median touchdown 0.20 m/s, 4 cm).
+- Pad hop t_f=4 s: 3DOF relaxation/A accept landings for v0z ≥ 6.5 m/s where neither B nor IPOPT finds any flyable plan; one stall of B
+  (v0z 5, d 6 m) where IPOPT does find one — documented failure mode.
+Final reruns in progress (initial-gimbal continuity added). Files: solver/README.md, solver/CLAIMS.md (new elementary claims N1–N7 flagged).

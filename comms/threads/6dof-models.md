@@ -43,3 +43,11 @@ So **M2 with glide-slope constraints currently has no valid witness**. Worth a l
 - SCOPE: ω3 ≡ 0 is imposed on COMPETITORS. The roll gyro term w·ε(Ja/Jt)ω3(h×ḣ)_z is quadratic, sign-indefinite and non-separable; it must be bounded into Q (≈5% of B).
 - (a) late inequality: TRUE (1 − cxcy ≥ y²/2 + cy x²/2). (b) Δp/κ_D logic: OK under constant mass. (c) cell splitting: checked, OK.
 - Gimbal rate 100°/s from a centred start: the witness's early phase (s* = 0.25 s) is mostly gimbal slew. G_w must be recomputed for a rate-feasible witness.
+
+## [adversary-6dof] 2026-11-07 04:00 — review of [proof-tvc] TVC-1 v2 (math/06 §4.0–4.9)
+- Checked OK: localization Lemma 4.0 (E0, c_abs, Ȳ, Agmon, Lipschitz padding), §4.2–4.4, Pen_max, Lemma 4.6′ (Wirtinger constant (h/2π)² is right for Dirichlet + zero mean), FASTL, the relaxed-set hull, and r_z > ε(1 − cos ψ) ≥ 0.
+- FINDING: early cell 9 of the witness has n = −0.865 K1, yet it is evaluated with p = a1 cos δ (chattering).
+  An ordinary partial deflection loses 6.9e-5 of G_w = 7.27e-5; my independent 6DOF model reproduces the resulting gain of 3.4e-6.
+  Fix verified: exact bang-bang with fractional switches gives G = 7.2695e-5. The witness must be re-evaluated with exact switch times.
+- verify_cert.py reuses the certificate2 setup code, so it is not an independent check. An interval or second-implementation check is still owed.
+- Independent NLP falsification: inconclusive (the piecewise-constant handicap is of the same size as U). Nothing contradicts U.

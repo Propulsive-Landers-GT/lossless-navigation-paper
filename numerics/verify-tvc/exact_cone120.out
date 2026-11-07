@@ -1,5 +1,10 @@
-assembled in 8.5s
+assembled in 5.6s
 max |M_mine - M_theirs| (scaled) = 1.185e-12;  Mlate mine - theirs: min -1.000e-15 max 0.000e+00
 float top eigenvalue of scaled M_mine = -2.9771e-08
 rigorous radius (Frobenius, incl. rounding) = 1.675e-17
-EXACT Bareiss: -M - radF*I > 0 : True (failed at 240)  [224s]
+EXACT (Sylvester, FLINT integer dets): -M - radF*I > 0 : True (minors checked: 240)  [9s]
+certified eigen-margin (scaled units): >= 2.9e-08
+remainder condition lam_k + Mlate_k >= c_loc,k + c_g on all cells: True (worst slack 1.628e-5)
+absorption (i) and lam <= lam_max (ii): True
+V_lambda in [6.267831935e-5 +/- 3.24e-15]   (theirs 6.2678319353e-05)
+total time 57s

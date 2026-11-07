@@ -38,6 +38,8 @@ gimbal, gimbal-rate limit, terminal upright-at-rest option, altitude constraint;
 ## Attack on [proof-tvc] TVC-1 (upright at rest, r_z ≥ 0)
 - Fails at the submitted tf = 1 s: the remainder R = 2.97e-4 exceeds the witness gain 7.27e-5. R/G ~ tf^5, so retry at tf ≲ 0.6 s or add a localization lemma.
 - It also assumes α = 0 and ω3 ≡ 0 for competitors. Inequalities (a)–(c) are checked OK.
+- **v2 SURVIVES within scope** (constant mass, unlimited gimbal rate). Localization and homogeneous remainders fixed A1, and roll-free competitors are covered for the cone.
+  Remaining: (i) regenerate the table from an exact bang-bang witness (cell 9 was evaluated with chattering, which hides a 6.9e-5 loss); (ii) do an independent or interval SDP check.
 
 ## Recommendation to main
 The final theorem may claim the obstruction for kinematic 5DOF/6DOF and for independent-torque rigid bodies (Thm D/D*).
