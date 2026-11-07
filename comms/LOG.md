@@ -53,3 +53,7 @@
   ε=J_t/(mL)≈1.35 m: ÿ=(T cosμ/m−ε|ω|²)b−g exactly (verified, math/checks/flat_output_tvc.py) ⇒ pure TVC ≡ zero-gimbal
   angular-accel-limited model with affine boundary-data map; planar comparison lemma proves bottom-face nonconvexity.
   Sent to adversary-6dof + proof. Remaining: dive-then-brake with terminal upright for pure TVC.
+- ~01:30. positive DONE: fixed-attitude LCvx exact (value+feasibility, Aumann); strong lossless under PMP + checkable non-degeneracy;
+  per-instance exactness C-U (nonconvexity = choice of attitude); C-6: on real TVC, given b the problem is exactly convex;
+  C-Y: 3DOF optimum exactly 6DOF-optimal for GTPL essentially never (initial-rate window ~3.5 µrad/s). Launched lean-positive
+  (formalize math/05; PMP & Aumann only as explicit hypotheses) and possibility-rho0 (is LCvx possible when ρ1=0? dichotomy).

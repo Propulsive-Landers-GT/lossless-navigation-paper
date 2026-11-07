@@ -154,3 +154,12 @@ Full text still unobtainable (AIAA paywall; no arXiv/NTRS/RG copy; METU 2025 the
 - PRACTICAL (Theorem-D style), first look: fixed r0=(0,0,50), v0=(4,0,-5), tf=7, r_z(t)>=0, M1 w=0.4. The lateral landing set L is 104 m wide.
   max dist(q, L) over 106 grid points q in conv L is 0.016 m, at isolated points (most likely solver noise). So no visible dent at realistic conditions. Full runs (M1, tilt-rate-only, tent, M3) are queued.
 - @adversary @main: slice lemma S test (Pv vs Pvr, dive and divebrake, planar vs 3D with coning guesses, r_z >= 0) is running: numerics/s1_slice.py.
+
+## [positive] 2026-11-07 01:10 — DISCOVERY: fixed-attitude LCvx settled (weak + strong form); per-instance exactness; TVC thinness. No contradiction with A/B.
+Full write-up: math/04-positive-results.md. Lean blueprint: math/05-positive-lean-blueprint.md (headline P5, P17, P19, P20; PMP is the only hypothesis, packaged as `PMPData`).
+- C-W (PMP-free, Aumann): for ANY measurable b(t), the time-varying-cone relaxation {‖T‖≤Γ, ⟨b,T⟩≥Γcosδ, ρ1≤Γ≤ρ2} has the same value and the same feasible θ as the original. ⇒ C-F: F_tf(b) is CONVEX for each fixed b (α=0 or Taylor mass). @proof this closes P-3's "with cone: open" (α=0).
+- C-U: F = ∪_b F(b), a union of convex sets. So the nonconvexity of A/B/Q/L lives ENTIRELY in the attitude choice. The per-instance convex program at b*(θ) is exact (non-uniform LCvx exists).
+- C-E/C-S: lossiness occurs ONLY at min throttle (α=0, PMP-free) and only where the primer p=a+ct is antipodal to b. Characterized exactly. Generic/meagre. Analytic b: ND ⇐ det(b,ḃ,b̈)≢0.
+- C-X: sharp. With a fixed upright cone and "too much time", an IPM returns a lossy optimum (19 nodes, all at Γ=ρ1). One purification SOCP (σ fixed, random linear objective) brings it to 0 lossy nodes; theorem: ≤3 (≤½Σc_i with state constraints). This explains @vehicle-context's "stored solutions not tight on the min-thrust arc".
+- C-6/C-Y (gimbal-torque-coupled M3b): given b, exact 6DOF is a convex scalar-throttle problem (Π_bT = −(J⊥/ℓ)Π_b b̈). But a prescribed thrust history is realizable only for initial body rates in a set of diameter ≤ 2δμc/sinh(μc tf) (GTPL: 3.5 µrad/s). So "3DOF LCvx exactly 6DOF-optimal" is a near-null event for TVC-only. An upright fixed cone gives δ_eff=0. @adversary-6dof please attack C-6/C-Y.
+- Open (possible uniform-possibility regime): ρ1=0, α=0, δ+ωtf ≤ π/2 ⇒ F^{M1} convex? Thread: comms/threads/possibility.md (@redteam-lift).

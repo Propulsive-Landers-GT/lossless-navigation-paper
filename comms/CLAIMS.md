@@ -11,7 +11,18 @@
 | X5 | Exact class: θ_p ≤ δ ⇒ F_5DOF=F_3DOF, LCvx lossless — M1 ONLY; for pure TVC (FLAT) effective gimbal = 0 | redteam-reform | math/redteam-reform.md | CLAIMED | caveat sent |
 | LS | Line-search escape killed: θ̄ ∈ conv F_{t*} \ ∪_t F_t | redteam-reform | math/redteam-reform.md | CLAIMED | |
 | B6 | 6DOF inherits B | orchestrator | math/00 §4 remarks | BROKEN (as argued, for ω-state / TVC models); FIXED for kinematic (Thm K) + decoupled torque (Thm D, D*); OPEN for pure TVC | adversary-6dof: P_u unrealizable in M3 (TVC torque sign, ω⊥(0)=0). Pure-TVC nonconvexity numerically confirmed (gap 0.06–0.21 m/s at tf=1 s), not proved. math/adversary-6dof-report.md |
-| C | LCvx holds given a fixed attitude profile b(t) (non-degeneracy condition) | positive | math/04 | CLAIMED | |
+| C | LCvx holds given a fixed attitude profile b(t): see C-W (value, any measurable b) and C-S (every optimum, under ND) | positive | math/04 | CLAIMED | |
+| C-G/C-3 | Pointwise: maximizer of ⟨y,T⟩ on {‖T‖≤Γ}∩Q with ‖T‖<Γ ⇒ y∈N_Q(T); for the cone, ‖T*‖=Γ unless y∈−ℝ₊b; unique; sharp | positive | math/04 §2, math/05 P1–P7 | CLAIMED | Lean target (elementary) |
+| C-W | Any measurable b: relaxed and original have equal value and equal feasible θ; a lossless optimum with the same Γ/mass exists (nodewise state constraints exact; path constraints in value under Slater) | positive | math/04 §3 | CLAIMED | uses Aumann's theorem (cited) |
+| C-F | Fixed b, constant mass (or Taylor-convexified mass): F_tf(b) convex. Closes P-3's "with cone: open" for α=0 | positive | math/04 §3 | CLAIMED | |
+| C-E | PMP-free exchange: lossy only at min throttle (α=0); with mass, only at min throttle or before later max-throttle saturation | positive | math/04 §4 | CLAIMED | matches the GTPL stored-solution looseness |
+| C-S/C-D | Under PMP: lossless off D={p∈−ℝ₊b}, primer affine; α=0: lossy ⊆ D∩{Γ=ρ1}; D characterized (p≡0, b dwelling, b on a gnomonic line); ND checkable (analytic: det(b,ḃ,b̈)≢0); bad b meagre | positive | math/04 §5 | CLAIMED | |
+| C-X | Sharpness: fixed upright cone, vertical descent, h∈(D(ρ1),D(ρ1cosδ)]: IPM returns a lossy optimum (checked: 19 lossy nodes, all at Γ=ρ1) | positive | math/04 §6; numerics/positive/c_x_sharpness_purification.py | CLAIMED | |
+| C-K | Discrete: nodewise KKT test with affine discrete primer; purification SOCP ⇒ ≤ ½Σc_i lossy nodes (≤3 without state constraints) (checked: 19→0) | positive | math/04 §7 | CLAIMED | |
+| C-6 | M3b (gimbal-torque-coupled, roll RCS, constant mass): given attitude b, exact 6DOF problem is a convex scalar-throttle program; F^{M3b}(b) convex; upright fixed cone ⇒ δ_eff=0 | positive | math/04 §8 | CLAIMED | adversary-6dof please attack |
+| C-U | F=∪_b F(b), each convex; V=min_b V(b); convex program at b* is exact (per-instance LCvx); M1 optimum exists (α=0) | positive | math/04 §9 | CLAIMED | consistent with A/B |
+| C-3D | V5=V3 ⇔ some 3DOF optimum is δ-trackable; closed-form primer-arc certificate (ω_req=‖a×c‖/min‖a+ct‖², ε0≤δ) | positive | math/04 §10 | CLAIMED | |
+| C-Y | M3b thinness: a prescribed planar thrust history (‖T‖≥ρ1) is TVC-realizable only for in-plane initial rates in a set of diameter ≤ 2δμc/sinh(μc tf), μc²=ℓρ1cosδ/J⊥ (GTPL ≈3.5 µrad/s) ⇒ 3DOF LCvx almost never exactly 6DOF-optimal | positive | math/04 §10 | CLAIMED | |
 | P-Q | M1, b(tf) free: ‖I‖ ≥ G(τ) ∀I∈R; dist(M,R) ≥ Γ=(4a1(tf/4)/ω)sin(δ+ωtf/2)sin²(ωtf/4) for δ+ωtf/2 ≤ π/2 (+M_z≥0) | proof | math/02 §5 | CLAIMED | Lean primary route |
 | P-B | Thm B rigorous (rigidity route), both variants (free: δ+ωtf≤π/2; tent: δ+ωtf/2≤π/2) | proof | math/02 §4 | CLAIMED | |
 | P-T | Tent variant quantitative: dist(M,R) ≥ min_β max_λ[...] >0 (proved α=0; numerically all tested α) | proof | math/02 §5 | CLAIMED | |
