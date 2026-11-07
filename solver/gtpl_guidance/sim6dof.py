@@ -152,7 +152,7 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     T_a = x[13] * G0
     t = 0.0
     ref, infos = None, []
-    ref, info = planner(0.0, x.copy(), None)
+    ref, info = planner(0.0, x.copy(), None, (0.0, 0.0, T_a))
     infos.append(info)
     if ref is None:
         return dict(failed='initial plan failed', infos=infos)
@@ -172,7 +172,7 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     step = 0
     while t < t_end:
         if t >= next_replan - 1e-9 and ref.tf_abs - t > opts.t_lock:
-            new, info = planner(t, x.copy(), ref)
+            new, info = planner(t, x.copy(), ref, (th_a, ph_a, T_a))
             infos.append(info)
             if new is not None:
                 ref = new

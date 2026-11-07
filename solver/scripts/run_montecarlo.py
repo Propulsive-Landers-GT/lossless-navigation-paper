@@ -94,6 +94,7 @@ def run_case(args):
                    solve_mean=float(np.nanmean(st)) if st else None, solve_max=float(np.nanmax(st)) if st else None,
                    wall_mean=float(np.nanmean(wl)), wall_max=float(np.nanmax(wl)), sim_wall=time.time() - tm,
                    tf_ext=float(sum(inf.get('tf_ext', 0) or 0 for inf in infos)),
+                   n_fallback=int(sum(bool(inf.get('continued')) or (inf.get('tf_ext') or 0) > 0 for inf in infos[1:])),
                    tight_min=float(min([inf.get('tight_min', 1.0) for inf in infos])),
                    plan_fuel0=infos[0].get('fuel_plan'))
         recs.append(rec)

@@ -51,7 +51,8 @@ def _interval_fn(f, h, ns):
     return ca.Function('F', [x, T0, T1, z0, z1], [xx])
 
 
-def solve_reference(r0, v0, m0, R0, w0, target, tf, veh, cfg, guesses, N=None, ns=4, max_iter=1500, verbose=False):
+def solve_reference(r0, v0, m0, R0, w0, target, tf, veh, cfg, guesses, N=None, ns=4, max_iter=1500, verbose=False,
+                    T_lat0=(0.0, 0.0)):
     """guesses: list of (name, X_guess (N+1,14), T_guess (N+1,3)). Returns dict(best, runs)."""
     N = N or cfg.N
     h = tf / N
@@ -71,6 +72,9 @@ def solve_reference(r0, v0, m0, R0, w0, target, tf, veh, cfg, guesses, N=None, n
     Z = opti.variable(1, N + 1)
     D = opti.variable(3, N)          # |dT| slacks
     opti.subject_to(X[:, 0] == x0)
+    if T_lat0 is not None:   # same initial-gimbal condition as planner B (gimbal cannot jump at the start)
+        opti.subject_to(T[0, 0] == T_lat0[0])
+        opti.subject_to(T[1, 0] == T_lat0[1])
     for k in range(N):
         opti.subject_to(X[:, k + 1] == F(X[:, k], T[:, k], T[:, k + 1], Z[k], Z[k + 1]))
     Tn2 = ca.sum1(T**2)

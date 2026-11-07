@@ -196,6 +196,8 @@ class AACG:
         cons += scons + self._rate_constraints(Tb)
         # terminal body rate = 0 (exact, linear) and linearised tilt
         cons += [w0[0] + g.Cint[-1] @ ax == 0, w0[1] + g.Cint[-1] @ ay == 0]
+        if self.alpha0 is not None:   # the gimbal cannot jump: start from the actuator's current lateral thrust
+            cons += [ax[0] == self.alpha0[0], ay[0] == self.alpha0[1]]
         dalpha = cp.hstack([ax - alpha_bar[:, 0], ay - alpha_bar[:, 1]])
         Bn = -R[-1] @ HAT_E3 @ Phi[-1]                          # d b_N / d alpha
         bN = att['b'][-1] + Bn @ dalpha
@@ -243,6 +245,8 @@ class AACG:
             obj = cp.sum_squares(cp.hstack(res)) + lam * (cp.sum_squares(cp.diff(ax)) + cp.sum_squares(cp.diff(ay)))
             cons = [cp.abs(ax) <= amax, cp.abs(ay) <= amax,
                     w0[0] + g.Cint[-1] @ ax == 0, w0[1] + g.Cint[-1] @ ay == 0,
+                    ax[0] == (0 if self.alpha0 is None else self.alpha0[0]),
+                    ay[0] == (0 if self.alpha0 is None else self.alpha0[1]),
                     cp.abs(cp.diff(ax)) <= 0.5 * amax, cp.abs(cp.diff(ay)) <= 0.5 * amax]
             prob = cp.Problem(cp.Minimize(obj), cons)
             st, stime = _solve(prob)
@@ -254,7 +258,8 @@ class AACG:
         return alpha
 
     # ------------------------------------------------------------------ main loop
-    def plan(self, r0, v0, m0, R0, w0, target, tf, alpha_init=None, max_iter=15, Delta0=0.05, tol=1e-4,
+    def plan(self, r0, v0, m0, R0, w0, target, tf, alpha_init=None, alpha0=(0.0, 0.0), max_iter=15, Delta0=0.05,
+             tol=1e-4,
              mass_iters=2, verbose=False):
         t_wall = time.perf_counter()
         veh, c = self.veh, self.cfg
@@ -264,6 +269,8 @@ class AACG:
         J, L = veh.inertia_lever(m0)
         self.kk = J / L
         self.solve_time, self.n_solves = 0.0, 0
+        # alpha0: angular acceleration produced by the CURRENT gimbal deflection (None = unconstrained)
+        self.alpha0 = None if alpha0 is None else np.asarray(alpha0, float)
         p3 = None
         if alpha_init is None:
             p3 = solve_3dof_relaxation(r0, v0, m0, target, tf, veh, c, N=c.N)
@@ -274,7 +281,9 @@ class AACG:
             else:
                 alpha = self.warm_start(R0, w0, p3)
         else:
-            alpha = np.asarray(alpha_init, float)
+            alpha = np.array(alpha_init, float)
+            if self.alpha0 is not None:
+                alpha[0] = self.alpha0
         m_s = m0 - veh.alpha * 0.5 * (c.T_min_plan + c.T_max_plan) * g.ts
         att = propagate_attitude(g, R0, w0, alpha)
         inner = None
@@ -285,6 +294,8 @@ class AACG:
             m_s = integrate_mass(g, np.linalg.norm(inner['T_body'], axis=1), m0, veh.alpha)
         if inner is None:   # warm start not inner-feasible: retreat to zero acceleration (vertical attitude hold)
             alpha = np.zeros_like(alpha)
+            if self.alpha0 is not None:
+                alpha[0] = self.alpha0
             att = propagate_attitude(g, R0, w0, alpha)
             inner = self.solve_inner(att, alpha, m_s, r0, v0, target)
             if inner is None:
