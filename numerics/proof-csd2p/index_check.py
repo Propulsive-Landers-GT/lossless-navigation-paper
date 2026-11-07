@@ -33,7 +33,9 @@ for r in recs[:maxn]:
     h, k = jacobi_m(G, x, wv, wr); t, _ = criterion(G, x, wv, wr)
     rec = dict(N=r["N"], model=model, wtf=r["wtf"], rel=(b - s["val"]) / max(b, 1e-12), cost=b, res=res, k=k, crit=t,
                negQ=int(np.sum(eq < -tol)), negZ=int(np.sum(ez < -tol)), zeroZ=int(np.sum(np.abs(ez) <= tol)), p0=p0,
-               ecyw=list(map(float, ec / (np.abs(ec).max() + 1e-300))), asym=asym, minZ=float(ez[0] / sc), minQ=float(eq[0] / sc))
+               ecyw=list(map(float, ec / (np.abs(ec).max() + 1e-300))), asym=asym, minZ=float(ez[0] / sc), minQ=float(eq[0] / sc),
+               wv=list(wv), wr=list(wr), term=r.get('term', True), hint=(list(map(float, h)) if h is not None else None),
+               mud_min=float(np.min(np.diag(Zm)[G.nb:]) / sc) if G.gim else 0.0)
     ok = rec["negQ"] == rec["negZ"] - p0
     f.write(json.dumps(rec) + "\n"); f.flush()
     print(f"N={r['N']} {model} wtf={r['wtf']:.2f} k={k} crit={t:+.1e} negZ={rec['negZ']} (zero {rec['zeroZ']}) p0={p0} negQ={rec['negQ']} "

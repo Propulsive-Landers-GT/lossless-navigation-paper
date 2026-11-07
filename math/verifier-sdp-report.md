@@ -8,7 +8,7 @@ I built my implementation and reached my verdicts before reading `math/redteam-l
 
 | Claim / variant | Verdict | Key evidence |
 |---|---|---|
-| **CSD2 as briefed**: fixed thrust along b_k (δ=0), b_0=b_N=e_z substituted, (r) or (r,v) targets | **EXACT (numerically), no counterexample** | About 3,700 targets, N=2…48, ωtf 0.4…5.5, with/without b_N, r and (r,v), M/dent/rim/far/random, plus [proof-sdp] regimes (a),(b). Max (genuine − SDP)/scale² = 1.7e-7, with relative gap ≤ 1e-5 whenever the absolute gap exceeds 1e-8·scale². Every stress matrix tested is PSD. |
+| **CSD2 as briefed**: fixed thrust along b_k (δ=0), b_0=b_N=e_z substituted, (r) or (r,v) targets | **EXACT (numerically), no counterexample** | About 4,500 SDP solves, N=2…48, ωtf 0.4…5.5, with/without b_N, r and (r,v), M/dent/rim/far/random/perpendicular-lateral/rate-saturated. About 2,900 are compared against a full multistart genuine optimum; the rest are rank 3 (self-certifying) or spot-checked. Max (genuine − SDP)/scale² = 1.8e-7, relative ≤ 8e-7. The stress matrix is PSD at every optimum tested. |
 | Unit-d gimbal δ>0, "inner" discretization (d_k unit, within δ of b_k **and** b_{k+1}); this is [numerics]' case-12 model | **LOSSY, certified by order-2 Lasserre up to solver accuracy** | Case 12 reproduced: SDP 0.0275290, attained by an explicit R⁴ chain, vs 3D 0.0282327 after about 1,070 diverse runs, a 2.5% gap. N=3: Shor 1.862 < Las2 2.3587 (Clarabel)/2.3571 (SCS) ≈ genuine 2.3569. N=3, δ=40°: Shor 0.0237 < Las2 0.1616 ≈ genuine 0.1611. Small-N gaps are frequent, up to 95% relative. |
 | **CSD2′**: same lift for the convexified lens (‖d_k‖ ≤ 1, i.e. discrete relaxed controls) or for δ=0 | **EXACT (numerically), unbroken** | All 509 unit-d gap instances re-solved: 0 gaps, max 4.5e-10·scale². Adversarial CSD2′ screen N=3…32 (near-dent, non-coplanar (r,v), rate-saturated): 0 gaps. Stress matrix PSD at every convexified optimum tested and negative at every unit-d gap. |
 | Variable throttle, natural degree-2 lift (U_k = a_k b_k) | **LOSSY, certified (Lasserre-2 at N=3); NOT a discretization artifact** | At fixed physics (tf=1, ω=2, a∈[0.5,1]) the gap grows with N: 12% (N=4), 40% (6), 54% (8), 63% (12), 68% (16). The lift converges to the no-rate-limit value. |
@@ -33,7 +33,7 @@ Supporting checks:
 - **Genuine upper bound** (`GenuineNLP`): ipopt with exact unit-norm/rate constraints, re-normalized and re-checked (violation < 1e-7). Starts are SDP rank-3 roundings (first-moment projection, Procrustes-aligned PCA, random projections of the E⊥ part) plus tilted tents, coning sweeps, smooth random curves and noise.
 - **Solvers.** Clarabel at tol 1e-9 (1e-10 is below its attainable accuracy here and returns "inaccurate"; the ladder falls back to 1e-8). SCS at 1e-9 (N ≤ 16), 1e-7 (N > 16).
 
-Statuses over the fixed-thrust sweep: 2,256 of 2,258 runs returned Clarabel "optimal"; 2 at N=32 returned optimal_inaccurate. The max |SCS − Clarabel|/scale² is 1e-5 (N=8..32), so SCS is the looser solver.
+Statuses over the fixed-thrust sweep: 1,872 of 1,882 runs returned Clarabel "optimal"; 10 at N = 32/48 returned optimal_inaccurate. The max |SCS − Clarabel|/scale² is 1.2e-5 at N ≤ 16. At N ≥ 32, SCS ran at 1e-7 and occasionally disagreed by up to 5e-3, so SCS is the looser solver there.
 
 **Noise floor.** The objective contains the constant ‖q‖², so the absolute accuracy is about 1e-9·‖q‖². I therefore report the gap as (U − L)/scale², with scale² = Σ_l μ_l (Σ_k γ_kl)². I flag a gap only if (U − L)/scale² > 1e-8 and the relative gap is > 1e-5.
 
@@ -57,10 +57,14 @@ Targets per configuration:
 |---|---|---|---|---|
 | 8 | 1172 | 733 | 8.9e-9 | −2.4e-8 |
 | 16 | 268 | 128 | 3.4e-8 | −3.6e-9 |
-| 32 | 234 | 104 | 1.7e-7 | −1.5e-8 |
-| 48 | FILL | FILL | FILL | FILL |
+| 32 | 234 | 119 | 1.7e-7 | −1.5e-8 |
+| 48 | 208 | 112 | 1.8e-7 | −1.5e-8 |
 
-There is no flagged gap. By target family (all N), the max (U−L)/scale² is:
+There is no flagged gap in 1,882 targets.
+- The largest discrepancies (1.8e-7·scale²) are relative 9e-8 to 8e-7, all at ωtf = 0.4, where the Slater margin is smallest (1.7e-5). Ten of them are Clarabel optimal_inaccurate, at N = 32/48.
+- Statuses: 1,872 optimal, 10 optimal_inaccurate.
+
+By target family (all N), the max (U−L)/scale² is:
 - M: 8.7e-10;
 - face/dent points: ≤ 1.5e-9;
 - near-boundary points: ≤ 2.0e-9;

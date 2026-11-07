@@ -606,3 +606,24 @@ Compute: ≤2 heavy procs, BLAS single-threaded.
 - Safe dual bound b.lambda - |r|_1 from the SCS duals gives -0.079 (|r|_1 = 223). The duals are too inaccurate to certify anything.
 - What would close it: (a) MOSEK; or (b) facial reduction, i.e. work in a monomial basis modulo the sphere ideal (reduce x_k3^2 = 1 - x_k1^2 - x_k2^2) to restore Slater, then take a Clarabel "optimal" solution and its dual. I have not implemented (b).
 - Status of L-SD2: BROKEN numerically. There are rank-4 SDP optima strictly below 3D multistart optima on several instances, e.g. N=16 case 12, where @redteam-lift reproduced the exact 4D trajectory, and N=5 j=105. A Lasserre certificate of the 3D minimum is still open. Scripts: numerics/c5_smallN.py, c6_lasserre_sparse.py (+ _fast); logs results/c6_j105*.log.
+
+## [proof-tvc] 2026-11-07 02:40 — DISCOVERY: pure-TVC GTPL landing set (upright at rest, r_z ≥ 0, glide slope) is NONCONVEX: computer-assisted proof, tf = 1 s
+- **Theorem TVC-1** (math/06-pure-tvc.md, CLAIMS TVC-1/1q/B/1R/L). Model: pure TVC (gimbal-only pitch/yaw torque), constant mass and ε, b(0)=b(tf)=e_z, ω(0)=ω⊥(tf)=0, GTPL wet constants, tf=1 s, face ℓ=r0z+s*v0z with s*=0.25. Then θ_w, R_πθ_w ∈ F^X while θ_m ∉ F.
+  | case | G_w (m) | U_tot (m) | margin |
+  |---|---|---|---|
+  | cone 15°, roll held | 7.27e-5 | 6.27e-5 | 13.7% (N=120), dist ≥ 9.6e-6 m |
+  | Cardan box (δ*=21.09°) | 1.40e-4 | 1.33e-4 | 5.4% |
+  | competitors with free roll RCS | 7.27e-5 | 6.98e-5 | 4.0% |
+  Every certificate was re-verified by a fresh process with no solver (eigenvalue + Cholesky): numerics/proof-tvc/verify_cert.py.
+- **Method.** No planarity or rigidity: every zero-lateral relaxed competitor is bounded directly.
+  - A quadratic majorant in h = b_h, an S-procedure λ(s) for the torque, and Finsler multipliers (ρ0 on v0h, ρw on Λ_h) feed a 2N×2N SDP.
+  - Continuous validity: a piecewise-linear cell basis with Wirtinger O(h²) remainders.
+  - A localization lemma (energy + Agmon) handles competitors with gain ≥ 0.
+  - Separability makes the vector bound equal the scalar one, which covers loops, coning and two-lobe paths.
+  - The witness is an ordinary control (no closure argument needed).
+- **Honest scope.**
+  - Constant mass only. α>0 is OPEN; [adversary-6dof] A2: the baseline shift is far larger than the gap.
+  - The gimbal-rate limit is OPEN (it needs a class-specific baseline).
+  - Only tf=1 s is certified. 5–8 s is numerically nonconvex ([adversary-6dof] exp3: gaps 3e-2 m) but not certified: the crude a-priori (A1)/(A2) fail there.
+  - The gap is thin (~1e-5 m), as with B*.
+- Lean list: math/03-lean-blueprint.md §"Pure TVC" (the SDP and the witness enter as explicit hypotheses). @adversary-6dof please attack v2 (Lemma 4.0, bathtub Lemma 4.7, weighted moment, gyro Cauchy–Schwarz). @main @proof @lean

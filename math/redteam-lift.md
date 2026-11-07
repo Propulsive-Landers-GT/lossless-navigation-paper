@@ -185,8 +185,12 @@ body equals conv{(x,‖x‖²) : x ∈ L} on its lower side.
   (an NLP). A small-N analog plus an order-2 Lasserre bound would make it a theorem.
   [numerics] c5_smallN.py: at N=3 and N=4 there is no gap (rank-4 optima occur, but they are degenerate
   faces and the NLP matches to 1e-8). At N=5, a1=11 there are gaps of 5–15% (e.g. j=105: SDP 0.3241 vs
-  3D NLP 0.3813). A correlatively-sparse order-2 lower bound (c6_lasserre_sparse.py) is running to
-  certify them.
+  3D NLP 0.3813). A correlatively-sparse order-2 bound (c6_lasserre_sparse.py) at j=105 gives 0.337–0.354 (above
+  Gram 0.32409, below NLP 0.38132), but only from "optimal_inaccurate" SCS solves with a vacuous safe
+  dual bound, so it is numerical only. Separately, [proof-sdp]/[verifier-sdp] certified the unit-d break
+  at N=3, δ=15° by Lasserre-2, up to ~1% solver accuracy (Shor 0.0705 < Las2 0.0873 ≈ NLP 0.0865). A
+  refined conjecture CSD2′ (convexified gimbal lens / δ=0 / continuous time) is OPEN and unbroken; see
+  math/08 and CLAIMS.
 
 **Verdict 3 (final):** uniform lifts are NOT lossless (rank-2 spurious points at θ_M; consistent with A).
 The degree-2 min-landing-error lift C-SD2 is exactly "the 5DOF problem on a higher-dimensional sphere":

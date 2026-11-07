@@ -9,18 +9,19 @@ Numerics: `numerics/proof-tvc/` (own venv; single-threaded). Companion Lean list
 
 | # | Statement | Status |
 |---|---|---|
-| TVC-1 | Pure TVC (gimbal is the only pitch/yaw torque), constant mass, upright at rest at both ends, $r_z\ge0$ and glide slope. For the **GTPL wet constants** at the certified horizons (table §3), $F^{\mathcal X}_{t_f}$ is **nonconvex**. So no uniform state-linear lossless convexification exists for that problem class at those horizons. Holds for competitors with roll held ($\omega_3\equiv0$) and also for competitors that use the roll RCS (variant R1). | **PROVED, computer-assisted** (§4). One finite-dimensional SDP certificate, re-verified by an eigenvalue computation, plus explicit remainder lemmas. No planarity or rigidity is used. |
+| TVC-1 | Pure TVC (gimbal is the only pitch/yaw torque), roll held ($\omega_3\equiv0$, as in the brief), constant mass, upright at rest at both ends, $r_z\ge0$ and glide slope. For the **GTPL wet constants** at $t_f=1$ s ($s^*=0.25$ s), $F^{\mathcal X}_{t_f}$ is **nonconvex**, with both a cone gimbal (15°) and the Cardan box (±15°). So no uniform state-linear lossless convexification exists for that problem class at that horizon. | **PROVED, computer-assisted** (§4). One finite-dimensional SDP certificate (2N×2N), re-verified in a fresh process by eigenvalue and Cholesky checks, plus explicit remainder lemmas. No planarity or rigidity is used. |
 | TVC-1q | Quantitative: $\operatorname{dist}(\theta_m,F_{t_f})\ge d_*$ (table §3). | proved with TVC-1 |
-| TVC-B | Box gimbal $\pm15^\circ$: same with $\delta$ replaced by the corner angle $\delta^*=21.17^\circ$, $u$ on a box diagonal. | see table §3 |
+| TVC-B | Box gimbal $\pm15^\circ$ (Cardan): same with $\delta$ replaced by the corner angle $\delta^*=21.09^\circ$, and $u$ along the corner azimuth. | **PROVED** (certificate, table §3) |
+| TVC-1R | Competitors that also use the roll RCS ($|\tau_3|\le3$ N m, $\omega_3$ free). All gyroscopic terms are in the certificate, including the lateral force, which goes in by weighted Cauchy–Schwarz: $(\int c|\dot h|)^2\le\int c\int c|\dot h|^2$. The localization lemma absorbs the gyro term into $\vartheta_g\Pi$. | **PROVED, computer-assisted** at $N=120$: margin 4.0%, re-verified ($N=60$ fails) |
 | TVC-R | Gimbal-rate limit (100°/s, gimbal centred at $t=0$): only the witness must change, because the competitor class shrinks. | **numerics only** (§5.3) |
 | TVC-F | Free final time on a window, via RR-LS. | conditional (§5.4) |
 | — | Mass depletion ($\alpha>0$, varying $\varepsilon(m)$), realistic horizons 5–8 s, wind. | **OPEN** (§6) |
 
-**Size.** The gap is genuinely thin: the gain of the best witness is about $10^{-4}$ m in $\ell=r_{0z}+s^*v_{0z}$ at $t_f=1$ s. The adversary's bottom-face numerics (0.08 m/s at 1 s, terminal attitude free or upright, altitude unconstrained) are consistent with this. With $r_z\ge0$ the only face we can certify is the dive-then-brake face, which is thin for the same reason as B\* (math/02 Rem. 10.2): a competitor can cancel lateral moments with small brake-phase tilts at quadratic cost.
+**Size.** The gap is genuinely thin. The certified distance from $\theta_m$ to $F$ is $\ge9.6\cdot10^{-6}$ m (cone) and $\ge7.3\cdot10^{-6}$ m (box). The gain of the best witness is about $10^{-4}$ m in $\ell=r_{0z}+s^*v_{0z}$ at $t_f=1$ s. The adversary's bottom-face numerics (0.08 m/s at 1 s, terminal attitude free or upright, altitude unconstrained) are consistent with this. With $r_z\ge0$ the only face we can certify is the dive-then-brake face, which is thin for the same reason as B\* (math/02 Rem. 10.2): a competitor can cancel lateral moments with small brake-phase tilts at quadratic cost.
 
 **Why this works where the earlier routes failed.** Every previous route compared a 3D attitude path with a planar one: the M1 rigidity, the FLAT comparison $\omega_p=\|\omega_q\|$, and the B\*/D\* decoupling. Under $b(t_f)=e_z$, $\omega(t_f)=0$ these comparisons break ([adversary-6dof] BOARD 01:30, 01:45, thread item (1)). TVC-1 needs no comparison and no characterization of maximizers. It bounds **every zero-lateral competitor** directly. The bound has three ingredients:
 1. Pointwise inequalities turn the exact functional into a quadratic form in the horizontal tilt $h=b_h$.
-2. The torque constraint enters through an S-procedure multiplier $\lambda(s)$, and the two lateral-moment conditions through a Finsler multiplier $\rho$.
+2. The torque constraint enters through an S-procedure multiplier $\lambda(s)$. The two lateral-moment conditions enter through Finsler multipliers: $\rho_0$ on the unweighted moment and $\rho_w$ on the weighted one, $\Lambda_h$.
 3. Because the quadratic form is a sum over the two components of $h$, the vector bound equals the scalar bound. Nonplanar loops, coning and two-lobe paths are therefore covered automatically.
 
 The witness is explicit and planar, and only it needs to be computed accurately.
@@ -41,7 +42,7 @@ The gimbal rate is unlimited. Ordinary controls are dense, and the witness of §
 
 Notation: $p=\langle u,b\rangle\ (\ge a_1\cos\delta)$, $q=\Pi_bu$ ($\perp b$), $\|q\|\le p\tan\delta$, $p^2+\|q\|^2\le a_2^2$, hence $\|q\|\le a_2\sin\delta$. Also $v:=\|\dot b\|$, $h:=b_h$, $K_1=a_1\sin\delta/\varepsilon$, $K_2=a_2\sin\delta/\varepsilon$. $F_{t_f}$ is the unconstrained feasible set and $F^{\mathcal X}_{t_f}\subseteq F_{t_f}$ the constrained one.
 
-GTPL wet (`context/vehicle.md`): $m=79.88$, $\rho_1=400$, $\rho_2=1000$ N, $J_t=63.6$, $J_a=3.74$ kg m², $L=0.589$ m, $\delta=15^\circ$ ($\delta^*=21.17^\circ$ box), $\tau_r=3$ N m. So $\varepsilon=1.352$ m, $a_1=5.008$, $a_2=12.52$ m/s², $K_1=0.959$, $K_2=2.397$ rad/s².
+GTPL wet (`context/vehicle.md`): $m=79.88$, $\rho_1=400$, $\rho_2=1000$ N, $J_t=63.6$, $J_a=3.74$ kg m², $L=0.589$ m, $\delta=15^\circ$ ($\delta^*=21.09^\circ$ box), $\tau_r=3$ N m. So $\varepsilon=1.352$ m, $a_1=5.008$, $a_2=12.52$ m/s², $K_1=0.959$, $K_2=2.397$ rad/s².
 
 ## 2. Exact identities
 
@@ -72,7 +73,19 @@ Then $\theta_w,R_\pi\theta_w\in F^{\mathcal X}_{t_f}$ and $\theta_m\notin F_{t_f
 
 **Certified instances** (GTPL wet constants; `numerics/proof-tvc/certificate.py`, output files `cert_*.out`):
 
-CERT_TABLE_PLACEHOLDER
+| gimbal | competitors | $N$ (solver) | $G_w$ (m) | $U_{\rm tot}$ (m) | margin | $d_*$ (m) | $(\rho_0,\rho_w)$ | file |
+|---|---|---|---|---|---|---|---|---|
+| cone 15° | R0 | 60 (Clarabel) | 7.269e-5 | 6.781e-5 | 6.7% | 4.7e-6 | (1.5, 15) | `cert2_R60.out` |
+| cone 15° | R0 | 120 (SCS + eigen repair) | 7.269e-5 | 6.274e-5 | 13.7% | 9.6e-6 | (1.5, 100) | `cert2_R120.out` |
+| box ±15° (δ*=21.09°) | R0 | 60 (Clarabel) | 1.404e-4 | 1.329e-4 | 5.4% | 7.3e-6 | (1, 15) | `cert2_R60_box.out` |
+| cone 15° | R1 (roll free) | 60 | 7.269e-5 | 8.709e-5 | FAIL | — | (1, 15) | `cert2_R60_roll.out` |
+| cone 15° | R1 (roll free) | 120 (SCS + repair) | 7.269e-5 | 6.980e-5 | 4.0% | 2.8e-6 | (1, 30), $\kappa_g=0.3$ | `cert2_R120_roll.out` |
+
+Common parameters: $\zeta=\xi=0.1$, $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$, $\kappa=0.01$, $r_\vartheta=0.2$, $\lambda_{\max}=3\cdot10^{-3}$ (fixed PSD bound for the $\lambda$-weighted remainder terms), $\rho_c=0.1$, $\eta_1=2$ cells. The $N=120$ cone (R0, R1) and $N=60$ box certificates were **re-verified independently** by `verify_cert.py`: fresh process, all matrices rebuilt, no SDP solver; top eigenvalue $-3.0\cdot10^{-8}$ (cone, $N=120$), $-5.4\cdot10^{-8}$ (roll, $N=120$) and $-2.0\cdot10^{-11}$ (box), Cholesky of $-M$ succeeds, $U_{\rm tot}$ reproduced.
+
+Witness ($t_f=1$, $s^*=0.25$, cone): $r_0=(0.0078,\,1.116)$ m, $v_0=(-0.022,\,-0.791)$ m/s, maximum tilt 0.45°. $v_z<0$ on $[0,t_f)$: $v_z$ decreases on $E$ and $v_z(0)<0$, while on $L$, $\dot v_z>0$ and $v_z(t_f)=0$. Hence $r_z>0$ on $[0,t_f)$. The glide slope holds for every $\tan\gamma_{gs}\le116$. Quadrature error of $G_w$: midpoint rule on 400 sub-steps per smooth piece, $\le t_f\,\Delta t^2/24\cdot\sup|\ddot g|\approx10^{-9}$, which is $\ll$ the margin.
+
+*Remark (no closure argument needed; referee items on E₀).* The bound of §4 holds for every **relaxed** control, i.e. $u(s)\in\mathcal C(b(s))$, which is a superset of the ordinary controls. The witness is an **ordinary** control: bang-bang full deflection early, a smooth gimbal angle late, no chattering. So $\theta_w,R_\pi\theta_w\in F^{\mathcal X}$ and $\theta_m\notin F^{\rm rel}\supseteq F$, and no identity $\mathrm{cl}\,R=R^{\rm rel}$ is used. The referee's other items for E₀ ([verify-pos6]: constant mass, and the regime of §6) are satisfied here: the mass is constant (PT1), and the regime conditions are (A1)/(A2), checked in the code. Box corner angle for the Cardan gimbal: $\arccos(\cos^215^\circ)=21.09^\circ$.
 
 ## 4. Proof of Theorem TVC-1
 
@@ -116,24 +129,27 @@ $$\big|\,|\ddot h|-|q_h|/\varepsilon\,\big|\le \bar v^2|h|+c_3|\dot h|,\qquad c_
 The splitting parameter $\vartheta=\vartheta(s)\in[10^{-3},0.9]$ is chosen per quadrature sub-cell, so that the homogeneous remainder removes at most a fraction $r_\vartheta=0.2$ of $A_2$. The remainders are **quadratic in $(h,\dot h)$ with small coefficients**, not additive constants. This is the fix for [adversary-6dof]'s attack A1: an additive remainder $R\sim\varepsilon^2\bar e^2$ swamped $G_w$. The remainders shift $A_2,B_2$ by $O(\varepsilon^2\bar v^4/a_2)$ and add $\lambda$-weighted terms to the gain side.
 
 ### 4.4 Moments
-Let $f_0=a_1\cos\delta$ on $E$ and $a_2$ on $L$, and $m_j:=\int s^jf_0h$ for $j=0,1$. Zero lateral data give
-$m_j=-\int s^j\big[(f-f_0)h+\gamma_{3h}\big]$, so
-$$|m_j|\le M^v_j+\int s^j\sin\bar\varphi\,D,\qquad D=\Delta p\ (E),\ |a_2-f|\ (L),$$
-$$M^v_j=\int_Es^j\sin\bar\varphi\,\varepsilon\bar v^2+\int s^j\varepsilon\tfrac{J_a}{J_t}\bar\omega_3\bar v .$$
+Let $f_0=a_1\cos\delta$ on $E$ and $a_2$ on $L$. Use the two moment functionals
+$$m_0(h):=\int f_0h,\qquad m_w(h):=\int (s-s^*)f_0h .$$
+Zero lateral data ($v_{0h}=0$, and $\Lambda_h=r_{0h}+s^*v_{0h}=0$) give $m_0=-\int[(f-f_0)h+\gamma_{3h}]$ and $m_w=-\int w[(f-f_0)h+\gamma_{3h}]$. Hence, with $D=\Delta p$ on $E$ and $D=|a_2-f|$ on $L$:
+$$|m_0|\le M^v_0+\int\sin\bar\varphi\,D,\qquad |m_w|\le M^v_w+\int|w|\sin\bar\varphi\,D\le M^v_w+c_w\,\mathrm{Pen},$$
+where $c_w=\sup\sin\bar\varphi/\omega_D$, $M^v_0=\int_E\sin\bar\varphi\,\varepsilon\bar v^2+\int\varepsilon\frac{J_a}{J_t}\bar\omega_3\bar v$, and $M^v_w$ is the same with an extra weight $|w|$.
+
+**Why two functionals.** The weighted moment is $\Lambda_h$. Its throttle shift is *linear* in the penalty, because the weight $|w|$ appears in both. So it tolerates a very large Finsler multiplier $\rho_w$. Throttle modulation near $s^*$ is almost free to first order. It can shift the *unweighted* moment at a cost that is only quadratic: $\mu_0^2\lesssim4H^2D_{\max}\mathrm{Pen}/\omega$ with $H=|h(s^*)|$. That shift is genuine competitor freedom, not a proof artefact, and it caps $\rho_0$. With the two-functional split and $(\rho_0,\rho_w)=(1.5,10^3)$, the idealized zero-lateral bound at $t_f=1$, $s^*=0.25$ is $5.25\cdot10^{-5}$. A single $\rho$ on $(m_0,m_1)$ gives only $\approx6.5\cdot10^{-5}$ at $\rho=1$.
 
 ### 4.5 Certificate (S-procedure + Finsler)
-**Definition 4.5.** A certificate is a triple $(\lambda,\rho,\rho_c)$. Here $\lambda\ge0$ is piecewise constant on a uniform grid of $N$ cells, and $\rho,\rho_c\ge0$. For every $n\in L^2(0,t_f)$, set $x=I^2n$ ($x(0)=\dot x(0)=0$) and require
-$$\mathcal Q_{\rm sc}(x)+\int\lambda\,\ell_\lambda(x)\le\int\lambda n^2+(1-\zeta)\!\int_LwC_2\varepsilon^2(1-\vartheta)n^2+\rho\sum_j m_j(x)^2+\rho_c\big(\dot x(t_f)^2+x(t_f)^2\big),\tag{C}$$
+**Definition 4.5.** A certificate is $(\lambda,\rho_0,\rho_w,\rho_c)$. Here $\lambda\ge0$ is piecewise constant on a uniform grid of $N$ cells, and $\rho_0,\rho_w,\rho_c\ge0$. For every $n\in L^2(0,t_f)$, set $x=I^2n$ ($x(0)=\dot x(0)=0$) and require
+$$\mathcal Q_{\rm sc}(x)+\int\lambda\,\ell_\lambda(x)\le\int\lambda n^2+(1-\zeta)\!\int_LwC_2\varepsilon^2(1-\vartheta)n^2+\rho_0m_0(x)^2+\rho_wm_w(x)^2+\rho_c\big(\dot x(t_f)^2+x(t_f)^2\big),\tag{C}$$
 where $\mathcal Q_{\rm sc}$ is the scalar form of §4.2/4.3 without the $C_2$ term, and $\ell_\lambda(x)=2(1+1/\kappa)(\bar v^4x^2+c_3^2\dot x^2)$. In addition:
 (i) $\lambda(1+\kappa)\kappa_D\le(1-\xi)|w|\cos\bar\varphi$ on the early cells away from $s^*$ (absorption of $\Delta p$);
 (ii) $\lambda\le\lambda_{\max}$.
 Its value is $V_\lambda=(1+\kappa)\int\lambda\bar N^2$, with $\bar N=K_1$ on early cells away from $s^*$ and $K_2$ elsewhere.
 
-*Use.* Apply (C) to each component $x=h_i$ ($i=1,2$; $h$ is clamped, so the $\rho_c$ term vanishes) and add. $|\ddot h|^2=\sum_i\ddot h_i^2$ and $|m_j|^2=\sum_i m_{j,i}^2$. **Separability makes the vector bound equal the scalar bound; no planarity is needed.** Insert the pointwise bound of §4.3 for $|\ddot h|^2$ and use (i). The result is
-$$W_z-J_0\le V_\lambda+\rho\sum_j|m_j|^2-\mathrm{Pen},\qquad \mathrm{Pen}=\xi\!\int_E|w|\cos\bar\varphi\,\Delta p+\zeta\!\int_Lw|a_2-f| .$$
+*Use.* Apply (C) to each component $x=h_i$ ($i=1,2$; $h$ is clamped, so the $\rho_c$ term vanishes) and add. $|\ddot h|^2=\sum_i\ddot h_i^2$, and $|m_0|^2$, $|m_w|^2$ are sums over components. **Separability makes the vector bound equal the scalar bound; no planarity is needed.** Insert the pointwise bound of §4.3 for $|\ddot h|^2$ and use (i). The result is
+$$W_z-J_0\le V_\lambda+\rho_0|m_0|^2+\rho_w|m_w|^2-\mathrm{Pen},\qquad \mathrm{Pen}=\xi\!\int_E|w|\cos\bar\varphi\,\Delta p+\zeta\!\int_Lw|a_2-f| .$$
 
 ### 4.6 Lemma (continuous validity from a finite SDP)
-*Version used for the certified numbers (`certificate2.py`, Lemma 4.6′).* The discrete space is cellwise **linear** functions, with $2N$ degrees of freedom. The remainder $n''$ is orthogonal to $\{1,t\}$ on every cell. Hence $\dot x''$ vanishes at both cell ends and has zero cell mean, so $\dot x''$ and $x''$ are cell-local. Wirtinger gives $\|\dot x''\|^2_{\rm cell}\le(h_c/2\pi)^2\|n''\|^2_{\rm cell}$ and $\|x''\|^2_{\infty,\rm cell}\le h_c^3/(4\pi^2)\|n''\|^2_{\rm cell}$, and $|\int gn''|\le\sup|g''|\,\frac{h_c^2}8\sqrt{t_f}\|n''\|$; the clamp functionals are linear, so their remainder vanishes. The splitting parameters are $\tau=\tau'=0.01$. Everything else below is as stated.
+*Version used for the certified numbers (`certificate2.py`, Lemma 4.6′).* The discrete space is cellwise **linear** functions, with $2N$ degrees of freedom. The remainder $n''$ is orthogonal to $\{1,t\}$ on every cell. Hence $\dot x''$ vanishes at both cell ends and has zero cell mean, so $\dot x''$ and $x''$ are cell-local. Wirtinger gives $\|\dot x''\|^2_{\rm cell}\le(h_c/2\pi)^2\|n''\|^2_{\rm cell}$ and $\|x''\|^2_{\infty,\rm cell}\le h_c^3/(4\pi^2)\|n''\|^2_{\rm cell}$, and $|\int gn''|\le\sup|g''|\,\frac{h_c^2}8\sqrt{t_f}\|n''\|$; the clamp functionals are linear, so their remainder vanishes. The splitting parameters are $\tau=0.03$, $\tau'=0.01$, $\tau_\rho=0.2$. Everything else below is as stated.
 
 *Original version (`certificate.py`, cell averages).* Split $n=\bar n+n'$, where $\bar n$ is the cell average, and split the form in (C) into its PSD part $\mathcal K_+$ (early gains, $\lambda$-terms) and its NSD part $\mathcal K_-$ (late costs, $-\rho\,m^2$, $-\rho_c$ clamps). Then
 $$\langle\mathcal K n,n\rangle\le(1+\tau)\langle\mathcal K_+\bar n,\bar n\rangle+(1-\tau')\langle\mathcal K_-\bar n,\bar n\rangle+(1+\tfrac1\tau)\langle\mathcal K_+n',n'\rangle+(\tfrac1{\tau'}-1)\langle-\mathcal K_-n',n'\rangle .$$
@@ -144,10 +160,12 @@ For cell-constant $\bar n$, the first two terms are an exact $N\times N$ matrix 
 
 So the $n'$ terms are $\le\sum_kc_{{\rm loc},k}\|n'\|_k^2+c_g\|n'\|^2$, of order $h_c^2$. Requiring $\lambda_k+M_{{\rm late},k}\ge c_{{\rm loc},k}+c_g$ makes (C) hold for all $n\in L^2$. ([adversary-6dof] checked (c): no error.) The discrete inequality is re-verified by `numpy.linalg.eigvalsh`. If the top eigenvalue is positive at solver tolerance, $\lambda$ is shifted uniformly until it is $\le0$.
 
-### 4.7 Lemma (moment shifts are paid for by Pen)
-For any $\eta>0$, $\int s^j\sin\bar\varphi D\le D_{\max}\int_{|w|<\eta}s^j\sin\bar\varphi+\frac1\eta\sup_{|w|\ge\eta}\frac{s^j\sin\bar\varphi}{\omega_D}\,\mathrm{Pen}=:U_j(\mathrm{Pen})$ (minimized over $\eta$). Here $\omega_D=\xi\cos\bar\varphi$ on $E$ and $\zeta$ on $L$, and $D_{\max}=a_2-a_1\cos\delta+\varepsilon\max\bar v^2$. Hence
-$$W_z-J_0\le U_{\rm tot}:=V_\lambda+\max_{\mathrm{Pen}\ge0}\Big[\rho\sum_j\big(M^v_j+U_j(\mathrm{Pen})\big)^2-\mathrm{Pen}\Big].$$
-$U_j$ is nondecreasing, so the maximum is bounded on a grid by pairing the right-endpoint $U$ with the left-endpoint Pen.
+### 4.7 Lemma (moment shifts are paid for by Pen; bathtub)
+*Unweighted shift.* Maximize $\int\sin\bar\varphi\,D$ over $0\le D\le D_{\max}$ with $\int\omega_D|w|D\le\mathrm{Pen}$. This is a linear program with box constraints. By the bathtub principle its maximum $\mu_0^{\max}(\mathrm{Pen})$ is attained by $D=D_{\max}$ on a superlevel set of $\sin\bar\varphi/(\omega_D|w|)$. The code computes it exactly on a fine grid, using cellwise sup/inf so the bound is conservative. Here $\omega_D=\xi\cos\bar\varphi$ on $E$ and $\zeta$ on $L$, and $D_{\max}=a_2-a_1\cos\delta+\varepsilon\max\bar v^2$.
+*Weighted shift.* $\le c_w\mathrm{Pen}$ (§4.4).
+*A-priori penalty bound.* By Lemma 4.0, $\mathrm{Pen}\le\mathrm{Pen}_{\max}:=\big(\xi/(c_E(1-c_{\rm abs}))+\zeta\big)E_0$. Hence
+$$W_z-J_0\le U_{\rm tot}:=V_\lambda+\max_{0\le\mathrm{Pen}\le\mathrm{Pen}_{\max}}\Big[\rho_0\big(M^v_0+\mu_0^{\max}(\mathrm{Pen})\big)^2+\rho_w\big(M^v_w+c_w\mathrm{Pen}\big)^2-\mathrm{Pen}\Big].$$
+On a grid, the maximum is bounded by pairing right-endpoint shifts with the left-endpoint Pen. *Remainder (Lemma 4.6′):* the Finsler terms are split with their own parameter $\tau_\rho=0.2$. Since $|g_0''|\le a_2$ and $|g_w''|\le a_2\max(s^*,t_f-s^*)$, their contribution is $\le(1/\tau_\rho-1)\big(\rho_0g_0''^2+\rho_wg_w''^2\big)h_c^4t_f/64$.
 
 ### 4.8 The witness (planar dive-then-brake, ordinary control)
 Planar meridian $b=\cos\psi\,e_z+\sin\psi\,u$, with $\ddot\psi=n$ piecewise constant (100 cells), $\psi,\dot\psi=0$ at both ends.
@@ -166,7 +184,7 @@ The box satisfies $\mathcal C_{\rm box}(b)\subseteq\mathcal C_{\delta^*}(b)$ wit
 ### 5.2 Glide slope
 The witness has $\min_{t<t_f} r_z/\|r_h\|$ as in the table, so every $\gamma_{gs}$ with $\tan\gamma_{gs}$ below it is covered. The competitor bound uses no state constraint.
 ### 5.3 Gimbal-rate limit
-The competitor class shrinks, so $U_{\rm tot}$ stays valid. The witness must be rate-feasible from a centred gimbal. `witness_ratelim.py` optimizes it (state $\mu$, $|\dot\mu|\le100^\circ$/s, free throttle): RATELIM_PLACEHOLDER
+The competitor class shrinks, so $U_{\rm tot}$ stays valid. The witness must be rate-feasible from a centred gimbal. `witness_ratelim.py` optimizes it (state $\mu$, $|\dot\mu|\le100^\circ$/s, free throttle): for a gimbal centred at $t=0$ and slewing at 100°/s, the best witness found has gain $-4.8\cdot10^{-3}$ against $J_0$. The baseline $J_0$ assumes instantaneous full deflection on $E$. Reaching 15° takes 0.15 s, 60% of the dive, and that alone costs about $a_1(1-\cos\delta)\int(s^*-s)\approx5\cdot10^{-3}$. **The rate-limited class therefore needs its own certificate**, with the baseline replaced by the rate-limited optimum of the vertical problem. Open. (The optimizer also fails to recover the unlimited witness at $10^5$°/s, so these rate-limited numbers are inconclusive as an optimum. The baseline mismatch is the robust part.)
 ### 5.4 Free final time
 By RR-LS (math/redteam-reform §4) it suffices that $\theta_m(t^\circ)\notin\bigcup_{t\in W}F_t$. Since $\Lambda$ does not depend on the horizon, a competitor at horizon $t$ satisfies $\ell(\theta)\le J_0(t)+\kappa(t)+U_{\rm tot}(t)$. Here $J_0(t)+\kappa(t)$ is increasing in $t$ (derivative $A_b(t-s^*)>0$). Taking $t^\circ=t_b$ gives a sufficient condition:
 $$G_w(t_b)>\max_{t\in[t_a,t_b]}\Big[U_{\rm tot}(t)-\tfrac{A_b}2\big((t_b-s^*)^2-(t-s^*)^2\big)\Big].$$

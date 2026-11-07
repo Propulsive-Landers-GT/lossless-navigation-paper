@@ -196,3 +196,8 @@ The hop hole is **not proved**. Only the following pieces are formalizable now:
 - **SH2 (witness).** An explicit piecewise-linear-tilt planar trajectory lands offset. This is an instance of SS1-style checking with the numerical data in numerics/proof-s/hop_witness_alpha*.json, rationalized and with a small rate/gimbal margin.
 
 Do not start a formal proof of the hole until a mathematical proof exists. Quadratic certificates provably fail at these margins (math/07 §8.3).
+- TVC-L4 (localization; math/06 Lemma 4.0, added after the adversary's A1). For a competitor with gain ≥ 0, the energy inequality gives L² bounds on late h, v, q. Agmon's inequality, sup g² ≤ ℓ⁻¹∫g² + 2(∫g²∫ġ²)^{1/2} (via d(g²)/ds = 2gġ, averaged), then turns them into pointwise bounds. Elementary; `integral_mono`, `MeasureTheory.integral_mul_le_Lp_mul_Lq`.
+- TVC-Q2′ (bathtub). sup{∫σD : 0 ≤ D ≤ D_max, ∫ωD ≤ P} is attained at D = D_max·1_{σ/ω ≥ c}. Only the upper bound is needed. Discrete version: a fractional knapsack.
+- TVC-Q5 (weighted moment). |∫ w Δf h| ≤ sup(|h|/ω_D)·∫ ω_D |w| D, which is linear in the penalty. This is why the Finsler multiplier for Λ_h can be large.
+- TVC-Q6 (gyro lateral force, variant R1). (∫ c|ḣ|)² ≤ (∫c)(∫c|ḣ|²), and (∫|w|c|ḣ|)² ≤ (∫w²c)(∫c|ḣ|²). Cauchy–Schwarz.
+Certified instances (constant mass, ω₃ ≡ 0): GTPL tf = 1 s, s* = 0.25 s, cone 15° and Cardan box. Certificates are in `numerics/proof-tvc/cert2_*.npz`, re-verified by `verify_cert.py`.

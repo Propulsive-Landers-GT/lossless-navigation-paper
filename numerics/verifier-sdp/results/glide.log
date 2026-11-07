@@ -10,3 +10,5 @@ glide #5 N=12 tf=4.0 w=0.8 cone=45.0: uncon 7.51688 | G: L=7.622965 [opti] U=7.6
 glide #5 N=12 tf=4.0 w=0.8 cone=45.0: uncon 7.51688 | G2: L=7.622965 [opti] U=7.622965 rel=5.20e-10 rank=1
 glide #6 N=12 tf=4.0 w=0.8 cone=45.0: uncon 2.11378 | G: L=2.6856511 [opti] U=2.718011 rel=1.19e-02 rank=4
 glide #6 N=12 tf=4.0 w=0.8 cone=45.0: uncon 2.11378 | G2: L=2.6856507 [opti] U=2.718011 rel=1.19e-02 rank=4
+glide #7 N=12 tf=2.0 w=0.8 cone=60.0: uncon 3.16553 | G: L=3.1695391 [opti] U=3.1695391 rel=1.67e-08 rank=1
+glide #7 N=12 tf=2.0 w=0.8 cone=60.0: uncon 3.16553 | G2: L=3.1695391 [opti] U=3.1695391 rel=1.47e-08 rank=1
