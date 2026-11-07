@@ -1,6 +1,6 @@
 # CLAIMS map: paper statement → registry row → status → proof file → Lean name
 
-Maintained by [paper-writer]. Revision 2, 2026-11-07. Sources:
+Maintained by [paper-writer]. Revision 3, 2026-11-07 (adds TVC-1, CSD2′ partial theorems, practical section; previous revision 2). Sources:
 - comms/CLAIMS.md;
 - the referee reports math/verify-imp-report.md and math/verify-pos6-report.md (no claim BROKEN);
 - lean/MODEL.md, lean/POSITIVE.md, lean/SLICE.md and comms/reports/lean.md, with the orchestrator-verified full build (all axioms = [propext, Classical.choice, Quot.sound]).
@@ -40,7 +40,7 @@ Paper tags:
 | Thm 3.19 (thm:6kin) | kinematic 6DOF | B6 (Thm K) | CONFIRMED + FORMALIZED | Cardan corner 21.09° (§2); B* box variant needs ωs* ≤ δ_in | math/02 Thm 6.2; adversary-6dof Thm K | `Attitude6Admissible.toM1`, `lift_admissible`, `not_convex_landingSet6`, `not_convex_constrainedLandingSet6(Up)`, `no_lossless_relaxation_constrained(_upright)_6dof` |
 | Thm 3.20 (thm:6dyn) | independent torque (D, D*) | P-E, B6-D, B6-D* | CONFIRMED (D* unconstrained core) | state-constraint clause flagged as inherited, not re-derived; no "TVC torque may be added" remark in paper | adversary-6dof §2 | — |
 | Thm 3.21 (thm:E0) | pure TVC, ω⊥(tf)=0, tilt free | B6-TVC, B6-E0 | NEEDS FIX → repaired | constant mass explicit; roll-rate zero as model restriction; regime (H-f) strict + (H-π); closure (duty-cycle) step in App. D | adversary-6dof §3.5, §6; App. D | — |
-| **TODO box** (§3.6) | TVC-1 pure TVC upright at rest, r_z ≥ 0 | B6-TVC-up | OPEN (proof-tvc running) | placeholder kept | math/06 | — |
+| Thm 3.22 (thm:TVC1) | pure TVC upright at rest, r_z ≥ 0 + glide slope, GTPL wet, tf=1 s, s*=0.25 s; margins 13.70 % (cone) / 5.40 % (Cardan box) / 3.99 % (free roll) | TVC-1, TVC-1q, TVC-B, TVC-1R, TVC-L | CONFIRMED (verify-tvc, exact arithmetic, after repairs W1, W2); d* float-evaluated | witness = explicit fast ±δ bang-bang (W1); rigorous gyro weight (W2); scope: constant mass, unlimited gimbal rate, tf = 1 s; open: TVC-α, TVC-R, tf ≥ 1.5 s, free tf; tilt-capped route in progress | math/06; math/verify-tvc-report.md | — |
 | Rem 3.22 (rem:3dof) | exact 3DOF F convex | P-3 | CLAIMED (not refereed) | — | math/02 Prop 8.2 | — |
 | Thm 4.1 (thm:CW) | C-W (+ C-F) | C, C-W, C-F | CONFIRMED; C-F FORMALIZED, C-W partly | Slater caveat: uniform Slater impossible for constraints active at touchdown (glide-slope apex, r_z(tf)=0) | math/04 §3; App. D | `relaxed_subset_original`, `origFeas_eq_relFeas`, `convex_origFeas` (Aumann hyp.) |
 | Thm 4.2 (thm:CS) | C-S / C-D | C-S/C-D | NEEDS FIX (minor) → repaired; partly FORMALIZED | meagre set in admissible class (proof route stated); velocity constraints ⇒ λ_v BV, structure only on constraint-free intervals | math/04 §5 | `PMPConclusion.lossless_ae_off_degenerate`, `lossy_subset_degenerate_minThrottle`, `lossless_ae_of_ND` |
@@ -55,15 +55,19 @@ Paper tags:
 | (text after 4.8) | rank ≤ 4 | SDP-R4 | NEEDS FIX → repaired | added E_w ⊆ W step; rank ≤ 4 when data span 3D, ≤ 5 coplanar | math/08 Prop 5.1 | — |
 | (bullet) | unit-d lift lossy (case 12) + Prop 6.1 mechanism | L-SD2, SDP-L | numerical / CONFIRMED (Prop 6.1) | consequence toned down: cancellation not automatic; continuous-time vanishing = CSD2′ | math/08 §6 | — |
 | (bullet) | variable-throttle lift lossy | V-THR | certified at N=3 (order-2 Lasserre) | — | math/08 §7.1 | — |
-| **TODO box** (§4.5) | CSD2′ | CSD2′ | OPEN (0 gaps on 509 former unit-d gap instances; prover running) | placeholder kept | math/08 §6.3 | — |
+| Conj 4.9 (conj:csd2p) | CSD2′ | CSD2′, CSD2″ | OPEN (unbroken, ~4,500 solves; 0 gaps on 509 former unit-d gap instances) | stated as a conjecture; TODO box for CSD2″ (prover running) | math/09 §0 | — |
+| (list after 4.9) | T1 alignment; T2 every linear objective of the terminal readout exact (closes SDP-F) | CSD2′-T1, T2 | CONFIRMED (verify-sdp2) | T2 scope: readout objectives only, not attitude costs | math/09 §2 | — |
+| (list after 4.9) | T3/T4 stress certificate, hemisphere/Picone; T5 index identity; P6, P7 | CSD2′-T3, T4, T5, P6, P7 | CONFIRMED / NEEDS FIX → repaired | T3/T4 continuous given normal KKT (automatic only with free terminal attitude); discrete T4 rigorous; T5 free-attitude: exact ⇔ k ≤ p₀; hypotheses hold at only 188/898 (9/17 c1) optima, direct stress test certifies all 17; Aumann selection = full-thrust direction selection in the cap, not a ±δ law | math/09 §3–7 | — |
+| (bullets §4.5) | unit-d lossy (Lasserre-2 certified at small N); throttle lift gap 12→68 % with N; CSD3 lossy; glide slope 1.19 % lossy; altitude exact | L-SD2, V-THR | numerical / certified to solver accuracy | — | math/verifier-sdp-report.md | — |
+| §6 (sec:practice) | planner B; open loop within 0.012 % of IPOPT, ≤ 0.85 % above 3DOF LB, 8/8 certified; closed loop in-air A 28 % / C 95 % / B 100 %, hop A 0 % / C 100 % (+23 % fuel) / B 97 %; 3DOF relaxation accepts 11/20 hop targets where neither B nor IPOPT finds a plan | solver/CLAIMS.md 1–17 (C-U, C-6, Lemma 8.1, N1–N7, P22) | NUMERICAL; C-6/torque balance/P22 FORMALIZED; N2 standalone φ heuristic FALSE (lean-n), the imposed θ/φ pair is valid; N1–N7 Lean status: placeholder (lean-n) | SCvx convergence not claimed | solver/README.md, RESULTS.md | lean-n pending |
 | Lem A.1, A.3 | triangle inequality; rigidity | P-B | FORMALIZED | — | math/02 §4.1 | `inner_triangle`, `inner_triangle_eq_lateral`, `lateral_eq_of_inner_ge` |
 | Lem A.4 | support bound | P-Q | CONFIRMED | — | math/02 Lemma 5.1 | — |
 | Prop C.1 (prop:master) | master inequality | S-M | CONFIRMED + FORMALIZED (constant mass) | — | math/07 Prop M | `Slice.master_inequality` |
 | §5 (all) | numerics | HOP, S-HOP, S-GTPL, S-LH, B6-E | NUMERICAL | — | numerics/README.md | — |
 
 ## Remaining placeholders
-1. §3.6 TODO box: pure TVC upright at rest with r_z ≥ 0 (TVC-1; proof-tvc running).
-2. §4.5 TODO box: Conjecture CSD2′ (prover running).
+1. §4.5 TODO box: Conjecture CSD2″ / CSD2′ (proof-csd2p running).
+2. §6 TODO box: Lean status of solver claims N1–N7 (lean-n).
 
 ## Kept out of theorem statements
 - S-GTPL and the hole at hop data (S-HOP): numerical only.

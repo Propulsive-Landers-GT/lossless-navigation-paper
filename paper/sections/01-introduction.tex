@@ -72,12 +72,16 @@ every horizon, with upright landing, and with free final time on compact windows
 searching over $t_f$ cannot rescue LCvx. Theorem~D and Lemma~S give per-instance versions for minimum-landing-error
 problems, with a Wirtinger-type inequality that handles coning manoeuvres. Theorem~A-opt and Proposition~T give the
 optimization version. Results for $\rho_1=0$ show that the obstruction does not depend on a minimum throttle.
-Transfers to kinematic and independent-torque 6-DOF models are given, and pure TVC is treated through a
-centre-of-percussion reduction, with its exact scope stated.
+Transfers to kinematic and independent-torque 6-DOF models are given. For the real pure-TVC actuation (the gimbal is the
+pitch/yaw torque), landing upright at rest with altitude and glide-slope constraints, a computer-assisted theorem, certified in
+exact arithmetic, proves nonconvexity at the vehicle's constants for a 1~s horizon (constant mass, unlimited gimbal rate).
 \item \emph{Possibility} (\cref{sec:possibility}). LCvx is exact for any fixed attitude profile. For the
 gimbal-torque-coupled TVC body the problem with a given attitude is exactly convex, with no relaxation. There is an
 exact subclass for the kinematic model. For degree-2 SDP lifts we give stress certificates and a certified-global
 coplanar subclass, together with counterexamples to exactness in general.
+\item \emph{Practical guidance} (\cref{sec:practice}). An attitude-aware convex planner (outer attitude steps around the exact
+convex inner problem) whose every accepted plan is flyable by construction. In simulation it is within $0.012\%$ of a nonconvex
+6-DOF multistart optimum and lands in all in-air closed-loop runs (numerical evidence).
 \item \emph{Numerics} (\cref{sec:numerics}). Gap laws, results beyond the proven regimes, and the size of the
 obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
 pad-launched hops.
@@ -95,7 +99,8 @@ boundary data enter affinely. That covers every LCvx formulation in the literatu
 programs over measures with point-mass data entry, which are exact but infinite-dimensional and per instance, and it
 does not say that 5-DOF guidance is intractable. For the in-air descents of the motivating vehicle, the
 nonconvexity we can exhibit is real but thin. For the actual pure-TVC actuation with an upright terminal attitude, the
-rigorous proof is still being completed (\cref{sec:tvc}).
+rigorous result covers a 1~s horizon with constant mass and unlimited gimbal rate (\cref{thm:TVC1}); realistic horizons, mass
+depletion and gimbal-rate limits remain numerical.
 
 \paragraph{Notation.}
 $\ip{\cdot}{\cdot}$ and $\norm{\cdot}$ are Euclidean, $\Sph$ is the unit sphere, $\ez$ points up, $x_z=\ip{x}{\ez}$ and

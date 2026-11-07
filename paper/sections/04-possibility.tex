@@ -133,36 +133,71 @@ lifted KKT configuration lies in $\mathrm{span}(\ez,b_1,y_v,y_r)$, and since the
 contained in that span, the lifted optimum has rank $\le4$ when the target data span three dimensions ($\le5$ for coplanar data)
 \pnote{math/08 Prop.~5.1, with the step added by verify-pos6}\Srep.
 
-\noindent\emph{Where exactness fails.}
+\noindent\emph{Where exactness fails} (all \Snum\ unless marked).
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Unit-thrust discretization with gimbal (numerical).} With $\norm{d_k}=1$ and $\delta>0$ the lift is lossy on an
-asymmetric near-dent target: SDP $0.027529$ (rank 4) against best genuine $0.028231$ over 480 multistarts, a 2.5\% gap.
-Three independent implementations agree, and an explicit feasible $\R^4$ chain attains the SDP value. Gaps are frequent at
-small $N$ and small $\omega t_f$. A plausible mechanism is identified: the lifted gimbal lens is exactly the convex hull of the
-genuine lens \pnote{math/08 Prop.~6.1; refereed}, so in the lift $d_k$ can tilt into the extra dimension at no rate cost and shorten its
-in-plane part, i.e.\ throttle one segment down. A unit-norm discretization forbids this, while relaxed controls in continuous time
-allow it. Whether the extra-dimensional moments can always be cancelled, and whether the gap disappears in continuous time, is
-Conjecture CSD2$'$ below (open). With the convexified lens ($\norm{d_k}\le1$, the discrete analogue of relaxed controls) the same
-instance is exact numerically. \Snum\ (the 3-DOF optimum is not certified)
-\item \emph{Variable throttle (certified).} The natural degree-2 lift with $\norm{U_k}^2=a_k^2$ is lossy whenever the rate limit
-binds: throttle headroom lets the thrust tilt out of the physical space while keeping its in-plane part. At $N=3$ an
-order-2 Lasserre bound, which is a valid lower bound on the genuine problem, equals the local optimum $0.6047$, while the
-Shor value is $0.5759$. \stag{Plum}{certified numerically by Lasserre-2, up to solver accuracy}
-\item \emph{$\delta=0$ (no gimbal).} No gap on about 2{,}900 targets. \Snum
+\item \emph{Unit-thrust discretization with gimbal.} With $\norm{d_k}=1$ and $\delta>0$ the lift is lossy. On an asymmetric
+near-dent target the SDP gives $0.027529$ (rank 4), against a best genuine value of $0.028231$ over about 1{,}000 diverse runs, a
+2.5\% gap. Three independent implementations agree, and an explicit feasible $\R^4$ chain attains the SDP value. At small $N$
+the gap is certified by order-2 Lasserre bounds, up to solver accuracy (e.g.\ $N=3$, $\delta=15^\circ$: Shor $1.862$ against Lasserre-2
+$2.358\approx$ genuine $2.357$). A plausible mechanism is identified: the lifted gimbal lens is exactly the convex hull of the genuine
+lens \pnote{math/08 Prop.~6.1; refereed}, so in the lift $d_k$ can tilt into the extra dimension at no rate cost and shorten its
+in-plane part. A unit-norm discretization forbids this, while relaxed controls in continuous time allow it. With the
+convexified lens ($\norm{d_k}\le1$) the same instances are exact numerically.
+\item \emph{Variable throttle.} Every degree-2 throttle lift tested is lossy. For the natural lift with $\norm{U_k}^2=a_k^2$, the gap at
+fixed physics grows with the discretization: 12\%, 40\%, 54\%, 63\% and 68\% at $N=4,6,8,12,16$. The lift tends to the
+no-rate-limit value, so the gap is not a discretization artifact. At $N=3$ an order-2 Lasserre bound equals the local optimum
+$0.6047$ while the Shor value is $0.5759$ \stag{Plum}{certified numerically by Lasserre-2, up to solver accuracy}. The separate-axis
+lift CSD3 is also lossy, by 2--35\% even with $\delta=0$.
+\item \emph{Path constraints.} An altitude constraint stayed exact in every active scenario. A glide-slope constraint broke exactness
+in 1 of 8 active scenarios (1.19\%, rank 4) even with $\delta=0$, consistent with the restriction of \cref{thm:coplanar} to
+Gram-linear constraints.
+\item \emph{$\delta=0$ (no gimbal), no path constraints.} No gap on about 2{,}900 targets.
 \end{itemize}
 
-\begin{todobox}[{(verifier-sdp / proof-sdp): Conjecture CSD2$'$}]
-% CLAIMS: CSD2' (OPEN)
-\textbf{Conjecture CSD2$'$} (open; no counterexample known; a prover is working on it). The Shor lift is exact (a) in continuous time with a fixed thrust
-profile, (b) for the convexified-lens discretization $\norm{d_k}\le1$, and (c) for the $\delta=0$ chain. By \cref{thm:stress} this
-is equivalent to the absence of second-order descent directions out of the physical space at genuine optima. Evidence:
-zero gaps on all 509 instances that were gaps for the unit-norm discretization, once convexified; case 12 and its coplanar
-variant; all converged cases of the convexified scan; and 840 adversarial $\delta=0$ instances. \emph{To fill in:} a proof or a
-counterexample (prover running).
+\begin{conjecture}[CSD2$'$]\label{conj:csd2p}
+% CLAIMS: CSD2' (OPEN, unbroken: ~4,500 solves, 0 gaps on 509 former unit-d gap instances); partial results CSD2'-T1..T5, P6, P7 refereed by verify-sdp2 (no BROKEN)
+For fixed thrust and no path constraints, the Shor lift of the minimum-landing-error problem is exact in each of three
+settings: (a) in continuous time, with relaxed thrust direction $u(t)\in\conv\,\mathrm{cap}(b(t),\delta)$ and a rate-limited axis;
+(b) for the convexified-lens discretization $\norm{d_k}\le1$; and (c) for the $\delta=0$ chain.\Sopen
+\end{conjecture}
+No counterexample is known. About 4{,}500 solves were run, including zero gaps on all 509 instances that were gaps for the
+unit-norm discretization once convexified. The following partial results were refereed independently
+\pnote{math/09; math/verify-sdp2-report.md}:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \emph{T1 (alignment).} The lifted value is an infimum over lifted trajectories whose physical readout lies in $\R^3$. Hence the
+conjecture for all targets is equivalent to $R_X\cap(\R^3)^2=R_3$: every lifted trajectory that lands in $\R^3$ can be replaced by a
+3-D one with the same terminal state. \Sproved
+\item \emph{T2 (primer-plane fold).} The lift is exact for \emph{every linear objective of the terminal readout} $(V,R)$, in continuous
+time and in all three discretizations. This closes the support-function question left open in math/08 (it does not cover
+attitude-dependent linear costs). \Sproved
+\item \emph{T3--T4 (stress certificate and hemisphere/Picone theorem).} The continuous-time version holds given a normal KKT
+multiplier set, which is automatic with free terminal attitude but not with prescribed terminal attitude. The discrete
+version (convexified lens, $\delta=0$) is fully rigorous, and its proof uses exactly the sign $\mu_d\ge0$ that the convexified lens
+provides. An a~priori class follows: targets whose vertical demand exceeds full upright thrust, with $\omega t_f<\pi$, given
+the multiplier hypothesis. \Srep
+\item \emph{T5 (index identity).} At a genuine KKT point satisfying nondegeneracy hypotheses,
+$\mathrm{neg}(Q)=\mathrm{neg}(Z)-p_0(C_{yw})$. Here $Z$ is the cable part of the stress, and $p_0$ is the number of nonnegative eigenvalues of
+the $2\times2$ lateral residual/target covariance. With free terminal attitude, $\mathrm{neg}(Z)$ equals the number $k$ of crossings
+of the primer plane, so the lift is exact iff $k\le p_0$. With upright terminal attitude, one residual case $k=p_0+1$ remains, and
+the conjecture reduces to an integer equality there (Conjecture CSD2$''$). \Srep\ \emph{Caveat:} the nondegeneracy hypotheses hold at
+only a minority of computed optima (188 of 898 in fresh banks; 9 of 17 earlier test cases). The direct stress test of
+\cref{thm:stress} certifies all 17.
+\item \emph{P6, P7.} Genuine local optima have no free singular arcs, so the lens-hull mechanism of the unit-norm failure has no
+continuous-time analogue at genuine optima. The unit-norm failure goes with negative norm multipliers $\mu_d<0$, which the
+convexified lens excludes (mechanism proved; correlation numerical). \Sproved
+\end{itemize}
+\emph{Physical meaning of an exact relaxed optimum.} The certified 3-D optimum has a genuine rate-limited attitude $b(t)$. Its
+thrust direction is relaxed, $u(t)\in\conv\,\mathrm{cap}(b(t),\delta)$. By Aumann's theorem there is a measurable full-thrust direction
+selection in the cap, with the same $b$, that reaches \emph{exactly} the same terminal state. This selection generally chatters,
+so it assumes unlimited gimbal bandwidth. It is not a saturated $\pm\delta$ law.
+
+\begin{todobox}[{(proof-csd2p): Conjecture CSD2$'$ / CSD2$''$}]
+A prover is working on the residual case. \emph{To fill in:} a proof or a counterexample of CSD2$''$, plus the continuous-time
+normality step for prescribed terminal attitude.
 \end{todobox}
 
 \emph{Practical reading.} The degree-2 lift is a polynomial-size SDP whose value is always a rigorous lower bound, and a
 positive value certifies that exact landing is infeasible. Exactness is certified a~posteriori by a rank-3 optimum, by the
-stress test of \cref{thm:stress}, or a~priori in the coplanar case of \cref{thm:coplanar}. In the tests, it was exact on every
-realistic in-air target for our vehicle. It is a certificate, not a lossless convexification. It does not handle minimum
+stress test of \cref{thm:stress}, a~priori in the coplanar case of \cref{thm:coplanar}, or (for every linear objective of the
+terminal readout) by T2. In the tests, it was exact on every realistic in-air target for our vehicle. It is a certificate, not a lossless convexification. It does not handle minimum
 fuel: fuel is constant for fixed thrust, and the natural variable-throttle lift is lossy.

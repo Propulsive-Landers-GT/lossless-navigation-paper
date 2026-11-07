@@ -727,3 +727,10 @@ New elementary claims N1–N7 flagged in solver/CLAIMS.md for registry/Lean. Rep
 - Correct (to be machine-checked, lean/…/Solver/GimbalRate.lean): (a) |φ̇| ≤ (|Ṫ_y| + t|Ṫ_z| + t²|Ṫ_x|)/T_z;
   (b) |Ṫ_x|+t|Ṫ_z| ≤ ωF, |Ṫ_y|+t|Ṫ_z| ≤ ωF, T_z ≥ F > 0, |T_y| ≤ tT_z ⇒ |φ̇| ≤ ω. So aacg._rate_constraints (both rows together) guarantees both axes; no code change needed, only CLAIMS row 8 wording.
 - Numerics: 2e5 random samples, max ratio 0.9998 (b) / 0.9994 (a). @main @solver
+
+## [paper-writer] 2026-11-07 02:25 — STATUS: paper revision 3 compiled (paper/main.pdf, 38 pp, clean)
+- The pure-TVC placeholder is replaced by Thm 3.22 (TVC-1, certified in exact arithmetic after W1/W2): margins 13.70/5.40/3.99 %, scope and open items stated, tilt-capped route mentioned.
+- §4.5: CSD2′ is stated as a conjecture with the refereed T1–T5/P6/P7, plus the final verifier-sdp numbers.
+- New §6 "Practical guidance": planner B, certificate, rate-constraint pair (lean-n catch), open-loop/closed-loop/hop results, 2 figures; all labelled numerical.
+- @main two discrepancies, resolved from data: hop false feasibility is 11/20 targets, not 8/20 (hop_map.json); T5 hypotheses hold at 188/898 optima (verify-sdp2), not ~80 %.
+- Remaining placeholders: CSD2″ (@proof-csd2p), Lean status of N1–N7 (@lean-n).

@@ -80,3 +80,28 @@ I chose "attitude-rate-limited" over "attitude-constrained" on purpose. Pointwis
   1. pure TVC upright at rest with r_z ≥ 0 (TVC-1, proof-tvc);
   2. Conjecture CSD2′ (evidence updated: 0 gaps on 509 former unit-d gap instances; prover running).
 - The PDF is now 34 pages and compiles cleanly. paper/CLAIMS-MAP.md is rewritten (revision 2).
+
+---
+## Revision 3 (2026-11-07): final pass for now
+- **§3.8.1 pure TVC.** The placeholder is replaced by Theorem 3.22 (TVC-1), computer-assisted and certified in exact arithmetic by verify-tvc after repairs W1 and W2.
+  - Setting: GTPL wet constants, constant mass and ε, unlimited gimbal rate, upright at rest, r_z ≥ 0 plus glide slope, tf = 1 s, s* = 0.25 s.
+  - Margins: cone 13.70 %, Cardan box 5.40 %, free roll 3.99 %.
+  - Distances: d* ≥ 9.63e-6 / 7.34e-6 / 2.81e-6 m. The paper notes these were float-evaluated, while the margins are exact.
+  - Also included: a method paragraph, an honest scope list (thin gap; unlimited gimbal rate essential because the witness needs sub-ms reversals; constant mass; only tf = 1 s, with ~3 cm numerical gaps at 5–7 s; free tf conditional), and the tilt-capped route in progress (math/06 §5.6, no certificate at tf ≥ 3 s yet).
+  - Intro, abstract and discussion are updated to match.
+- **§4.5 SDP.**
+  - CSD2′ is now stated as Conjecture 4.9, followed by the refereed partial results T1, T2 (every linear objective of the terminal readout is exact; closes SDP-F), T3/T4 (continuous form given normal KKT; discrete T4 rigorous), T5 (with free terminal attitude: exact ⇔ k ≤ p₀; residual case CSD2″), and P6/P7. The "bang-bang gimbal" wording is replaced by "full-thrust direction selection in the cap".
+  - The "where exactness fails" bullets are updated with verifier-sdp's final numbers: unit-d lossy, certified by Lasserre-2 at small N; throttle-lift gap 12→68 % with N; CSD3 lossy; glide slope lossy in 1 of 8 scenarios (1.19 %); altitude exact.
+  - A small TODO box remains for CSD2″.
+- **New §6 "Practical guidance for an attitude-rate-limited TVC lander"** (sections/055-practice.tex).
+  - Contents: planner B's steps, the certificate, and the gimbal-rate constraint pair with lean-n's catch (the standalone φ heuristic N2 is false; the imposed pair is valid).
+  - Results: open loop, closed loop, pad-hop false feasibility. Two figures: openloop_fuel.png and mc_inair_touchdown.png.
+  - Explicit list of what is not guaranteed (SCvx convergence, mass fixed point, global optimality, plant mismatch).
+  - TODO line for the Lean status of N1–N7 (lean-n).
+- **Discrepancies I resolved from the data rather than the brief:**
+  - (a) Pad hop: the 3DOF relaxation reports "optimal" at all 20 targets, and neither B nor IPOPT finds a plan at **11** of them (all 8 with v0z ≥ 6.5 m/s plus 3 at d = 6 m; solver/results/hop_map.json). The brief said 8/20. The paper says 11/20 and notes that "no plan found" is not a proof.
+  - (b) T5 hypotheses: the brief said they hold at ~80 % of optima. The referee's report says only 188 of 898 in fresh banks (9 of 17 c1 cases), with the direct stress test certifying all 17. The paper follows the referee.
+- 38 pages, compiles cleanly. CLAIMS-MAP.md is at revision 3.
+- **Remaining placeholders:**
+  1. CSD2″ / CSD2′ proof (proof-csd2p);
+  2. Lean status of solver claims N1–N7 (lean-n).
