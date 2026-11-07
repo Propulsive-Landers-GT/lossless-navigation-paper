@@ -67,13 +67,15 @@ acceleration class `Acc`. -/
 def reachSet (Acc : Set (ℝ → ℝ)) (tf ω δ : ℝ) : Set E3 :=
   {w | ∃ a d b, a ∈ Acc ∧ AttitudeAdmissible tf ω δ d b ∧ w = ∫ s in Icc 0 tf, a s • d s}
 
-/-- Velocity at time `t` for gravity `g`, initial velocity `v₀`: `v(t) = v₀ + ∫₀ᵗ (a d + g)`. -/
+/-- Velocity at time `t` for gravity `g`, initial velocity `v₀`:
+`v(t) = v₀ + t g + ∫₀ᵗ a(s) d(s) ds` (the solution of `v̇ = a d + g`). -/
 noncomputable def velocity (g v₀ : E3) (a : ℝ → ℝ) (d : ℝ → E3) (t : ℝ) : E3 :=
-  v₀ + ∫ s in Icc 0 t, (a s • d s + g)
+  v₀ + t • g + ∫ s in Icc 0 t, a s • d s
 
-/-- Position at time `t`: `r(t) = r₀ + ∫₀ᵗ v`. -/
+/-- Position at time `t`: `r(t) = r₀ + t v₀ + (t²/2) g + ∫₀ᵗ (t - s) a(s) d(s) ds`
+(Cauchy's formula for the solution of `r̈ = a d + g`, `r(0) = r₀`, `ṙ(0) = v₀`). -/
 noncomputable def position (g r₀ v₀ : E3) (a : ℝ → ℝ) (d : ℝ → E3) (t : ℝ) : E3 :=
-  r₀ + ∫ s in Icc 0 t, velocity g v₀ a d s
+  r₀ + t • v₀ + (t ^ 2 / 2) • g + ∫ s in Icc 0 t, (t - s) • (a s • d s)
 
 /-- **Landing feasibility set** `F_tf ⊆ ℝ³ × ℝ³` of boundary data `θ = (r₀, v₀)` from which an
 admissible control achieves `r(tf) = 0`, `v(tf) = 0`. -/
@@ -114,39 +116,34 @@ theorem integral_add_const {tf : ℝ} (htf : 0 ≤ tf) {f : ℝ → E3} (hf : In
     Real.volume_real_Icc_of_le htf, sub_zero]
 
 /-- `proj_{v₀} F_tf = -tf • g - R`. -/
-theorem snd_image_landingSet {Acc : Set (ℝ → ℝ)} {tf ω δ : ℝ} (htf : 0 ≤ tf) (g : E3)
-    (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf)) :
+theorem snd_image_landingSet {Acc : Set (ℝ → ℝ)} {tf ω δ : ℝ} (g : E3) :
     Prod.snd '' landingSet Acc tf ω δ g = {v | ∃ w ∈ reachSet Acc tf ω δ, v = -w - tf • g} := by
   ext v
   constructor
   · rintro ⟨⟨r₀, v₀⟩, ⟨a, d, b, ha, hatt, -, hv⟩, rfl⟩
     refine ⟨∫ s in Icc 0 tf, a s • d s, ⟨a, d, b, ha, hatt, rfl⟩, ?_⟩
     simp only [velocity] at hv
-    rw [integral_add_const htf (integrableOn_smul_of_unit (hAcc a ha) hatt.d_meas hatt.d_unit)]
-      at hv
     simp only
     rw [← sub_eq_zero, ← hv]
     abel
   · rintro ⟨w, ⟨a, d, b, ha, hatt, rfl⟩, rfl⟩
     set v₀ := -(∫ s in Icc 0 tf, a s • d s) - tf • g
-    refine ⟨(-(∫ s in Icc 0 tf, velocity g v₀ a d s), v₀), ⟨a, d, b, ha, hatt, ?_, ?_⟩, rfl⟩
-    · simp [position]
-    · simp only [velocity]
-      rw [integral_add_const htf (integrableOn_smul_of_unit (hAcc a ha) hatt.d_meas hatt.d_unit)]
-      simp only [v₀]
-      abel
+    refine ⟨(-(tf • v₀ + (tf ^ 2 / 2) • g + ∫ s in Icc 0 tf, (tf - s) • (a s • d s)), v₀),
+      ⟨a, d, b, ha, hatt, ?_, ?_⟩, rfl⟩
+    · simp only [position]; abel
+    · simp only [velocity, v₀]; abel
 
 /-- If the landing set is convex then so is the reachable velocity-increment set `R`. -/
-theorem convex_reachSet_of_convex_landingSet {Acc : Set (ℝ → ℝ)} {tf ω δ : ℝ} (htf : 0 ≤ tf)
-    (g : E3) (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf))
-    (hF : Convex ℝ (landingSet Acc tf ω δ g)) : Convex ℝ (reachSet Acc tf ω δ) := by
+theorem convex_reachSet_of_convex_landingSet {Acc : Set (ℝ → ℝ)} {tf ω δ : ℝ}
+    (g : E3) (hF : Convex ℝ (landingSet Acc tf ω δ g)) : Convex ℝ (reachSet Acc tf ω δ) := by
   have h1 := hF.linear_image (LinearMap.snd ℝ E3 E3)
   simp only [LinearMap.coe_snd] at h1
-  rw [snd_image_landingSet htf g hAcc] at h1
+  rw [snd_image_landingSet g] at h1
   let f : E3 →ᵃ[ℝ] E3 :=
     { toFun := fun w => -w - tf • g
       linear := -LinearMap.id
-      map_vadd' := by intro p v; simp only [vadd_eq_add, LinearMap.neg_apply, LinearMap.id_apply]; abel }
+      map_vadd' := by
+        intro p v; simp only [vadd_eq_add, LinearMap.neg_apply, LinearMap.id_apply]; abel }
   have h2 := h1.affine_preimage f
   convert h2 using 1
   ext w

@@ -245,6 +245,6 @@ theorem not_convex_landingSet {Acc : Set (ℝ → ℝ)} {tf ω δ : ℝ} {a₁ :
     (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf) ∧ ∀ s ∈ Icc 0 tf, a₁ s ≤ a s)
     (ha₁ : a₁ ∈ Acc) : ¬ Convex ℝ (landingSet Acc tf ω δ g) := fun hF =>
   not_convex_reachSet htf hω hδ hreg ha₁c ha₁p hAcc ha₁
-    (convex_reachSet_of_convex_landingSet htf.le g (fun a ha => (hAcc a ha).1) hF)
+    (convex_reachSet_of_convex_landingSet g hF)
 
 end LcvxObstruction

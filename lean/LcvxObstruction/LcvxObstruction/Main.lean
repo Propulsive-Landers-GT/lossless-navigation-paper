@@ -88,12 +88,11 @@ theorem exists_admissible {tf ω δ : ℝ} {Acc : Set (ℝ → ℝ)} {a₁ : ℝ
 /-- The landing set is nonempty (so "`F_tf` is not convex" is not a statement about `∅`;
 indeed `∅` is convex). -/
 theorem landingSet_nonempty {tf ω δ : ℝ} {Acc : Set (ℝ → ℝ)} {a₁ : ℝ → ℝ} (g : E3)
-    (htf : 0 ≤ tf) (hAcc : ∀ a ∈ Acc, IntegrableOn a (Icc 0 tf)) (ha₁ : a₁ ∈ Acc)
-    (hω : 0 ≤ ω) (hδ : 0 ≤ δ) (hδπ : δ ≤ π) (hωtf : ω * tf ≤ π) :
+    (ha₁ : a₁ ∈ Acc) (hω : 0 ≤ ω) (hδ : 0 ≤ δ) (hδπ : δ ≤ π) (hωtf : ω * tf ≤ π) :
     (landingSet Acc tf ω δ g).Nonempty := by
   obtain ⟨a, d, b, ha, hatt⟩ := exists_admissible ha₁ hω hδ hδπ hωtf
   have : -(∫ s in Icc 0 tf, a s • d s) - tf • g ∈ Prod.snd '' landingSet Acc tf ω δ g := by
-    rw [snd_image_landingSet htf g hAcc]
+    rw [snd_image_landingSet g]
     exact ⟨_, ⟨a, d, b, ha, hatt, rfl⟩, rfl⟩
   obtain ⟨θ, hθ, -⟩ := this
   exact ⟨θ, hθ⟩
