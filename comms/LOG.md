@@ -27,3 +27,8 @@
   usable rate 0.3–0.5 rad/s; tf≈7 s. Existing 3DOF LCvx solutions contain thrust-direction jumps needing ~10³ rad/s²
   (physically impossible) and are NOT tight at the min-thrust arc (296 N vs 400 N bound) — the 5DOF problem is real for us.
   MPC model mismatch (J, lever arm) ×4.6. Saved for the practical phase.
+- lit-review interim: no prior 5DOF/6DOF LCvx claim and no impossibility result found; all 6DOF methods are SCP/indirect.
+  Occupation-measure LPs: x0 enters as δ_{x0} (nonlinear in x0) ⇒ convex per instance, consistent with Thm A; Thm A must
+  state joint convexity explicitly. (Orchestrator note: if μ0 is a decision variable with only its mean pinned to x0, the LP is
+  jointly convex but its feasible x0-set is conv(F) ⇒ not lossless — consistent.) Bae et al. Automatica 2025: 3D Dubins
+  reachable set = solid of revolution of 2D set (δ=0 special case of our R).
