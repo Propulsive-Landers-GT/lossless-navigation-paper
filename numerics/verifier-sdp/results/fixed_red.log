@@ -1,0 +1,375 @@
+N=16 wtf=0.4 T=1 r zoh const M                        L=5.69607959e-06[opti] S=5.69592973e-06[opti] U=5.69606953e-06 rel=-1.77e-06 abs=-4.0e-11 rk=4/4 perp=6.5e-02
+N=16 wtf=0.4 T=1 r zoh const face s=0.5 h=0.0         L=2.69166804e-06[opti] S=nan[skip] U=2.69165242e-06 rel=-5.80e-06 abs=-6.2e-11 rk=4/4 perp=3.0e-02
+N=16 wtf=0.4 T=1 r zoh const face s=0.9 h=0.0         L=1.41828756e-07[opti] S=nan[skip] U=1.41729694e-07 rel=-6.99e-04 abs=-4.0e-10 rk=4/4 perp=1.5e-02
+N=16 wtf=0.4 T=1 r zoh const face s=0.97 h=0.002      L=5.40769992e-07[opti] S=nan[skip] U=5.40775936e-07 rel=1.10e-05 abs=2.4e-11 rk=3/3 perp=1.9e-08
+N=16 wtf=0.4 T=1 r zoh const face s=0.5 h=-0.05       L=0.00070769942[opti] S=nan[skip] U=0.000707699396 rel=-3.41e-08 abs=-9.6e-11 rk=4/4 perp=3.0e-02
+N=16 wtf=0.4 T=1 r zoh const far                      L=0.498766957[opti] S=nan[skip] U=0.498766956 rel=-1.05e-09 abs=-2.1e-09 rk=3/3 perp=1.2e-09
+N=16 wtf=0.4 T=1 r zoh const near-bdry out            L=0.000100000026[opti] S=nan[skip] U=0.000100000008 rel=-1.81e-07 abs=-7.2e-11 rk=3/3 perp=1.3e-08
+N=16 wtf=0.4 T=1 r zoh const far                      L=0.514542514[opti] S=nan[skip] U=0.514542518 rel=6.03e-09 abs=1.2e-08 rk=3/3 perp=5.3e-09
+N=16 wtf=0.4 T=1 r zoh const near-bdry out            L=9.99999848e-05[opti] S=nan[skip] U=0.000100000008 rel=2.31e-07 abs=9.3e-11 rk=3/3 perp=4.8e-09
+N=16 wtf=0.4 T=1 r zoh const random                   L=0.0422960617[opti] S=nan[skip] U=0.0422960617 rel=1.40e-09 abs=2.4e-10 rk=3/3 perp=-2.4e-09
+N=16 wtf=0.4 T=1 r zoh const random                   L=0.208626154[opti] S=nan[skip] U=0.208626154 rel=6.05e-11 abs=5.0e-11 rk=3/3 perp=4.8e-09
+N=16 wtf=0.4 T=1 r zoh rand  M                        L=1.07798876e-05[opti] S=1.07800079e-05[opti] U=1.07797658e-05 rel=-1.13e-05 abs=-4.1e-10 rk=5/5 perp=6.2e-02
+N=16 wtf=0.4 T=1 r zoh rand  face s=0.5 h=0.0         L=5.18606652e-06[opti] S=nan[skip] U=5.18599399e-06 rel=-1.40e-05 abs=-2.4e-10 rk=4/4 perp=3.0e-02
+N=16 wtf=0.4 T=1 r zoh rand  face s=0.9 h=0.0         L=2.80021909e-07[opti] S=nan[skip] U=2.79990124e-07 rel=-1.14e-04 abs=-1.1e-10 rk=4/4 perp=1.4e-02
+N=16 wtf=0.4 T=1 r zoh rand  face s=0.97 h=0.002      L=5.83900081e-07[opti] S=nan[skip] U=5.83885246e-07 rel=-2.54e-05 abs=-5.0e-11 rk=3/3 perp=6.3e-07
+N=16 wtf=0.4 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.000871019002[opti] S=nan[skip] U=0.000871018963 rel=-4.48e-08 abs=-1.3e-10 rk=4/4 perp=2.8e-02
+N=16 wtf=0.4 T=1 r zoh rand  far                      L=0.604193879[opti] S=nan[skip] U=0.604193879 rel=-1.05e-10 abs=-2.1e-10 rk=3/3 perp=7.8e-09
+N=16 wtf=0.4 T=1 r zoh rand  near-bdry out            L=0.000119144085[opti] S=nan[skip] U=0.000119144614 rel=4.44e-06 abs=1.8e-09 rk=3/3 perp=6.4e-09
+N=16 wtf=0.4 T=1 r zoh rand  far                      L=0.62910208[opti] S=nan[skip] U=0.629102081 rel=1.74e-09 abs=3.7e-09 rk=3/3 perp=3.0e-09
+N=16 wtf=0.4 T=1 r zoh rand  near-bdry out            L=0.000119144656[opti] S=nan[skip] U=0.000119144614 rel=-3.58e-07 abs=-1.4e-10 rk=3/3 perp=9.2e-09
+N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.263401034[opti] S=nan[skip] U=0.263401034 rel=-2.03e-09 abs=-1.8e-09 rk=3/3 perp=-6.8e-10
+N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.206985919[opti] S=nan[skip] U=0.20698592 rel=5.54e-09 abs=3.9e-09 rk=3/3 perp=1.3e-09
+N=16 wtf=0.4 T=1 rv zoh const M                        L=4.19676148e-05[opti] S=4.19673265e-05[opti] U=4.19674585e-05 rel=-3.73e-06 abs=-1.3e-10 rk=5/5 perp=2.7e-02
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0         L=1.97482133e-05[opti] S=nan[skip] U=1.97481492e-05 rel=-3.25e-06 abs=-5.1e-11 rk=4/3 perp=2.3e-04
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.000413793208[opti] S=nan[skip] U=0.000413793194 rel=-3.46e-08 abs=-1.1e-11 rk=3/3 perp=1.4e-10
+N=16 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0         L=1.24067818e-06[opti] S=nan[skip] U=1.24061925e-06 rel=-4.75e-05 abs=-4.7e-11 rk=4/3 perp=8.9e-04
+N=16 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.00215760056[opti] S=nan[skip] U=0.0021576005 rel=-3.12e-08 abs=-5.4e-11 rk=3/3 perp=2.3e-09
+N=16 wtf=0.4 T=1 rv zoh const face s=0.97 h=0.002      L=2.60667506e-06[opti] S=nan[skip] U=2.60663584e-06 rel=-1.50e-05 abs=-3.1e-11 rk=3/3 perp=1.9e-07
+N=16 wtf=0.4 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.00262567005[opti] S=nan[skip] U=0.00262567001 rel=-1.72e-08 abs=-3.6e-11 rk=3/3 perp=4.9e-09
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=-0.05       L=0.00362454591[opti] S=nan[skip] U=0.00362454589 rel=-6.95e-09 abs=-2.0e-11 rk=4/4 perp=8.7e-03
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.00402047056[opti] S=nan[skip] U=0.00402047053 rel=-8.58e-09 abs=-2.8e-11 rk=3/3 perp=2.4e-09
+N=16 wtf=0.4 T=1 rv zoh const far                      L=1.19840798[opti] S=nan[skip] U=1.19840798 rel=-1.60e-09 abs=-1.5e-09 rk=3/3 perp=-1.8e-10
+N=16 wtf=0.4 T=1 rv zoh const near-bdry out            L=0.000337699507[opti] S=nan[skip] U=0.000337699752 rel=7.25e-07 abs=2.0e-10 rk=3/3 perp=9.2e-10
+N=16 wtf=0.4 T=1 rv zoh const far                      L=1.32095575[opti] S=nan[skip] U=1.32095575 rel=-1.15e-09 abs=-1.2e-09 rk=3/3 perp=5.2e-10
+N=16 wtf=0.4 T=1 rv zoh const near-bdry out            L=0.000343171737[opti] S=nan[skip] U=0.000343171762 rel=7.16e-08 abs=2.0e-11 rk=3/3 perp=9.5e-09
+N=16 wtf=0.4 T=1 rv zoh const random                   L=0.211846697[opti] S=nan[skip] U=0.211846697 rel=-1.62e-09 abs=-2.7e-10 rk=3/3 perp=1.2e-08
+N=16 wtf=0.4 T=1 rv zoh const random                   L=1.31262302[opti] S=nan[skip] U=1.31262306 rel=3.22e-08 abs=3.4e-08 rk=3/3 perp=1.4e-08
+N=16 wtf=0.4 T=1 rv zoh rand  M                        L=6.64793732e-05[opti] S=6.64796314e-05[opti] U=6.64793329e-05 rel=-6.06e-07 abs=-2.3e-11 rk=5/5 perp=2.8e-02
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=0.0         L=3.15537621e-05[opti] S=nan[skip] U=3.15536915e-05 rel=-2.24e-06 abs=-4.1e-11 rk=4/4 perp=2.3e-03
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.000680947326[opti] S=nan[skip] U=0.000680947279 rel=-6.94e-08 abs=-2.7e-11 rk=3/3 perp=1.7e-09
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.9 h=0.0         L=1.96106141e-06[opti] S=nan[skip] U=1.96105682e-06 rel=-2.34e-06 abs=-2.6e-12 rk=4/4 perp=2.4e-03
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.00335608888[opti] S=nan[skip] U=0.00335608854 rel=-1.03e-07 abs=-2.0e-10 rk=3/3 perp=4.1e-09
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.97 h=0.002      L=3.46905017e-06[opti] S=nan[skip] U=3.46904931e-06 rel=-2.47e-07 abs=-4.9e-13 rk=3/3 perp=5.0e-08
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.00406280765[opti] S=nan[skip] U=0.00406280758 rel=-1.75e-08 abs=-4.1e-11 rk=3/3 perp=-5.1e-09
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.00508841727[opti] S=nan[skip] U=0.00508841725 rel=-3.62e-09 abs=-1.1e-11 rk=4/4 perp=2.3e-03
+N=16 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.00579314369[opti] S=nan[skip] U=0.00579314364 rel=-8.93e-09 abs=-3.0e-11 rk=3/3 perp=-3.6e-10
+N=16 wtf=0.4 T=1 rv zoh rand  far                      L=1.49553499[opti] S=nan[skip] U=1.49553499 rel=-4.15e-10 abs=-3.6e-10 rk=3/3 perp=-5.4e-09
+N=16 wtf=0.4 T=1 rv zoh rand  near-bdry out            L=0.000456487476[opti] S=nan[skip] U=0.000456487319 rel=-3.45e-07 abs=-9.1e-11 rk=3/3 perp=1.0e-08
+N=16 wtf=0.4 T=1 rv zoh rand  far                      L=2.57369704[opti] S=nan[skip] U=2.57369704 rel=1.68e-09 abs=2.5e-09 rk=3/3 perp=5.9e-09
+N=16 wtf=0.4 T=1 rv zoh rand  near-bdry out            L=0.000560024245[opti] S=nan[skip] U=0.000560024161 rel=-1.50e-07 abs=-4.8e-11 rk=3/3 perp=8.2e-10
+N=16 wtf=0.4 T=1 rv zoh rand  random                   L=0.89255427[opti] S=nan[skip] U=0.892554284 rel=1.60e-08 abs=8.2e-09 rk=3/3 perp=1.4e-08
+N=16 wtf=0.4 T=1 rv zoh rand  random                   L=1.83220521[opti] S=nan[skip] U=1.83220521 rel=2.42e-11 abs=2.6e-11 rk=3/3 perp=-3.2e-09
+N=16 wtf=2.0 T=1 r zoh const M                        L=0.00315718626[opti] S=0.00315718642[opti] U=0.00315718615 rel=-3.48e-08 abs=-4.4e-10 rk=5/5 perp=1.5e+00
+N=16 wtf=2.0 T=1 r zoh const face s=0.5 h=0.0         L=0.00138773511[opti] S=nan[skip] U=0.00138773504 rel=-4.95e-08 abs=-2.7e-10 rk=4/4 perp=8.3e-01
+N=16 wtf=2.0 T=1 r zoh const face s=0.9 h=0.0         L=6.39394148e-05[opti] S=nan[skip] U=6.39393947e-05 rel=-3.14e-07 abs=-8.0e-11 rk=4/4 perp=4.0e-01
+N=16 wtf=2.0 T=1 r zoh const face s=0.97 h=0.002      L=1.94003146e-06[opti] S=nan[skip] U=1.94001612e-06 rel=-7.91e-06 abs=-6.1e-11 rk=4/4 perp=1.6e-01
+N=16 wtf=2.0 T=1 r zoh const face s=0.5 h=-0.05       L=0.00374348683[opti] S=nan[skip] U=0.00374348672 rel=-2.93e-08 abs=-4.4e-10 rk=4/4 perp=8.1e-01
+N=16 wtf=2.0 T=1 r zoh const far                      L=0.354696054[opti] S=nan[skip] U=0.354696055 rel=1.49e-09 abs=2.1e-09 rk=3/3 perp=2.4e-08
+N=16 wtf=2.0 T=1 r zoh const near-bdry out            L=0.000100000001[opti] S=nan[skip] U=0.000100000007 rel=5.97e-08 abs=2.4e-11 rk=3/3 perp=8.0e-09
+N=16 wtf=2.0 T=1 r zoh const far                      L=0.283024197[opti] S=nan[skip] U=0.283024197 rel=-1.10e-10 abs=-1.2e-10 rk=3/3 perp=5.1e-10
+N=16 wtf=2.0 T=1 r zoh const near-bdry out            L=0.000100000029[opti] S=nan[skip] U=0.000100000008 rel=-2.07e-07 abs=-8.3e-11 rk=3/3 perp=9.9e-09
+N=16 wtf=2.0 T=1 r zoh const random                   L=0.049055641[opti] S=nan[skip] U=0.0490556411 rel=2.55e-09 abs=5.0e-10 rk=3/3 perp=7.3e-10
+N=16 wtf=2.0 T=1 r zoh const random                   L=0.0254720768[opti] S=nan[skip] U=0.0254720768 rel=-1.96e-10 abs=-2.0e-11 rk=3/3 perp=7.1e-10
+N=16 wtf=2.0 T=1 r zoh rand  M                        L=0.00595246683[opti] S=0.0059524669[opti] U=0.00595246683 rel=-1.33e-09 abs=-2.7e-11 rk=5/5 perp=1.5e+00
+N=16 wtf=2.0 T=1 r zoh rand  face s=0.5 h=0.0         L=0.00265482868[opti] S=nan[skip] U=0.0026548286 rel=-3.10e-08 abs=-2.8e-10 rk=4/4 perp=7.9e-01
+N=16 wtf=2.0 T=1 r zoh rand  face s=0.9 h=0.0         L=0.000127075603[opti] S=nan[skip] U=0.000127075561 rel=-3.25e-07 abs=-1.4e-10 rk=4/4 perp=3.7e-01
+N=16 wtf=2.0 T=1 r zoh rand  face s=0.97 h=0.002      L=5.42401166e-06[opti] S=nan[skip] U=5.42390269e-06 rel=-2.01e-05 abs=-3.7e-10 rk=4/4 perp=1.6e-01
+N=16 wtf=2.0 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.00597903524[opti] S=nan[skip] U=0.00597903523 rel=-1.02e-09 abs=-2.0e-11 rk=4/4 perp=7.5e-01
+N=16 wtf=2.0 T=1 r zoh rand  far                      L=0.314432935[opti] S=nan[skip] U=0.314432935 rel=3.12e-10 abs=3.3e-10 rk=3/3 perp=4.6e-09
+N=16 wtf=2.0 T=1 r zoh rand  near-bdry out            L=0.000119144735[opti] S=nan[skip] U=0.000119144614 rel=-1.02e-06 abs=-4.1e-10 rk=3/3 perp=2.6e-08
+N=16 wtf=2.0 T=1 r zoh rand  far                      L=0.291179505[opti] S=nan[skip] U=0.291179505 rel=-4.56e-11 abs=-4.5e-11 rk=3/3 perp=-2.9e-10
+N=16 wtf=2.0 T=1 r zoh rand  near-bdry out            L=0.000119144623[opti] S=nan[skip] U=0.000119144614 rel=-7.70e-08 abs=-3.1e-11 rk=3/3 perp=2.9e-09
+N=16 wtf=2.0 T=1 r zoh rand  random                   L=0.0534278614[opti] S=nan[skip] U=0.0534278615 rel=5.79e-10 abs=1.0e-10 rk=3/3 perp=2.4e-09
+N=16 wtf=2.0 T=1 r zoh rand  random                   L=0.201012178[opti] S=nan[skip] U=0.201012178 rel=1.03e-10 abs=6.9e-11 rk=3/3 perp=4.1e-10
+N=16 wtf=2.0 T=1 rv zoh const M                        L=0.0197499718[opti] S=0.0197499722[opti] U=0.0197499718 rel=-1.59e-09 abs=-2.5e-11 rk=5/5 perp=1.3e+00
+N=16 wtf=2.0 T=1 rv zoh const face s=0.5 h=0.0         L=0.00934881193[opti] S=nan[skip] U=0.00934881187 rel=-7.17e-09 abs=-5.4e-11 rk=4/4 perp=6.9e-01
+N=16 wtf=2.0 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.0176549487[opti] S=nan[skip] U=0.0176549486 rel=-1.74e-09 abs=-2.5e-11 rk=3/3 perp=1.2e-09
+N=16 wtf=2.0 T=1 rv zoh const face s=0.9 h=0.0         L=0.000614580833[opti] S=nan[skip] U=0.000614580813 rel=-3.34e-08 abs=-1.6e-11 rk=4/4 perp=8.6e-03
+N=16 wtf=2.0 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.0470145549[opti] S=nan[skip] U=0.0470145549 rel=-4.31e-10 abs=-1.6e-11 rk=3/3 perp=9.1e-10
+N=16 wtf=2.0 T=1 rv zoh const face s=0.97 h=0.002      L=3.25404431e-05[opti] S=nan[skip] U=3.25403774e-05 rel=-2.02e-06 abs=-5.3e-11 rk=4/4 perp=4.0e-03
+N=16 wtf=2.0 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.0559316061[opti] S=nan[skip] U=0.055931606 rel=-7.61e-10 abs=-3.4e-11 rk=3/3 perp=2.2e-09
+N=16 wtf=2.0 T=1 rv zoh const face s=0.5 h=-0.05       L=0.0213484231[opti] S=nan[skip] U=0.0213484231 rel=-6.20e-10 abs=-1.1e-11 rk=4/4 perp=8.1e-01
+N=16 wtf=2.0 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.0312159987[opti] S=nan[skip] U=0.0312159986 rel=-1.57e-09 abs=-3.9e-11 rk=3/3 perp=2.1e-09
+N=16 wtf=2.0 T=1 rv zoh const far                      L=0.77988186[opti] S=nan[skip] U=0.77988186 rel=3.36e-11 abs=2.1e-11 rk=3/3 perp=2.2e-09
+N=16 wtf=2.0 T=1 rv zoh const near-bdry out            L=0.000230452737[opti] S=nan[skip] U=0.000230452731 rel=-2.99e-08 abs=-5.5e-12 rk=3/3 perp=4.4e-10
+N=16 wtf=2.0 T=1 rv zoh const far                      L=0.874060633[opti] S=nan[skip] U=0.874060633 rel=-2.09e-10 abs=-1.5e-10 rk=3/3 perp=2.1e-10
+N=16 wtf=2.0 T=1 rv zoh const near-bdry out            L=0.000245283454[opti] S=nan[skip] U=0.000245283414 rel=-1.64e-07 abs=-3.2e-11 rk=3/3 perp=7.8e-09
+N=16 wtf=2.0 T=1 rv zoh const random                   L=0.453974938[opti] S=nan[skip] U=0.453974939 rel=5.82e-10 abs=2.1e-10 rk=3/3 perp=-2.3e-09
+N=16 wtf=2.0 T=1 rv zoh const random                   L=0.118513982[opti] S=nan[skip] U=0.118513983 rel=1.19e-09 abs=1.1e-10 rk=3/3 perp=3.9e-09
+N=16 wtf=2.0 T=1 rv zoh rand  M                        L=0.0328682562[opti] S=0.0328682573[opti] U=0.0328682562 rel=-2.85e-09 abs=-5.4e-11 rk=5/5 perp=1.2e+00
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=0.0         L=0.014836855[opti] S=nan[skip] U=0.0148368549 rel=-4.86e-09 abs=-4.1e-11 rk=4/4 perp=5.2e-01
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.0302609176[opti] S=nan[skip] U=0.0302609175 rel=-2.42e-09 abs=-4.2e-11 rk=3/3 perp=2.7e-09
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.9 h=0.0         L=0.000934141535[opti] S=nan[skip] U=0.000934141504 rel=-3.32e-08 abs=-1.8e-11 rk=4/4 perp=6.2e-02
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.0728640963[opti] S=nan[skip] U=0.0728640962 rel=-3.77e-10 abs=-1.6e-11 rk=3/3 perp=4.5e-10
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.97 h=0.002      L=5.13506015e-05[opti] S=nan[skip] U=5.13505082e-05 rel=-1.82e-06 abs=-5.4e-11 rk=4/4 perp=1.9e-02
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.0859228781[opti] S=nan[skip] U=0.085922878 rel=-1.46e-09 abs=-7.2e-11 rk=3/3 perp=2.6e-09
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.0325358859[opti] S=nan[skip] U=0.0325358859 rel=-2.11e-09 abs=-3.9e-11 rk=4/4 perp=6.2e-01
+N=16 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.0507419833[opti] S=nan[skip] U=0.0507419831 rel=-3.67e-09 abs=-1.1e-10 rk=3/3 perp=4.3e-09
+N=16 wtf=2.0 T=1 rv zoh rand  far                      L=2.13370294[opti] S=nan[skip] U=2.13370294 rel=2.65e-10 abs=3.3e-10 rk=3/3 perp=5.8e-09
+N=16 wtf=2.0 T=1 rv zoh rand  near-bdry out            L=0.000560093407[opti] S=nan[skip] U=0.000560093318 rel=-1.60e-07 abs=-5.2e-11 rk=3/3 perp=3.4e-08
+N=16 wtf=2.0 T=1 rv zoh rand  far                      L=0.56654429[opti] S=nan[skip] U=0.56654429 rel=-1.22e-10 abs=-4.0e-11 rk=3/3 perp=1.4e-09
+N=16 wtf=2.0 T=1 rv zoh rand  near-bdry out            L=0.000408690069[opti] S=nan[skip] U=0.000408690032 rel=-9.03e-08 abs=-2.1e-11 rk=3/3 perp=8.8e-09
+N=16 wtf=2.0 T=1 rv zoh rand  random                   L=0.355574662[opti] S=nan[skip] U=0.355574662 rel=-4.59e-10 abs=-9.4e-11 rk=3/3 perp=1.2e-10
+N=16 wtf=2.0 T=1 rv zoh rand  random                   L=0.127693832[opti] S=nan[skip] U=0.127693831 rel=-2.88e-09 abs=-2.1e-10 rk=3/3 perp=-1.0e-08
+N=16 wtf=3.6 T=1 r zoh const M                        L=0.0247326701[opti] S=0.02473267[opti] U=0.02473267 rel=-4.91e-09 abs=-4.9e-10 rk=5/5 perp=4.4e+00
+N=16 wtf=3.6 T=1 r zoh const face s=0.5 h=0.0         L=0.00853898809[opti] S=nan[skip] U=0.00853898808 rel=-1.29e-09 abs=-4.4e-11 rk=4/4 perp=3.0e+00
+N=16 wtf=3.6 T=1 r zoh const face s=0.9 h=0.0         L=0.000251285556[opti] S=nan[skip] U=0.000251285483 rel=-2.91e-07 abs=-2.9e-10 rk=4/4 perp=1.4e+00
+N=16 wtf=3.6 T=1 r zoh const face s=0.97 h=0.002      L=1.00521867e-05[opti] S=nan[skip] U=1.00521144e-05 rel=-7.19e-06 abs=-2.9e-10 rk=4/4 perp=6.0e-01
+N=16 wtf=3.6 T=1 r zoh const face s=0.5 h=-0.05       L=0.0127478916[opti] S=nan[skip] U=0.0127478916 rel=-5.13e-10 abs=-2.6e-11 rk=4/4 perp=2.9e+00
+N=16 wtf=3.6 T=1 r zoh const far                      L=0.165948836[opti] S=nan[skip] U=0.165948836 rel=4.40e-10 abs=2.9e-10 rk=3/3 perp=5.6e-09
+N=16 wtf=3.6 T=1 r zoh const near-bdry out            L=0.000100000032[opti] S=nan[skip] U=0.000100000006 rel=-2.65e-07 abs=-1.1e-10 rk=3/3 perp=1.3e-07
+N=16 wtf=3.6 T=1 r zoh const far                      L=0.545102258[opti] S=nan[skip] U=0.545102258 rel=4.03e-10 abs=8.8e-10 rk=3/3 perp=2.6e-09
+N=16 wtf=3.6 T=1 r zoh const near-bdry out            L=9.99999881e-05[opti] S=nan[skip] U=0.0001 rel=1.19e-07 abs=4.8e-11 rk=3/3 perp=3.1e-07
+N=16 wtf=3.6 T=1 r zoh const random                   L=6.65301148e-13[opti] S=nan[skip] U=1.13227503e-19 rel=-2.66e-04 abs=-2.7e-12 rk=17/14 perp=2.4e+00
+N=16 wtf=3.6 T=1 r zoh const random                   L=0.0397218757[opti] S=nan[skip] U=0.0397218758 rel=4.26e-09 abs=6.8e-10 rk=3/3 perp=2.2e-08
+N=16 wtf=3.6 T=1 r zoh rand  M                        L=0.0462010833[opti] S=0.0462010815[opti] U=0.0462010833 rel=3.62e-11 abs=5.6e-12 rk=5/5 perp=4.3e+00
+N=16 wtf=3.6 T=1 r zoh rand  face s=0.5 h=0.0         L=0.0160291799[opti] S=nan[skip] U=0.0160291799 rel=3.75e-10 abs=2.0e-11 rk=4/4 perp=2.8e+00
+N=16 wtf=3.6 T=1 r zoh rand  face s=0.9 h=0.0         L=0.000527203505[opti] S=nan[skip] U=0.000527203474 rel=-5.87e-08 abs=-1.0e-10 rk=4/4 perp=1.4e+00
+N=16 wtf=3.6 T=1 r zoh rand  face s=0.97 h=0.002      L=2.70853874e-05[opti] S=nan[skip] U=2.70853389e-05 rel=-1.79e-06 abs=-1.6e-10 rk=4/4 perp=6.0e-01
+N=16 wtf=3.6 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.0217605939[opti] S=nan[skip] U=0.0217605939 rel=-1.08e-10 abs=-7.9e-12 rk=4/4 perp=2.7e+00
+N=16 wtf=3.6 T=1 r zoh rand  far                      L=0.482784755[opti] S=nan[skip] U=0.482784755 rel=5.01e-10 abs=8.1e-10 rk=3/3 perp=6.8e-09
+N=16 wtf=3.6 T=1 r zoh rand  near-bdry out            L=0.000119144604[opti] S=nan[skip] U=0.000119144608 rel=3.48e-08 abs=1.4e-11 rk=3/3 perp=1.8e-07
+N=16 wtf=3.6 T=1 r zoh rand  far                      L=0.240286608[opti] S=nan[skip] U=0.240286608 rel=1.45e-10 abs=1.2e-10 rk=3/3 perp=3.2e-09
+N=16 wtf=3.6 T=1 r zoh rand  near-bdry out            L=0.000119144657[opti] S=nan[skip] U=0.000119144611 rel=-3.86e-07 abs=-1.5e-10 rk=3/3 perp=5.1e-07
+N=16 wtf=3.6 T=1 r zoh rand  random                   L=0.00275054331[opti] S=nan[skip] U=0.00275054327 rel=-1.30e-08 abs=-1.2e-10 rk=4/4 perp=2.7e+00
+N=16 wtf=3.6 T=1 r zoh rand  random                   L=0.0605542805[opti] S=nan[skip] U=0.0605542809 rel=6.05e-09 abs=1.2e-09 rk=3/3 perp=4.8e-08
+N=16 wtf=3.6 T=1 rv zoh const M                        L=0.138089355[opti] S=0.138089357[opti] U=0.138089355 rel=1.12e-09 abs=1.2e-10 rk=5/5 perp=4.1e+00
+N=16 wtf=3.6 T=1 rv zoh const face s=0.5 h=0.0         L=0.0474189373[opti] S=nan[skip] U=0.0474189374 rel=2.11e-10 abs=8.0e-12 rk=4/4 perp=2.7e+00
+N=16 wtf=3.6 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.073205569[opti] S=nan[skip] U=0.0732055691 rel=3.26e-10 abs=1.9e-11 rk=3/3 perp=8.3e-09
+N=16 wtf=3.6 T=1 rv zoh const face s=0.9 h=0.0         L=0.00315551911[opti] S=nan[skip] U=0.00315551907 rel=-1.22e-08 abs=-3.1e-11 rk=4/4 perp=6.8e-01
+N=16 wtf=3.6 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.102598641[opti] S=nan[skip] U=0.102598641 rel=-8.53e-11 abs=-7.0e-12 rk=3/3 perp=7.0e-09
+N=16 wtf=3.6 T=1 rv zoh const face s=0.97 h=0.002      L=0.000289337797[opti] S=nan[skip] U=0.000289337785 rel=-4.10e-08 abs=-9.5e-12 rk=4/4 perp=3.9e-02
+N=16 wtf=3.6 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.119053983[opti] S=nan[skip] U=0.119053983 rel=-2.31e-11 abs=-2.2e-12 rk=3/3 perp=3.0e-10
+N=16 wtf=3.6 T=1 rv zoh const face s=0.5 h=-0.05       L=0.0677712901[opti] S=nan[skip] U=0.0677712901 rel=-4.47e-11 abs=-2.4e-12 rk=4/4 perp=2.6e+00
+N=16 wtf=3.6 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.0979563138[opti] S=nan[skip] U=0.0979563139 rel=1.36e-09 abs=1.1e-10 rk=3/3 perp=9.7e-09
+N=16 wtf=3.6 T=1 rv zoh const far                      L=1.02438041[opti] S=nan[skip] U=1.02438041 rel=2.63e-10 abs=2.2e-10 rk=3/3 perp=-1.5e-09
+N=16 wtf=3.6 T=1 rv zoh const near-bdry out            L=0.000317977527[opti] S=nan[skip] U=0.000317977593 rel=2.09e-07 abs=5.3e-11 rk=3/3 perp=5.7e-08
+N=16 wtf=3.6 T=1 rv zoh const far                      L=0.639274824[opti] S=nan[skip] U=0.639274824 rel=2.24e-10 abs=1.1e-10 rk=3/3 perp=6.9e-10
+N=16 wtf=3.6 T=1 rv zoh const near-bdry out            L=0.000182577181[opti] S=nan[skip] U=0.000182577216 rel=1.87e-07 abs=2.7e-11 rk=3/3 perp=1.0e-07
+N=16 wtf=3.6 T=1 rv zoh const random                   L=0.157880301[opti] S=nan[skip] U=0.157880301 rel=1.15e-11 abs=1.5e-12 rk=3/3 perp=4.6e-09
+N=16 wtf=3.6 T=1 rv zoh const random                   L=0.409079121[opti] S=nan[skip] U=0.409079121 rel=5.20e-10 abs=1.7e-10 rk=3/3 perp=3.1e-09
+N=16 wtf=3.6 T=1 rv zoh rand  M                        L=0.229842431[opti] S=0.229842432[opti] U=0.229842431 rel=-1.52e-10 abs=-2.0e-11 rk=5/5 perp=4.1e+00
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=0.0         L=0.0759209026[opti] S=nan[skip] U=0.0759209026 rel=-2.21e-10 abs=-9.7e-12 rk=4/4 perp=2.4e+00
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.122757189[opti] S=nan[skip] U=0.122757189 rel=-3.53e-10 abs=-2.5e-11 rk=3/3 perp=3.6e-09
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.9 h=0.0         L=0.00480509425[opti] S=nan[skip] U=0.00480509413 rel=-2.50e-08 abs=-6.9e-11 rk=4/4 perp=4.4e-01
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.155492777[opti] S=nan[skip] U=0.155492777 rel=-1.68e-10 abs=-1.5e-11 rk=3/3 perp=1.1e-09
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.97 h=0.002      L=0.00042088688[opti] S=nan[skip] U=0.000420886874 rel=-1.49e-08 abs=-3.6e-12 rk=4/4 perp=6.7e-02
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.178101696[opti] S=nan[skip] U=0.178101696 rel=-1.98e-10 abs=-2.0e-11 rk=3/3 perp=3.9e-09
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.105725659[opti] S=nan[skip] U=0.105725659 rel=-1.36e-10 abs=-8.3e-12 rk=4/4 perp=2.3e+00
+N=16 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.158514344[opti] S=nan[skip] U=0.158514344 rel=-2.63e-10 abs=-2.4e-11 rk=3/3 perp=4.9e-09
+N=16 wtf=3.6 T=1 rv zoh rand  far                      L=0.499960023[opti] S=nan[skip] U=0.499960023 rel=-1.63e-10 abs=-4.7e-11 rk=3/3 perp=6.3e-10
+N=16 wtf=3.6 T=1 rv zoh rand  near-bdry out            L=0.000166810861[opti] S=nan[skip] U=0.000166810757 rel=-6.23e-07 abs=-6.0e-11 rk=3/3 perp=2.2e-08
+N=16 wtf=3.6 T=1 rv zoh rand  far                      L=1.54795184[opti] S=nan[skip] U=1.54795184 rel=1.28e-11 abs=1.1e-11 rk=3/3 perp=-2.2e-09
+N=16 wtf=3.6 T=1 rv zoh rand  near-bdry out            L=0.000447179839[opti] S=nan[skip] U=0.000447179873 rel=7.74e-08 abs=2.0e-11 rk=3/3 perp=7.1e-08
+N=16 wtf=3.6 T=1 rv zoh rand  random                   L=0.502731647[opti] S=nan[skip] U=0.502731647 rel=3.96e-10 abs=1.1e-10 rk=3/3 perp=4.9e-09
+N=16 wtf=3.6 T=1 rv zoh rand  random                   L=0.0456483579[opti] S=nan[skip] U=0.0456483578 rel=-1.03e-09 abs=-2.7e-11 rk=3/3 perp=3.1e-09
+N=16 wtf=1.2 T=0 r zoh const M                        L=0.00170162939[opti] S=0.00170162906[opti] U=0.00170162935 rel=-2.71e-08 abs=-1.8e-10 rk=6/5 perp=1.9e+00
+N=16 wtf=1.2 T=0 r zoh const face s=0.5 h=0.0         L=0.00073839664[opti] S=nan[skip] U=0.00073839662 rel=-2.69e-08 abs=-7.9e-11 rk=5/5 perp=3.6e-02
+N=16 wtf=1.2 T=0 r zoh const face s=0.9 h=0.0         L=4.22305762e-05[opti] S=nan[skip] U=4.22305579e-05 rel=-4.35e-07 abs=-7.3e-11 rk=5/5 perp=4.5e-02
+N=16 wtf=1.2 T=0 r zoh const face s=0.97 h=0.002      L=1.18731923e-06[opti] S=nan[skip] U=1.18723946e-06 rel=-6.72e-05 abs=-3.2e-10 rk=5/5 perp=1.9e-02
+N=16 wtf=1.2 T=0 r zoh const face s=0.5 h=-0.05       L=0.00262711255[opti] S=nan[skip] U=0.00262711251 rel=-1.19e-08 abs=-1.3e-10 rk=5/5 perp=3.2e-02
+N=16 wtf=1.2 T=0 r zoh const far                      L=0.343035174[opti] S=nan[skip] U=0.343035175 rel=9.33e-10 abs=1.3e-09 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh const near-bdry out            L=0.00010000003[opti] S=nan[skip] U=0.000100000007 rel=-2.22e-07 abs=-8.9e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh const far                      L=0.395161043[opti] S=nan[skip] U=0.395161043 rel=2.66e-10 abs=4.2e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh const near-bdry out            L=0.000100000057[opti] S=nan[skip] U=0.000100000006 rel=-5.13e-07 abs=-2.1e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh const random                   L=0.0155616474[opti] S=nan[skip] U=0.0155616474 rel=1.71e-09 abs=1.1e-10 rk=5/5 perp=5.5e-02
+N=16 wtf=1.2 T=0 r zoh const random                   L=0.0705088161[opti] S=nan[skip] U=0.0705088161 rel=8.96e-10 abs=2.5e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  M                        L=0.00264795253[opti] S=0.00264795273[opti] U=0.00264795251 rel=-9.45e-09 abs=-8.4e-11 rk=6/6 perp=1.8e+00
+N=16 wtf=1.2 T=0 r zoh rand  face s=0.5 h=0.0         L=0.00119445048[opti] S=nan[skip] U=0.00119445046 rel=-1.77e-08 abs=-7.1e-11 rk=5/5 perp=4.6e-02
+N=16 wtf=1.2 T=0 r zoh rand  face s=0.9 h=0.0         L=6.81665989e-05[opti] S=nan[skip] U=6.81664651e-05 rel=-1.96e-06 abs=-4.5e-10 rk=5/5 perp=5.0e-02
+N=16 wtf=1.2 T=0 r zoh rand  face s=0.97 h=0.002      L=2.42284546e-06[opti] S=nan[skip] U=2.42276203e-06 rel=-3.44e-05 abs=-2.8e-10 rk=5/5 perp=1.6e-02
+N=16 wtf=1.2 T=0 r zoh rand  face s=0.5 h=-0.05       L=0.00369747879[opti] S=nan[skip] U=0.00369747878 rel=-1.31e-09 abs=-1.6e-11 rk=5/5 perp=3.1e-02
+N=16 wtf=1.2 T=0 r zoh rand  far                      L=0.425675263[opti] S=nan[skip] U=0.425675265 rel=3.65e-09 abs=5.2e-09 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  near-bdry out            L=0.000119144717[opti] S=nan[skip] U=0.000119144613 rel=-8.77e-07 abs=-3.5e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  far                      L=0.402743219[opti] S=nan[skip] U=0.402743219 rel=1.45e-11 abs=2.0e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  near-bdry out            L=0.000119144634[opti] S=nan[skip] U=0.000119144613 rel=-1.74e-07 abs=-6.9e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  random                   L=0.180109777[opti] S=nan[skip] U=0.180109778 rel=4.69e-09 abs=2.8e-09 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 r zoh rand  random                   L=0.0236421002[opti] S=nan[skip] U=0.0236421002 rel=1.02e-09 abs=8.1e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const M                        L=0.0349646121[opti] S=0.0349646125[opti] U=0.0349646121 rel=-3.77e-10 abs=-1.1e-11 rk=6/6 perp=1.1e+00
+N=16 wtf=1.2 T=0 rv zoh const face s=0.5 h=0.0         L=0.015017507[opti] S=nan[skip] U=0.015017507 rel=-1.31e-09 abs=-1.6e-11 rk=4/4 perp=2.9e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.5 h=0.0 perp    L=0.0223498089[opti] S=nan[skip] U=0.0223498089 rel=-5.22e-10 abs=-9.3e-12 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.9 h=0.0         L=0.000807122498[opti] S=nan[skip] U=0.000807122267 rel=-2.87e-07 abs=-1.9e-10 rk=4/4 perp=2.0e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.9 h=0.0 perp    L=0.0350041628[opti] S=nan[skip] U=0.0350041628 rel=-1.24e-09 abs=-3.5e-11 rk=4/4 perp=2.7e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.97 h=0.002      L=4.84149354e-05[opti] S=nan[skip] U=4.84148753e-05 rel=-1.24e-06 abs=-4.8e-11 rk=4/4 perp=2.6e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.97 h=0.002 perp L=0.0406683108[opti] S=nan[skip] U=0.0406683108 rel=-1.01e-09 abs=-3.3e-11 rk=4/4 perp=2.5e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.5 h=-0.05       L=0.0298281665[opti] S=nan[skip] U=0.0298281665 rel=7.69e-10 abs=1.8e-11 rk=4/4 perp=2.7e-03
+N=16 wtf=1.2 T=0 rv zoh const face s=0.5 h=-0.05 perp  L=0.0386290523[opti] S=nan[skip] U=0.0386290523 rel=-2.80e-10 abs=-8.6e-12 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const far                      L=1.12021303[opti] S=nan[skip] U=1.12021303 rel=5.22e-10 abs=4.7e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const near-bdry out            L=0.000337117741[opti] S=nan[skip] U=0.000337117729 rel=-3.58e-08 abs=-9.6e-12 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const far                      L=0.917463521[opti] S=nan[skip] U=0.917463521 rel=5.06e-11 abs=3.7e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh const near-bdry out            L=0.000296489388[opti] S=nan[skip] U=0.000296489365 rel=-7.91e-08 abs=-1.9e-11 rk=4/4 perp=2.4e-03
+N=16 wtf=1.2 T=0 rv zoh const random                   L=0.216909869[opti] S=nan[skip] U=0.216909869 rel=-5.51e-10 abs=-9.6e-11 rk=4/4 perp=2.4e-03
+N=16 wtf=1.2 T=0 rv zoh const random                   L=0.368206091[opti] S=nan[skip] U=0.368206091 rel=-1.19e-09 abs=-3.5e-10 rk=4/4 perp=2.9e-03
+N=16 wtf=1.2 T=0 rv zoh rand  M                        L=0.0642828513[opti] S=0.0642828496[opti] U=0.0642828512 rel=-9.86e-10 abs=-3.6e-11 rk=6/6 perp=1.0e+00
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.5 h=0.0         L=0.028170091[opti] S=nan[skip] U=0.0281700909 rel=-3.12e-09 abs=-5.1e-11 rk=4/4 perp=2.7e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.5 h=0.0 perp    L=0.0388614514[opti] S=nan[skip] U=0.0388614513 rel=-1.42e-09 abs=-3.2e-11 rk=4/4 perp=2.9e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.9 h=0.0         L=0.00151199305[opti] S=nan[skip] U=0.001511993 rel=-3.30e-08 abs=-2.9e-11 rk=4/4 perp=2.5e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.9 h=0.0 perp    L=0.0524812562[opti] S=nan[skip] U=0.0524812561 rel=-1.79e-09 abs=-5.4e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.97 h=0.002      L=9.75478616e-05[opti] S=nan[skip] U=9.75478205e-05 rel=-4.21e-07 abs=-2.4e-11 rk=4/4 perp=2.6e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.97 h=0.002 perp L=0.0606078479[opti] S=nan[skip] U=0.0606078478 rel=-1.64e-09 abs=-5.7e-11 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.5 h=-0.05       L=0.0514073476[opti] S=nan[skip] U=0.0514073475 rel=-1.13e-09 abs=-3.3e-11 rk=4/4 perp=2.6e-03
+N=16 wtf=1.2 T=0 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.0642785782[opti] S=nan[skip] U=0.0642785781 rel=-1.52e-09 abs=-5.6e-11 rk=4/4 perp=2.9e-03
+N=16 wtf=1.2 T=0 rv zoh rand  far                      L=0.874179312[opti] S=nan[skip] U=0.874179312 rel=7.97e-10 abs=4.0e-10 rk=4/4 perp=2.6e-03
+N=16 wtf=1.2 T=0 rv zoh rand  near-bdry out            L=0.000376446108[opti] S=nan[skip] U=0.000376446046 rel=-1.67e-07 abs=-3.6e-11 rk=4/4 perp=2.9e-03
+N=16 wtf=1.2 T=0 rv zoh rand  far                      L=2.41682425[opti] S=nan[skip] U=2.41682425 rel=1.18e-10 abs=1.6e-10 rk=4/4 perp=3.1e-03
+N=16 wtf=1.2 T=0 rv zoh rand  near-bdry out            L=0.000542595931[opti] S=nan[skip] U=0.000542595928 rel=-6.00e-09 abs=-1.9e-12 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh rand  random                   L=0.593053455[opti] S=nan[skip] U=0.593053456 rel=4.57e-10 abs=1.6e-10 rk=4/4 perp=2.8e-03
+N=16 wtf=1.2 T=0 rv zoh rand  random                   L=0.289831903[opti] S=nan[skip] U=0.289831903 rel=-8.43e-10 abs=-1.4e-10 rk=4/4 perp=2.8e-03
+N=32 wtf=0.4 T=1 r zoh const M                        L=6.0751387e-06[opti] S=6.09260948e-06[opti] U=6.07512849e-06 rel=-1.68e-06 abs=-4.1e-11 rk=5/4 perp=1.3e-01
+N=32 wtf=0.4 T=1 r zoh const face s=0.5 h=0.0         L=2.83039654e-06[opti] S=nan[skip] U=2.83033154e-06 rel=-2.30e-05 abs=-2.6e-10 rk=4/4 perp=5.9e-02
+N=32 wtf=0.4 T=1 r zoh const face s=0.9 h=0.0         L=1.44081675e-07[opti] S=nan[skip] U=1.44005281e-07 rel=-5.30e-04 abs=-3.1e-10 rk=4/4 perp=2.8e-02
+N=32 wtf=0.4 T=1 r zoh const face s=0.97 h=0.002      L=5.3309443e-07[opti] S=nan[skip] U=5.33104721e-07 rel=1.93e-05 abs=4.1e-11 rk=3/3 perp=6.2e-08
+N=32 wtf=0.4 T=1 r zoh const face s=0.5 h=-0.05       L=0.000709937641[opti] S=nan[skip] U=0.000709937541 rel=-1.40e-07 abs=-4.0e-10 rk=4/4 perp=5.9e-02
+N=32 wtf=0.4 T=1 r zoh const far                      L=0.513224516[opti] S=nan[skip] U=0.513224515 rel=-3.12e-09 abs=-6.4e-09 rk=3/3 perp=6.2e-09
+N=32 wtf=0.4 T=1 r zoh const near-bdry out            L=9.99999525e-05[opti] S=nan[skip] U=0.000100000003 rel=5.02e-07 abs=2.0e-10 rk=3/3 perp=1.8e-07
+N=32 wtf=0.4 T=1 r zoh const far                      L=0.492307262[opti] S=nan[skip] U=0.492307262 rel=-5.78e-10 abs=-1.1e-09 rk=3/3 perp=2.3e-08
+N=32 wtf=0.4 T=1 r zoh const near-bdry out            L=0.000100000086[opti] S=nan[skip] U=0.000100000016 rel=-7.01e-07 abs=-2.8e-10 rk=3/3 perp=3.4e-10
+N=32 wtf=0.4 T=1 r zoh const random                   L=0.256894674[opti] S=nan[skip] U=0.256894674 rel=-6.03e-10 abs=-6.2e-10 rk=3/3 perp=1.9e-08
+N=32 wtf=0.4 T=1 r zoh const random                   L=0.0509628857[opti] S=nan[skip] U=0.0509628857 rel=-1.11e-10 abs=-2.3e-11 rk=3/3 perp=1.7e-08
+N=32 wtf=0.4 T=1 r zoh rand  M                        L=7.79253508e-06[opti] S=7.78817342e-06[opti] U=7.79252864e-06 rel=-8.27e-07 abs=-1.9e-11 rk=5/5 perp=1.2e-01
+N=32 wtf=0.4 T=1 r zoh rand  face s=0.5 h=0.0         L=3.3319585e-06[opti] S=nan[skip] U=3.33187588e-06 rel=-2.48e-05 abs=-2.5e-10 rk=4/4 perp=3.9e-02
+N=32 wtf=0.4 T=1 r zoh rand  face s=0.9 h=0.0         L=1.70590034e-07[opti] S=nan[skip] U=1.7055234e-07 rel=-2.21e-04 abs=-1.1e-10 rk=4/4 perp=2.5e-02
+N=32 wtf=0.4 T=1 r zoh rand  face s=0.97 h=0.002      L=7.33648174e-07[opti] S=nan[skip] U=7.32813864e-07 rel=-1.14e-03 abs=-2.5e-09 rk=3/3 perp=2.0e-05
+N=32 wtf=0.4 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.000940055039[opti] S=nan[skip] U=0.000940054924 rel=-1.22e-07 abs=-3.4e-10 rk=4/4 perp=4.0e-02
+N=32 wtf=0.4 T=1 r zoh rand  far                      L=0.693916201[opti] S=nan[skip] U=0.693916202 rel=9.42e-10 abs=2.0e-09 rk=3/3 perp=3.1e-08
+N=32 wtf=0.4 T=1 r zoh rand  near-bdry out            L=0.000133449491[opti] S=nan[skip] U=0.000133449276 rel=-1.61e-06 abs=-6.4e-10 rk=3/3 perp=-2.1e-08
+N=32 wtf=0.4 T=1 r zoh rand  far                      L=0.667601758[opti] S=nan[skip] U=0.667601757 rel=-2.13e-09 abs=-4.3e-09 rk=3/3 perp=-6.3e-09
+N=32 wtf=0.4 T=1 r zoh rand  near-bdry out            L=0.000133454073[opti] S=nan[skip] U=0.000133449277 rel=-3.59e-05 abs=-1.4e-08 rk=3/3 perp=2.3e-06
+N=32 wtf=0.4 T=1 r zoh rand  random                   L=0.0940225848[opti] S=nan[skip] U=0.0940225829 rel=-2.05e-08 abs=-5.8e-09 rk=3/3 perp=1.1e-08
+N=32 wtf=0.4 T=1 r zoh rand  random                   L=0.315687168[opti] S=nan[skip] U=0.315687168 rel=-1.53e-09 abs=-1.4e-09 rk=3/3 perp=2.3e-08
+N=32 wtf=0.4 T=1 rv zoh const M                        L=4.21619143e-05[opti] S=4.21405273e-05[opti] U=4.21618796e-05 rel=-8.22e-07 abs=-2.8e-11 rk=5/5 perp=5.3e-02
+N=32 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0         L=1.98911632e-05[opti] S=nan[skip] U=1.9891131e-05 rel=-1.62e-06 abs=-2.6e-11 rk=4/3 perp=2.3e-04
+N=32 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.000446291723[opti] S=nan[skip] U=0.000446291562 rel=-3.60e-07 abs=-1.3e-10 rk=3/3 perp=2.5e-08
+N=32 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0         L=1.17709285e-06[opti] S=nan[skip] U=1.17637117e-06 rel=-6.13e-04 abs=-5.8e-10 rk=4/3 perp=7.6e-04
+N=32 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.00228460463[opti] S=nan[skip] U=0.00228460454 rel=-3.97e-08 abs=-7.3e-11 rk=3/3 perp=3.0e-08
+N=32 wtf=0.4 T=1 rv zoh const face s=0.97 h=0.002      L=2.61752923e-06[opti] S=nan[skip] U=2.61744289e-06 rel=-3.30e-05 abs=-6.9e-11 rk=3/3 perp=8.4e-07
+N=32 wtf=0.4 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.00277502851[opti] S=nan[skip] U=0.00277502843 rel=-3.06e-08 abs=-6.8e-11 rk=3/3 perp=-2.9e-08
+N=32 wtf=0.4 T=1 rv zoh const face s=0.5 h=-0.05       L=0.00362411292[opti] S=nan[skip] U=0.00362411286 rel=-1.55e-08 abs=-4.5e-11 rk=4/4 perp=2.2e-02
+N=32 wtf=0.4 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.00405527448[opti] S=nan[skip] U=0.00405527441 rel=-1.79e-08 abs=-5.8e-11 rk=3/3 perp=-4.1e-09
+N=32 wtf=0.4 T=1 rv zoh const far                      L=1.85041372[opti] S=nan[skip] U=1.85041373 rel=7.16e-09 abs=1.1e-08 rk=3/3 perp=2.6e-08
+N=32 wtf=0.4 T=1 rv zoh const near-bdry out            L=0.000388622181[opti] S=nan[skip] U=0.000388622156 rel=-6.40e-08 abs=-2.0e-11 rk=3/3 perp=1.2e-07
+N=32 wtf=0.4 T=1 rv zoh const far                      L=1.50867655[opti] S=nan[skip] U=1.50867655 rel=-2.39e-10 abs=-2.9e-10 rk=3/3 perp=6.9e-08
+N=32 wtf=0.4 T=1 rv zoh const near-bdry out            L=0.000373237391[opti] S=nan[skip] U=0.000373238124 rel=1.96e-06 abs=5.9e-10 rk=3/3 perp=-1.5e-08
+N=32 wtf=0.4 T=1 rv zoh const random                   L=0.636111112[opti] S=nan[skip] U=0.636111111 rel=-1.73e-09 abs=-8.8e-10 rk=3/3 perp=4.9e-08
+N=32 wtf=0.4 T=1 rv zoh const random                   L=0.321513928[opti] S=nan[skip] U=0.321513929 rel=2.55e-09 abs=6.6e-10 rk=3/3 perp=6.8e-08
+N=32 wtf=0.4 T=1 rv zoh rand  M                        L=5.31023739e-05[opti] S=5.30354963e-05[opti] U=5.31023211e-05 rel=-9.94e-07 abs=-3.3e-11 rk=5/5 perp=5.2e-02
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=0.0         L=2.39091449e-05[opti] S=nan[skip] U=2.39091186e-05 rel=-1.10e-06 abs=-1.6e-11 rk=4/3 perp=6.6e-04
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.000545049663[opti] S=nan[skip] U=0.000545045915 rel=-6.88e-06 abs=-2.3e-09 rk=3/3 perp=3.2e-07
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.9 h=0.0         L=1.45932391e-06[opti] S=nan[skip] U=1.45921621e-06 rel=-7.38e-05 abs=-6.7e-11 rk=4/3 perp=4.9e-04
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.00278761016[opti] S=nan[skip] U=0.00278760867 rel=-5.33e-07 abs=-9.2e-10 rk=3/3 perp=7.3e-08
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.97 h=0.002      L=3.44050497e-06[opti] S=nan[skip] U=3.43924029e-06 rel=-3.68e-04 abs=-7.8e-10 rk=3/3 perp=5.8e-06
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.00338876339[opti] S=nan[skip] U=0.00338876211 rel=-3.79e-07 abs=-7.9e-10 rk=3/3 perp=6.2e-08
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.00466650144[opti] S=nan[skip] U=0.00466650071 rel=-1.57e-07 abs=-4.5e-10 rk=4/4 perp=1.5e-02
+N=32 wtf=0.4 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.00520328553[opti] S=nan[skip] U=0.00520328507 rel=-8.91e-08 abs=-2.9e-10 rk=3/3 perp=1.4e-07
+N=32 wtf=0.4 T=1 rv zoh rand  far                      L=2.01521846[opti] S=nan[skip] U=2.01521845 rel=-2.25e-09 abs=-2.8e-09 rk=3/3 perp=6.8e-09
+N=32 wtf=0.4 T=1 rv zoh rand  near-bdry out            L=0.00047368473[opti] S=nan[skip] U=0.000473684642 rel=-1.87e-07 abs=-5.5e-11 rk=3/3 perp=-1.6e-08
+N=32 wtf=0.4 T=1 rv zoh rand  far                      L=2.01552575[opti] S=nan[skip] U=2.01552573 rel=-8.61e-09 abs=-1.1e-08 rk=3/3 perp=6.0e-08
+N=32 wtf=0.4 T=1 rv zoh rand  near-bdry out            L=0.000481245903[opti] S=nan[skip] U=0.000481245891 rel=-2.52e-08 abs=-7.5e-12 rk=3/3 perp=6.9e-08
+N=32 wtf=0.4 T=1 rv zoh rand  random                   L=0.686865677[opti] S=nan[skip] U=0.686865667 rel=-1.39e-08 abs=-5.9e-09 rk=3/3 perp=3.8e-08
+N=32 wtf=0.4 T=1 rv zoh rand  random                   L=0.82582718[opti] S=nan[skip] U=0.825827172 rel=-9.10e-09 abs=-4.6e-09 rk=3/3 perp=-3.9e-08
+N=32 wtf=2.0 T=1 r zoh const M                        L=0.00335989323[opti] S=0.00335966358[opti] U=0.00335989318 rel=-1.57e-08 abs=-2.1e-10 rk=5/5 perp=3.0e+00
+N=32 wtf=2.0 T=1 r zoh const face s=0.5 h=0.0         L=0.00145977864[opti] S=nan[skip] U=0.00145977855 rel=-6.12e-08 abs=-3.6e-10 rk=4/4 perp=1.7e+00
+N=32 wtf=2.0 T=1 r zoh const face s=0.9 h=0.0         L=6.48569819e-05[opti] S=nan[skip] U=6.48569028e-05 rel=-1.22e-06 abs=-3.2e-10 rk=4/4 perp=7.7e-01
+N=32 wtf=2.0 T=1 r zoh const face s=0.97 h=0.002      L=1.77483217e-06[opti] S=nan[skip] U=1.77483217e-06 rel=-1.43e-09 abs=-1.0e-14 rk=4/4 perp=3.3e-01
+N=32 wtf=2.0 T=1 r zoh const face s=0.5 h=-0.05       L=0.00386189688[opti] S=nan[skip] U=0.00386189675 rel=-3.33e-08 abs=-5.1e-10 rk=4/4 perp=1.6e+00
+N=32 wtf=2.0 T=1 r zoh const far                      L=0.335847919[opti] S=nan[skip] U=0.335847919 rel=-1.16e-09 abs=-1.6e-09 rk=3/3 perp=6.5e-09
+N=32 wtf=2.0 T=1 r zoh const near-bdry out            L=0.000100000032[opti] S=nan[skip] U=0.000100000016 rel=-1.61e-07 abs=-6.4e-11 rk=3/3 perp=2.4e-08
+N=32 wtf=2.0 T=1 r zoh const far                      L=0.32562852[opti] S=nan[skip] U=0.325628522 rel=5.49e-09 abs=7.1e-09 rk=3/3 perp=4.8e-08
+N=32 wtf=2.0 T=1 r zoh const near-bdry out            L=0.000100000091[opti] S=nan[skip] U=0.000100000016 rel=-7.53e-07 abs=-3.0e-10 rk=3/3 perp=4.9e-08
+N=32 wtf=2.0 T=1 r zoh const random                   L=0.0124430713[opti] S=nan[skip] U=0.0124430713 rel=-1.05e-09 abs=-5.2e-11 rk=4/4 perp=1.2e+00
+N=32 wtf=2.0 T=1 r zoh const random                   L=0.0415732589[opti] S=nan[skip] U=0.0415732611 rel=5.12e-08 abs=8.5e-09 rk=3/3 perp=7.8e-08
+N=32 wtf=2.0 T=1 r zoh rand  M                        L=0.00429780971[opti] S=0.00429767741[opti] U=0.00429780961 rel=-2.15e-08 abs=-2.8e-10 rk=5/5 perp=2.9e+00
+N=32 wtf=2.0 T=1 r zoh rand  face s=0.5 h=0.0         L=0.00171096839[opti] S=nan[skip] U=0.00171096834 rel=-2.91e-08 abs=-1.5e-10 rk=4/4 perp=1.3e+00
+N=32 wtf=2.0 T=1 r zoh rand  face s=0.9 h=0.0         L=7.71538838e-05[opti] S=nan[skip] U=7.71538625e-05 rel=-2.77e-07 abs=-6.4e-11 rk=4/4 perp=7.0e-01
+N=32 wtf=2.0 T=1 r zoh rand  face s=0.97 h=0.002      L=1.92234584e-06[opti] S=nan[skip] U=1.92220884e-06 rel=-7.13e-05 abs=-4.1e-10 rk=4/4 perp=3.1e-01
+N=32 wtf=2.0 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.00476269041[opti] S=nan[skip] U=0.0047626903 rel=-2.23e-08 abs=-3.2e-10 rk=4/4 perp=1.2e+00
+N=32 wtf=2.0 T=1 r zoh rand  far                      L=0.370354647[opti] S=nan[skip] U=0.370354647 rel=1.26e-09 abs=1.4e-09 rk=3/3 perp=1.6e-08
+N=32 wtf=2.0 T=1 r zoh rand  near-bdry out            L=0.000133449727[opti] S=nan[skip] U=0.000133449276 rel=-3.38e-06 abs=-1.4e-09 rk=3/3 perp=1.6e-07
+N=32 wtf=2.0 T=1 r zoh rand  far                      L=0.37012016[opti] S=nan[skip] U=0.370120161 rel=1.81e-09 abs=2.0e-09 rk=3/3 perp=3.0e-08
+N=32 wtf=2.0 T=1 r zoh rand  near-bdry out            L=0.000133449717[opti] S=nan[skip] U=0.000133449276 rel=-3.30e-06 abs=-1.3e-09 rk=3/3 perp=1.6e-07
+N=32 wtf=2.0 T=1 r zoh rand  random                   L=0.143040559[opti] S=nan[skip] U=0.143040559 rel=1.26e-09 abs=5.4e-10 rk=3/3 perp=4.0e-08
+N=32 wtf=2.0 T=1 r zoh rand  random                   L=0.0149256314[opti] S=nan[skip] U=0.0149256313 rel=-6.99e-09 abs=-3.1e-10 rk=3/3 perp=1.6e-08
+N=32 wtf=2.0 T=1 rv zoh const M                        L=0.0198436352[opti] S=0.0198436341[opti] U=0.0198436352 rel=-1.99e-09 abs=-3.2e-11 rk=5/5 perp=2.5e+00
+N=32 wtf=2.0 T=1 rv zoh const face s=0.5 h=0.0         L=0.00933566847[opti] S=nan[skip] U=0.00933566832 rel=-1.58e-08 abs=-1.2e-10 rk=4/4 perp=1.4e+00
+N=32 wtf=2.0 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.0184471245[opti] S=nan[skip] U=0.0184471243 rel=-5.81e-09 abs=-8.6e-11 rk=3/3 perp=2.5e-08
+N=32 wtf=2.0 T=1 rv zoh const face s=0.9 h=0.0         L=0.000585854712[opti] S=nan[skip] U=0.000585854649 rel=-1.08e-07 abs=-5.1e-11 rk=5/5 perp=2.0e-02
+N=32 wtf=2.0 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.0498534539[opti] S=nan[skip] U=0.0498534538 rel=-1.80e-09 abs=-7.2e-11 rk=3/3 perp=9.7e-09
+N=32 wtf=2.0 T=1 rv zoh const face s=0.97 h=0.002      L=3.03887586e-05[opti] S=nan[skip] U=3.0388566e-05 rel=-6.34e-06 abs=-1.5e-10 rk=5/4 perp=1.1e-02
+N=32 wtf=2.0 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.0592490209[opti] S=nan[skip] U=0.0592490209 rel=-1.14e-09 abs=-5.4e-11 rk=3/3 perp=8.1e-09
+N=32 wtf=2.0 T=1 rv zoh const face s=0.5 h=-0.05       L=0.0213498406[opti] S=nan[skip] U=0.0213498406 rel=-3.22e-09 abs=-5.5e-11 rk=4/4 perp=1.6e+00
+N=32 wtf=2.0 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.0320761148[opti] S=nan[skip] U=0.0320761147 rel=-2.72e-09 abs=-7.0e-11 rk=3/3 perp=2.8e-08
+N=32 wtf=2.0 T=1 rv zoh const far                      L=0.913449275[opti] S=nan[skip] U=0.913449275 rel=-3.87e-11 abs=-2.8e-11 rk=3/3 perp=8.6e-09
+N=32 wtf=2.0 T=1 rv zoh const near-bdry out            L=0.00025168735[opti] S=nan[skip] U=0.00025168734 rel=-3.89e-08 abs=-7.8e-12 rk=3/3 perp=1.1e-07
+N=32 wtf=2.0 T=1 rv zoh const far                      L=0.79766742[opti] S=nan[skip] U=0.797667418 rel=-1.55e-09 abs=-9.9e-10 rk=3/3 perp=4.2e-09
+N=32 wtf=2.0 T=1 rv zoh const near-bdry out            L=0.000392695783[opti] S=nan[skip] U=0.000392695836 rel=1.34e-07 abs=4.2e-11 rk=3/3 perp=9.7e-09
+N=32 wtf=2.0 T=1 rv zoh const random                   L=0.0214798549[opti] S=nan[skip] U=0.0214798548 rel=-3.78e-09 abs=-6.5e-11 rk=3/3 perp=1.9e-08
+N=32 wtf=2.0 T=1 rv zoh const random                   L=0.347702323[opti] S=nan[skip] U=0.347702323 rel=-1.02e-10 abs=-2.8e-11 rk=3/3 perp=2.2e-08
+N=32 wtf=2.0 T=1 rv zoh rand  M                        L=0.0248301038[opti] S=0.0248310692[opti] U=0.0248301037 rel=-3.36e-09 abs=-5.2e-11 rk=5/5 perp=2.5e+00
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=0.0         L=0.0114584721[opti] S=nan[skip] U=0.0114584721 rel=-6.80e-09 abs=-4.8e-11 rk=4/4 perp=1.2e+00
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.0226932078[opti] S=nan[skip] U=0.0226932077 rel=-5.68e-09 abs=-8.0e-11 rk=3/3 perp=5.8e-09
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.9 h=0.0         L=0.000721163406[opti] S=nan[skip] U=0.000721163415 rel=1.20e-08 abs=5.4e-12 rk=4/4 perp=4.7e-02
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.0606625831[opti] S=nan[skip] U=0.0606625829 rel=-2.89e-09 abs=-1.1e-10 rk=3/3 perp=-2.0e-08
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.97 h=0.002      L=3.6879474e-05[opti] S=nan[skip] U=3.68794187e-05 rel=-1.50e-06 abs=-3.4e-11 rk=4/4 perp=1.6e-02
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.0721472414[opti] S=nan[skip] U=0.0721472412 rel=-1.96e-09 abs=-8.7e-11 rk=3/3 perp=4.8e-09
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.0268018923[opti] S=nan[skip] U=0.0268018922 rel=-3.48e-09 abs=-5.8e-11 rk=4/4 perp=1.4e+00
+N=32 wtf=2.0 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.0399916125[opti] S=nan[skip] U=0.0399916123 rel=-4.23e-09 abs=-1.0e-10 rk=3/3 perp=5.6e-09
+N=32 wtf=2.0 T=1 rv zoh rand  far                      L=0.735274382[opti] S=nan[skip] U=0.735274381 rel=-8.74e-11 abs=-4.0e-11 rk=3/3 perp=7.6e-09
+N=32 wtf=2.0 T=1 rv zoh rand  near-bdry out            L=0.000263120401[opti] S=nan[skip] U=0.000263120354 rel=-1.79e-07 abs=-2.9e-11 rk=3/3 perp=2.1e-07
+N=32 wtf=2.0 T=1 rv zoh rand  far                      L=1.29800036[opti] S=nan[skip] U=1.29800036 rel=4.58e-10 abs=3.7e-10 rk=3/3 perp=1.0e-08
+N=32 wtf=2.0 T=1 rv zoh rand  near-bdry out            L=0.000491556031[opti] S=nan[skip] U=0.000491555624 rel=-8.27e-07 abs=-2.5e-10 rk=3/3 perp=5.5e-08
+N=32 wtf=2.0 T=1 rv zoh rand  random                   L=0.208196275[opti] S=nan[skip] U=0.208196274 rel=-3.46e-09 abs=-4.5e-10 rk=3/3 perp=2.8e-09
+N=32 wtf=2.0 T=1 rv zoh rand  random                   L=0.188505796[opti] S=nan[skip] U=0.188505796 rel=-2.52e-09 abs=-2.9e-10 rk=3/3 perp=2.8e-09
+N=32 wtf=3.6 T=1 r zoh const M                        L=0.0262242[opti] S=0.0262242569[opti] U=0.0262242001 rel=4.13e-09 abs=4.3e-10 rk=5/5 perp=8.8e+00
+N=32 wtf=3.6 T=1 r zoh const face s=0.5 h=0.0         L=0.00895759342[opti] S=nan[skip] U=0.00895759351 rel=1.01e-08 abs=3.6e-10 rk=4/4 perp=5.9e+00
+N=32 wtf=3.6 T=1 r zoh const face s=0.9 h=0.0         L=0.000249894332[opti] S=nan[skip] U=0.000249894315 rel=-6.54e-08 abs=-6.5e-11 rk=4/4 perp=2.8e+00
+N=32 wtf=3.6 T=1 r zoh const face s=0.97 h=0.002      L=8.40745629e-06[opti] S=nan[skip] U=8.4074022e-06 rel=-6.43e-06 abs=-2.2e-10 rk=4/4 perp=1.2e+00
+N=32 wtf=3.6 T=1 r zoh const face s=0.5 h=-0.05       L=0.0132619644[opti] S=nan[skip] U=0.0132619645 rel=1.80e-09 abs=9.6e-11 rk=4/4 perp=5.7e+00
+N=32 wtf=3.6 T=1 r zoh const far                      L=0.160375723[opti] S=nan[skip] U=0.160375724 rel=2.91e-09 abs=1.9e-09 rk=3/3 perp=6.3e-08
+N=32 wtf=3.6 T=1 r zoh const near-bdry out            L=0.00010000007[opti] S=nan[skip] U=0.000100000013 rel=-5.72e-07 abs=-2.3e-10 rk=3/3 perp=5.9e-07
+N=32 wtf=3.6 T=1 r zoh const far                      L=0.365194383[opti] S=nan[skip] U=0.365194384 rel=1.38e-09 abs=2.0e-09 rk=3/3 perp=4.2e-08
+N=32 wtf=3.6 T=1 r zoh const near-bdry out            L=0.000100000014[opti] S=nan[skip] U=0.000100000006 rel=-8.18e-08 abs=-3.3e-11 rk=3/3 perp=5.4e-07
+N=32 wtf=3.6 T=1 r zoh const random                   L=-8.96610564e-12[opti] S=nan[skip] U=5.59703719e-20 rel=3.59e-03 abs=3.6e-11 rk=33/12 perp=2.8e+00
+N=32 wtf=3.6 T=1 r zoh const random                   L=0.000177718521[opti] S=nan[skip] U=0.000177718524 rel=1.71e-08 abs=1.2e-11 rk=3/3 perp=2.4e-07
+N=32 wtf=3.6 T=1 r zoh rand  M                        L=0.0327366227[opti] S=0.0327366247[opti] U=0.0327366227 rel=-7.82e-10 abs=-7.7e-11 rk=5/5 perp=8.9e+00
+N=32 wtf=3.6 T=1 r zoh rand  face s=0.5 h=0.0         L=0.0104184165[opti] S=nan[skip] U=0.0104184164 rel=-2.86e-09 abs=-8.9e-11 rk=4/4 perp=5.3e+00
+N=32 wtf=3.6 T=1 r zoh rand  face s=0.9 h=0.0         L=0.000298836791[opti] S=nan[skip] U=0.000298836713 rel=-2.61e-07 abs=-2.3e-10 rk=4/4 perp=2.6e+00
+N=32 wtf=3.6 T=1 r zoh rand  face s=0.97 h=0.002      L=9.40712589e-06[opti] S=nan[skip] U=9.40711497e-06 rel=-1.16e-06 abs=-3.3e-11 rk=4/4 perp=1.2e+00
+N=32 wtf=3.6 T=1 r zoh rand  face s=0.5 h=-0.05       L=0.0158853601[opti] S=nan[skip] U=0.01588536 rel=-2.93e-09 abs=-1.4e-10 rk=4/4 perp=5.2e+00
+N=32 wtf=3.6 T=1 r zoh rand  far                      L=0.728411782[opti] S=nan[skip] U=0.728411782 rel=6.19e-11 abs=1.4e-10 rk=3/3 perp=9.8e-09
+N=32 wtf=3.6 T=1 r zoh rand  near-bdry out            L=0.000133449276[opti] S=nan[skip] U=0.000133449262 rel=-1.10e-07 abs=-4.4e-11 rk=3/3 perp=6.4e-07
+N=32 wtf=3.6 T=1 r zoh rand  far                      L=0.215329035[opti] S=nan[skip] U=0.215329035 rel=-4.32e-10 abs=-2.8e-10 rk=3/3 perp=9.3e-09
+N=32 wtf=3.6 T=1 r zoh rand  near-bdry out            L=0.000133450279[opti] S=nan[skip] U=0.000133449276 rel=-7.51e-06 abs=-3.0e-09 rk=3/3 perp=9.0e-07
+N=32 wtf=3.6 T=1 r zoh rand  random                   L=0.0911786369[opti] S=nan[skip] U=0.091178637 rel=7.11e-10 abs=1.9e-10 rk=3/3 perp=3.4e-08
+N=32 wtf=3.6 T=1 r zoh rand  random                   L=0.0616587425[opti] S=nan[skip] U=0.0616587425 rel=-3.21e-10 abs=-5.9e-11 rk=3/3 perp=1.8e-08
+N=32 wtf=3.6 T=1 rv zoh const M                        L=0.139347769[opti] S=0.139345811[opti] U=0.139347769 rel=1.36e-09 abs=1.5e-10 rk=5/5 perp=8.1e+00
+N=32 wtf=3.6 T=1 rv zoh const face s=0.5 h=0.0         L=0.0475544137[opti] S=nan[skip] U=0.0475544141 rel=7.73e-09 abs=2.9e-10 rk=4/4 perp=5.3e+00
+N=32 wtf=3.6 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.0756065609[opti] S=nan[skip] U=0.0756065609 rel=-1.08e-09 abs=-6.5e-11 rk=3/3 perp=1.3e-08
+N=32 wtf=3.6 T=1 rv zoh const face s=0.9 h=0.0         L=0.00306945325[opti] S=nan[skip] U=0.0030694532 rel=-1.83e-08 abs=-4.5e-11 rk=4/4 perp=1.2e+00
+N=32 wtf=3.6 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.109313463[opti] S=nan[skip] U=0.109313463 rel=-7.04e-10 abs=-6.2e-11 rk=3/3 perp=4.9e-09
+N=32 wtf=3.6 T=1 rv zoh const face s=0.97 h=0.002      L=0.000277304765[opti] S=nan[skip] U=0.000277304718 rel=-1.70e-07 abs=-3.8e-11 rk=4/4 perp=5.0e-02
+N=32 wtf=3.6 T=1 rv zoh const face s=0.97 h=0.002 perp L=0.126813147[opti] S=nan[skip] U=0.126813147 rel=-2.35e-10 abs=-2.4e-11 rk=3/3 perp=5.0e-09
+N=32 wtf=3.6 T=1 rv zoh const face s=0.5 h=-0.05       L=0.0679822283[opti] S=nan[skip] U=0.0679822286 rel=3.87e-09 abs=2.1e-10 rk=4/4 perp=5.2e+00
+N=32 wtf=3.6 T=1 rv zoh const face s=0.5 h=-0.05 perp  L=0.100605922[opti] S=nan[skip] U=0.100605922 rel=-8.82e-11 abs=-7.1e-12 rk=3/3 perp=2.4e-08
+N=32 wtf=3.6 T=1 rv zoh const far                      L=0.114025366[opti] S=nan[skip] U=0.114025367 rel=2.78e-09 abs=2.5e-10 rk=3/3 perp=2.0e-08
+N=32 wtf=3.6 T=1 rv zoh const near-bdry out            L=0.000205730861[opti] S=nan[skip] U=0.000205730803 rel=-2.78e-07 abs=-4.6e-11 rk=3/3 perp=4.3e-08
+N=32 wtf=3.6 T=1 rv zoh const far                      L=0.846741814[opti] S=nan[skip] U=0.846741814 rel=7.97e-10 abs=5.4e-10 rk=3/3 perp=2.0e-08
+N=32 wtf=3.6 T=1 rv zoh const near-bdry out            L=0.000258558031[opti] S=nan[skip] U=0.000258558075 rel=1.72e-07 abs=3.6e-11 rk=3/3 perp=2.6e-07
+N=32 wtf=3.6 T=1 rv zoh const random                   L=0.107941795[opti] S=nan[skip] U=0.107941795 rel=-9.32e-10 abs=-8.1e-11 rk=3/3 perp=1.2e-08
+N=32 wtf=3.6 T=1 rv zoh const random                   L=0.455259272[opti] S=nan[skip] U=0.455259272 rel=9.71e-11 abs=3.5e-11 rk=3/3 perp=1.4e-08
+N=32 wtf=3.6 T=1 rv zoh rand  M                        L=0.174836564[opti] S=0.174838346[opti] U=0.174836564 rel=-4.28e-10 abs=-4.6e-11 rk=5/5 perp=8.0e+00
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=0.0         L=0.0587695266[opti] S=nan[skip] U=0.0587695265 rel=-2.18e-09 abs=-7.9e-11 rk=4/4 perp=5.1e+00
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=0.0 perp    L=0.0923036149[opti] S=nan[skip] U=0.0923036147 rel=-1.82e-09 abs=-1.0e-10 rk=3/3 perp=6.3e-09
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.9 h=0.0         L=0.00375719698[opti] S=nan[skip] U=0.00375719694 rel=-8.55e-09 abs=-2.0e-11 rk=4/4 perp=1.0e+00
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.9 h=0.0 perp    L=0.132050838[opti] S=nan[skip] U=0.132050838 rel=-1.03e-09 abs=-8.4e-11 rk=3/3 perp=-3.8e-10
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.97 h=0.002      L=0.000334197958[opti] S=nan[skip] U=0.000334197862 rel=-2.88e-07 abs=-5.9e-11 rk=4/4 perp=7.2e-02
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.97 h=0.002 perp L=0.153318042[opti] S=nan[skip] U=0.153318042 rel=-8.52e-10 abs=-8.1e-11 rk=3/3 perp=5.6e-09
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=-0.05       L=0.084706586[opti] S=nan[skip] U=0.0847065859 rel=-1.89e-09 abs=-9.9e-11 rk=4/4 perp=5.0e+00
+N=32 wtf=3.6 T=1 rv zoh rand  face s=0.5 h=-0.05 perp  L=0.123831582[opti] S=nan[skip] U=0.123831582 rel=-1.44e-09 abs=-1.1e-10 rk=3/3 perp=1.6e-08
+N=32 wtf=3.6 T=1 rv zoh rand  far                      L=0.498469074[opti] S=nan[skip] U=0.498469073 rel=-1.37e-09 abs=-4.2e-10 rk=3/3 perp=6.0e-09
+N=32 wtf=3.6 T=1 rv zoh rand  near-bdry out            L=0.000422015693[opti] S=nan[skip] U=0.000422015876 rel=4.34e-07 abs=1.1e-10 rk=3/3 perp=-3.9e-10
+N=32 wtf=3.6 T=1 rv zoh rand  far                      L=0.416341316[opti] S=nan[skip] U=0.416341316 rel=-6.57e-11 abs=-1.7e-11 rk=3/3 perp=3.5e-08
+N=32 wtf=3.6 T=1 rv zoh rand  near-bdry out            L=0.000373279191[opti] S=nan[skip] U=0.000373274511 rel=-1.25e-05 abs=-2.9e-09 rk=3/3 perp=1.0e-07
+N=32 wtf=3.6 T=1 rv zoh rand  random                   L=0.22693817[opti] S=nan[skip] U=0.22693817 rel=6.11e-10 abs=8.6e-11 rk=3/3 perp=3.2e-08
+N=32 wtf=3.6 T=1 rv zoh rand  random                   L=0.332412156[opti] S=nan[skip] U=0.332412156 rel=-5.22e-11 abs=-1.1e-11 rk=3/3 perp=1.9e-08
+N=32 wtf=1.2 T=0 r zoh const M                        L=0.00192900503[opti] S=0.00193810457[opti] U=0.00192900496 rel=-3.60e-08 abs=-2.8e-10 rk=6/4 perp=3.5e+00
+N=32 wtf=1.2 T=0 r zoh const face s=0.5 h=0.0         L=0.00082278547[opti] S=nan[skip] U=0.000822785439 rel=-3.85e-08 abs=-1.3e-10 rk=5/4 perp=2.1e-02
+N=32 wtf=1.2 T=0 r zoh const face s=0.9 h=0.0         L=4.4865759e-05[opti] S=nan[skip] U=4.48657053e-05 rel=-1.20e-06 abs=-2.1e-10 rk=5/4 perp=2.3e-02
+N=32 wtf=1.2 T=0 r zoh const face s=0.97 h=0.002      L=1.32052172e-06[opti] S=nan[skip] U=1.32042615e-06 rel=-7.24e-05 abs=-3.8e-10 rk=5/3 perp=1.3e-02
+N=32 wtf=1.2 T=0 r zoh const face s=0.5 h=-0.05       L=0.00279133901[opti] S=nan[skip] U=0.00279133899 rel=-7.19e-09 abs=-8.0e-11 rk=5/4 perp=2.2e-02
+N=32 wtf=1.2 T=0 r zoh const far                      L=0.393212417[opti] S=nan[skip] U=0.393212416 rel=-1.29e-09 abs=-2.0e-09 rk=4/3 perp=7.0e-04
+N=32 wtf=1.2 T=0 r zoh const near-bdry out            L=0.000100000013[opti] S=nan[skip] U=0.000100000012 rel=-1.48e-08 abs=-5.9e-12 rk=4/3 perp=7.0e-04
+N=32 wtf=1.2 T=0 r zoh const far                      L=0.346497956[opti] S=nan[skip] U=0.346497956 rel=1.84e-10 abs=2.6e-10 rk=4/3 perp=7.0e-04
+N=32 wtf=1.2 T=0 r zoh const near-bdry out            L=0.000100000082[opti] S=nan[skip] U=0.000100000015 rel=-6.72e-07 abs=-2.7e-10 rk=4/3 perp=7.1e-04
+N=32 wtf=1.2 T=0 r zoh const random                   L=0.0920503899[opti] S=nan[skip] U=0.0920503896 rel=-3.01e-09 abs=-1.1e-09 rk=4/3 perp=7.1e-04
+N=32 wtf=1.2 T=0 r zoh const random                   L=0.0543755659[opti] S=nan[skip] U=0.0543755664 rel=8.91e-09 abs=1.9e-09 rk=4/3 perp=7.0e-04

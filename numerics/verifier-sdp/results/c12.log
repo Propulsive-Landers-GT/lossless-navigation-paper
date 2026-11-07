@@ -1,0 +1,13 @@
+SDP Gram (inner, both): Clarabel 0.027529356 [optimal]  SCS 0.027551642 [optimal_inaccurate]
+  eig: [27.72182  4.72527  1.47479  0.07812  0.       0.       0.     ]
+SDP full Shor (vqcqp): 0.027529946 [optimal] rank 4
+variant both=False: SDP -0.000000285
+[sdp-projection starts] best 3D = 0.028232654  (60 feasible)
+[R^4] NLP at lam=0 from SDP config: f=0.027528993 viol=1.0e-11 (should equal SDP)
+[homotopy] 3D values: [0.0282327 0.0282327 0.0282327 0.0282327 0.0282327 0.0282327 0.0282327
+ 0.0282327 0.0282327 0.0282327 0.0282327 0.0282327]
+[multistart 100] best 3D = 0.028232654
+[multistart 200] best 3D = 0.028232654
+[multistart 300] best 3D = 0.028232654
+[multistart 400] best 3D = 0.028232654
+FINAL: SDP 0.027529356  best genuine 3D 0.028232654  gap 7.033e-04 (rel 2.49%)  n_feas=460 n_hit_best=57  secs=139

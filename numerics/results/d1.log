@@ -12,3 +12,6 @@ M1 S6 dent=0.0095 m at [ 0.608 -4.86 ]; conv(L) width 29.16 m; #grid inside 92, 
 MT S2 support done 12.1 h range 34.88203680742264 68.29784679332408
 MT S2 dent=0.0000 m at [-31.7    25.938]; conv(L) width 103.75 m; #grid inside 109, #dist>1e-3: 0, time 44s
 === M3w S5 quick 00:13:03
+M3w S5 support done 98.7 h range 5.504967712188071 5.552179290176115
+M3w S5 dent=1.7373 m at [0.    0.024]; conv(L) width 11.10 m; #grid inside 109, #dist>1e-3: 12, time 408s
+=== M1 S2 00:19:55

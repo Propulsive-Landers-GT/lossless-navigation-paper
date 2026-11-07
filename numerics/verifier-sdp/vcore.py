@@ -299,8 +299,9 @@ def round_from_Z(P, Zv, rng, nrand=4):
     # top-3 PCA of the b-vectors, Procrustes-aligned to X
     G = Zv[:n, :n]
     w, U = np.linalg.eigh(G)
-    B3 = U[:, -3:] * np.sqrt(np.clip(w[-3:], 0, None))
-    Uu, _, Vt = np.linalg.svd(B3.T @ X.T)
+    kk = min(3, n)
+    B3 = U[:, -kk:] * np.sqrt(np.clip(w[-kk:], 0, None))
+    Uu, _, Vt = np.linalg.svd(B3.T @ X.T, full_matrices=False)
     starts.append(B3 @ (Uu @ Vt))
     # random projections of the perpendicular part into span(e)
     Pperp = Bv - E @ X

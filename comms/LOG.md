@@ -92,3 +92,5 @@
   ground-launched hops (2.9 weighted m/s at tf=8); in-air descents cm-level. Routed case 12 to verifier-sdp + proof-sdp.
 - 00:23 verifier-sdp independently CONFIRMED case 12 (explicit feasible R⁴ chain attains SDP value; ~1070 3D runs can't).
   SDP lift LOSSY with gimbal and with variable throttle (40%); survives δ=0 fixed thrust (840 instances). proof-sdp refocused on δ=0.
+- 00:23 numerics DONE (numerics/README.md). Key practical: pad-launched hop ⇒ landing set is a ring with hole up to ~5 m
+  (M1), 1.74 m (torque-coupled TVC); in-air descent no measurable dent. B* gap ~1 cm/s. Gap law dist/|P_x| ≈ 0.31 ωtf.

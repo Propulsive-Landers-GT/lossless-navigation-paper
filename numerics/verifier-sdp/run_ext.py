@@ -21,7 +21,7 @@ def gapstr(L, U):
 
 # ------------------------------------------------------------------------------------- throttle
 def block_throttle(fout, rng):
-    for N in (4, 6, 8, 12, 16):
+    for N in (4, 6, 8, 12):
         for wtf in (0.5, 1.5, 3.0, 1e3):
             for (a1, a2) in ((0.5, 1.0), (0.8, 1.0)):
                 for readout in ("rv", "r"):
@@ -31,7 +31,7 @@ def block_throttle(fout, rng):
                     M = Pm.midpoint_M()
                     Qs = [("M_a1", M), ("0.8M", 0.8 * M), ("1.1M", 1.1 * M)]
                     S = Prob(N, 1.0, wtf, readout=readout, accel=np.full(N + 1, a2)).gamma.sum(0)
-                    for j in range(4):
+                    for j in range(3):
                         Qs.append(("rand", rng.normal(size=M.shape) * 0.5 * S[:, None]))
                     for lab, Q in Qs:
                         T = throttle(N, 1.0, wtf, Q, a1, a2, readout=readout)

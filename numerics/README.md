@@ -60,26 +60,44 @@ Tasks 3 and 4 of the brief (3DOF-LCvx attitude-rate demand statistics, 5DOF-awar
   Coning narrows the planar gaps by at most about 30%. `results/s1_slice.json`, `.png`.
 - **B\* gap** (rotation midpoint of the divebrake face, r_z ≥ 0): weighted distance 0.010/0.011/0.012 at tf = 4 (N = 20/28/40)
   and 0.0063/0.0070 at tf = 8 (N = 20/40). This is real and stable in N, but **tiny**: about 1 cm/s, roughly 0.3–0.5% of the face's |v0_lat|.
-- **Dent of L in meters** at the Pv-optimal vertical data: the lateral landing set there is a thin annulus.
-  Its inner radius is ≈ |r0_lat| of the Pv optimizer: 1.47 m (divebrake, tf=4), 2.35 m (divebrake, tf=8), 6.8 m (dive, tf=4), 27–39 m (dive, tf=8).
-  These are extreme vertical data, on the edge of vertical feasibility. The set of bad boundary data is a sliver whose thickness in the vertical functional is the Pv/Pvr gap.
-- **Realistic interior data** (`d1_landing_set.py`, quick run): r0 = (0,0,50) m, v0 = (4,0,−5) m/s, tf = 7 s, M1.
-  L is 104 m wide, and max dist(q, L) over 106 grid points q ∈ conv L is 0.016 m, at isolated points (solver noise). **No dent at realistic interior conditions.**
+- **Face scan of F^X** (`s4_faces.py`): maximize cos φ·v0z + sin φ·r0z/tf at 12 values of φ.
+  The pure-dive face under r_z ≥ 0 is pinned at **r0z = 0, v0z > 0** (ground-launched hop data).
+  Its rotation-midpoint gap is **0.65 (tf=4) and 2.94 (tf=8)** weighted m/s, the largest physically admissible gap found.
+  Upright faces and "fast-and-low" faces have gap 0.
+- **Landing set L in meters** (`s5_annulus.py`, `d1_landing_set.py`, plot `results/s5_annulus.png`). Hop data r0 = 0, v0_lat = 0, tf = 4 s, M1. L is an annulus:
 
-### 4. Tilt cap, long horizon (`s3_longcap.py`) and face search (`s4_faces.py`)
-See the BOARD for the latest numbers (requested by [adversary] / [main]).
+  | v0z [m/s] | 7.65 | 7.75 | 7.80 | 7.85 | 7.90 |
+  |---|---|---|---|---|---|
+  | r_in [m] (dent) | 0 | 0.55 | 1.73 | 3.07 | 4.99 |
+  | r_out [m] | 12.1 | 11.3 | 10.7 | 9.8 | 8.3 |
+
+  The nonconvex window v0z ∈ (7.727, 7.917] is the s1 Pvr/Pv sliver.
+  - **M3** torque-coupled TVC (|w| ≤ 0.5, quick run) at v0z = 8.0: the pad lies 1.74 m from L, which is a 5.5 m-radius annulus.
+  - **Tilt-rate-only MT**: L is convex at the same hop data (a disk of radius 10.1 m) and at the in-air case.
+- **Realistic in-air descent data**: r0 = (0,0,50) m, v0 = (4,0,−5) m/s, tf = 7 s, M1. L is 104 m wide, with max dist(q, L) ≤ 0.016 m (solver noise). **No dent.**
+- **Tilt cap, long horizon** (`s3_longcap.py`): pure dive with a 30° cap. The 3D Pvr − Pv gap is 0.69 / 0.50 / 0.106 m/s at tf = 8 / 12 / 20, against 0.70 / 0.80 / 0.82 planar.
+  At tf = 20 the Pvr optimizer cones through 359° of azimuth. So the coning fill is real but partial.
+
+### 4. Candidate convexification test: degree-2 Shor lift CSD2 from [redteam-lift] (`c1_csd2_check.py`, `c2_polish.py`, `c3_case12.py`, `c4_case12_sdp.py`)
+- Their SDP (`redteam-lift/sdp_clean.py`, unchanged) was compared with my NLP on the identical discretization (fixed thrust, tent attitude) over 22 instances.
+- **21/22 are exact** to SDP tolerance. This covers all GTPL-realistic above-ground targets, N up to 40 and ω up to 90°/s. One apparent gap turned out to be a missed NLP optimum, which polishing from the SDP rank-3 factor fixed.
+- **Case 12** (a near-dent target) is lossy:
+  - SDP 0.0275287 (Clarabel at tol 1e-10, constraint violation 9e-14; SCS agrees). The optimum is **rank 4**, with eigenvalue 0.078.
+  - The best genuine NLP over 480 restarts is 0.0282306, a 2.5% gap. Conjecture CSD2 is false in general, although the lift still works as an a-posteriori certificate.
 
 ## Files
 | file | purpose |
 |---|---|
 | models.py | M1/M1A/M3/MT NLP builders, extreme arcs, parameter sets |
 | runner.py | multistart pool (2 workers) |
-| t1_thmB.py, replot_t1.py, bounds.py | Task 1: Theorem B, gap sweeps, ball-bound sandwich |
+| t1_thmB.py, replot_t1.py, rebuild_t1_sweeps.py, bounds.py | Task 1: Theorem B, gap sweeps (results/t1_sweeps.json, rebuilt from the quick-run log), ball-bound sandwich |
 | t2_beyond.py | Task 2: long tf, tent, free tf, slices, ρ1=0, M1A, M3, rotation faces |
-| s1_slice.py, s2_followup.py | slice lemma S, B* gap, N-checks, inner radius |
+| s1_slice.py, s2_followup.py | slice lemma S, B* gap, N-checks |
+| queue_d1.sh | sequential runner for the landing-set jobs |
 | s3_longcap.py | long-horizon tilt-cap coning test |
 | s4_faces.py | scan of R_π-invariant vertical faces of F^X for the largest gap |
-| d1_landing_set.py | lateral landing set L for fixed realistic (r0,v0) |
+| d1_landing_set.py, s5_annulus.py, plot_annulus.py | lateral landing set L for fixed (r0,v0); hop-data annulus |
+| c1_csd2_check.py, c2_polish.py, c3_case12.py, c4_case12_sdp.py | test of the degree-2 Shor lift (CSD2) |
 | results/ | json/png outputs |
 
 Caveats: multistart NLP cannot certify global optima. Every reported distance is an upper bound (inner discretization),

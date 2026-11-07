@@ -8,13 +8,14 @@ def weights(N, tf, a1=5.0):
     h = tf / N
     return h, h * a1 * np.ones(N), h * a1 * (tf - (np.arange(N) + 0.5) * h)
 
-def sdp(wv, wr, N, tf, om, dl, a1=5.0):
+def sdp(wv, wr, N, tf, om, dl, a1=5.0, cvx=False):
     h, cv, cr = weights(N, tf, a1); nbi = N - 1; n = 3 + nbi + N
     G = cp.Variable((n, n), PSD=True)
     B = lambda k: 0 if k in (0, N) else 3 + (k - 1)
     D = lambda k: 3 + nbi + k
     cons = [G[i, j] == float(i == j) for i in range(3) for j in range(i, 3)]
-    cons += [G[3 + i, 3 + i] == 1 for i in range(nbi + N)]
+    cons += [G[3 + i, 3 + i] == 1 for i in range(nbi)]
+    cons += [(G[3 + nbi + k, 3 + nbi + k] <= 1) if cvx else (G[3 + nbi + k, 3 + nbi + k] == 1) for k in range(N)]
     for k in range(N):
         if N > 1: cons += [G[B(k), B(k + 1)] >= np.cos(om * h)]
         cons += [G[D(k), B(k)] >= np.cos(dl), G[D(k), B(k + 1)] >= np.cos(dl)]

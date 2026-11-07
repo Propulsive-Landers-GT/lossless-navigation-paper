@@ -26,13 +26,13 @@ def ball_bound(P, tf, tent=False):
 
 if __name__ == "__main__":
     D2R = np.pi / 180
-    res = json.load(open("results/t1_base.json"))
+    res = json.load(open("results/t1_sweeps.json"))
     rows = []
     for name, sw in res["sweeps"].items():
         for i, r in enumerate(sw):
             kw = dict(omega=r["omega_deg"] * D2R, delta=r["delta_deg"] * D2R, rho1=r["ratio"] * 1000.0)
             if name == "alpha":
-                kw["alpha"] = [0.0, 5.66e-4, 2e-3, 5e-3][i]
+                kw["alpha"] = r["alpha"]
             P = models.gtpl(**kw)
             lb = ball_bound(P, r["tf"])
             rows.append((name, r["omega_deg"], r["tf"], r["delta_deg"], r["ratio"], lb, r["dist"]))

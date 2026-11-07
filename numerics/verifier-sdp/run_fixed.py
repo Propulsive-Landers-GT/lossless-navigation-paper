@@ -36,7 +36,10 @@ def targets(P, rng, nlp):
         for l in range(P.p):
             Q[l] = [s * rho[l] * np.cos(psis[l]), s * rho[l] * np.sin(psis[l]), zmin[l] + h * S[l]]
         return Q
-    for (s, h) in [(0.5, 0.0), (0.9, 0.0), (0.5, 0.01), (0.2, 0.05), (0.97, 0.002), (0.5, -0.05)]:
+    fl = [(0.5, 0.0), (0.9, 0.0), (0.5, 0.01), (0.2, 0.05), (0.97, 0.002), (0.5, -0.05)]
+    if REDUCED:
+        fl = [(0.5, 0.0), (0.9, 0.0), (0.97, 0.002), (0.5, -0.05)]
+    for (s, h) in fl:
         psi = rng.uniform(0, 2 * np.pi)
         T.append((f"face s={s} h={h}", face_pt(s, h, [psi] * P.p)))
         if P.p == 2:   # misaligned lateral directions for r and v
@@ -52,8 +55,9 @@ def targets(P, rng, nlp):
             p = P.readout_of(g["B"])
             dirv = (Qfar - p) / max(np.linalg.norm(Qfar - p), 1e-12)
             T.append(("near-bdry out", p + 0.02 * dirv * S[:, None]))
-            T.append(("near-bdry in", p - 0.02 * dirv * S[:, None]))
-    for j in range(4):
+            if not REDUCED:
+                T.append(("near-bdry in", p - 0.02 * dirv * S[:, None]))
+    for j in range(2 if REDUCED else 4):
         Q = np.zeros((P.p, 3))
         for l in range(P.p):
             Q[l] = [rng.uniform(-1, 1) * S[l], rng.uniform(-1, 1) * S[l], rng.uniform(zmin[l] - 0.2 * S[l], S[l])]
@@ -70,7 +74,7 @@ def run_config(N, wtf, terminal, readout, scheme, accel, rng, fout, nstart=8):
     for it, (lab, Q) in enumerate(targets(P, rng, nlp)):
         t0 = time.time()
         rc = solve_sdp(P, Q, "CLARABEL", built=built)
-        if N <= 16 or it % 3 == 0:
+        if (N <= 16 and not REDUCED) or it == 0:
             rs = solve_sdp(P, Q, "SCS", built=builtS, tight=(N <= 16))
         else:
             rs = dict(val=np.nan, status="skip")
@@ -97,7 +101,21 @@ def run_config(N, wtf, terminal, readout, scheme, accel, rng, fout, nstart=8):
               flush=True)
 
 
+REDUCED = False
+
+
 if __name__ == "__main__":
+    if sys.argv[1] == "reduced":
+        REDUCED = True
+        Ns = [int(a) for a in sys.argv[2:]]
+        for N in Ns:
+            rng = np.random.default_rng(N)
+            with open(os.path.join(OUT, f"fixed_red_N{N}.jsonl"), "w") as fout:
+                for terminal, wtf in ((True, 0.4), (True, 2.0), (True, 3.6), (False, 1.2)):
+                    for readout in ("r", "rv"):
+                        for accel in ("const", "rand"):
+                            run_config(N, wtf, terminal, readout, "zoh", accel, rng, fout, nstart=6)
+        sys.exit(0)
     Ns = [int(a) for a in sys.argv[1:]]
     for N in Ns:
         rng = np.random.default_rng(N)

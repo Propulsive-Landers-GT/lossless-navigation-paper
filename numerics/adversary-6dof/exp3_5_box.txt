@@ -1,1 +1,2 @@
 free 26.44276 vlat 1.3364 rlat 1.4594 maxtilt 10.9
+lat 26.41461 vlat 0.0 rlat 0.0 maxtilt 5.16

@@ -1221,3 +1221,12 @@ N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.251900597[opti] S=0.25
 N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.186440566[opti] S=0.186440557[opti] U=0.186440566 rel=1.58e-09 abs=9.9e-10 rk=3/3 perp=3.6e-09
 N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.0686814765[opti] S=0.0686814725[opti] U=0.0686814775 rel=1.47e-08 abs=3.4e-09 rk=3/3 perp=2.5e-09
 N=16 wtf=0.4 T=1 r zoh rand  random                   L=0.17922033[opti] S=0.17922032[opti] U=0.179220331 rel=4.24e-09 abs=2.6e-09 rk=3/3 perp=6.3e-09
+N=16 wtf=0.4 T=1 rv zoh const M                        L=4.19676148e-05[opti] S=4.19673265e-05[opti] U=4.19674585e-05 rel=-3.73e-06 abs=-1.3e-10 rk=5/5 perp=2.7e-02
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0         L=1.97482114e-05[opti] S=1.97482248e-05[opti] U=1.97481492e-05 rel=-3.15e-06 abs=-5.0e-11 rk=4/3 perp=2.3e-04
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.0 perp    L=0.000413793209[opti] S=0.000413792679[opti] U=0.000413793194 rel=-3.57e-08 abs=-1.2e-11 rk=3/3 perp=1.0e-09
+N=16 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0         L=1.24067639e-06[opti] S=1.24061716e-06[opti] U=1.24061925e-06 rel=-4.61e-05 abs=-4.6e-11 rk=4/3 perp=8.9e-04
+N=16 wtf=0.4 T=1 rv zoh const face s=0.9 h=0.0 perp    L=0.00215760056[opti] S=0.00215759974[opti] U=0.0021576005 rel=-3.11e-08 abs=-5.4e-11 rk=3/3 perp=1.0e-09
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.01        L=2.81068561e-05[opti] S=2.81085914e-05[opti] U=2.81068422e-05 rel=-4.96e-07 abs=-1.1e-11 rk=3/3 perp=1.0e-07
+N=16 wtf=0.4 T=1 rv zoh const face s=0.5 h=0.01 perp   L=0.000440025208[opti] S=0.000440024465[opti] U=0.000440025083 rel=-2.86e-07 abs=-1.0e-10 rk=3/3 perp=1.1e-08
+N=16 wtf=0.4 T=1 rv zoh const face s=0.2 h=0.05        L=0.00237390006[opti] S=0.00237390005[opti] U=0.00237390006 rel=2.95e-10 abs=5.6e-13 rk=3/3 perp=4.3e-09
+N=16 wtf=0.4 T=1 rv zoh const face s=0.2 h=0.05 perp   L=0.00244196689[opti] S=0.00244196734[opti] U=0.00244196684 rel=-2.20e-08 abs=-4.3e-11 rk=3/3 perp=4.8e-08

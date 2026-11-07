@@ -10,8 +10,7 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
    boundary data affinely, and relaxes the control constraints. No relaxation of that kind can be lossless for 5DOF
    with a finite attitude rate — with a minimum throttle ρ1 > 0 (B, B*), and even with ρ1 = 0 (P0-F: the vehicle can coast while it rotates, which creates a different nonconvex kink). The obstruction: the set of feasible boundary conditions is
    nonconvex, because the vehicle cannot "chatter" its thrust direction (math/00, math/02).
-2. **The obstruction is genuine but, under ground constraints, thin for GTPL.** With r_z ≥ 0 the proven dent is
-   ≈1e-5 m (rigorous) to ≈1 cm (heuristic) for the kinematic model. Large (m/s-level) gaps exist only for
+2. **The obstruction is genuine; its size depends on the flight phase.** For pad-launched hops the landing set is a ring with a metre-scale hole (up to ~5 m; 1.7 m in the torque-coupled TVC model). For in-air descents it is thin: with r_z ≥ 0 the proven dent is ≈1e-5 m (rigorous) to ≈1 cm (heuristic) for the kinematic model. Large (m/s-level) gaps exist only for
    trajectories that would start underground (math/01, math/02 §10).
 3. **Possible in other senses:**
    - **Fixed attitude profile:** given b(t), the convex relaxation is exact (Thm C, math/04). On the real TVC vehicle,
@@ -45,7 +44,7 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | P0-F | ρ1 = 0 still gives nonconvex F_tf (coast-while-rotating; thrust on/off kink) ⇒ no 'possible iff ρ1=0' dichotomy | M1, α=0, δ<π/4, ωtf<π/2−2δ | PROVED | math/possibility-rho0.md |
 | P0-X | ρ1 = 0 with r_z ≥ 0: nonconvex for T/W ≳ 2.1 (numerics ≳1.7); GTPL T/W 1.27 open | M1 | PROVED (regime) | math/possibility-rho0.md |
 | CSD2 | Degree-2 SDP lift exact for min-landing-error | M1 | **FALSE with gimbal** (case 12: 2.5% gap, SDP value attained by an explicit feasible R⁴ chain; independently reproduced) and **FALSE with variable throttle** (gaps up to 40%). Survives only for fixed thrust + δ=0 (840 adversarial instances, no gap); proof in progress. Exact on all realistic in-air targets tested ⇒ useful certificate (rank-3 ⇒ certified global optimum) | BOARD 03:20, math/verifier-sdp-report.md, math/08 (pending) |
-| HOP | Largest physically admissible nonconvexity under r_z ≥ 0: ground-launched hop data (r0z=0, v0z>0): rotation-midpoint gaps 0.65 (tf=4) / 2.9 (tf=8) weighted m/s; in-air descents: cm-level or none | M1 | NUMERICAL | numerics/README.md (pending) |
+| HOP | Largest physically admissible nonconvexity (r_z ≥ 0): pad-launched hop (r0z=0, v0z 7.73–7.92 m/s, tf=4): reachable landing spots form a RING — hole radius 0.55→4.99 m around the pad; torque-coupled TVC: 1.74 m hole at v0z=8.0. Realistic in-air descent (50 m, −5 m/s, 4 m/s crossrange, tf=7): no dent > 0.016 m | M1, M3 (TVC) | NUMERICAL | numerics/README.md, numerics/results/s5_annulus.png |
 
 ## What breaks LCvx, in one paragraph
 LCvx works for 3DOF because the thrust direction is a free control. The relaxed (filled-in) thrust set is achievable

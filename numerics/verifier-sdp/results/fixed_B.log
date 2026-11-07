@@ -21,3 +21,6 @@ N=32 wtf=0.4 T=1 r zoh ramp  face s=0.9 h=0.0         L=2.1652778e-07[opti] S=na
 N=32 wtf=0.4 T=1 r zoh ramp  face s=0.5 h=0.01        L=7.11316815e-06[opti] S=7.10821229e-06[opti] U=7.11314728e-06 rel=-2.93e-06 abs=-6.2e-11 rk=3/3 perp=1.2e-06
 N=32 wtf=0.4 T=1 r zoh ramp  face s=0.2 h=0.05        L=0.000633580499[opti] S=nan[skip] U=0.000633580478 rel=-3.22e-08 abs=-6.1e-11 rk=3/3 perp=1.6e-07
 N=32 wtf=0.4 T=1 r zoh ramp  face s=0.97 h=0.002      L=6.95730015e-07[opti] S=nan[skip] U=6.95685421e-07 rel=-6.41e-05 abs=-1.3e-10 rk=3/3 perp=1.4e-06
+N=32 wtf=0.4 T=1 r zoh ramp  face s=0.5 h=-0.05       L=0.000963495952[opti] S=0.000963474295[opti] U=0.000963495867 rel=-8.86e-08 abs=-2.5e-10 rk=4/4 perp=6.4e-02
+N=32 wtf=0.4 T=1 r zoh ramp  far                      L=0.662768932[opti] S=nan[skip] U=0.662768927 rel=-7.49e-09 abs=-1.5e-08 rk=3/3 perp=1.4e-08
+N=32 wtf=0.4 T=1 r zoh ramp  near-bdry out            L=0.000134629326[opti] S=nan[skip] U=0.000134629551 rel=1.67e-06 abs=6.7e-10 rk=3/3 perp=2.4e-07
