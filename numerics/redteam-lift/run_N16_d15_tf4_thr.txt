@@ -1,0 +1,8 @@
+N=16 zmin(M_z)=14.36934 c(P lateral)=12.60157 a1*tf=20.0000
+E axis-lowest  n=3 throttle=False:  z_c = 17.420753997716623
+E axis-lowest  n=4 throttle=False:  z_c = 17.420753997553387
+E axis-lowest  n=5 throttle=False:  z_c = 17.420753996711607
+E axis-lowest  n=3 throttle=True:  z_c = 17.420753823637078
+E inner-radius at z=15.1322: n=3 rho_in=7.38320  n=4 rho_in=7.38318  n=3+throttle rho_in=7.38320
+E inner-radius at z=15.8950: n=3 rho_in=4.94553  n=4 rho_in=4.94553  n=3+throttle rho_in=4.94553
+E inner-radius at z=16.6579: n=3 rho_in=2.87769  n=4 rho_in=2.87769  n=3+throttle rho_in=2.87769

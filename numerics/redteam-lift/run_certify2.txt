@@ -1,0 +1,5 @@
+CERT2 cfg0 rand0 N=16: SDP lower=7.77292581e-02  genuine feasible upper=9.33044758e-02 (contraction eps=0.003)  relgap=1.7e-01
+CERT2 cfg0 rand2 N=16: SDP lower=1.74925477e+00  genuine feasible upper=1.76278866e+00 (contraction eps=0.001)  relgap=7.7e-03
+CERT2 cfg1 rand0 N=16: SDP lower=5.79392324e-01  genuine feasible upper=5.84448827e-01 (contraction eps=0.001)  relgap=8.7e-03
+CERT2 cfg1 rand1 N=16: SDP lower=1.90035135e-02  genuine feasible upper=2.13218262e-02 (contraction eps=0.001)  relgap=1.1e-01
+CERT2 cfg1 rand2 N=16: SDP lower=7.98811100e-02  genuine feasible upper=2.67841019e-01 (contraction eps=0.01)  relgap=7.0e-01

@@ -1,0 +1,25 @@
+Vmin=4.815125 lat=0.13952
+cone0.5 True 4.893566
+cone0.5 True 4.893566
+cone1.0 True 4.893566
+cone1.0 True 4.893566
+cone2.0 True 4.893566
+cone2.0 True 4.893566
+cone3.0 True 4.893566
+cone3.0 True 4.893566
+cone5.0 True 4.893566
+cone5.0 True 4.893566
+lobe2 True 4.893566
+lobe2 True 4.893566
+lobe2q True 4.893566
+lobe2q True 4.893566
+perp True 4.893566
+perp True 4.893566
+from_min True 4.893565887509664
+rand True 4.893565887509513
+rand True 4.893565887510031
+rand True 4.893565887509812
+rand True 4.89356588750967
+rand True 4.893565887509752
+rand True 4.893565887509643
+RESULT tf=1.0 N=60 term=True gim=box rate=True: Vmin=4.815125  best V0(lat=0)=4.893566  gap=7.8441e-02  n_ok=23/23

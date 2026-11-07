@@ -1,0 +1,17 @@
+N=16 tf=4.0 theta_M  SDP=5.3601802e+01[optimal] genuine=1.5852170e+02 viol=0e+00 relgap=+6.6e-01 eig4/eig1=4e-02
+N=16 tf=4.0 mix0     SDP=1.7017837e-01[optimal] genuine=1.7017706e-01 viol=3e-15 relgap=-7.7e-06 eig4/eig1=3e-04
+N=16 tf=4.0 rnd1     SDP=3.1935330e+01[optimal] genuine=3.1935329e+01 viol=5e-14 relgap=-2.4e-08 eig4/eig1=6e-04
+N=16 tf=4.0 mix2     SDP=-8.2008046e-07[optimal] genuine=1.7410407e-31 viol=2e-16 relgap=+8.2e+02 eig4/eig1=3e-03
+N=16 tf=4.0 rnd3     SDP=2.1121281e+02[optimal] genuine=2.1121281e+02 viol=5e-12 relgap=-5.2e-09 eig4/eig1=3e-05
+N=16 tf=4.0 mix4     SDP=2.4439887e+00[optimal] genuine=2.4439868e+00 viol=3e-14 relgap=-7.9e-07 eig4/eig1=4e-02
+N=16 tf=4.0 rnd5     SDP=8.5552937e+01[optimal] genuine=8.5552937e+01 viol=3e-11 relgap=-7.5e-09 eig4/eig1=4e-10
+N=16 tf=4.0 mix6     SDP=3.2799894e+00[optimal] genuine=3.2799876e+00 viol=2e-13 relgap=-5.3e-07 eig4/eig1=4e-04
+N=16 tf=4.0 rnd7     SDP=9.0910267e+00[optimal] genuine=9.0910265e+00 viol=1e-14 relgap=-2.7e-08 eig4/eig1=6e-04
+N=16 tf=4.0 mix8     SDP=-1.2345788e-06[optimal] genuine=2.6032410e-29 viol=2e-16 relgap=+1.2e+03 eig4/eig1=3e-04
+N=16 tf=4.0 rnd9     SDP=1.9626820e+02[optimal] genuine=1.9626820e+02 viol=2e-13 relgap=-2.3e-09 eig4/eig1=2e-10
+N=16 tf=4.0 mix10    SDP=4.1467873e-03[optimal] genuine=4.1448360e-03 viol=7e-16 relgap=-4.7e-04 eig4/eig1=1e-04
+N=16 tf=4.0 rnd11    SDP=6.5819321e+01[optimal] genuine=6.5819320e+01 viol=6e-12 relgap=-2.5e-08 eig4/eig1=5e-10
+N=16 tf=4.0 mix12    SDP=1.3183827e+00[optimal] genuine=1.3183813e+00 viol=2e-15 relgap=-1.0e-06 eig4/eig1=4e-02
+N=16 tf=4.0 rnd13    SDP=6.0191780e+01[optimal] genuine=6.0191777e+01 viol=2e-13 relgap=-6.0e-08 eig4/eig1=2e-09
+N=16 tf=4.0 mix14    SDP=2.4032691e+01[optimal] genuine=2.4032690e+01 viol=7e-12 relgap=-2.5e-08 eig4/eig1=4e-02
+SUMMARY N=16 tf=4.0 om=30 dl=15: worst relgap=1.2e+03 over 16 targets

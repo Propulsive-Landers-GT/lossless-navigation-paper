@@ -1,0 +1,4 @@
+cfg0 rand0 N=16: SDP=7.77292581e-02 eig4=1.11e-02 | it0: eig4=3.19e-07 obj=7.74986673e-02 | it1: eig4=3.84e-08 obj=7.77186409e-02
+cfg1 rand1 N=16: SDP=1.90035135e-02 eig4=6.81e-03 | it0: eig4=8.04e-07 obj=1.89810085e-02 | it1: eig4=9.72e-08 obj=1.90027284e-02
+EXTRACT cfg0 rand0: SDP=7.77292581e-02 genuine-3D cost=7.77391195e-02 min slack rate=1.5e-07 gimbal=3.7e-07 |proj b|-1 max=9.9e-09 b0err=1.4e-04 bNerr=1.1e-04
+EXTRACT cfg1 rand1: SDP=1.90035135e-02 genuine-3D cost=1.89896392e-02 min slack rate=1.9e-06 gimbal=4.3e-05 |proj b|-1 max=2.1e-08 b0err=2.2e-04 bNerr=2.0e-04

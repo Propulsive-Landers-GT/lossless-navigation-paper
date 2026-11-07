@@ -1,0 +1,2 @@
+tent=False tf=3.269s  a1/g=0.510  r0z=-41.650 m  max r_z on [0,tf)=0.000 m  v0z=22.776  r0x=23.260 v0x=-12.124
+tent=True tf=6.538s  a1/g=0.510  r0z=-148.269 m  max r_z on [0,tf)=0.000 m  v0z=45.439  r0x=79.750 v0x=-24.341

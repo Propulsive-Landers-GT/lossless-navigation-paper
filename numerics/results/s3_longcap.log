@@ -1,0 +1,5 @@
+[   106s] tf=12.0 3d     Pvr val=91.6205 lat_v=9.851241687483435e-13 lat_r=7.430985693080554e-12 nok=31 n@best=8 diag={'tilt_max': 30.000001143524784, 'frac_on_cap': 0.46938775510204084, 'az_sweep_on_cap_deg': 237.62606413385362, 'az_total_var_deg': 452.1566103775147, 'T_mean': 667.7767519653783}
+[   136s] tf=12.0 3d     Pv  val=91.1215 lat_v=2.108918482301074e-13 lat_r=39.021311370938434 nok=31 n@best=9 diag={'tilt_max': 30.0000011451366, 'frac_on_cap': 0.46938775510204084, 'az_sweep_on_cap_deg': 247.4364796962866, 'az_total_var_deg': 295.5239373690461, 'T_mean': 655.6197419676854}
+[   144s] tf=12.0 planar Pv  val=91.7086 lat_v=7.646938637861922e-13 lat_r=84.88070891611686 nok=16 n@best=4 diag={}
+[   154s] tf=12.0 planar Pvr val=92.5062 lat_v=6.661338147750939e-16 lat_r=9.748452045599265e-13 nok=16 n@best=1 diag={}
+[   158s] tf=12.0 planar U   val=91.0501 lat_v=24.256681904799883 lat_r=197.25110361071265 nok=16 n@best=15 diag={}

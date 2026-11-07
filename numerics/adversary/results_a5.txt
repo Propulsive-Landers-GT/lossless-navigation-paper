@@ -1,0 +1,10 @@
+tf=   3 s*=   3 cap=0: Pv=0.460495 [random, planarity 0.32, |offset| 0.9778] Pvr=0.352348 [random, planarity 0.52]  gap=1.08e-01 rel=2.35e-01
+tf=   3 s*=   3 cap=0.6: Pv=0.460495 [random, planarity 0.32, |offset| 0.9778] Pvr=0.352348 [coning, planarity 0.52]  gap=1.08e-01 rel=2.35e-01
+tf=   8 s*=   8 cap=0: Pv=9.916809 [random, planarity 0.14, |offset| 13.9833] Pvr=6.043318 [planar, planarity 0.42]  gap=3.87e+00 rel=3.91e-01
+tf=   8 s*=   8 cap=0.6: Pv=8.716990 [coning, planarity 0.69, |offset| 9.3706] Pvr=6.016448 [planar, planarity 0.52]  gap=2.70e+00 rel=3.10e-01
+tf=  20 s*=  20 cap=0: Pv=260.079670 [coning, planarity 0.06, |offset| 186.5732] Pvr=131.934848 [coning, planarity 0.31]  gap=1.28e+02 rel=4.93e-01
+tf=  20 s*=  20 cap=0.6: Pv=69.890000 [planar, planarity 0.62, |offset| 62.7493] Pvr=69.890000 [random, planarity 0.95]  gap=-2.07e-08 rel=-2.96e-10
+tf=   8 s*= 0.5 cap=0: Pv=0.006743 [random, planarity 0.40, |offset| 0.1605] Pvr=0.006405 [random, planarity 0.28]  gap=3.38e-04 rel=5.01e-02
+tf=   8 s*= 0.5 cap=0.6: Pv=0.006743 [random, planarity 0.40, |offset| 0.1605] Pvr=0.006405 [random, planarity 0.28]  gap=3.38e-04 rel=5.01e-02
+tf=   8 s*= 1.5 cap=0: Pv=0.091363 [random, planarity 0.66, |offset| 0.9057] Pvr=0.078803 [random, planarity 0.37]  gap=1.26e-02 rel=1.37e-01
+tf=   8 s*= 1.5 cap=0.6: Pv=0.091363 [random, planarity 0.66, |offset| 0.9057] Pvr=0.078803 [random, planarity 0.37]  gap=1.26e-02 rel=1.37e-01

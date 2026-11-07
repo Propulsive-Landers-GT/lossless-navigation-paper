@@ -1,0 +1,6 @@
+SLSQP cfg0 rand0 N=16: SDP lower=7.77292581e-02  genuine upper=7.80469196e-02 viol=6.7e-16  relgap=4.1e-03  [Optimization terminated successfully]
+SLSQP cfg0 rand2 N=16: SDP lower=1.74925477e+00  genuine upper=1.74946640e+00 viol=1.8e-13  relgap=1.2e-04  [Positive directional derivative for linesearch]
+SLSQP cfg0 rand3 N=16: SDP lower=4.83308270e+00  genuine upper=4.83320613e+00 viol=3.2e-13  relgap=2.6e-05  [Positive directional derivative for linesearch]
+SLSQP cfg1 rand0 N=16: SDP lower=5.79392324e-01  genuine upper=5.79431805e-01 viol=5.6e-16  relgap=6.8e-05  [Optimization terminated successfully]
+SLSQP cfg1 rand1 N=16: SDP lower=1.90035135e-02  genuine upper=1.90910446e-02 viol=3.3e-16  relgap=4.6e-03  [Optimization terminated successfully]
+SLSQP cfg1 rand2 N=16: SDP lower=7.98811100e-02  genuine upper=8.01637765e-02 viol=1.3e-15  relgap=3.5e-03  [Positive directional derivative for linesearch]

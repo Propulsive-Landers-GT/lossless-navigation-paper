@@ -1,0 +1,17 @@
+/Users/aneesh/Documents/GitHub/GTPL/lcvx-5dof-research/numerics/redteam-lift/csd2.py:28: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  pr.solve(solver=cp.CLARABEL)
+label | SDP C-SD2 q(w) | uniform Shor q1(w) | NLP dist^2(w,R)
+theta_M                      | 8.916e+00 | 1.629e-08 | 8.916e+00
+P_u                          | -2.650e-08 | 2.109e-08 | 2.721e-10
+z=15.895 rho=0.00*rho_in     | 2.236e+00 | 6.168e-20 | 2.236e+00
+z=15.895 rho=0.50*rho_in     | 7.249e-01 | 3.766e-22 | 7.250e-01
+z=15.895 rho=0.90*rho_in     | 3.136e-02 | 1.354e-20 | 3.141e-02
+z=15.895 rho=0.98*rho_in     | 1.221e-03 | 4.878e-20 | 1.244e-03
+z=15.895 rho=1.02*rho_in     | -7.081e-08 | 6.932e-20 | 3.907e-17
+z=15.895 rho=1.20*rho_in     | -1.532e-07 | 1.736e-20 | 4.044e-19
+z=16.6579 rho=0.00*rho_in    | 5.598e-01 | 1.305e-23 | 5.598e-01
+z=16.6579 rho=0.50*rho_in    | 1.743e-01 | 7.526e-21 | 1.743e-01
+z=16.6579 rho=0.90*rho_in    | 7.990e-03 | 1.976e-21 | 8.043e-03
+z=16.6579 rho=0.98*rho_in    | 3.239e-04 | 3.582e-21 | 3.296e-04
+z=16.6579 rho=1.02*rho_in    | -3.405e-08 | 1.681e-21 | 1.094e-16
+z=16.6579 rho=1.20*rho_in    | 8.485e-08 | 7.600e-17 | 1.026e-18

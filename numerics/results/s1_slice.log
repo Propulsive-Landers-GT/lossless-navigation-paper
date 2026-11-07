@@ -1,0 +1,70 @@
+[     9s] divebrake none   tf=4 3d     Pv  val=-54.8687 lat_v=0.000 lat_r=1.466 nok=23 n@best=4
+[    12s] divebrake none   tf=8 3d     Pv  val=-315.4502 lat_v=0.000 lat_r=2.387 nok=24 n@best=9
+[    17s] divebrake 30deg  tf=4 3d     Pv  val=-54.8687 lat_v=0.000 lat_r=1.466 nok=24 n@best=10
+[    24s] divebrake 30deg  tf=8 3d     Pv  val=-315.4502 lat_v=0.000 lat_r=2.387 nok=23 n@best=7
+[    25s] divebrake none   tf=4 3d     Pvr val=-54.8532 lat_v=0.000 lat_r=0.000 nok=23 n@best=4
+[    35s] divebrake 30deg  tf=4 3d     Pvr val=-54.8532 lat_v=0.000 lat_r=0.000 nok=24 n@best=7
+[    37s] divebrake none   tf=8 3d     Pvr val=-315.4414 lat_v=0.000 lat_r=0.000 nok=24 n@best=4
+[    48s] divebrake none   tf=4 3d     U   val=-54.8983 lat_v=2.277 lat_r=7.707 nok=24 n@best=5
+[    56s] divebrake 30deg  tf=8 3d     Pvr val=-315.4414 lat_v=0.000 lat_r=0.000 nok=22 n@best=6
+[    63s] divebrake none   tf=8 3d     U   val=-315.4997 lat_v=3.069 lat_r=22.413 nok=23 n@best=4
+[    64s] divebrake 30deg  tf=4 3d     U   val=-54.8983 lat_v=2.277 lat_r=7.708 nok=24 n@best=6
+[    65s] divebrake none   tf=4 planar Pv  val=-54.8523 lat_v=0.000 lat_r=1.088 nok=16 n@best=13
+[    66s] divebrake none   tf=8 planar Pv  val=-315.4309 lat_v=0.000 lat_r=2.269 nok=16 n@best=6
+[    67s] divebrake 30deg  tf=4 planar Pv  val=-54.8542 lat_v=0.000 lat_r=1.711 nok=16 n@best=1
+[    67s] divebrake 30deg  tf=8 planar Pv  val=-315.4309 lat_v=0.000 lat_r=2.269 nok=16 n@best=7
+[    68s] divebrake none   tf=4 planar Pvr val=-54.8313 lat_v=0.000 lat_r=0.000 nok=16 n@best=1
+[    69s] divebrake none   tf=8 planar Pvr val=-315.4170 lat_v=0.000 lat_r=0.000 nok=16 n@best=1
+[    69s] divebrake 30deg  tf=4 planar Pvr val=-54.8277 lat_v=0.000 lat_r=0.000 nok=16 n@best=13
+[    70s] divebrake 30deg  tf=8 planar Pvr val=-315.4117 lat_v=0.000 lat_r=0.000 nok=16 n@best=14
+[    70s] divebrake none   tf=4 planar U   val=-54.8983 lat_v=2.277 lat_r=7.707 nok=16 n@best=15
+[    71s] divebrake none   tf=8 planar U   val=-315.4997 lat_v=3.114 lat_r=22.762 nok=16 n@best=15
+[    71s] divebrake 30deg  tf=4 planar U   val=-54.8983 lat_v=2.277 lat_r=7.707 nok=16 n@best=15
+[    72s] divebrake 30deg  tf=8 planar U   val=-315.4997 lat_v=3.114 lat_r=22.762 nok=16 n@best=14
+[    80s] divebrake 30deg  tf=8 3d     U   val=-315.4997 lat_v=3.071 lat_r=22.425 nok=24 n@best=7
+[    85s] dive      none   tf=4 3d     Pv  val=31.3098 lat_v=0.000 lat_r=6.776 nok=22 n@best=2
+[    99s] dive      none   tf=8 3d     Pv  val=61.1631 lat_v=0.000 lat_r=38.504 nok=24 n@best=10
+[   102s] dive      30deg  tf=4 3d     Pv  val=31.3098 lat_v=0.000 lat_r=6.776 nok=24 n@best=10
+[   123s] dive      none   tf=4 3d     Pvr val=31.4997 lat_v=0.000 lat_r=0.000 nok=24 n@best=8
+[   138s] dive      30deg  tf=8 3d     Pv  val=61.4580 lat_v=0.000 lat_r=26.834 nok=23 n@best=9
+[   154s] dive      none   tf=8 3d     Pvr val=62.1465 lat_v=0.000 lat_r=0.000 nok=24 n@best=10
+[   157s] dive      30deg  tf=4 3d     Pvr val=31.4997 lat_v=0.000 lat_r=0.000 nok=24 n@best=4
+[   175s] dive      30deg  tf=8 3d     Pvr val=62.1465 lat_v=0.000 lat_r=0.000 nok=23 n@best=10
+[   176s] dive      none   tf=4 3d     U   val=31.0242 lat_v=8.493 lat_r=20.803 nok=24 n@best=1
+[   189s] dive      30deg  tf=4 3d     U   val=31.0665 lat_v=7.049 lat_r=18.400 nok=23 n@best=2
+[   195s] dive      none   tf=8 3d     U   val=59.8800 lat_v=22.910 lat_r=112.742 nok=24 n@best=1
+[   197s] dive      none   tf=4 planar Pv  val=31.3586 lat_v=0.000 lat_r=8.349 nok=16 n@best=1
+[   198s] dive      none   tf=8 planar Pv  val=61.2742 lat_v=0.000 lat_r=45.799 nok=16 n@best=8
+[   200s] dive      30deg  tf=4 planar Pv  val=31.3563 lat_v=0.000 lat_r=7.057 nok=16 n@best=1
+[   201s] dive      30deg  tf=8 planar Pv  val=61.7541 lat_v=0.000 lat_r=36.119 nok=16 n@best=4
+[   202s] dive      none   tf=4 planar Pvr val=31.6333 lat_v=0.000 lat_r=0.000 nok=16 n@best=1
+[   204s] dive      none   tf=8 planar Pvr val=62.3902 lat_v=0.000 lat_r=0.000 nok=16 n@best=1
+[   205s] dive      30deg  tf=4 planar Pvr val=31.6235 lat_v=0.000 lat_r=0.000 nok=16 n@best=1
+[   207s] dive      30deg  tf=8 planar Pvr val=62.4574 lat_v=0.000 lat_r=0.000 nok=16 n@best=2
+[   207s] dive      none   tf=4 planar U   val=31.0242 lat_v=8.493 lat_r=20.803 nok=16 n@best=15
+[   208s] dive      none   tf=8 planar U   val=59.8800 lat_v=22.917 lat_r=112.799 nok=16 n@best=15
+[   208s] dive      30deg  tf=4 planar U   val=31.0665 lat_v=7.049 lat_r=18.400 nok=16 n@best=16
+[   209s] dive      30deg  tf=8 planar U   val=61.2347 lat_v=17.010 lat_r=88.129 nok=16 n@best=15
+[   211s] dive      30deg  tf=8 3d     U   val=61.2347 lat_v=16.961 lat_r=87.749 nok=24 n@best=4
+B* gap cap=none tf=4.0: weighted dist of rotation midpoint = 0.0114 (face lat_v=2.277, lat_r=7.707)
+B* gap cap=none tf=8.0: weighted dist of rotation midpoint = 0.0185 (face lat_v=3.069, lat_r=22.413)
+B* gap cap=30deg tf=4.0: weighted dist of rotation midpoint = 0.0114 (face lat_v=2.277, lat_r=7.708)
+B* gap cap=30deg tf=8.0: weighted dist of rotation midpoint = 0.0071 (face lat_v=3.071, lat_r=22.425)
+obj       cap      tf  w*tf ctrl           U  latU_v  latU_r        Pv       Pvr   Pvr-Pv  Pvr n_ok/n@best
+divebrake none      4  1.60 3d       -54.898   2.277   7.707   -54.869   -54.853   0.0156  23/4
+divebrake none      4  1.60 planar   -54.898   2.277   7.707   -54.852   -54.831   0.0210  16/1
+divebrake none      8  3.20 3d      -315.500   3.069  22.413  -315.450  -315.441   0.0088  24/4
+divebrake none      8  3.20 planar  -315.500   3.114  22.762  -315.431  -315.417   0.0139  16/1
+divebrake 30deg     4  1.60 3d       -54.898   2.277   7.708   -54.869   -54.853   0.0156  24/7
+divebrake 30deg     4  1.60 planar   -54.898   2.277   7.707   -54.854   -54.828   0.0264  16/13
+divebrake 30deg     8  3.20 3d      -315.500   3.071  22.425  -315.450  -315.441   0.0088  22/6
+divebrake 30deg     8  3.20 planar  -315.500   3.114  22.762  -315.431  -315.412   0.0193  16/14
+dive      none      4  1.60 3d        31.024   8.493  20.803    31.310    31.500   0.1899  24/8
+dive      none      4  1.60 planar    31.024   8.493  20.803    31.359    31.633   0.2746  16/1
+dive      none      8  3.20 3d        59.880  22.910 112.742    61.163    62.146   0.9834  24/10
+dive      none      8  3.20 planar    59.880  22.917 112.799    61.274    62.390   1.1160  16/1
+dive      30deg     4  1.60 3d        31.066   7.049  18.400    31.310    31.500   0.1899  24/4
+dive      30deg     4  1.60 planar    31.066   7.049  18.400    31.356    31.623   0.2672  16/1
+dive      30deg     8  3.20 3d        61.235  16.961  87.749    61.458    62.146   0.6884  23/10
+dive      30deg     8  3.20 planar    61.235  17.010  88.129    61.754    62.457   0.7033  16/2
+done 250 s

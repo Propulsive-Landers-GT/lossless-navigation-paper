@@ -1,0 +1,6 @@
+CERT3 cfg0 rand0 N=16: SDP lower=7.77292581e-02  genuine upper=9.33044758e-02  relgap=1.7e-01
+CERT3 cfg0 rand2 N=16: SDP lower=1.74925477e+00  genuine upper=1.76278866e+00  relgap=7.7e-03
+  print(f"CERT3 cfg{ci} {lab} N={N}: SDP lower={v:.8e}  genuine upper={up:.8e}  relgap={(up - v) / up:.1e}", flush=True)
+CERT3 cfg1 rand0 N=16: SDP lower=5.79392324e-01  genuine upper=inf  relgap=nan
+CERT3 cfg1 rand1 N=16: SDP lower=1.90035135e-02  genuine upper=2.10476540e-02  relgap=9.7e-02
+CERT3 cfg1 rand2 N=16: SDP lower=7.98811100e-02  genuine upper=2.67841019e-01  relgap=7.0e-01

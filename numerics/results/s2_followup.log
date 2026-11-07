@@ -1,0 +1,24 @@
+[   36s] r_in divebrake cap=none  tf=4.0 N=40: r_in=0.7489080744641697 m (Pv optimizer |r0_lat|=1.47 m)
+[   47s] r_in divebrake cap=none  tf=4.0 N=28: r_in=1.465707396902332 m (Pv optimizer |r0_lat|=1.47 m)
+[   72s] r_in divebrake cap=none  tf=8.0 N=40: r_in=None m (Pv optimizer |r0_lat|=2.39 m)
+[   80s] r_in divebrake cap=none  tf=8.0 N=32: r_in=2.348991251941251 m (Pv optimizer |r0_lat|=2.39 m)
+[  124s] r_in divebrake cap=30deg tf=4.0 N=40: r_in=0.7489153424316926 m (Pv optimizer |r0_lat|=1.47 m)
+[  126s] r_in divebrake cap=30deg tf=4.0 N=28: r_in=1.4670546872193855 m (Pv optimizer |r0_lat|=1.47 m)
+[  154s] r_in divebrake cap=30deg tf=8.0 N=40: r_in=None m (Pv optimizer |r0_lat|=2.39 m)
+[  181s] r_in divebrake cap=30deg tf=8.0 N=32: r_in=2.348749249631481 m (Pv optimizer |r0_lat|=2.39 m)
+[  234s] r_in dive      cap=none  tf=4.0 N=28: r_in=None m (Pv optimizer |r0_lat|=6.78 m)
+[  271s] r_in dive      cap=none  tf=4.0 N=40: r_in=5.226451583987802 m (Pv optimizer |r0_lat|=6.78 m)
+[  327s] r_in dive      cap=none  tf=8.0 N=32: r_in=None m (Pv optimizer |r0_lat|=38.50 m)
+[  369s] r_in dive      cap=none  tf=8.0 N=40: r_in=31.606873750600055 m (Pv optimizer |r0_lat|=38.50 m)
+[  402s] r_in dive      cap=30deg tf=4.0 N=28: r_in=None m (Pv optimizer |r0_lat|=6.78 m)
+[  463s] r_in dive      cap=30deg tf=4.0 N=40: r_in=5.226451528119603 m (Pv optimizer |r0_lat|=6.78 m)
+[  529s] r_in dive      cap=30deg tf=8.0 N=32: r_in=None m (Pv optimizer |r0_lat|=26.83 m)
+[  543s] face tf=4.0 N=20: val=-54.8889 lat_v=2.178
+[  589s] face tf=4.0 N=40: val=-54.9057 lat_v=2.283
+[  600s] face tf=8.0 N=20: val=-315.4363 lat_v=3.247
+[  612s] r_in dive      cap=30deg tf=8.0 N=40: r_in=22.27401794659859 m (Pv optimizer |r0_lat|=26.83 m)
+[  635s] face tf=8.0 N=40: val=-315.5114 lat_v=3.003
+B* gap tf=4.0 N=20: 0.0104
+B* gap tf=8.0 N=20: 0.0063
+B* gap tf=4.0 N=40: 0.0120
+B* gap tf=8.0 N=40: 0.0070

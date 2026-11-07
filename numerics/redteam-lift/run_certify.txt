@@ -1,0 +1,3 @@
+CERT cfg0 rand0 N=16: SDP(lower)=7.77292581e-02  rank-red eig4=5.4e-08  genuine polished(upper)=7.77391195e-02 viol=3.6e-05 [Restoration_Failed]  relgap=1.3e-04
+CERT cfg1 rand1 N=16: SDP(lower)=1.90035135e-02  rank-red eig4=6.5e-08  genuine polished(upper)=1.90907429e-02 viol=1.0e-08 [Solve_Succeeded]  relgap=4.6e-03
+CERT cfg1 rand2 N=16: SDP(lower)=7.98811100e-02  rank-red eig4=8.5e-08  genuine polished(upper)=7.98670133e-02 viol=1.8e-05 [Restoration_Failed]  relgap=-1.8e-04

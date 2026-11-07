@@ -1,0 +1,6 @@
+CLEAN N=3 j=5: ((np.float64(0.4419870595086195), 'optimal'), (np.float64(0.4419864609819797), 'optimal'))
+CLEAN N=3 j=9: ((np.float64(1.3385610863770125), 'optimal'), (np.float64(1.3385608564049107), 'optimal'))
+CLEAN N=4 j=3: ((np.float64(0.11186185861265585), 'optimal'), (np.float64(0.11186056407950673), 'optimal'))
+CLEAN N=4 j=5: ((np.float64(0.34755301096765834), 'optimal'), (np.float64(0.3475542451910769), 'optimal'))
+CLEAN cfg0 rand0 N=16: ((np.float64(0.07804717163594432), 'optimal'), (np.float64(0.07804658619352267), 'optimal_inaccurate'))
+CLEAN cfg1 rand1 N=16: ((np.float64(0.01909177347607738), 'optimal'), (np.float64(0.019090918069252893), 'optimal'))
