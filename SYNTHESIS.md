@@ -69,7 +69,18 @@ so it cannot switch. With a minimum throttle, "wasting" vertical impulse require
 single tilt direction. The average of a left-tilting and a right-tilting maneuver is therefore not flyable, yet any
 convex program that contains both must contain their average.
 
-## Practical implications for GTPL (preliminary; practical phase deferred)
+## Practical implications for GTPL (solver-v2; interim, final reruns in progress)
+- **Recommended planner B (attitude-aware convex guidance):** 3DOF warm start → SCvx steps on the body angular-
+  acceleration profile, each followed by the EXACT convex inner SOCP given attitude (C-6). Every accepted iterate is
+  flyable; certificate = fine-grid physical limits + open-loop 6DOF replay. Open loop: within 0.04% of the best
+  nonconvex 6DOF optimum (IPOPT multistart), 8/8 certified.
+- **Closed loop** (6DOF, centre-of-percussion LQR tracker, 1 Hz replans, wind/noise/Isp error, 40 in-air runs;
+  success = |v|≤1 m/s, ≤1 m, ≤5°): current flight LCvx (A) 28%, 3DOF + rate limits (C) 95%, **B 100%** (median 0.20 m/s, 4 cm).
+- **Pad hops:** the 3DOF relaxation accepts landings (v0z ≥ 6.5 m/s at tf=4) for which no flyable plan exists, the
+  nonconvexity showing up in practice. Documented failure mode of B: one stall where IPOPT finds a plan.
+- Details: solver/README.md, solver/RESULTS.md.
+
+### Earlier notes
 - The current 3DOF guidance asks for thrust-direction changes ~10³× faster than the vehicle can rotate, and is not
   relaxation-tight on min-thrust arcs (context/vehicle.md).
 - The theory points to: an attitude-profile outer loop + an exactly convex inner problem (C-6/C-U), with SDP-lift

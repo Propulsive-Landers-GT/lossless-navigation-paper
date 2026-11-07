@@ -120,3 +120,4 @@
 - 01:57 verifier-sdp correction: the 12 'non-symmetric C_yw' cases were a script normalization artifact (C_yw≡0 on-axis); index identity 0 failures on 346. Correction sent to verify-sdp2.
 - 02:02 verify-sdp2 DONE: 0 BROKEN in math/09. T5 free-b(tf) sharper (exact iff k≤p₀). C_yw symmetric at every KKT (rotation invariance) — artifact confirmed. Fixes listed in report §9.
 - 02:09 verify-tvc DONE: pure-TVC tf=1 certificate CERTIFIED in exact arithmetic after repairs W1 (witness was chattering → explicit bang-bang, needs unlimited gimbal rate) and W2 (free-roll gyro weight). Rows TVC-1,1q,B,L,1R CONFIRMED.
+- 02:10 solver interim: planner B within 0.04% of IPOPT 6DOF, 8/8 certified; closed loop A 28% / C 95% / B 100%; pad-hop: 3DOF accepts infeasible landings. adversary-6dof: TVC-1 v2 SURVIVES. proof-tvc: tilt-capped class route for tf≥3 s, rate-limited gimbal next.
