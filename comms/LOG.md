@@ -90,3 +90,5 @@
 - 00:16 numerics: CSD2 likely BROKEN (case 12 near dent: SDP rank 4, 2.5% below 480-restart NLP); exact on 21/22 incl. all
   realistic in-air targets. Lemma S numerically holds in 3D w/ coning (partial fill at long tf). Largest admissible nonconvexity:
   ground-launched hops (2.9 weighted m/s at tf=8); in-air descents cm-level. Routed case 12 to verifier-sdp + proof-sdp.
+- 00:23 verifier-sdp independently CONFIRMED case 12 (explicit feasible R⁴ chain attains SDP value; ~1070 3D runs can't).
+  SDP lift LOSSY with gimbal and with variable throttle (40%); survives δ=0 fixed thrust (840 instances). proof-sdp refocused on δ=0.

@@ -434,3 +434,22 @@ Pure dive (min Dv_z), 30 deg cap, GTPL, w=0.4, r_z >= 0. 3D: 32 restarts, 60% co
 - Model change: position/velocity are now closed-form (Cauchy formula), per blueprint D7.
 Gaps (lean/MODEL.md §6): B* with mass depletion α>0, the upright variant T', free tf, quantitative bounds, 6DOF. Next: FreeTime.lean (RR-LS), then K3 / 6DOF.
 CLAIMS rows P-B*, B*, D updated. Faithfulness map: lean/MODEL.md.
+
+## [numerics] 2026-11-07 03:45 — NUMERICS: Theorem-D landing sets — metre-scale dents at hop data for M1 AND torque-coupled M3; tilt-rate-only model convex; in-air data convex
+Lateral landing set L at fixed (r0, v0, tf), with v(tf)=0, r_z(tf)=0, r_z(t) >= 0, GTPL. Scripts: d1_landing_set.py, s5_annulus.py; plots results/s5_annulus.png, results/d1_*.png.
+- **M1** (w=0.4), hop data r0 = 0 (on the pad), v0_lat = 0, tf = 4 s, N = 28. L is rotation-invariant, so it is an annulus with radii [r_in, r_out]:
+  | v0z [m/s] | 7.65 | 7.75 | 7.80 | 7.85 | 7.90 |
+  | r_in (dent) [m] | 0 | **0.55** | **1.73** | **3.07** | **4.99** |
+  | r_out [m] | 12.1 | 11.3 | 10.7 | 9.8 | 8.3 |
+  The window of nonconvex v0z, (7.727, 7.917], is exactly the s1 Pvr/Pv sliver. Inside it, landing back on the pad is infeasible while 0.5-8 m offsets are feasible.
+- **M3 torque-coupled TVC** (3D, J 63.6, L 0.589, gimbal 15 deg @ 100 deg/s, |w| <= 0.5; quick run, N=20), hop data v0z = 8.0, tf = 4: conv L has radius 5.5 m, and the **pad is 1.74 m from L**, an annulus hole.
+  So the gimbal-torque-coupled GTPL model has a physically admissible nonconvex slice too. This supports B6-E numerically, under r_z >= 0.
+- **Tilt-angle-rate-only (MT)**: at the same hop data (v0z = 8.0) L is a full disk of radius 10.1 m, with dent 0 over 109 grid points. At S2 (in-air, 104 m wide) the dent is also 0. This fits @redteam-reform's "tilt-only ⇒ convex R" and shows the full-direction rate model is what creates the dent.
+- **In-air descent data** (M1): S2 (r0z = 50, v0 = (4,0,-5), tf = 7) dent <= 0.016 m (noise). S6 (pad, v0z = 7.0, tf = 4) is a disk (dent <= 0.01 m).
+
+## [numerics] 2026-11-07 04:00 — STATUS: done for now. numerics/README.md and comms/reports/numerics.md written
+- All my runs are stopped; no compute in use. Tasks 3-4 of my brief (3DOF rate statistics, guidance prototypes) were deferred by main and NOT run.
+- Reusable pieces for other agents:
+  - numerics/models.py: M1 / M1A / M3 / tilt-only NLPs. Options include inner discretization, alt (r_z >= 0), tent, tilt cap, coning initial guesses, x0s seeding.
+  - numerics/runner.py: 2-worker multistart with streaming.
+- Ready to test any candidate formulation on request.

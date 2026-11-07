@@ -18,8 +18,9 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
      given b(t), the problem is exactly convex with no relaxation needed (C-6).
    - **Per instance:** the nonconvexity is entirely the choice of attitude profile (C-U).
    - **Infinite-dimensional lifts:** occupation-measure LPs with point-mass data entry are exact (generic; not practical).
-   - **Candidate tractable exact convex program:** a degree-2 SDP (Shor) lift is numerically exact for
-     *fixed-thrust* 5DOF min-landing-error (Conjecture CSD2; being independently verified and proved).
+   - **Tractable SDP lift:** the degree-2 SDP (Shor) lift is NOT exact in general (fails with gimbal and with
+     variable throttle), but survives for fixed thrust with no gimbal and is exact on realistic in-air targets, which
+     makes it a global-optimality / infeasibility certificate rather than a general solution.
 
 ## Results table
 
@@ -43,7 +44,7 @@ Orchestrator-maintained. Every item links to the file with the proof. Status key
 | P0-R | ρ1 = 0: velocity set R convex iff δ+ωtf ≤ π/2 | M1 | PROVED | math/possibility-rho0.md |
 | P0-F | ρ1 = 0 still gives nonconvex F_tf (coast-while-rotating; thrust on/off kink) ⇒ no 'possible iff ρ1=0' dichotomy | M1, α=0, δ<π/4, ωtf<π/2−2δ | PROVED | math/possibility-rho0.md |
 | P0-X | ρ1 = 0 with r_z ≥ 0: nonconvex for T/W ≳ 2.1 (numerics ≳1.7); GTPL T/W 1.27 open | M1 | PROVED (regime) | math/possibility-rho0.md |
-| CSD2 | Degree-2 SDP lift exact for fixed-thrust min-landing-error | M1, fixed thrust | LIKELY FALSE in general: numerics case 12 (near dent) gives rank-4 SDP optimum, 2.5% below best of 480 NLP restarts; exact on 21/22 incl. all realistic in-air targets ⇒ useful certificate. Independent check + subclass proof running | math/redteam-lift.md, BOARD 03:20, math/08 (pending) |
+| CSD2 | Degree-2 SDP lift exact for min-landing-error | M1 | **FALSE with gimbal** (case 12: 2.5% gap, SDP value attained by an explicit feasible R⁴ chain; independently reproduced) and **FALSE with variable throttle** (gaps up to 40%). Survives only for fixed thrust + δ=0 (840 adversarial instances, no gap); proof in progress. Exact on all realistic in-air targets tested ⇒ useful certificate (rank-3 ⇒ certified global optimum) | BOARD 03:20, math/verifier-sdp-report.md, math/08 (pending) |
 | HOP | Largest physically admissible nonconvexity under r_z ≥ 0: ground-launched hop data (r0z=0, v0z>0): rotation-midpoint gaps 0.65 (tf=4) / 2.9 (tf=8) weighted m/s; in-air descents: cm-level or none | M1 | NUMERICAL | numerics/README.md (pending) |
 
 ## What breaks LCvx, in one paragraph

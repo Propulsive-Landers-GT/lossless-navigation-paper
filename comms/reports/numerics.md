@@ -1,34 +1,42 @@
 # [numerics] report (≤1 page)
 
-**Scope.** These are tasks 1–2 of the brief plus requests from main, adversary and proof agents. Tasks 3–4 (3DOF LCvx rate statistics, 5DOF guidance prototypes) were deferred by the orchestrator and **not run**.
-Code is in `numerics/`, with details in `numerics/README.md`.
-Method: casadi/ipopt multistart on an **inner** discretization, so every NLP solution is an admissible trajectory and every reported distance is an *upper* bound. Mass depletion uses the exact log-mass velocity gain. GTPL parameters come from `context/vehicle.md`.
+**Scope.** Tasks 1–2 of the brief, plus requests from main, adversary, proof-s and redteam-lift. Tasks 3–4 (3DOF LCvx rate statistics, 5DOF guidance prototypes) were deferred by the orchestrator and **not run**.
+Code: `numerics/` (see `numerics/README.md`).
+Method: casadi/ipopt multistart on an **inner** discretization, so every NLP point is an admissible trajectory and every distance is an upper bound. Mass depletion uses the exact log-mass velocity gain. GTPL parameters come from `context/vehicle.md`.
 
-**1. Theorem B (M1, no state constraints) is confirmed, with no contradiction.**
-GTPL, tf = 2 s, ω = 30°/s: dist(M, R) ≈ 2.2 m/s while |P_x| = 6.8 m/s. The value is stable under refinement: N = 10→80 gives 2.38→2.18.
-Gap law over 39 configurations: dist/|P_x| ≈ 0.31·ωtf. It is nearly independent of δ, ρ1/ρ2 and α, and scales with ρ1.
-[proof]'s ball bound is a rigorous lower bound. It equals 0.81–0.83 × the NLP value in every configuration, so the true gap is pinned to within 18%.
-Mars-like set: 0.2/2.2/6.0 m/s at tf = 2/5/7.5 s.
+**1. Theorem B (M1, no state constraints) is confirmed; nothing contradicts it.**
+- GTPL, tf = 2 s, ω = 30°/s: dist(M, R) ≈ 2.2 m/s against |P_x| = 6.8. Refining N from 10 to 80 moves it from 2.38 to 2.18.
+- Gap law over 39 configurations: dist/|P_x| ≈ 0.31·ωtf, nearly independent of δ, ρ1/ρ2 and α, and ∝ ρ1.
+- [proof]'s ball bound, a rigorous lower bound, is 0.81–0.83 × the NLP value everywhere.
+- Mars-like set: 0.2 / 2.2 / 6.0 m/s at tf = 2 / 5 / 7.5 s.
 
-**2. Beyond the proven regime (state-unconstrained).**
-- The set stays nonconvex for a long tf without a tilt cap (13–19 m/s, with inverted flight), for the tent profile (6.2 m/s at tf = 5), for the accel-limited axis M1A, and for the torque-coupled TVC model M3 (3.7 m/s, 3D, tf = 2).
-- With a 30° tilt cap and long tf, the bottom-face gap shrinks because the axis can slide in azimuth along the cap.
-- The math/00 hole point is underground. Under free tf it is reached for tf' ≥ 4 s, so a free-tf statement needs B*.
-- With ρ1 = 0 no gap was found inside the regime δ+ωtf ≤ π/2 (weak test), but a gap appears beyond it.
+**2. Beyond the proven regime (no state constraints).** R stays nonconvex for:
+- long tf (13–19 m/s, using inverted flight);
+- the tent profile (6.2 m/s);
+- the acceleration-limited model M1A;
+- the torque-coupled model M3 (3.7 m/s).
 
-**3. Physically admissible data (altitude path constraint r_z ≥ 0), GTPL, ω = 0.4 rad/s.**
-- **Slice lemma S.** In 3D, including coning starts, there are strict Pvr > Pv gaps in every case.
-  - Pure dive: 0.19 m/s (tf = 4) and 0.98 m/s (tf = 8).
-  - Dive-then-brake: 0.016 m and 0.009 m.
-  - With a 30° cap the pure-dive gap goes 0.69 → 0.50 → **0.11 m/s** at tf = 8 → 12 → 20, while the planar gap stays at 0.8. The Pvr optimizer cones through a full 359° azimuth sweep, so the adversary's coning-fill mechanism is real at long horizons on a cap.
-- **B\* face.** The rotation-midpoint gap is 0.012 (tf = 4) and 0.007 (tf = 8), stable in N. It is real but about 1 cm/s.
-- **Face scan of F^X.** The pure-dive face under r_z ≥ 0 is pinned at **r0z = 0, v0z > 0** (ground-launched hop data). Its rotation-midpoint gap is **0.65 (tf = 4) and 2.9 (tf = 8)** weighted m/s, the largest physically admissible gap found.
-  Concretely, launched straight up at 8.2 m/s with tf = 4 s, the vehicle cannot land back on the pad but can land about 21 m away. The cause is that a1 = ρ1/m = 5 < g.
-  The fast-and-low and upright faces have gap 0.
-- **Realistic in-air descent data** (50 m altitude, −5 m/s, tf = 7 s, 4 m/s crossrange): the lateral landing set L is about 104 m wide, and no dent exceeds solver noise (≤ 0.016 m).
+With a 30° tilt cap the bottom-face gap shrinks through azimuthal sliding. The math/00 hole point is underground and is reached under free tf, so free tf needs B*. With ρ1 = 0 no gap appears inside δ+ωtf ≤ π/2.
 
-**Bottom line for "possible vs impossible".**
-- Numerically, F_tf is nonconvex in every rate-limited model tested (M1, M1A, M3, tent, free tf via B*). This holds with r_z ≥ 0 too, so a uniform state-linear convex relaxation cannot be lossless; the numerics agree with A + B/B*/S.
-- The practically sized nonconvexity (≥ 0.1 m/s) lives in near-liftoff and boundary-of-feasibility data.
-- For typical in-air descent conditions the observed nonconvexity is centimetre-level or invisible. An ε-lossless uniform relaxation with ε of a few cm/s on descent data has **not** been ruled out numerically.
-- Caveats: multistart NLP cannot certify global optima, and "no gap found" is weak evidence.
+**3. Physically admissible data (r_z ≥ 0), GTPL, ω = 0.4 rad/s.**
+- **Slice lemma S** holds numerically in 3D with coning starts:
+  - pure-dive Pvr − Pv gap: 0.19 m/s (tf = 4) and 0.98 m/s (tf = 8);
+  - dive-then-brake: 0.016 m and 0.009 m;
+  - on a 30° cap: 0.69 → 0.50 → 0.11 m/s at tf = 8 → 12 → 20 (planar ≈ 0.8). The coning fill is real but partial; at tf = 20 the optimizer sweeps 359° of azimuth.
+- **B\* face:** rotation-midpoint gap 0.012 / 0.007, stable in N. Real, but about 1 cm/s.
+- **Largest witness: the pure-dive face**, which is pinned at r0z = 0, v0z > 0 (ground-launched hop). Its gap is **0.65 (tf = 4) and 2.9 (tf = 8)** weighted m/s.
+- **Landing set L in meters**, at the pad with v0_lat = 0 and tf = 4: L is an annulus whose hole, landing back on the pad, has radius **0.55 → 5.0 m** as v0z goes from 7.75 to 7.90 m/s. The bad window is v0z ∈ (7.73, 7.92].
+  - Torque-coupled M3 at v0z = 8.0: hole of 1.74 m.
+  - Tilt-angle-rate-only model: L is convex.
+- **Realistic in-air descent** (50 m, −5 m/s, 4 m/s crossrange, tf = 7): L is about 104 m wide with no dent above solver noise.
+
+**4. Candidate convexification (degree-2 Shor lift, CSD2):**
+- **Exact on 21 of 22 instances**, including all realistic above-ground targets.
+- **Lossy on one near-dent instance:** SDP optimum of rank 4 at 0.02753, against a best 3D value of 0.02823 over 480 restarts (2.5% gap). So Conjecture CSD2 is false in general, but the lift remains an a-posteriori certificate when the optimum has rank 3.
+
+**Bottom line.**
+- Every rate-limited model tested (M1, M1A, M3) gives a nonconvex F_tf, also under r_z ≥ 0. That is consistent with "no uniform state-linear convex relaxation is lossless" (A + B/B*/S).
+- The nonconvexity is metre-scale only near the edge of feasibility: hop or near-liftoff data, and slivers about 0.2 m/s thick.
+- For typical in-air descent data it is cm-level or invisible. An ε-lossless relaxation with ε of a few cm/s on descent data is **not** excluded by the numerics.
+- The tilt-angle-rate-only model looks convex.
+- Caveat: a multistart NLP cannot certify global optima, so "no gap found" is weak evidence.
