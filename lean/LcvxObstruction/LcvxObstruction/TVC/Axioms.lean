@@ -73,3 +73,5 @@ import LcvxObstruction.GTPLMass
 -- GTPL instance (`GTPLMass.lean`)
 #print axioms LcvxObstruction.gtpl_no_lossless_upright_6dof_mass
 #print axioms LcvxObstruction.gtpl_no_lossless_freeTime_mass
+#print axioms LcvxObstruction.TVC.interp_error
+#print axioms LcvxObstruction.TVC.cell_finsler_remainder

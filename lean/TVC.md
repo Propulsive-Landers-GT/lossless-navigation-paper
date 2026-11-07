@@ -9,7 +9,7 @@ listed here (run `lake env lean LcvxObstruction/TVC/Axioms.lean`) gives only `[p
 | `TVC/CentreOfPercussion.lean` | `LcvxObstruction.TVC` | FLAT: centre-of-percussion identity (zero roll rate and with roll rate), boundary translation |
 | `TVC/Certificate.lean` | `LcvxObstruction.TVC` | TVC-1 skeleton: S-procedure/Finsler, separability, certificate and reduction as explicit hypotheses, rotation-midpoint argument, Theorem A link |
 | `TVC/Model.lean` | `LcvxObstruction.TVC` | concrete pure-TVC landing sets `F^X ⊆ F ⊆ F^rel`, `R_π` invariance (Lemma 2.4), landing identity (Lemma 2.3), `tvc1_model` |
-| `TVC/Discretization.lean` | `LcvxObstruction.TVC` | Lemma 4.6′ analytic inputs (TVC-Q3): cell Wirtinger and cell sup bounds |
+| `TVC/Discretization.lean` | `LcvxObstruction.TVC` | Lemma 4.6′ analytic inputs (TVC-Q3): cell Wirtinger, cell sup and Finsler-remainder bounds |
 | `TVC/Pointwise.lean` | `LcvxObstruction.TVC` | elementary pointwise inequalities of math/06 §4.2–4.3 (blueprint TVC-P1/P2/P3/Q4) and PT6 "⊆" |
 | `DiveBrakeMass.lean` | `LcvxObstruction` | B* core and witness for **any** acceleration class with a face maximiser |
 | `DiveBrakeMassModel.lean` | `LcvxObstruction` | B* for the explicit mass-depletion model `AccMass` (α > 0), every horizon |
@@ -88,6 +88,7 @@ is defined in Lean). So `tvc1_main` formalizes the **logic** of TVC-1, with all 
 | `sq_add_le_split`, `sq_sub_pos_ge_split` | `(x+y)² ≤ (1+κ)x² + (1+1/κ)y²`; `(1−ϑ)x² − (1/ϑ−1)y² ≤ (x−y)²` | §4.3, Q4 |
 | `cell_wirtinger` (`TVC/Discretization.lean`) | `n ⊥ {1,t}` on a cell `[0,h]` ⇒ `∫(∫_0^t n)² ≤ (h/2π)² ∫ n²` (zero ends + zero mean; via [lean-s]'s `Slice.periodic_wirtinger`) | Lemma 4.6′, TVC-Q3 |
 | `cell_sup_bound` | same hypotheses ⇒ `(∫_0^t ∫_0^u n)² ≤ h³/(4π²) ∫ n²` on the cell | Lemma 4.6′, TVC-Q3 |
+| `interp_error`, `cell_finsler_remainder` | `|g − chord| ≤ M t(h−t)/2` for `|g''| ≤ M`; hence `|∫_0^h g n| ≤ (Mh²/8)√(h∫n²)` for `n ⊥ {1,t}` | Lemma 4.6′ Finsler remainder (per cell) |
 | `relaxed_contains_ordinary` | unit `b, d`, `angle d b ≤ δ < π/2`, `0 ≤ a₁ ≤ a ≤ a₂` ⇒ `u = a d` has `⟪u,b⟫ ≥ a₁cos δ`, `‖u‖ ≤ a₂`, `‖u − ⟪u,b⟫b‖ ≤ ⟪u,b⟫ tan δ` | PT6 "⊆" (ordinary ⊆ relaxed) |
 
 ## 3. B* with mass depletion α > 0 (math/02 §10; CLAIMS rows B*, P-B*)
