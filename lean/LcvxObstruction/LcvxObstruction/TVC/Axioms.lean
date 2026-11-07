@@ -52,3 +52,6 @@ import LcvxObstruction.FreeTimeBStar
 #print axioms LcvxObstruction.TVC.rotPiE2_fixed_iff
 #print axioms LcvxObstruction.TVC.tvc_lambda_identity
 #print axioms LcvxObstruction.TVC.tvc1_model
+#print axioms LcvxObstruction.TVC.ellE_eq_Wz
+#print axioms LcvxObstruction.TVC.tvc1_model_ctrl
+#print axioms LcvxObstruction.constrainedLandingSet_mass_nonempty

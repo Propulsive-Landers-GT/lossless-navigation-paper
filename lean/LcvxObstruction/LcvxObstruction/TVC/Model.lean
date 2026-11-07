@@ -288,4 +288,79 @@ theorem glideSlopeSet_rotInvariant (tanγ : ℝ) :
     ∀ x ∈ glideSlopeSet tanγ, (rotPiE x.1, rotPiE x.2) ∈ glideSlopeSet tanγ :=
   fun _ hx => glideSlopeSet_rot hx
 
+/-! ### The reduction stated for controls (gain `= W_z - J₀`, math/06 §4.1) -/
+
+/-- The vertical weighted impulse `W_z(u) = ∫₀^tf (s - s*) ⟪u(s), e_z⟫` of a control. -/
+noncomputable def Wz (tf sS : ℝ) (u : ℝ → E3) : ℝ := ∫ s in Icc 0 tf, (s - sS) * ⟪u s, ez⟫
+
+/-- **Analytic reduction, stated for relaxed controls (NOT formalized).** For every relaxed
+admissible control landing from boundary data with zero lateral components, the competitor's gain
+`W_z(u) - J₀` is bounded by certificate data (math/06 §4.0–4.4, §4.7, Lemma 4.6′). -/
+structure TVC1ReductionCtrl {n K J : ℕ} (C : TVC1Certificate n K J)
+    (a₁ a₂ δ ε tf g₀ sS J₀ : ℝ) : Prop where
+  reduce : ∀ (θ : E3 × E3) (b bd u : ℝ → E3), TVCAdmissible (relaxedSet a₁ a₂ δ) ε tf b bd u →
+    position (-(g₀ • ez)) θ.1 θ.2 (fun _ => 1) u tf = 0 →
+    velocity (-(g₀ • ez)) θ.2 (fun _ => 1) u tf = 0 → rotPiE2 θ = θ →
+    ∃ (x : Fin 2 → Fin n → ℝ) (P D : ℝ) (e : Fin K → ℝ),
+      0 ≤ P ∧ P ≤ C.Penmax ∧
+      Wz tf sS u - J₀ ≤ ∑ i, qf C.Q (x i) - P - D ∧
+      (∀ k, ∑ i, qf (C.G k) (x i) ≤ C.c k + e k) ∧
+      ∑ k, C.lam k * e k ≤ D ∧
+      ∀ j, ∑ i, (C.mom j ⬝ᵥ x i) ^ 2 ≤ (C.Mv j + C.shift j P) ^ 2
+
+/-- The face functional of the boundary data equals the control's weighted impulse plus the
+gravity constant: `ℓ(θ) = W_z(u) + g₀ tf (s* - tf/2)` (math/06 Lemma 2.3). -/
+theorem ellE_eq_Wz {C : E3 → Set E3} {ε tf g₀ sS : ℝ} {θ : E3 × E3} {b bd u : ℝ → E3}
+    (hadm : TVCAdmissible C ε tf b bd u)
+    (hr : position (-(g₀ • ez)) θ.1 θ.2 (fun _ => 1) u tf = 0)
+    (hv : velocity (-(g₀ • ez)) θ.2 (fun _ => 1) u tf = 0) :
+    ellE sS θ = Wz tf sS u + g₀ * tf * (sS - tf / 2) := by
+  have hf : IntegrableOn (fun s => (fun _ => (1 : ℝ)) s • u s) (Icc 0 tf) := by
+    simpa using hadm.u_int
+  have hΛ := lambda_identity (sS := sS) hf hr hv
+  have hI : IntegrableOn (fun s => (s - sS) • u s) (Icc 0 tf) :=
+    hadm.u_int.continuousOn_smul (by fun_prop) isCompact_Icc
+  have hzz : ⟪ez, ez⟫ = 1 := by rw [real_inner_self_eq_norm_sq, norm_ez]; norm_num
+  simp only [ellE, LinearMap.coe_mk, AddHom.coe_mk, one_smul] at hΛ ⊢
+  have h1 : ⟪∫ s in Icc 0 tf, (s - sS) • u s, ez⟫ = Wz tf sS u := by
+    rw [real_inner_comm, ← integral_inner hI, Wz]
+    exact setIntegral_congr_fun measurableSet_Icc fun s _ => by
+      rw [real_inner_smul_right, real_inner_comm]
+  have h2 : ⟪(tf ^ 2 / 2 - sS * tf) • -(g₀ • ez), ez⟫ = g₀ * tf * (sS - tf / 2) := by
+    rw [real_inner_smul_left, inner_neg_left, real_inner_smul_left, hzz]; ring
+  rw [hΛ, inner_add_left, h1, h2]
+
+/-- The control-level reduction implies the data-level reduction used by `tvc1_model`, with
+`κ = J₀ + g₀ tf (s* - tf/2)`. -/
+theorem TVC1ReductionCtrl.toReduction {n K J : ℕ} {C : TVC1Certificate n K J}
+    {a₁ a₂ δ ε tf g₀ sS J₀ : ℝ} (h : TVC1ReductionCtrl C a₁ a₂ δ ε tf g₀ sS J₀) :
+    TVC1Reduction C 2 (fun θ => ellE sS θ - (J₀ + g₀ * tf * (sS - tf / 2)))
+      (tvcLandingSet (relaxedSet a₁ a₂ δ) ε tf g₀ univ) {θ | rotPiE2 θ = θ} where
+  reduce θ hθ hZ := by
+    obtain ⟨b, bd, u, hadm, hr, hv, -⟩ := hθ
+    obtain ⟨x, P, D, e, h1, h2, h3, h4, h5, h6⟩ := h.reduce θ b bd u hadm hr hv hZ
+    refine ⟨x, P, D, e, h1, h2, ?_, h4, h5, h6⟩
+    rw [ellE_eq_Wz hadm hr hv]
+    linarith
+
+/-- **Theorem TVC-1, concrete sets, control-level reduction.** -/
+theorem tvc1_model_ctrl {a₁ a₂ δ ε tf g₀ sS J₀ : ℝ} {n K J : ℕ} {X : Set (E3 × E3)}
+    (ha₁ : 0 ≤ a₁) (hδ : δ < π / 2) (hXrot : ∀ x ∈ X, (rotPiE x.1, rotPiE x.2) ∈ X)
+    (C : TVC1Certificate n K J) (hred : TVC1ReductionCtrl C a₁ a₂ δ ε tf g₀ sS J₀)
+    {θw : E3 × E3} {bw bdw uw : ℝ → E3}
+    (hwadm : TVCAdmissible (ordinarySet a₁ a₂ δ) ε tf bw bdw uw)
+    (hwr : position (-(g₀ • ez)) θw.1 θw.2 (fun _ => 1) uw tf = 0)
+    (hwv : velocity (-(g₀ • ez)) θw.2 (fun _ => 1) uw tf = 0)
+    (hwX : ∀ t ∈ Icc 0 tf, (position (-(g₀ • ez)) θw.1 θw.2 (fun _ => 1) uw t,
+      velocity (-(g₀ • ez)) θw.2 (fun _ => 1) uw t) ∈ X)
+    {Gw : ℝ} (hGw : Gw ≤ Wz tf sS uw - J₀) (hmargin : C.U < Gw) :
+    ¬ Convex ℝ (tvcLandingSet (ordinarySet a₁ a₂ δ) ε tf g₀ X) ∧
+      ∀ (Y : Type*) [AddCommGroup Y] [Module ℝ Y] (R : UniformConvexRelaxation (E3 × E3) Y),
+        ¬ R.IsLossless (tvcLandingSet (ordinarySet a₁ a₂ δ) ε tf g₀ X) := by
+  have hw : θw ∈ tvcLandingSet (ordinarySet a₁ a₂ δ) ε tf g₀ X := ⟨bw, bdw, uw, hwadm, hwr, hwv, hwX⟩
+  have hGw' : Gw ≤ ellE sS θw - (J₀ + g₀ * tf * (sS - tf / 2)) := by
+    rw [ellE_eq_Wz hwadm hwr hwv]; linarith
+  obtain ⟨-, hnc, hR⟩ := tvc1_model ha₁ hδ hXrot C hred.toReduction hw hGw' hmargin
+  exact ⟨hnc, fun Y _ _ R => (hR Y R).1⟩
+
 end LcvxObstruction.TVC

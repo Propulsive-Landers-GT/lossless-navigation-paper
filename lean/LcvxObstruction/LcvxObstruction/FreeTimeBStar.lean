@@ -253,4 +253,23 @@ theorem no_lossless_relaxation_freeTime_5dof_mass {Y : Type*} [AddCommGroup Y] [
     (not_convex_iUnion_constrainedLandingSet_mass hρ₁ h12 hα hmdry hburn hsS hsta htab hω hωs hreg
       hg0 hg.le htan hS hX) R
 
+/-- **Non-vacuity of the mass-depletion constrained theorem**: under the headline hypotheses the
+constrained landing set (glide slope) of the mass-depletion model is nonempty. -/
+theorem constrainedLandingSet_mass_nonempty {ρ₁ ρ₂ α m₀ mdry tf ω δ g₀ tanγ : ℝ} (htf : 0 < tf)
+    (hω : 0 < ω) (hδ : 0 < δ) (hδ2 : δ < π / 2) (hρ₁ : 0 < ρ₁) (h12 : ρ₁ < ρ₂) (hα : 0 < α)
+    (hmdry : 0 < mdry) (hburn : mdry ≤ m₀ - α * ρ₂ * tf) (hg0 : 0 ≤ g₀) (hg : g₀ < ρ₂ / m₀)
+    (htan : 0 ≤ tanγ) :
+    (constrainedLandingSet (AccMass ρ₁ ρ₂ α m₀ mdry tf) tf ω δ (-(g₀ • ez))
+      (glideSlopeSet tanγ)).Nonempty := by
+  obtain ⟨sS, hsS, hsStf, hωs, hreg, hS, -⟩ :=
+    exists_switchTime (amin := ρ₂ / mdry) (tanγ := tanγ) htf hω hδ hδ2 hg
+  obtain ⟨ah, hah, -, hdive, hbrake⟩ := exists_mass_witness (ω := ω) (δ := δ) hρ₁ h12 hα hmdry
+    hburn hsS.le hsStf.le hω.le hδ.le hreg
+  have haI := (accMass_lower hρ₁ h12 hα hmdry hburn ah hah).1
+  have hδπ : δ ≤ π := by linarith [Real.pi_pos]
+  exact ⟨_, _, _, _, hah, witness_admissible norm_ex inner_ex_ez hsS hω.le hδ.le hδπ hωs,
+    (landingData_lands _ _ _ _).1, (landingData_lands _ _ _ _).2,
+    fun t ht => witnessG_mem_glideSlope norm_ex inner_ex_ez hsS hsStf hω.le hδ.le hreg haI hdive
+      hbrake hg0 hg.le htan hS ht⟩
+
 end LcvxObstruction

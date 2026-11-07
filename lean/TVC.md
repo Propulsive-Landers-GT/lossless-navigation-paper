@@ -65,6 +65,8 @@ trajectory-level pure-TVC landing set is defined in Lean. Mass depletion (`ε(m)
 | `tvcLandingSet_mono_X`, `tvcLandingSet_mono_C` | `F^X ⊆ F ⊆ F^rel` | "relaxed ⊇ ordinary" |
 | `rotPiE`, `rotPiE_fixed_iff`, `rotPiE2_fixed_iff`, `tvcLandingSet_rot`, `ordinarySet_rot`, `relaxedSet_rot`, `glideSlopeSet_rotInvariant` | `R_π = 2⟪·,e_z⟫e_z − id` (linear isometry); landing sets are `R_π`-invariant; fixed points = zero lateral data | Lemma 2.4 |
 | `tvc_lambda_identity` | `r₀ + s*v₀ = ∫(s−s*)u + (tf²/2 − s*tf)(−g₀e_z)` | Lemma 2.3 (translational part) |
+| `Wz`, `ellE_eq_Wz` | `ℓ(θ) = W_z(u) + g₀tf(s* − tf/2)` with `W_z(u) = ∫(s−s*)⟪u,e_z⟫` | Lemma 2.3, §4.1 |
+| `TVC1ReductionCtrl`, `TVC1ReductionCtrl.toReduction`, `tvc1_model_ctrl` | the reduction hypothesis stated for relaxed **controls** (gain `W_z(u) − J₀`, zero-lateral landing data); implies `TVC1Reduction` with `κ = J₀ + g₀tf(s* − tf/2)`; TVC-1 with a witness given as an ordinary control with `W_z(u_w) − J₀ ≥ G_w` | Theorem TVC-1 (control form) |
 | `tvc1_model` | `tvc1_skeleton` instantiated with the concrete `F^X` (ordinary, any `R_π`-invariant `X`), `F` (ordinary, `X = univ`), `F^rel` (relaxed), `ℓ = ⟪r₀ + s*v₀, e_z⟫`: from witness + `TVC1Certificate` + `TVC1Reduction` (for the concrete `F^rel`) ⇒ `¬Convex F^X`, no lossless uniform relaxation | Theorem TVC-1 |
 
 Also not formalized: the witness (`θ_w ∈ F^X` with gain `G_w`; math/06 §4.8, certified in Arb by `witness_check.py`) enters as the
@@ -123,6 +125,7 @@ by `not_convex_constrainedLandingSet_mass`: `0 < s* < tf`, `ωs* ≤ δ`, `δ + 
 |---|---|
 | `not_convex_iUnion_of_max` | abstract: horizon-dependent class `Acc t` (`t ∈ [t_a,t_b]`, `s* < t_a`), face bound `PhiFace_t a ≤ V_max(t)`, `t ↦ V_max(t) + g₀ t (s* − t/2)` continuous on the window, a witness attaining `V_max(t)` with the B* bounds ⇒ `⋃_{t ∈ [t_a,t_b]} F^X_t` not convex. Proof: maximise `ℓ*(t)` at `t°`; a midpoint landing at `t'` would have `W = V e_z`, `V = V_max(t°) + κ(t°) − κ(t') ≥ V_max(t')`, excluded by `PhiMax_not_mem_WSet` at horizon `t'` |
 | `phiFace_le_VStar`, `phiFace_aW`, `continuousOn_VStar` | constant-bounds instance ingredients |
+| `constrainedLandingSet_mass_nonempty` | non-vacuity: under the headline hypotheses the mass-depletion constrained set is nonempty |
 | `not_convex_iUnion_constrainedLandingSet_box`, `no_lossless_relaxation_freeTime_5dof` | free final time, constant bounds (`α = 0`), every window `0 < t_a ≤ t_b` |
 | `continuous_wval₂`, `not_convex_iUnion_constrainedLandingSet_mass`, `no_lossless_relaxation_freeTime_5dof_mass` | free final time, mass depletion; `V_max(t) = sup_{σ∈[0,s*]} w_t(σ)` is continuous in `t` (`IsCompact.continuous_sSup`); needs `m_dry ≤ m₀ − αρ₂ t_b` (the verify-imp window condition) |
 
