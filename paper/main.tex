@@ -120,8 +120,9 @@ hard-landing instance of the per-instance obstruction are machine-checked. For t
 by computer-assisted certificates checked in exact arithmetic (horizons of 1 and 2~s without a tilt cap, and 3 and 5~s in the
 tilt-capped class; constant mass, unlimited gimbal rate).
 Numerically, the obstruction is thin for in-air descents of a small lander (centimetre scale), but reaches metre scale for
-pad-launched hops. Finally, an attitude-aware planner built on the exact convex inner problem produces flyable plans within
-$0.012\%$ of a nonconvex 6-DOF optimum in simulation.
+pad-launched hops. In simulation, the vehicle's 3-DOF guidance claims landings no flyable plan reaches, while planners that iterate on
+the attitude (standard successive convexification, or one built on the exact convex inner problem) reach the 6-DOF optimum and land
+reliably.
 \end{abstract}
 
 \ifshare

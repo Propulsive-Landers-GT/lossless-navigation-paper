@@ -91,9 +91,11 @@ tilt-capped class (constant mass, unlimited gimbal rate).
 gimbal-torque-coupled TVC body with constant mass the problem with a given attitude is exactly convex, with no relaxation. There is an
 exact subclass for the kinematic model. For degree-2 SDP lifts we give stress certificates and a certified-global
 coplanar subclass, together with counterexamples to exactness in general.
-\item \emph{Practical guidance} (\cref{sec:practice}). An attitude-aware convex planner (outer attitude steps around the exact
-convex inner problem) whose every accepted plan is flyable by construction. In simulation it is within $0.012\%$ of a nonconvex
-6-DOF multistart optimum and lands in all in-air closed-loop runs (numerical evidence).
+\item \emph{Implications for guidance} (\cref{sec:practice}). A numerical study on the motivating vehicle confirms the theory's
+predictions: its 3-DOF guidance reports ``optimal'' for pad hops no flyable plan can reach, and lands $28\%$ of in-air closed-loop runs,
+while planners that iterate on the attitude (standard 6-DOF successive convexification, and a planner built directly on the exact
+convex inner problem) reach the 6-DOF optimum to within $0.03\%$ and land every in-air run. The exact inner problem does not make the
+latter better than standard successive convexification (numerical evidence).
 \item \emph{Numerics} (\cref{sec:numerics}). Gap laws, results beyond the proven regimes, and the size of the
 obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
 pad-launched hops.

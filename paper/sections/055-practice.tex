@@ -1,102 +1,112 @@
 % ============================================================================
-\section{Practical guidance for an attitude-rate-limited TVC lander}\label{sec:practice}
+\section{Implications for guidance: a numerical study}\label{sec:practice}
 % ============================================================================
-\emph{This section reports an algorithm and numerical evidence. Its theorem-level ingredients are \cref{thm:C6}, \cref{thm:CU}
-and the elementary claims listed below. Convergence of the outer loop is not proved.}
+\emph{This section reports numerical evidence. Its theorem-level ingredients are \cref{thm:A}, \cref{thm:CU}, \cref{thm:C6}
+and the elementary claims listed below. No planner's convergence is proved.}
 
-The theory says where the nonconvexity lives (the attitude profile, \cref{thm:CU}) and what is exactly convex (the problem for a
-given attitude, \cref{thm:C6}). The planner below is built on that split. It was implemented for the motivating vehicle and
-compared with the current flight guidance \pnote{solver/README.md, RESULTS.md, CLAIMS.md}.
-
-\subsection{Planner B: attitude-aware convex guidance}
-The attitude variable is the body angular acceleration $\alpha(t)$ (pitch and yaw), piecewise linear in time, so the gimbal angle
-never jumps. With zero roll rate and axisymmetric inertia, the body rate is exactly linear in $\alpha$ (the gyroscopic term
-vanishes), and the torque balance of \cref{thm:C6} fixes the lateral thrust, $T_x=-(J_t/L)\alpha_y$, $T_y=(J_t/L)\alpha_x$. The only
-remaining control is the axial thrust $T_a(t)$.
-\begin{enumerate}[leftmargin=*,itemsep=2pt]
-\item \emph{Warm start.} Solve the 3-DOF problem, then fit a smooth attitude profile whose nose follows the 3-DOF thrust direction.
-\item \emph{Exact inner solve.} For the fixed attitude profile, solve the SOCP in $T_a$. By \cref{thm:C6} this is the exact
-problem, with no relaxation: throttle and gimbal limits become intervals in $T_a$, and the dynamics are affine in $T_a$.
-\item \emph{Attitude step.} Linearize only the effect of an attitude change on the thrust direction and solve one convex
-trust-region problem in $(\alpha,T_a)$. The minimum-thrust bound is replaced by its tangent plane, which is a safe inner
-approximation (Cauchy--Schwarz).
-\item \emph{Accept or shrink.} Re-run the exact inner solve at the new attitude. Accept if the merit (fuel plus terminal-defect and
-constraint penalties) decreases sufficiently; otherwise shrink the trust region. \emph{Every accepted iterate is an exact solution
-of the planning model (with its prescribed mass history) for its attitude}, so the loop can be stopped at any time; the
-certificate below checks it against the full dynamics.
-\item \emph{Certificate.} Check the returned plan, not the optimizer, against the physical limits on an $8\times$ finer grid
-(throttle $400$--$1000$~N, exact gimbal angles within $\pm15^\circ$, gimbal rate $\le100^\circ$/s, throttle rate, tilt, glide slope,
-touchdown defects). Then replay it open loop through a full quaternion rigid-body model, which must land within 5~cm. Fly it
-only if it passes.
+The theory makes three predictions for a real attitude-rate-limited lander.
+\begin{enumerate}[leftmargin=*,itemsep=2pt,label=(P\arabic*)]
+\item \emph{False feasibility.} A uniform convex relaxation that contains every flyable trajectory also accepts boundary data
+from which no flyable trajectory lands (\cref{thm:A,thm:Bstar}). A 3-DOF guidance program will therefore report ``optimal'' for
+some landings the vehicle cannot fly.
+\item \emph{Where the difficulty lives.} The nonconvexity lies entirely in the choice of attitude profile (\cref{thm:CU}).
+Any planner that iterates on the attitude can, in principle, reach the 6-DOF optimum; no single convex program can.
+\item \emph{Exactness given the attitude.} For a pure-TVC vehicle with a fixed attitude profile, the remaining problem is exactly
+convex, with no relaxation (\cref{thm:C6}).
 \end{enumerate}
-Planning uses margins inside the physical limits (throttle $440$--$920$~N, gimbal $10^\circ$). Gimbal-rate limits enter as linear sufficient
-conditions on node-to-node thrust changes. With $B=\omega_g T_{\rm floor}h$, $t=\tan\delta_p$, $T_z\ge T_{\rm floor}$ and $|T_x|,|T_y|\le tT_z$,
-the planner imposes the \emph{pair}
-\[
-|\Delta T_x|+t|\Delta T_z|\le B\quad(\theta\text{ axis}),\qquad |\Delta T_y|+t|\Delta T_z|\le B\quad(\phi\text{ axis}),
-\]
-and the pair implies both gimbal-angle rates are at most $\omega_g$. Formalization caught an error here. The originally stated
-stand-alone justification for the $\phi$ axis is false: it misses the $\dot T_x$ term, and a counterexample exists. The pair
-actually imposed is nevertheless a valid sufficient condition, so no code change was needed.
-\paragraph{Machine-checked solver claims.}
+We test these on the motivating vehicle (80~kg, 400--1000~N, $\pm15^\circ$ box gimbal at $100^\circ$/s, inertia and lever arm
+from the club simulator's mass table) with four planners \pnote{solver/README.md, RESULTS.md, RESULTS-SCVX.md, CLAIMS.md}.
+
+\subsection{Planners compared}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{A}: a faithful re-implementation of the vehicle's flight 3-DOF LCvx, with its own shortest-feasible $t_f$ search.
+\item \textbf{C}: 3-DOF LCvx with SOC-representable thrust-rate and second-difference limits, sized to the vehicle's angular
+acceleration.
+\item \textbf{S}: standard 6-DOF successive convexification \cite{szmuk2018gnc,reynolds2020ptr} on the full quaternion rigid body.
+The whole nonlinear dynamics are linearized about the current trajectory (multiple shooting), with virtual control under an exact
+$\ell_1$ penalty, an $\infty$-norm trust region and the usual actual-to-predicted ratio test.
+\item \textbf{B}: a planner built directly on \cref{thm:C6}, included to show that the split of (P2)--(P3) can be used as it
+stands, not as a recommended replacement for S. Its attitude variable is the body angular acceleration $\alpha(t)$ (pitch and yaw,
+piecewise linear, so the gimbal angle never jumps). With zero roll rate and axisymmetric inertia, the body rate is exactly linear in
+$\alpha$, and the torque balance of \cref{thm:C6} fixes the lateral thrust, $T_x=-(J_t/L)\alpha_y$, $T_y=(J_t/L)\alpha_x$. For a
+fixed $\alpha$ the problem in the axial thrust $T_a(t)$ is an exact SOCP. B alternates a convex trust-region step in
+$(\alpha,T_a)$, linearizing only the effect of the attitude change on the thrust direction, with an exact re-solve of this SOCP, and
+accepts a step only if the exact merit decreases. Every accepted iterate is therefore an exact trajectory of the planning model.
+\item \textbf{D} (reference): IPOPT on the full quaternion rigid body, multistart. \textbf{LB}: the 3-DOF relaxation at the same
+$t_f$, a lower bound on the fuel of any flyable plan, up to its discretization.
+\end{itemize}
+S, B and D share the model, the function class (first-order-hold body thrust, $N=35$), and the constraints: planned throttle
+440--920~N inside the physical range, gimbal $|T_x|,|T_y|\le\tan10^\circ\,T_z$, linear sufficient conditions for gimbal-rate and
+throttle-slew limits, tilt $\le20^\circ$, $10^\circ$ glide slope, upright at rest on the pad, and a gimbal that starts at its current
+deflection. Every plan from S and B is judged by the same a~posteriori certificate. It checks the physical limits on an $8\times$
+finer grid, then replays the planned body-frame thrust open loop through the full quaternion rigid body, which must land within
+5~cm. Neither planner was tuned per scenario.
+
+\paragraph{Machine-checked ingredients.}
 % CLAIMS: solver/CLAIMS.md N1-N7 -- FORMALIZED (28 theorems, lean/SOLVER.md; build verified by orchestrator) | Lean: LcvxSolver.*
-The elementary claims the planner relies on are formalized in Lean (28 theorems, namespace \texttt{LcvxSolver}; \cref{tab:lean}).
+The elementary claims these planners rely on are formalized in Lean (28 theorems, namespace \texttt{LcvxSolver}; \cref{tab:lean}).
 \begin{itemize}[leftmargin=*,itemsep=1pt]
-\item \emph{N1 (conservative gimbal box).} The box constraint $|T_x|,|T_y|\le\tan\delta\,T_z$ gives $|\theta|\le\delta$ and $|\phi|\le\delta$. This is tighter
-than the $\arcsin(\tan\delta)$ originally claimed for $\phi$.
-\item \emph{N2 (gimbal rate).} The stand-alone $\phi$-axis heuristic is formally refuted (\lean{phi\_rate\_heuristic\_false}). The pair
-imposed by the planner is proved sufficient (\lean{gimbal\_rate\_pair}), including over first-order-hold intervals for the exact
-gimbal angles (\lean{foh\_gimbal\_rate}).
-\item \emph{N3, N4 (throttle slew; chord bound)} are proved as stated.
-\item \emph{N5 (direction-acceleration bound)} is proved in continuous time only; its discrete version is not.
-\item \emph{N6 (linear body-rate dynamics).} With zero roll torque and zero initial roll rate on an axisymmetric body, the roll rate
-stays zero, the gyroscopic term vanishes, and the body rate is linear in the torque profile.
-\item \emph{N7 (lower bound).} The value ordering $V_3\le V_5\le V_6$ holds for any cost depending on the thrust history, also with free
-final time (\lean{value3\_le\_value6\_freeTime}). The solver's grid discretization of the 3-DOF bound is not covered.
+\item \emph{N1 (gimbal box)}: $|T_x|,|T_y|\le\tan\delta\,T_z$ gives $|\theta|,|\phi|\le\delta$ in the flight gimbal convention.
+\item \emph{N2 (gimbal rate)}: with $B=\omega_g T_{\rm floor}h$ and $t=\tan\delta_p$, the pair $|\Delta T_x|+t|\Delta T_z|\le B$,
+$|\Delta T_y|+t|\Delta T_z|\le B$ bounds both gimbal-angle rates by $\omega_g$, including over first-order-hold intervals
+(\lean{gimbal\_rate\_pair}, \lean{foh\_gimbal\_rate}). Formalization caught an error: the originally stated stand-alone
+justification for the $\phi$ row is false (\lean{phi\_rate\_heuristic\_false}). The pair actually imposed is nevertheless valid.
+\item \emph{N3--N5}: throttle slew, chord bound, and a direction-acceleration bound (continuous time only).
+\item \emph{N6}: with zero roll torque and zero initial roll rate on an axisymmetric body, the gyroscopic term vanishes and the body
+rate is linear in the torque profile.
+\item \emph{N7}: $V_3\le V_5\le V_6$ for any cost of the thrust history, also with free final time (\lean{value3\_le\_value6\_freeTime}),
+which makes LB a lower bound. Its grid discretization is not covered.
 \end{itemize}
 
-\subsection{Results (numerical evidence)}
-Comparisons: \textbf{A}, a faithful re-implementation of the flight 3-DOF LCvx; \textbf{C}, 3-DOF LCvx with SOC-representable
-thrust-rate limits; \textbf{D}, IPOPT on the full quaternion rigid body (multistart); and \textbf{LB}, the 3-DOF relaxation at the same
-$t_f$. Every flyable plan is feasible for the 3-DOF relaxation, so LB is a lower bound, up to its discretization, which is not
-bounded rigorously.
+\subsection{Results}
 \begin{itemize}[leftmargin=*,itemsep=2pt]
-\item \emph{Open loop, 8 in-air scenarios} (\cref{fig:openloop}). Every B plan passed the certificate (replay landing within
-$0.7$~mm). B is within $0.012\%$ of the best IPOPT optimum (mean $0.005\%$) and at most $0.85\%$ above LB (mean $0.34\%$), so it is
-within 1\% of the 6-DOF optimum at that $t_f$. Without attitude iterations (warm start plus one inner solve), only 1 of 8 plans is
-certified. C is infeasible at B's $t_f$ in all 8 scenarios; at its own minimum $t_f$ it uses $3.9$--$12.6\%$ more fuel. A's plans
-are not flyable: 3 of 8 deliver 296--305~N on the ``400~N'' arc, and they demand instantaneous thrust re-pointing.
-\item \emph{Closed loop} (6-DOF plant with wind, gusts, thrust noise, $5\%$ Isp error, gimbal misalignment; common tracker; 1~Hz
-replans; success means touchdown $\le1$~m/s, lateral error $\le1$~m, tilt $\le5^\circ$). In-air descents (40 runs): A $28\%$, C $95\%$, B
-$100\%$, with median touchdown speeds $2.42$, $0.48$ and $0.20$~m/s (\cref{fig:mcinair}). Pad hops (30 runs): A $0\%$, C $100\%$ at $+23\%$
-fuel, B $97\%$ (the one failure skimmed the altitude floor; that is a formulation issue for hops). B's solver time per replan
-averaged 0.2--0.4~s, with 9--60 small SOCPs per plan.
-\item \emph{Against standard 6-DOF successive convexification.} A textbook SCvx baseline (full quaternion rigid body
-linearized about the current trajectory, virtual control, trust region with the usual ratio test
-\cite{szmuk2018gnc,reynolds2020ptr}) was given the same model, constraints, certificate and replanning rules. It ties with B
-on optimality (both within $0.03\%$ of IPOPT on 16 open-loop problems, all certified) and on the hop feasibility map (both 20/20).
-In closed loop it was as good or slightly better: in-air $100\%$ (median touchdown $0.13$~m/s against B's $0.20$), hops $100\%$
-against B's $97\%$, at about twice B's solver time per replan ($0.62$ against $0.33$~s mean in-air). B therefore does not
-outperform standard SCvx on these tests; its advantages are speed and that every accepted iterate is flyable.
-\item \emph{The impossibility, visible in practice.} On a grid of 20 pad-hop targets (launch speeds 5--7~m/s, landing offsets
-0--6~m, $t_f=4$~s), the 3-DOF relaxation and the flight LCvx report ``optimal'' at all 20. Neither B nor IPOPT finds a flyable plan
-at 11 of them: all 8 targets with launch speed $\ge6.5$~m/s, plus 3 targets 6~m away. B and IPOPT agree on feasibility in all 20
-cells, and on fuel within $0.3\%$ where both find a plan. ``No IPOPT solution'' is not a proof of infeasibility, but this is exactly
-the false-feasibility failure mode Theorem~A predicts for any uniform relaxation (\cref{cor:A}).
+\item \emph{(P1) False feasibility, visible in practice.} On a grid of 20 pad-hop targets (launch speeds 5--7~m/s, landing offsets
+0--6~m, $t_f=4$~s), the 3-DOF relaxation and the flight LCvx report ``optimal'' at all 20. None of B, S and IPOPT finds a flyable plan
+at 11 of them: all 8 targets with launch speed $\ge6.5$~m/s, plus 3 targets 6~m away. The three agree on feasibility in all 20 cells,
+and on fuel within $0.3\%$ where they find a plan. ``No plan found'' is not a proof of infeasibility, but this is exactly the failure
+mode \cref{thm:A} predicts (\cref{cor:A}). In-air, A's plans are not flyable either: 3 of 8 deliver 296--305~N on the ``400~N''
+arc (lossiness at minimum throttle, as \cref{thm:CS} predicts), and all demand instantaneous thrust re-pointing.
+\item \emph{(P2) Iterating on the attitude reaches the 6-DOF optimum.} On 16 open-loop in-air problems (8 scenarios, each at B's
+minimum certified $t_f$ and $t_f+0.5$~s), every plan from B and S passed the certificate (replay landing within 1~mm). Both are
+within $0.03\%$ of the best IPOPT optimum on every problem, and at most $0.85\%$ above LB, so within 1\% of the 6-DOF optimum at
+that $t_f$ (\cref{fig:openloop}). S converges from a straight-line initial guess as well as from the 3-DOF solution. The
+3-DOF planner with rate limits does worse: C is infeasible at B's $t_f$ in all 8 scenarios and uses $3.9$--$12.6\%$ more fuel at its own
+minimum $t_f$.
+\item \emph{(P3) The exact inner problem is useful but not decisive.} B, which exploits \cref{thm:C6}, ties with S on optimality and
+feasibility. It reaches a first flyable plan in a median 0.24~s of solver time, against 0.29~s for S from the same warm start. It
+solves many small SOCPs (36--108 variables) where S solves fewer, larger ones (about 650).
+\item \emph{Closed loop.} The 6-DOF plant has wind, gusts, thrust noise, $5\%$ Isp error and gimbal misalignment; all planners use
+a common tracker and 1~Hz replans, and B and S share the same replanning and fallback rules. Success means touchdown $\le1$~m/s,
+lateral error $\le1$~m and tilt $\le5^\circ$.
+\begin{center}\small
+\begin{tabular}{@{}lcccc@{}}\toprule
+ & A (flight 3-DOF) & C (3-DOF + rates) & B & S (SCvx) \\\midrule
+in-air success (40 runs) & $28\%$ & $95\%$ & $100\%$ & $100\%$ \\
+median touchdown speed, in-air & 2.42~m/s & 0.48~m/s & 0.20~m/s & 0.13~m/s \\
+pad-hop success (30 runs) & $0\%$ & $100\%$ ($+23\%$ fuel) & $97\%$ & $100\%$ \\
+solver time per replan, mean (in-air) & 0.007~s & 0.004~s & 0.33~s & 0.62~s \\\bottomrule
+\end{tabular}
+\end{center}
+Both 6-DOF planners land every in-air run, against $28\%$ for the flight 3-DOF guidance (\cref{fig:mcinair}). S was as good as B or
+slightly better: it landed B's one failed hop, and its replans recovered from disturbances with fewer final-time extensions. B was
+about twice as fast per replan.
 \end{itemize}
 
 \begin{figure}[t]\centering
 \includegraphics[width=.9\linewidth]{figures/openloop_fuel.png}
 \caption{Open-loop fuel for 8 in-air descents: 3-DOF lower bound, planner B (certified), best IPOPT 6-DOF multistart, and 3-DOF with
-rate limits at its own minimum $t_f$. Baseline A is omitted because its plans are not flyable. Numerical.}\label{fig:openloop}
+rate limits at its own minimum $t_f$. The standard SCvx planner S coincides with B and IPOPT to within $0.03\%$ (not drawn). Baseline
+A is omitted because its plans are not flyable. Numerical.}\label{fig:openloop}
 \end{figure}
 \begin{figure}[t]\centering
 \includegraphics[width=.7\linewidth]{figures/mc_inair_touchdown.png}
-\caption{Closed-loop touchdowns, 40 in-air descents per method (dashed lines: 1~m, 1~m/s). Numerical.}\label{fig:mcinair}
+\caption{Closed-loop touchdowns, 40 in-air descents, planners A, B and C (dashed lines: 1~m, 1~m/s). S's touchdowns, not drawn,
+fall in the same region as B's (median 0.13~m/s and 3~cm, worst 0.37~m/s and 10~cm). Numerical.}\label{fig:mcinair}
 \end{figure}
 
-\paragraph{What is and is not guaranteed.} By construction (\cref{thm:C6}), every accepted plan is an exact trajectory of the
-planning model for its attitude. The certificate verifies flyability of each returned plan numerically, on a fine grid and by
-rigid-body replay, up to floating-point integration error. Not guaranteed: convergence of the outer (SCvx-type) loop to a 6-DOF
-KKT point; convergence of the mass fixed point; global optimality (only the gap to LB is bounded); and robustness to plant
-mismatch, which is Monte Carlo evidence only.
+\paragraph{What this shows and does not show.} The evidence is consistent with all three predictions. 3-DOF guidance produces
+plans the vehicle cannot fly and claims landings it cannot reach. Planners that iterate on the attitude reach the 6-DOF optimum and
+land reliably. The exactness of \cref{thm:C6} can be built into such a planner directly. It does not, on these tests, make B better
+than standard successive convexification. B's distinguishing properties are speed and that every accepted iterate is flyable, which
+matters only when a replan must stop at a hard deadline. Not shown: convergence of either planner, global optimality (only the
+gap to LB is bounded), timing on flight hardware, and robustness beyond the Monte Carlo cases.

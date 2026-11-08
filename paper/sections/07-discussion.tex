@@ -14,7 +14,9 @@ detect infeasibility from the convex program alone.
 problem given the attitude is \emph{exactly} convex, with no relaxation (\cref{thm:C6}). A natural architecture is therefore an
 outer search over a low-dimensional family of attitude profiles (or a sequential update of $b$) around an exact convex inner
 problem. Every inner solution is then genuinely flyable, and the inner problem certifies infeasibility for the given profile.
-\Cref{sec:practice} implements this architecture and evaluates it numerically.
+\Cref{sec:practice} implements this architecture and evaluates it numerically. Standard successive convexification, which
+linearizes the attitude together with everything else, performed as well, so the architecture's value is speed and flyable
+intermediate iterates rather than better plans.
 \item \emph{Certificates.} The degree-2 SDP lift gives a rigorous lower bound on the minimum landing error and certifies
 infeasibility of exact landing when positive. Its global optimality can be certified a~posteriori (rank 3, stress test), and
 a~priori for coplanar targets (\cref{thm:stress,thm:coplanar}). It is a useful companion to a local or sequential solver, not a
