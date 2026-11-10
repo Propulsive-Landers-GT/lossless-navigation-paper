@@ -1,4 +1,12 @@
-# solver/ — attitude-aware convex landing guidance for the GTPL lander
+# solver/: landing guidance for the GTPL lander
+
+> **Recommended algorithm (November 2026): the landing algorithm, planner F.** It is one convex program per plan with no
+> iteration. Start at [`../LANDING-ALGORITHM.md`](../LANDING-ALGORITHM.md); proof in
+> [`../math/10-landing-proof.md`](../math/10-landing-proof.md); benchmarks against planners B and S in
+> [RESULTS-FLAT.md](RESULTS-FLAT.md); worked example `scripts/example_landing.py`.
+>
+> The rest of this file documents planner B (attitude-aware convex guidance), the earlier recommendation. It still
+> runs and is one of the two baselines.
 
 This folder holds the practical end product of the lcvx-5dof-research project: a landing-guidance algorithm whose
 every plan can actually be flown by our pure-TVC vehicle, plus the code that compares it with the current flight
@@ -57,6 +65,9 @@ for 5DOF/6DOF landing**. A clever reformulation of LCvx will never remove this. 
 nonconvexity lives: entirely in the **choice of attitude profile**. Once the attitude is fixed, everything else is
 exactly convex (claim C-6). AACG is built on that split: a small outer loop over attitude, around an exact convex
 inner problem.
+
+(Lossless means exact: feasible exactly when a flyable plan exists. That does not rule out a single convex program
+that is merely *sound*. Planner F is one; see the note at the top.)
 
 ## How the algorithm works, in more detail
 
@@ -168,9 +179,11 @@ do this during the 10 s hover, then fly a fixed absolute touchdown time with shr
 
 ## How it relates to the theory (one paragraph per result)
 
-- **Impossibility (Thm A, B\*, Lean).** No uniform convex relaxation is lossless for 5DOF/6DOF, so any
-  single-SOCP method (A, C) is either infeasible for the vehicle or loose somewhere. B is not a single convex
+- **Impossibility (Thm A, B\*, Lean).** No uniform convex relaxation is lossless for 5DOF/6DOF, so the single-SOCP
+  *relaxations* A and C are either infeasible for the vehicle or loose somewhere. B is not a single convex
   program: its constraint set depends on the instance through the attitude profile, which is allowed (C-U).
+  (An earlier version said "any single-SOCP method". That was too strong: a single-SOCP *restriction* can be sound,
+  and planner F is.)
 - **C-6 (Lean, constant mass).** With the attitude fixed, the pure-TVC problem is exactly convex in the axial
   thrust. That is B's inner problem. We use a prescribed mass history (fixed point), and the replay certificate
   checks the residual.
@@ -180,6 +193,7 @@ do this during the 10 s hover, then fly a fixed absolute touchdown time with shr
   why A and C plans can be tracked approximately but never certified.
 - **FLAT (centre of percussion).** The point y = r + (J_t/(mL)) b accelerates exactly along the body axis. The
   tracking controller works in y, which removes the "push sideways before turning" (non-minimum-phase) effect of TVC.
+  Planner F plans in y as well, which is what removes B's outer loop.
 - **Hop ring (numerics).** On pad hops the nonconvexity is metre-scale. There the 3DOF relaxation accepts landings
   that do not exist, while B correctly refuses to certify them.
 
@@ -187,6 +201,8 @@ do this during the 10 s hover, then fly a fixed absolute touchdown time with shr
 
 | file | content |
 |---|---|
+| `gtpl_guidance/landing.py` | **entry point of the landing algorithm** (`LandingGuidance`) |
+| `gtpl_guidance/fcg.py`, `flat.py`, `flatcert.py` | planner F: the convex program, the centre-of-percussion formulas and spline, the limit check and open-loop replay |
 | `gtpl_guidance/params.py` | vehicle (plant) and planner parameters |
 | `gtpl_guidance/lcvx3dof.py` | A (faithful flight LCvx + t_f search), C (rate-limited 3DOF), 3DOF relaxation lower bound, purification |
 | `gtpl_guidance/attitude.py` | grid, attitude propagation from α, sensitivities, exact translational quadrature |
@@ -195,8 +211,9 @@ do this during the 10 s hover, then fly a fixed absolute touchdown time with shr
 | `gtpl_guidance/reference_nlp.py` | D: CasADi/IPOPT 6DOF multistart reference |
 | `gtpl_guidance/dynamics.py`, `sim6dof.py` | rigid-body plant, CoP-LQR tracking controller, closed loop with 1 Hz replans |
 | `gtpl_guidance/guidance.py` | closed-loop planner wrappers, t_f searches |
-| `scripts/` | `run_openloop.py`, `run_hop.py`, `run_montecarlo.py`, `make_report.py` |
-| `tests/test_solver.py` | pytest (15 tests, about 10 s) |
+| `gtpl_guidance/scvx6dof.py` | S: standard 6DOF successive convexification baseline |
+| `scripts/` | `run_openloop.py`, `run_hop.py`, `run_montecarlo.py`, `make_report.py`; for planner F: `example_landing.py`, `run_openloop_flat.py`, `replay_flat.py`, `run_hop_flat.py`, `run_mc_flat.py`, `stress_flat.py`, `report_flat.py`, `plot_flat.py`; for the audit: `audit_hop_ring.py`, `audit_hop_ring_d0.py`, `audit_single_convex.py` |
+| `tests/test_solver.py`, `tests/test_flat.py` | pytest (16 + 11 tests, about 35 s) |
 
 ## Running
 
@@ -205,6 +222,7 @@ cd solver
 uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python numpy scipy cvxpy clarabel ecos casadi matplotlib pytest
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 .venv/bin/python -m pytest -q                       # tests
+.venv/bin/python scripts/example_landing.py         # the landing algorithm on one descent
 .venv/bin/python scripts/run_openloop.py            # A/B/C/D/LB comparison  -> results/openloop.json
 .venv/bin/python scripts/run_montecarlo.py --scenario inair --n 40 --workers 2
 .venv/bin/python scripts/make_report.py --example   # tables + plots

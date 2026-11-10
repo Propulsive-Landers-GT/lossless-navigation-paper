@@ -205,7 +205,7 @@ applies at every instant, with q ≥ ‖x‖²/p from (R3) and G as in (R4):
     p(t) ≤ τ(t) ≤ σ(t)                              (B4), (R6)
 
 *Checked:* `test_bezier_control_polygons_reproduce_every_derivative`; `test_single_solve_is_flyable_at_every_instant`
-(dense grid, 2001 instants); `solver/scripts/stress_flat.py` (600 random problems, 458 feasible, no violation).
+(dense grid, 2001 instants); `solver/scripts/stress_flat.py` (300 random problems, each solved with default and with random references; 458 of the 600 solves feasible, no violation).
 
 > **Lemma 6 (mass).** Let z = ln m. For every span s and every t in it:  z_lo,s ≤ z(t) ≤ z_up,s,  hence
 > T_min ≤ m(t) τ(t) ≤ T_max. Moreover m(t_f) ≥ m₀ exp(−α (h/4) Σ σ) ≥ m_dry.

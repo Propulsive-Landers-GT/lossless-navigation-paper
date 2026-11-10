@@ -136,7 +136,8 @@ Checked numerically as well:
 
 - **Exactness.** Fed only the planned throttle and gimbal commands, with no feedback, the full nonlinear rigid-body
   simulation lands within 23 nanometres of the target (16 flights, some starting tilted and rotating).
-- **Soundness.** 600 random problems, 458 feasible: no plan violated a limit at any of 1201 instants.
+- **Soundness.** 300 random problems, each solved with two reference settings; 458 of the 600 solves were feasible
+  and no plan violated a limit at any of 1201 instants.
 
 **Not covered by the theorem:** gimbal slew rate and throttle slew rate (checked on every plan; a plan that fails is
 not flown), the altitude floor and glide slope between sample points, and everything outside the model: actuator lag,

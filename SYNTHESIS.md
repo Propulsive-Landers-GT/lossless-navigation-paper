@@ -68,6 +68,10 @@ lossless convexification for those problem classes either. tf = 7 s, the 100°/s
 | SDP-2.4 | SDP exact ⇔ genuine optimum is a local min in ℝ⁴ ⇔ PSD stress matrix ⇒ a-posteriori certificate | M1, fixed thrust | PROVED, refereed CONFIRMED (verify-pos6) | math/08 Thm 2.1/2.4 |
 | HOP | Largest physically admissible nonconvexity (r_z ≥ 0): pad-launched hop (r0z=0, v0z 7.73–7.92 m/s, tf=4): reachable landing spots form a RING — hole radius 0.55→4.99 m around the pad; torque-coupled TVC: 1.74 m hole at v0z=8.0. Realistic in-air descent (50 m, −5 m/s, 4 m/s crossrange, tf=7): no dent > 0.016 m | M1, M3 (TVC) | NUMERICAL (proof-s: reduction + offset witnesses rigorous; hole not certifiable by quadratic/S-procedure bounds — needs 2D rigidity or validated branch-and-bound) | numerics/README.md, numerics/results/s5_annulus.png |
 
+| F-SOUND | **Theorem F.** Every feasible point of the landing algorithm's SOCP (path of the centre of percussion, quintic spline, limits imposed as convex restrictions on Bezier control tuples) is a trajectory of the pure-TVC model that starts from the given position, velocity, attitude, rate and gimbal deflection, lands at rest upright, and keeps throttle, gimbal and tilt within limits at every instant | pure TVC, roll rate zero, mass depletion, centre of percussion fixed in the body (ε = J_t/(mL) constant) | PROVED on paper (6 lemmas); Lemma 1 = FLAT is **LEAN**; every lemma tested (`solver/tests/test_flat.py`); 458 feasible random plans with no violation; open-loop replay within 23 nm. Not in Lean. Slew limits and sampled state constraints are outside the theorem | math/10-landing-proof.md |
+| F-INC | The landing algorithm is incomplete (rejects some flyable landings), as Theorem A requires of any sound convex program with affine data entry | same | PROVED (one line from A); size NUMERICAL: +0.10 % fuel at the operating final time, +0.04 to +0.22 s minimum final time in-air, up to +0.41 s on 4 s hops, 4 of 9 flyable cells kept on the hop map | math/10 §9, solver/RESULTS-FLAT.md |
+| RING-TVC | On the solver's planning model (pure TVC, throttle 440 to 920 N, gimbal 10°, tilt 20°, roll rate zero), launch at 6.3 m/s, t_f = 4 s: landings 1, 2, 3 m away exist, a landing straight back down does not | pure TVC planning model | NUMERICAL (IPOPT, symmetric and 9 asymmetric starts; not a proof of infeasibility) | AUDIT-2026-11.md §2, solver/scripts/audit_hop_ring*.py |
+
 ## What breaks LCvx, in one paragraph
 LCvx works for 3DOF because the thrust direction is a free control. The relaxed (filled-in) thrust set is achievable
 on average by rapid switching (Lyapunov/Aumann), so the reachable set is already convex. In 5DOF the thrust direction
@@ -76,7 +80,19 @@ so it cannot switch. With a minimum throttle, "wasting" vertical impulse require
 single tilt direction. The average of a left-tilting and a right-tilting maneuver is therefore not flyable, yet any
 convex program that contains both must contain their average.
 
-## Practical implications for GTPL (solver-v2; final)
+## Practical implications for GTPL: update, November 2026
+- **Recommended: the landing algorithm (planner F)**, [`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md). One SOCP per plan in
+  centre-of-percussion coordinates, no iteration, sound by Theorem F.
+- **vs standard 6DOF SCvx (S) and planner B**, same plant, tracker, cases and seeds, each plan applied after its solver
+  time, each planner at its sustainable replan rate (solver/RESULTS-FLAT.md §4): NUMERICAL.
+  In-air (40): success S 40, B 36, F 40; lateral error median / max S 5.9 / 18.3 cm, F 0.2 / 1.1 cm; touchdown speed
+  median / max S 0.23 / 0.58, F 0.19 / 0.29 m/s. Hops (30): success S 30, B 28, F 30; lateral S 3.9 / 8.2 cm, F
+  0.4 / 2.0 cm; speed S 0.54 / 0.88, F 0.14 / 0.23 m/s; fuel F +5 %. Solver time per replan S 1.05 s, B 0.70 s, F 0.031 s (in-air means).
+- With zero computation time and 1 Hz replans for all (the earlier protocol), lateral accuracy is a tie (3.1 cm in-air).
+- **Correction:** the earlier statement that every practical method must iterate on the attitude was wrong
+  (AUDIT-2026-11.md §4). The earlier notes below are kept as written.
+
+## Practical implications for GTPL (solver-v2; superseded by the update above)
 - **Recommended planner B (attitude-aware convex guidance):** 3DOF warm start → SCvx steps on the body angular-
   acceleration profile, each followed by the EXACT convex inner SOCP given attitude (C-6). Every accepted iterate is
   flyable; certificate = fine-grid physical limits + open-loop 6DOF replay. Open loop: within 0.012% of the best
