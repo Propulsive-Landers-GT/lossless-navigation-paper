@@ -126,9 +126,14 @@ replan budget or warm start might close the gap.
 **Practical recommendation:** either is a sound choice for the lander. Standard SCvx is the better-known method,
 with published convergence theory and flight heritage in the literature, and here it was at least as robust. B's
 advantages are speed and the "stop any time and fly the last accepted plan" property. If the flight computer can
-afford about 0.6 s average and 1.7 s worst-case per replan, standard SCvx is the conservative pick. If not, B. The
-research result, that exact lossless convexification is impossible and every practical method must iterate on the
-attitude, applies to both.
+afford about 0.6 s average and 1.7 s worst-case per replan, standard SCvx is the conservative pick. If not, B.
+
+**Correction (November 2026).** This section used to end: "the research result, that exact lossless convexification
+is impossible and every practical method must iterate on the attitude, applies to both." The first half is right.
+The second half does not follow from the theorem and is false: planner F ([FLAT.md](FLAT.md)) is a single convex
+program whose plans are all flyable, with no iteration on the attitude. It was compared with B and S on the same
+cases in [RESULTS-FLAT.md](RESULTS-FLAT.md), which also adds computation time to the closed loop. The numbers above
+give every planner zero computation time; see `../AUDIT-2026-11.md` §4.
 
 **Not tested:** other SCvx variants (PTR, free final time inside the solver), tuning either method's parameters,
 timing on the flight hardware, or running either planner in the club's Rust simulator.

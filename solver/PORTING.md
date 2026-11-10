@@ -106,3 +106,58 @@ CoP-LQR. The CoP-LQR is about 40 lines, has no solver, and has gains computed of
   replans, but fuel numbers shift by about 20 %.
 - **Planning margins.** Choose 440/920 N, 10° gimbal and t_f + 0.5 s against measured tracking performance in
   `rust_rocket_sim` with the real MPC.
+
+## 6. Porting planner F (flat convex guidance)
+
+Planner F ([FLAT.md](FLAT.md)) is one SOCP per plan with the cone types `rust_lossless` already uses (zero,
+nonnegative, second-order). It is the simpler port: no loop, no linearisation, no attitude propagation or
+sensitivities, no warm start, no t_f bracket from the 3DOF solver.
+
+**What is computed once, offline or at start-up** (depends only on the number of spans S):
+
+- the cubic-elevated Bezier control matrices of y″, y‴, y⁗ (`flat.SplineBasis.ctrl`, each 4S × (S+5)),
+- the end-point rows of y, y′, …, y⁗ and the sampled rows of y and y″ used for the state constraints.
+
+**What changes per replan:** t_f (the matrices scale by t_f^(−d)), the initial state (right-hand sides and the b₀,
+ḃ₀, β₀ coefficients of five boundary rows), m₀, and four reference scalars per span.
+
+**Size as cvxpy canonicalises it** (a hand-written builder needs fewer auxiliaries; the trajectory itself has
+3(S+5) unknowns):
+
+| S | spline unknowns | conic variables | rows | SOC blocks | Clarabel time here |
+|---|---|---|---|---|---|
+| 8 | 39 | 527 | 1316 | 240 | 18 ms |
+| 12 | 51 | 783 | 1960 | 360 | 33 ms |
+| 16 | 63 | 1039 | 2604 | 480 | 43 ms |
+
+**Module layout (suggested `rust_lossless/src/flat.rs`):**
+
+```
+struct FlatRef  { rho: Vec<f64>, kap: Vec<f64>, phi: Vec<f64>, lb: Vec<f64> }      // per span; any values are safe
+struct FlatPlan { coeffs: DMatrix<f64>, tf: f64, eps: f64, m0: f64 }               // (S+5) x 3
+fn spline_basis(s: usize) -> Basis                                                  // de Boor + Bezier extraction, once
+fn build_socp(basis, state, target, tf, &FlatRef, t_lat0) -> (P, q, A, b, cones)    // fcg.FCG.solve, row by row
+fn flat_eval(&FlatPlan, t) -> Reference   // r, v, quaternion axis b, b', b'', throttle, gimbal: closed form (flat.py)
+fn refs_from_plan(&FlatPlan, t0, tf_new) -> FlatRef                                 // fcg.FCG.ref_from_traj
+fn check_limits(&FlatPlan) -> bool                                                  // dense evaluation of flat_eval
+```
+
+`flat_eval` is closed form, so the tracker can ask for the reference at its own 50 Hz instants instead of
+interpolating a table.
+
+**Replan logic** (`guidance.PlannerF`): solve once with references from the previous plan. If infeasible, solve once
+with the default references. If still infeasible, extend t_f by 0.25, 0.5 or 1.0 s. If still infeasible, or if the
+dense limit check fails, keep the previous plan. There is no iteration budget to tune because there is no iteration.
+
+**Time budget.** Mean 25 ms, worst 170 ms per replan on this machine (Clarabel's own time). At the ×2 to ×4 the
+table in §3 assumes for a Jetson, 5 Hz replanning fits with margin and 10 Hz fits on average. Cap Clarabel's
+iterations (about 20 to 25 are needed) and treat a time-out like an infeasible solve.
+
+**Before flight, in addition to §5:**
+
+- **Assumption CoP.** F assumes the centre of percussion stays fixed in the body, ε = J_t/(m L). Check it against the
+  measured mass properties over the propellant load. The sim-plant table gives 1.35 m within 1 % over a descent.
+- **Slew limits** are checked on each plan, not enforced inside the SOCP. If the real gimbal is slower than 100°/s,
+  add the surrogate rows (`FCG(slew=True)`) and re-run the Monte Carlo.
+- **Aggressive hops.** F needs up to about 0.4 s more flight time than the true minimum on 4 s pad hops
+  (RESULTS-FLAT.md). Choose t_f with `guidance.min_tf_F` plus margin, not with the 3DOF minimum.

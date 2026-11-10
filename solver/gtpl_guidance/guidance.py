@@ -192,11 +192,11 @@ class PlannerS:
     """
 
     def __init__(self, veh, cfg, target, tf_abs, certify=True, replay=True, extensions=(0.5, 1.0), tf_cap=20.0,
-                 first_iters=30, replan_iters=8, continue_iters=30, replan_margin_use=(20.0, 40.0)):
-        self.S0 = SCvx6DOF(veh, cfg)
+                 first_iters=30, replan_iters=8, continue_iters=30, replan_margin_use=(20.0, 40.0), hover_td=False):
+        self.S0 = SCvx6DOF(veh, cfg, hover_td=hover_td)
         dlo, dhi = replan_margin_use
         self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
-        self.S = SCvx6DOF(veh, self.cfg_replan)
+        self.S = SCvx6DOF(veh, self.cfg_replan, hover_td=hover_td)
         self.extensions, self.tf_cap = extensions, tf_cap
         self.first_iters, self.replan_iters, self.continue_iters = first_iters, replan_iters, continue_iters
         self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
@@ -272,20 +272,20 @@ class PlannerF:
     """
 
     def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=1, refine=0,
-                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True):
+                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True, soft_td=1):
         self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
         dlo, dhi = replan_margin_use
         self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
         self.S, self.span_min, self.S_min = S, span_min, S_min
         self.refine_first, self.refine = refine_first, refine
-        self.extensions, self.tf_cap, self.check = extensions, tf_cap, check
+        self.extensions, self.tf_cap, self.check, self.soft_td = extensions, tf_cap, check, soft_td
         self.last, self.last_t0 = None, None
         self._planners = {}
 
     def _planner(self, S, first):
         key = (S, first)
         if key not in self._planners:
-            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S)
+            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S, soft_td=self.soft_td)
         return self._planners[key]
 
     def __call__(self, t, x, prev_ref, act=(0.0, 0.0, None)):

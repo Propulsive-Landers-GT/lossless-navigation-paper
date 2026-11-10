@@ -28,6 +28,7 @@ warnings.filterwarnings('ignore')
 from gtpl_guidance.params import default_vehicle, default_config
 from gtpl_guidance.lcvx3dof import solve_candidate_C
 from gtpl_guidance.fcg import FCG
+from gtpl_guidance.guidance import bisect_min_tf
 from run_montecarlo import draw_case
 
 
@@ -62,6 +63,10 @@ def main():
                            cg_offset_midflight_max=float(eps * np.linalg.norm(b - R0[:, 2], axis=1).max()),
                            cg_drift_from_initial_rate=float(eps * np.linalg.norm(bd0) * tf),
                            tilt_start_deg=float(np.degrees(np.arccos(np.clip(b[0] @ R0[:, 2], -1, 1)))))
+            else:   # how much later a final time does this program need?
+                feas = lambda t: solve_candidate_C(r0, v0, m0, target, t, veh, cfg, dir0=R0[:, 2], dirN=[0, 0, 1.0]).u is not None
+                rec['min_tf'] = bisect_min_tf(feas, tf, tf + 1.0, tol=0.05, hi_max=tf + 6.0)
+                rec['feasible_without_attitude_bc'] = solve_candidate_C(r0, v0, m0, target, tf, veh, cfg).u is not None
             pf = F.plan(r0, v0, m0, R0, w0, target, tf, refine=0)
             rec.update(F_status=pf.status, F_fuel=None if pf.traj is None else pf.fuel)
             out.append(rec)
@@ -71,11 +76,9 @@ def main():
     for scen in ('inair', 'hop'):
         rr = [r for r in out if r['scenario'] == scen]
         ok = [r for r in rr if 'fuel' in r]
-        lossy = [r for r in ok if r['n_lossy'] > 0]
-        print(f"{scen}: {len(rr)} cases | program feasible {len(ok)} | relaxation NOT tight {len(lossy)} "
-              f"(min delivered thrust {min([r['T_delivered_min'] for r in ok] or [np.nan]):.0f} N, limit {veh.T_min:.0f}) | "
-              f"gimbal needed, median/max {np.median([r['gimbal_needed_max_deg'] for r in ok]):.1f}/{max(r['gimbal_needed_max_deg'] for r in ok):.1f} deg | "
-              f"CG drift from initial rate, median/max {np.median([r['cg_drift_from_initial_rate'] for r in ok]):.2f}/{max(r['cg_drift_from_initial_rate'] for r in ok):.2f} m | "
+        bad = [r for r in rr if 'fuel' not in r]
+        print(f"{scen}: {len(rr)} cases | program feasible {len(ok)} | relaxation not tight {sum(r['n_lossy'] > 0 for r in ok)} | "
+              f"infeasible cases need {np.median([r['min_tf'] - r['tf'] for r in bad if r.get('min_tf')] or [np.nan]):.2f} s more (median) | "
               f"F feasible {sum(r['F_status'] != 'infeasible' for r in rr)}")
 
 

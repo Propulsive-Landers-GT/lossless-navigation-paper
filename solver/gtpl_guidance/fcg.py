@@ -68,11 +68,11 @@ class FCG:
     """Flat convex guidance. Construct once per vehicle/config; call `plan`."""
 
     def __init__(self, veh, cfg, S=16, eps=None, samples_per_span=3, reg=1e-6, centre_gimbal_at_td=True,
-                 phi0=7.5, slew=False):
+                 phi0=7.5, slew=False, soft_td=0):
         self.veh, self.cfg, self.S = veh, cfg, S
         self.eps = eps if eps is not None else veh.J_t / (veh.m_wet * veh.L)
         self.sps, self.reg, self.centre = samples_per_span, reg, centre_gimbal_at_td
-        self.phi0, self.slew = phi0, slew
+        self.phi0, self.slew, self.soft_td = phi0, slew, soft_td
         self.s_tilt = np.sin(cfg.tilt_max)
         self.basis = SplineBasis(S)
 
@@ -194,6 +194,10 @@ class FCG:
         cons += [yd1 == 0, uT[:2] == 0, u1_T[:2] == 0]
         if self.centre:
             cons += [u2_T[:2] == 0]
+        if self.soft_td >= 1:        # arrive in hover: zero vertical acceleration at touchdown (thrust = weight)
+            cons += [uT[2] == G0]
+        if self.soft_td >= 2:        # ... and zero vertical jerk
+            cons += [u1_T[2] == 0]
 
         # ---- state constraints on the CG, sampled, soft (as planners B / S)
         xs = (np.arange(S * self.sps) + 1) / (S * self.sps)

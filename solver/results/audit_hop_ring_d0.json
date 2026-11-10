@@ -1,0 +1,106 @@
+[
+ {
+  "v0z": 6.3,
+  "n_starts": 9,
+  "feasible": false,
+  "runs": [
+   {
+    "name": "from d=1",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=1 perturbed",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=1 raw",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=2",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=2 perturbed",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=2 raw",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=3",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=3 perturbed",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=3 raw",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   }
+  ]
+ },
+ {
+  "v0z": 6.25,
+  "n_starts": 9,
+  "feasible": true,
+  "runs": [
+   {
+    "name": "from d=1",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=1 perturbed",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=1 raw",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=2",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=2 perturbed",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=2 raw",
+    "ok": true,
+    "status": "Solve_Succeeded"
+   },
+   {
+    "name": "from d=3",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=3 perturbed",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   },
+   {
+    "name": "from d=3 raw",
+    "ok": false,
+    "status": "Infeasible_Problem_Detected"
+   }
+  ]
+ }
+]

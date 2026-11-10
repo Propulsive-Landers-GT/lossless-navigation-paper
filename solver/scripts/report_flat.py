@@ -7,7 +7,16 @@ import numpy as np
 
 HERE = os.path.dirname(__file__)
 R = lambda name: json.load(open(os.path.join(HERE, '..', 'results', name)))
-NAMES = {'B': 'B', 'S': 'S (SCvx)', 'F': 'F', 'Blat': 'B', 'Slat': 'S (SCvx)', 'F10': 'F, 10 Hz', 'F10own': 'F, 10 Hz, own t_f'}
+NAMES = {'B': 'B', 'S': 'S (SCvx)', 'Sh': 'S + hover arrival', 'F0': 'F without hover arrival', 'F': 'F',
+         'Blat': 'B', 'Slat': 'S (SCvx)', 'Shlat': 'S + hover arrival', 'F10hard': 'F without hover arrival, 10 Hz',
+         'F10': 'F, 10 Hz', 'F10own': 'F, 10 Hz, own t_f (+0.5 s)', 'F10own25': 'F, 10 Hz, own t_f (+0.25 s)',
+         'Slat4': 'S (SCvx)', 'F5x4': 'F, 5 Hz'}
+GROUPS = (('Repo protocol: 1 Hz replans, plans applied instantly, same t_f', ['B', 'S', 'Sh', 'F0', 'F']),
+          ('Realistic compute: plans applied after their solver time, each planner at its sustainable rate',
+           ['Blat', 'Slat', 'Shlat', 'F10hard', 'F10', 'F10own', 'F10own25']),
+          ('Four times slower computer: every solver time multiplied by 4', ['Slat4', 'F5x4']))
+PAIRS = (('F', 'S'), ('F', 'Sh'), ('F10', 'Slat'), ('F10', 'Shlat'), ('F10', 'S'), ('F10own25', 'Slat'), ('F5x4', 'Slat4'))
+LAT = ('Blat', 'Slat', 'Shlat', 'Slat4')
 
 
 def q(a, f='{:.2f}'):
@@ -89,8 +98,9 @@ def mc(scen, title):
     d = R(f'mc_{scen}_flat.json')
     cases = sorted({r['case'] for r in d})
     print(f'\n### Closed loop: {title} ({len(cases)} cases)\n')
-    for group, meths in (('Repo protocol: 1 Hz replans, plans applied instantly, same t_f', ['B', 'S', 'F']),
-                         ('Realistic compute: plans applied after their solver time, each planner at its sustainable rate', ['Blat', 'Slat', 'F10', 'F10own'])):
+    for group, meths in GROUPS:
+        if not any(x['method'] in meths for x in d):
+            continue
         print(f'**{group}**\n')
         print('| planner | success | lateral error [cm] median / p95 / max | touchdown speed [m/s] median / p95 / max | tilt [deg] median / p95 / max | fuel at t_f [kg] mean | solver time per replan [ms] mean / max | SOCPs per replan mean / max | replans kept previous plan | t_f extended (runs) |')
         print('|---|---|---|---|---|---|---|---|---|---|')
@@ -111,25 +121,25 @@ def mc(scen, title):
     print('**Actuator use and first plan**\n')
     print('| planner | gimbal travel [deg] mean | gimbal RMS [deg] mean | throttle travel [N] mean | throttle saturated (time) | gimbal saturated (time) | first plan: solver time [s] mean / max | time-of-flight search [s] mean |')
     print('|---|---|---|---|---|---|---|---|')
-    for m in ['B', 'S', 'F', 'Blat', 'Slat', 'F10', 'F10own']:
+    for m in [x for _, g in GROUPS for x in g]:
         ok = [r for r in d if r['method'] == m and 'failed' not in r]
         if not ok:
             continue
-        ts = np.mean([r['t_tfF'] if m == 'F10own' else r['t_tfB'] for r in ok])
-        lab = NAMES[m] + (' (latency)' if m in ('Blat', 'Slat') else '')
+        ts = np.mean([(r['t_tfF'] if m.startswith('F10own') else r['t_tfB']) or np.nan for r in ok])
+        lab = NAMES[m] + (' (latency)' if m in LAT else '') + (' (4x slower computer)' if m in ('Slat4', 'F5x4') else '')
         print(f"| {lab} | {np.mean([r['gimbal_travel_deg'] for r in ok]):.0f} | {np.mean([r['gimbal_rms_deg'] for r in ok]):.2f} | "
               f"{np.mean([r['thrust_travel'] for r in ok]):.0f} | {100 * np.mean([r['thrust_sat_frac'] for r in ok]):.1f} % | "
               f"{100 * np.mean([r['gimbal_sat_frac'] for r in ok]):.1f} % | {np.mean([r['solve_first'] for r in ok]):.2f} / {max(r['solve_first'] for r in ok):.2f} | {ts:.1f} |")
     # paired comparisons
     by = {(r['case'], r['method']): r for r in d if 'failed' not in r}
-    for a, b in (('F', 'S'), ('F10', 'Slat'), ('F10', 'S'), ('F10own', 'Slat')):
+    for a, b in PAIRS:
         pairs = [(by[(c, a)], by[(c, b)]) for c in cases if (c, a) in by and (c, b) in by]
         if not pairs:
             continue
         w_e = sum(x['pos_err'] < y['pos_err'] for x, y in pairs)
         w_v = sum(x['speed'] < y['speed'] for x, y in pairs)
         df = np.mean([100 * (x['fuel_tf'] / y['fuel_tf'] - 1) for x, y in pairs])
-        print(f"\nPaired, {NAMES[a]} vs {NAMES[b]}{' (latency)' if b.endswith('lat') else ''}: smaller lateral error in {w_e}/{len(pairs)} cases, "
+        print(f"\nPaired, {NAMES[a]} vs {NAMES[b]}{' (latency)' if b in LAT else ''}: smaller lateral error in {w_e}/{len(pairs)} cases, "
               f"lower touchdown speed in {w_v}/{len(pairs)}, fuel {df:+.2f} % on average.")
     fails = [(r['case'], r['method'], round(r.get('speed', -1), 2), round(r.get('pos_err', -1), 2), round(r.get('tilt_deg', -1), 1), r.get('failed'))
              for r in d if not r.get('success')]
@@ -146,15 +156,33 @@ def mc(scen, title):
 
 def audit():
     d = R('audit_single_convex.json')
-    print('\n### Single-convex-program construction with the thrust relaxation (rate-limited LCvx), same cases\n')
-    print('| scenario | cases | program feasible | relaxation not tight | min delivered thrust [N] (limit 400) | gimbal needed to follow it, median / max [deg] (limit 15) | planner F feasible |')
+    print('\n### Relaxation-based single convex program (rate-limited LCvx with attitude boundary conditions), first plans\n')
+    print('| scenario | cases | program feasible | of those, relaxation tight | infeasible cases: extra flight time needed [s] median / max | fuel vs planner F where both feasible | planner F feasible |')
     print('|---|---|---|---|---|---|---|')
     for scen in ('inair', 'hop'):
         rr = [r for r in d if r['scenario'] == scen]
         ok = [r for r in rr if 'fuel' in r]
-        print(f"| {scen} | {len(rr)} | {len(ok)} | {sum(r['n_lossy'] > 0 for r in ok)} | {min(r['T_delivered_min'] for r in ok):.0f} | "
-              f"{np.median([r['gimbal_needed_max_deg'] for r in ok]):.1f} / {max(r['gimbal_needed_max_deg'] for r in ok):.1f} | "
-              f"{sum(r['F_status'] != 'infeasible' for r in rr)} |")
+        bad = [r['min_tf'] - r['tf'] for r in rr if 'fuel' not in r and r.get('min_tf')]
+        both = [100 * (r['fuel'] / r['F_fuel'] - 1) for r in ok if r.get('F_fuel')]
+        print(f"| {scen} | {len(rr)} | {len(ok)} | {sum(r['n_lossy'] == 0 for r in ok)} | "
+              f"{(f'{np.median(bad):.2f} / {np.max(bad):.2f}' if bad else '-')} | "
+              f"{(f'{np.mean(both):+.2f} %' if both else '-')} | {sum(r['F_status'] != 'infeasible' for r in rr)} |")
+    ok = [r for r in d if 'fuel' in r]
+    if ok:
+        print(f"\nWhere feasible: gimbal angle a gimballed vehicle needs to follow the planned thrust direction, median / max "
+              f"{np.median([r['gimbal_needed_max_deg'] for r in ok]):.1f} / {max(r['gimbal_needed_max_deg'] for r in ok):.1f} deg; "
+              f"largest mid-flight offset between the planned path and the CG, median / max "
+              f"{np.median([r['cg_offset_midflight_max'] for r in ok]):.2f} / {max(r['cg_offset_midflight_max'] for r in ok):.2f} m; "
+              f"landing-point shift from the unplanned initial body rate, median / max "
+              f"{np.median([r['cg_drift_from_initial_rate'] for r in ok]):.2f} / {max(r['cg_drift_from_initial_rate'] for r in ok):.2f} m.")
+    for f in ('mc_inair.json', 'mc_hop.json'):
+        try:
+            rr = [x for x in R(f) if x['method'] == 'C' and 'tight_min' in x]
+            print(f"Earlier closed-loop runs of the same construction without the boundary conditions ({f}): "
+                  f"{sum(x['tight_min'] < 0.999 for x in rr)}/{len(rr)} runs produced at least one replan whose relaxation was not tight "
+                  f"(smallest ||T||/Gamma = {min(x['tight_min'] for x in rr):.2f}).")
+        except FileNotFoundError:
+            pass
 
 
 if __name__ == '__main__':
