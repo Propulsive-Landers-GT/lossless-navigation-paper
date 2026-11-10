@@ -71,8 +71,10 @@ class SCvxStats:
 class SCvx6DOF:
     """Standard SCvx. Construct once per vehicle/config, call `plan(...)`."""
 
-    def __init__(self, veh, cfg, ns=4, w_nu=1e3, rho0=0.0, rho1=0.25, rho2=0.7, r_init=0.5, r_min=1e-5, r_max=10.0):
+    def __init__(self, veh, cfg, ns=4, w_nu=1e3, rho0=0.0, rho1=0.25, rho2=0.7, r_init=0.5, r_min=1e-5, r_max=10.0,
+                 hover_td=False):
         self.veh, self.cfg, self.ns = veh, cfg, ns
+        self.hover_td = hover_td     # optional: arrive in hover (axial thrust = weight at t_f), as planner F's soft_td
         self.w_nu, self.rho0, self.rho1, self.rho2 = w_nu, rho0, rho1, rho2
         self.r_init, self.r_min, self.r_max = r_init, r_min, r_max
         self._fn_cache = {}
@@ -159,6 +161,8 @@ class SCvx6DOF:
             cons += [np.tan(c.glide_slope) * cp.norm(X[1:, :2] - target[None, :2], axis=1) <= rz + s]
         # terminal: at the target, at rest, upright, zero body rate
         cons += [X[N, 0:3] == target, X[N, 3:6] == 0, X[N, 7] == 0, X[N, 8] == 0, X[N, 10:13] == 0]
+        if self.hover_td:
+            cons += [T[N, 2] == G0 * X[N, 13], T[N, 0] == 0, T[N, 1] == 0]
         # trust region on the scaled deviation (infinity norm, per variable)
         cons += [cp.abs(Xh - Xb / SX[None, :]) <= r, cp.abs(Th - Tb / ST) <= r]
         lin_pen = self.w_nu * cp.sum(cp.abs(nu)) + W_STATE * cp.sum(s)

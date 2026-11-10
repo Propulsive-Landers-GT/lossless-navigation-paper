@@ -8,18 +8,30 @@ landers whose thrust direction is tied to a finite-rate attitude. The answer is 
 does (affine data entry, any lifted variables, any cost) is lossless for 5-DOF or kinematic 6-DOF descent. This holds
 with throttle limits, gimbal cone, altitude and glide-slope constraints, upright landing, any burn time, mass depletion,
 free final time, and at GTPL's actual constants. For the real gimbal-torque (pure TVC) vehicle the same nonconvexity is
-proved by exact-arithmetic computer-assisted certificates at 1, 2, 3 and 5 s. A practical planner built on what *is*
-exactly convex (the problem for a fixed attitude profile) is in `solver/`.
+proved by exact-arithmetic computer-assisted certificates at 1, 2, 3 and 5 s.
+
+**What we fly instead: [`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md).** Lossless means sound *and* complete. Giving
+up completeness leaves room for a single convex program whose every plan is flyable. For our gimballed vehicle that
+program is easy to write, because the centre of percussion (1.35 m above the centre of mass) moves like a point mass
+with thrust along the body: plan that one point's path and the attitude, gimbal and throttle follow by formula. The
+result is one SOCP per plan, with no iteration, proved sound in [`math/10-landing-proof.md`](math/10-landing-proof.md).
+Against standard successive convexification, with each planner's computation time counted, it lands within 0.2 cm
+(median) instead of 5.9 cm, at about one thirtieth of the solver time
+([`solver/RESULTS-FLAT.md`](solver/RESULTS-FLAT.md)).
 
 ## Start here
 
 | If you want | Read |
 |---|---|
-| The answer and its exact scope, in two pages | [`FINAL-REPORT.md`](FINAL-REPORT.md) |
+| **The landing algorithm for our vehicle: the idea, the recipe, what is proved, how to run it** | [`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md) |
+| Its proof | [`math/10-landing-proof.md`](math/10-landing-proof.md) |
+| Its benchmarks against successive convexification | [`solver/RESULTS-FLAT.md`](solver/RESULTS-FLAT.md) |
+| Whether any mistake here would rescue lossless convexification (no), and what was checked | [`AUDIT-2026-11.md`](AUDIT-2026-11.md) |
+| The impossibility answer and its exact scope, in two pages | [`FINAL-REPORT.md`](FINAL-REPORT.md) |
 | The status of every individual claim (Lean / proved / numerical / open) | [`SYNTHESIS.md`](SYNTHESIS.md) |
 | The paper (shareable version, 40 pages) | [`paper/main-share.pdf`](paper/main-share.pdf) |
 | To check the proofs yourself | [Checking the results](#checking-the-results) below |
-| The guidance algorithm for the lander | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md), [`solver/RESULTS-SCVX.md`](solver/RESULTS-SCVX.md) (vs standard SCvx) |
+| The earlier planners (B, attitude-aware convex guidance; S, standard SCvx) | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md), [`solver/RESULTS-SCVX.md`](solver/RESULTS-SCVX.md) |
 | How the work was done, conversation included | [`session-transcript/`](session-transcript/) and [`comms/`](comms/) |
 
 ## Repository map
@@ -27,6 +39,8 @@ exactly convex (the problem for a fixed attitude profile) is in `solver/`.
 ### Top level
 | Path | Contents |
 |---|---|
+| `LANDING-ALGORITHM.md` | **The recommended guidance algorithm**, self-contained: the centre-of-percussion simplification, the algorithm, formulas with our constants, the guarantee, costs, performance, usage, pre-flight checklist. |
+| `AUDIT-2026-11.md` | November 2026 audit: the impossibility result re-checked, a single-convex-program claim examined, mistakes found, follow-up questions. |
 | `FINAL-REPORT.md` | User-facing summary: the answer, what is possible, effect size for GTPL, practical algorithm, open problems. |
 | `SYNTHESIS.md` | Living results table. One row per claim with its model, scope, status and the file holding the proof. |
 | `context/vehicle.md` | GTPL vehicle parameters (mass, thrust, Isp, inertia, gimbal) and notes on the existing guidance stack, including the flight MPC's ~4.6x angular-authority mismatch. |
@@ -77,6 +91,7 @@ Key Lean files (all under `lean/LcvxObstruction/LcvxObstruction/`):
 | `03-lean-blueprint.md`, `05-positive-lean-blueprint.md` | Plans for the Lean formalization. |
 | `04-positive-results.md` | What is possible: Theorem C, C-6 (exact convexity given attitude), C-U, C-Y, C-K. |
 | `06-pure-tvc.md` | Pure-TVC (gimbal-torque) model: certificates at 1, 2, 3, 5 s, rate-limited numerics, open problems. |
+| `10-landing-proof.md` | **Proof of the landing algorithm:** Theorem F (every plan is flyable, at every instant) in six lemmas, and why it cannot be complete. |
 | `07-lemma-S.md` | Lemma S and the hard-landing Theorem D. |
 | `08-sdp-exactness.md`, `09-csd2-prime.md` | SDP (moment) lifts: when they are exact, the CSD2' conjecture and its partial proofs. |
 | `possibility-rho0.md` | The zero-minimum-throttle case (still nonconvex). |
@@ -99,16 +114,17 @@ Key Lean files (all under `lean/LcvxObstruction/LcvxObstruction/`):
 | `proof/`, `proof-s/`, `proof-sdp/`, `proof-csd2p/`, `possibility-rho0/`, `positive/` | Numerics supporting the corresponding math notes. |
 | `verify-imp/`, `verify-pos6/`, `verify-sdp2/`, `verifier-sdp/` | Referees' independent re-computations. |
 
-### `solver/`: planner B (attitude-aware convex guidance)
+### `solver/`: the landing algorithm (planner F) and the earlier planners B and S
 | Path | Contents |
 |---|---|
-| `README.md` | How the planner works and how to run it. |
+| `RESULTS-FLAT.md` | **Benchmarks of the landing algorithm** against SCvx and planner B: open loop, exact replay, hop map, closed-loop Monte Carlo with computation time counted, ablations, stress test. |
+| `README.md` | How planner B works and how to run everything. |
 | `RESULTS.md` | Open-loop, closed-loop Monte Carlo (in-air 100% vs 28% for current guidance; pad hops 97% vs 0%) and hop-map results. |
 | `RESULTS-SCVX.md` | Head-to-head with standard 6DOF successive convexification: a tie on fuel and feasibility, SCvx as good or slightly better in closed loop, B about 2x faster per replan. |
 | `CLAIMS.md` | Every mathematical claim the planner relies on, with its proof and Lean status. |
 | `PORTING.md` | Notes for porting to the flight computer (hard time budget, fallback). |
-| `gtpl_guidance/` | The package: `aacg.py` (planner B), `scvx6dof.py` (standard 6DOF SCvx baseline), `lcvx3dof.py` (current flight LCvx re-implementation), `certify.py`, `sim6dof.py`, `reference_nlp.py` (IPOPT baseline), `dynamics.py`, `attitude.py`, `params.py`. |
-| `scripts/`, `results/`, `tests/` | Experiment drivers, their outputs, and 15 pytest tests (`cd solver && pytest`). |
+| `gtpl_guidance/` | The package: **`landing.py` (entry point of the landing algorithm), `fcg.py` (its convex program), `flat.py` (centre-of-percussion formulas and spline), `flatcert.py` (limit check and open-loop replay)**, `aacg.py` (planner B), `scvx6dof.py` (standard 6DOF SCvx baseline), `lcvx3dof.py` (current flight LCvx re-implementation), `certify.py`, `sim6dof.py`, `reference_nlp.py` (IPOPT baseline), `dynamics.py`, `attitude.py`, `params.py`. |
+| `scripts/`, `results/`, `tests/` | Experiment drivers (`example_landing.py` is the worked example; `*_flat.py` and `audit_*.py` produce RESULTS-FLAT.md and the audit), their outputs, and 27 pytest tests (`cd solver && pytest`). |
 
 ### `share/`: the supplementary archive for readers of the paper
 `share/make_bundle.sh` builds `share/dist/lcvx-impossibility-supplement.zip` (paper, Lean project with `Verify.lean`,
@@ -158,3 +174,8 @@ Python environments (`.venv/`) and Lean build caches (`.lake/`) are not committe
 Machine-checked, proved, numerical and open results are listed claim by claim in `SYNTHESIS.md`. The main open items:
 pure TVC at 7 s, with the 100 deg/s gimbal-rate limit and with mass depletion (nonconvex numerically, unproved); the
 hop-ring hole at GTPL constants; the CSD2' residual class; convergence of planner B. The paper has not been peer reviewed.
+
+For the landing algorithm: Theorem F is proved on paper and tested numerically but not formalised in Lean (only its
+first lemma is); gimbal and throttle slew limits are checked per plan, not guaranteed; the centre of percussion is
+assumed fixed in the body and that must be confirmed from measured mass properties; and nothing has been run on flight
+hardware or in the club's Rust simulator. The paper (`paper/`) predates the algorithm and does not describe it.

@@ -40,6 +40,14 @@ class Reference:
                          'B', t0 + plan.tf)
 
     @staticmethod
+    def from_planF(plan, t0, dt=0.02):
+        """Reference from a flat plan: every quantity is the exact flat map of the spline, sampled every `dt`."""
+        tr = plan.traj
+        ts = np.linspace(0.0, tr.tf, max(int(np.ceil(tr.tf / dt)), 2) + 1)
+        e = tr.eval(ts)
+        return Reference(t0, ts, e['r'], e['v'], e['acc'], e['b'], e['bd'], e['bdd'], e['Ta'], e['m'], 'F', t0 + tr.tf)
+
+    @staticmethod
     def from_plan3(plan, t0):
         # piecewise-linear r, v at nodes (as the flight autopilot interpolates); thrust direction held per interval
         N = plan.N
@@ -138,6 +146,9 @@ class SimOptions:
     isp_error: float = 0.0     # relative error of the true Isp vs guidance
     seed: int = 0
     log: bool = False
+    latency: bool = False      # if True, a replan computed from the state at time t is applied at t + its solver time
+    latency_key: str = 'solve_time'
+    latency_scale: float = 1.0
 
 
 def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
@@ -157,6 +168,7 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     if ref is None:
         return dict(failed='initial plan failed', infos=infos)
     next_replan = opts.replan_dt
+    pending = None
     cmd = (0.0, 0.0, T_a, 0.0)
     noise = 1.0
     gust = np.zeros(3)
@@ -164,6 +176,7 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     max_tilt = 0.0
     sat_g = sat_T = 0
     n_ctrl = 0
+    gim_travel = thr_travel = gim_sq = 0.0      # actuator effort: total gimbal travel [rad], throttle travel [N]
     min_glide_margin = np.inf
     t_end = ref.tf_abs + opts.t_extra
     touchdown = None
@@ -171,13 +184,21 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     n_steps_ctrl = int(round(opts.ctrl_dt / opts.dt))
     step = 0
     while t < t_end:
-        if t >= next_replan - 1e-9 and ref.tf_abs - t > opts.t_lock:
+        if pending is not None and t >= pending[0] - 1e-9:
+            ref = pending[1]
+            t_end = ref.tf_abs + opts.t_extra
+            pending = None
+        if t >= next_replan - 1e-9 and ref.tf_abs - t > opts.t_lock and pending is None:
             new, info = planner(t, x.copy(), ref, (th_a, ph_a, T_a))
             infos.append(info)
             if new is not None:
-                ref = new
-                t_end = ref.tf_abs + opts.t_extra
-            next_replan += opts.replan_dt
+                if opts.latency:
+                    pending = (t + opts.latency_scale * (info.get(opts.latency_key) or 0.0), new)
+                else:
+                    ref = new
+                    t_end = ref.tf_abs + opts.t_extra
+            next_replan = max(next_replan + opts.replan_dt, t + 1e-9) if not opts.latency else \
+                max(next_replan + opts.replan_dt, (pending[0] if pending is not None else t) + 1e-9)
         J, L = veh.inertia_lever(x[13])
         if step % n_steps_ctrl == 0:
             rf = ref.at(t)
@@ -196,9 +217,14 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
         ph_c = np.clip(ph_c, -veh.gimbal_max, veh.gimbal_max)
         T_c = np.clip(T_c, veh.T_min, veh.T_max)
         dg = veh.gimbal_rate * opts.dt
-        th_a += np.clip(th_c - th_a, -dg, dg)
-        ph_a += np.clip(ph_c - ph_a, -dg, dg)
-        T_a += np.clip(T_c - T_a, -veh.thrust_rate * opts.dt, veh.thrust_rate * opts.dt)
+        d_th, d_ph = np.clip(th_c - th_a, -dg, dg), np.clip(ph_c - ph_a, -dg, dg)
+        d_T = np.clip(T_c - T_a, -veh.thrust_rate * opts.dt, veh.thrust_rate * opts.dt)
+        th_a += d_th
+        ph_a += d_ph
+        T_a += d_T
+        gim_travel += abs(d_th) + abs(d_ph)
+        thr_travel += abs(d_T)
+        gim_sq += (th_a**2 + ph_a**2) * opts.dt
         Tb = T_a * noise * gimbal_dir(th_a + opts.gimbal_bias[0], ph_a + opts.gimbal_bias[1])
         vrel = x[3:6] - (np.array(opts.wind) + gust)
         F_drag = -0.5 * 1.225 * opts.drag_CdA * np.linalg.norm(vrel) * vrel
@@ -230,7 +256,9 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
                rate=float(np.linalg.norm(x[10:12])), fuel=float(x0[13] - x[13]),
                fuel_tf=fuel_tf if fuel_tf is not None else float(x0[13] - x[13]), tf_final=float(ref.tf_abs), max_tilt_deg=float(np.degrees(max_tilt)),
                gimbal_sat_frac=sat_g / max(n_ctrl, 1), thrust_sat_frac=sat_T / max(n_ctrl, 1),
-               min_alt_margin=float(min_glide_margin), infos=infos)
+               min_alt_margin=float(min_glide_margin), infos=infos,
+               gimbal_travel_deg=float(np.degrees(gim_travel)), thrust_travel=float(thr_travel),
+               gimbal_rms_deg=float(np.degrees(np.sqrt(gim_sq / max(t, 1e-9)))))
     out['success'] = bool(out['touched'] and out['speed'] <= 1.0 and out['pos_err'] <= 1.0 and out['tilt_deg'] <= 5.0)
     if opts.log:
         out['log'] = np.array(log)

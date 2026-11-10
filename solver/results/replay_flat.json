@@ -1,0 +1,130 @@
+[
+ {
+  "name": "S1 vertical 50 m",
+  "start": "upright, at rest",
+  "tf": 8.8671875,
+  "dr": 7.760014852919994e-12,
+  "dv": 9.201528428093297e-13,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S1 vertical 50 m",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.8671875,
+  "dr": 5.8569235820601685e-09,
+  "dv": 3.5491589943544583e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S2 offset (10,20,50)",
+  "start": "upright, at rest",
+  "tf": 8.88671875,
+  "dr": 3.2889723058692145e-09,
+  "dv": 1.442844327752348e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S2 offset (10,20,50)",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.88671875,
+  "dr": 2.098724310574941e-08,
+  "dv": 1.0806747891194448e-08,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S3 (-8,5,45) moving",
+  "start": "upright, at rest",
+  "tf": 7.71484375,
+  "dr": 2.275637082744427e-09,
+  "dv": 1.036983113478127e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S3 (-8,5,45) moving",
+  "start": "tilted 3 deg, rotating",
+  "tf": 7.71484375,
+  "dr": 7.175018083965479e-09,
+  "dv": 4.0331103389146474e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S4 (5,0,55) moving",
+  "start": "upright, at rest",
+  "tf": 8.765625,
+  "dr": 2.918027743804665e-09,
+  "dv": 1.2305372753525805e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S4 (5,0,55) moving",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.765625,
+  "dr": 1.521503990040546e-08,
+  "dv": 7.261612453554365e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S5 numerics in-air",
+  "start": "upright, at rest",
+  "tf": 8.015625,
+  "dr": 5.917967106268067e-10,
+  "dv": 2.649822245036147e-10,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S5 numerics in-air",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.015625,
+  "dr": 1.129747851802534e-08,
+  "dv": 5.599424233721778e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S6 (15,-10,60) sinking",
+  "start": "upright, at rest",
+  "tf": 8.609375,
+  "dr": 9.330665172657054e-10,
+  "dv": 7.088382710101447e-10,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S6 (15,-10,60) sinking",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.609375,
+  "dr": 5.15449085688948e-10,
+  "dv": 1.3221735078967432e-10,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S7 (-5,-12,40)",
+  "start": "upright, at rest",
+  "tf": 7.44921875,
+  "dr": 1.3298520879637635e-09,
+  "dv": 7.719891875985172e-10,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S7 (-5,-12,40)",
+  "start": "tilted 3 deg, rotating",
+  "tf": 7.44921875,
+  "dr": 9.590573409428889e-09,
+  "dv": 5.205694636200281e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S8 (20,0,50) drifting",
+  "start": "upright, at rest",
+  "tf": 8.46484375,
+  "dr": 2.9757402070680755e-09,
+  "dv": 1.7480101275857994e-09,
+  "tilt_deg": 0.0
+ },
+ {
+  "name": "S8 (20,0,50) drifting",
+  "start": "tilted 3 deg, rotating",
+  "tf": 8.46484375,
+  "dr": 2.282401635572684e-08,
+  "dv": 1.1454255869569498e-08,
+  "tilt_deg": 0.0
+ }
+]

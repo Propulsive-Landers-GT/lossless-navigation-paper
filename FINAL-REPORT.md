@@ -1,5 +1,33 @@
 # Final report: lossless convexification for 5DOF / 6DOF powered descent
 
+## Update, November 2026
+
+1. **The impossibility result was audited and stands** ([`AUDIT-2026-11.md`](AUDIT-2026-11.md)). The obstruction was
+   reproduced independently on the planner's own model: launched upward at 6.3 m/s on a 4 s hop, the vehicle can land
+   1, 2 or 3 m away but not straight back down. The Lean build was not re-run in that audit.
+2. **One conclusion below was wrong.** "Every practical method must iterate on the attitude" does not follow from the
+   theorem. Lossless means sound and complete; a single convex program can still be sound.
+3. **There is now a recommended landing algorithm** ([`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md)). It plans the path
+   of the vehicle's centre of percussion, where the gimbal's sideways push cancels exactly, as one SOCP. Every plan is
+   flyable at every instant (Theorem F, [`math/10-landing-proof.md`](math/10-landing-proof.md)); it costs 0.10 % of
+   fuel on average at the operating point.
+4. **Against standard successive convexification**, same simulator and cases, with each planner's solver time counted
+   ([`solver/RESULTS-FLAT.md`](solver/RESULTS-FLAT.md)):
+
+   | | SCvx | landing algorithm |
+   |---|---|---|
+   | in-air landings within limits | 40/40 | 40/40 |
+   | lateral error, median / worst | 5.9 / 18.3 cm | 0.2 / 1.1 cm |
+   | touchdown speed, median / worst | 0.23 / 0.58 m/s | 0.19 / 0.29 m/s |
+   | solver time per replan, mean / worst | 1.05 / 4.9 s | 0.031 / 0.39 s |
+   | pad-hop fuel | 1.46 kg | 1.54 kg |
+
+   It is worse on pad-hop fuel (+5 %) and on the shortest possible flight time (up to 0.4 s longer on hops). With
+   zero computation time and equal replan rates, lateral accuracy is a tie.
+
+The sections below are the original report. "The practical algorithm" describes planner B, which the landing
+algorithm supersedes as the recommendation.
+
 Written by the orchestrator for the user's return. Details live in `SYNTHESIS.md` (results table with the status of
 every claim), `paper/main.pdf` (40-page paper draft), and `comms/LOG.md` (decision log).
 

@@ -9,6 +9,8 @@ from .certify import certify_B, certify_3dof
 from .lcvx3dof import tf_search_A, solve_candidate_C, solve_3dof_relaxation
 from .rotations import quat_to_R, gimbal_dir
 from .sim6dof import Reference
+from .fcg import FCG
+from .flatcert import check_limits
 
 
 def bisect_min_tf(feasible, lo, hi, tol=0.1, hi_max=25.0):
@@ -190,11 +192,11 @@ class PlannerS:
     """
 
     def __init__(self, veh, cfg, target, tf_abs, certify=True, replay=True, extensions=(0.5, 1.0), tf_cap=20.0,
-                 first_iters=30, replan_iters=8, continue_iters=30, replan_margin_use=(20.0, 40.0)):
-        self.S0 = SCvx6DOF(veh, cfg)
+                 first_iters=30, replan_iters=8, continue_iters=30, replan_margin_use=(20.0, 40.0), hover_td=False):
+        self.S0 = SCvx6DOF(veh, cfg, hover_td=hover_td)
         dlo, dhi = replan_margin_use
         self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
-        self.S = SCvx6DOF(veh, self.cfg_replan)
+        self.S = SCvx6DOF(veh, self.cfg_replan, hover_td=hover_td)
         self.extensions, self.tf_cap = extensions, tf_cap
         self.first_iters, self.replan_iters, self.continue_iters = first_iters, replan_iters, continue_iters
         self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
@@ -251,3 +253,104 @@ class PlannerS:
         self.last, self.last_t0 = p, t
         self.tf_abs = t + p.tf
         return Reference.from_planB(p, t), info
+
+
+def min_tf_F(r0, v0, m0, R0, w0, target, veh, cfg, lo=None, S=16, tol=0.05):
+    """Smallest final time at which planner F's single convex program is feasible (bisection, one SOCP per probe)."""
+    F = FCG(veh, cfg, S=S)
+    lo = lo or min_tf_3dof(r0, v0, m0, target, veh, cfg)
+    f = lambda tf: F.solve(r0, v0, m0, R0, w0, target, tf)[0] is not None
+    return bisect_min_tf(f, lo, lo + 2.0, tol=tol)
+
+
+class PlannerF:
+    """Closed-loop wrapper of planner F (flat convex guidance): fixed absolute final time, shrinking horizon.
+
+    Each replan solves the SAME convex program with new numbers (state, time to go). Nothing is carried over from the
+    previous plan by default, so there is no iteration, no warm start, no trust region and nothing that can diverge.
+    Fallbacks, in order: drop the arrive-in-hover condition; extend the final time; keep flying the previous plan.
+
+    Options: use_refs=True takes the tightness references (FlatRef) from the previous plan instead of the fixed
+    defaults, and refine_first=k re-solves the first plan k times with its own references. Both only tighten the
+    restriction (math/10-landing-proof.md); neither is needed.
+    """
+
+    def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=0, refine=0,
+                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True, soft_td=1,
+                 use_refs=False):
+        self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
+        dlo, dhi = replan_margin_use
+        self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
+        self.S, self.span_min, self.S_min = S, span_min, S_min
+        self.refine_first, self.refine = refine_first, refine
+        self.extensions, self.tf_cap, self.check, self.soft_td = extensions, tf_cap, check, soft_td
+        self.use_refs = use_refs     # False: every solve uses the fixed default references (the simplest form)
+        self.last, self.last_t0 = None, None
+        self._planners = {}
+
+    def _planner(self, S, first, soft):
+        key = (S, first, soft)
+        if key not in self._planners:
+            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S, soft_td=soft)
+        return self._planners[key]
+
+    def __call__(self, t, x, prev_ref, act=(0.0, 0.0, None)):
+        tf = self.tf_abs - t
+        R0, w0 = quat_to_R(x[6:10]), x[10:13]
+        first = self.last is None
+        if act[2] is None:
+            Tlat = np.zeros(2)
+        else:
+            Tb = act[2] * gimbal_dir(act[0], act[1])
+            lim = 0.95 * np.tan(self.cfg.gimbal_plan) * Tb[2]
+            Tlat = np.clip(Tb[:2], -lim, lim)
+        if first:
+            self.tf_first = tf
+            S = self.S
+        else:   # keep the span length roughly constant as the horizon shrinks
+            S = int(round(self.S * tf / self.tf_first))
+            S = max(self.S_min, min(S, self.S, max(int(tf / self.span_min), 1)))
+        t0 = time.perf_counter()
+        solve_time, n_solves, ext = 0.0, 0, 0.0
+        args = (x[0:3], x[3:6], x[13], R0, w0, self.target)
+        J, L = self.veh.inertia_lever(x[13])
+        eps = J / (x[13] * L)          # centre-of-percussion offset at the current mass
+        p = None
+        soft_used = 0
+        for dt_ext in (0.0,) + tuple(self.extensions):
+            if tf + dt_ext > self.tf_cap:
+                break
+            # the arrive-in-hover terminal condition is used when it is feasible and dropped before t_f is extended
+            for soft in ((self.soft_td, 0) if self.soft_td else (0,)):
+                F = self._planner(S, first, soft)
+                ref = None
+                if self.last is not None and self.use_refs:
+                    ref = F.ref_from_traj(self.last.traj, t0=t - self.last_t0, tf_new=tf + dt_ext, S=S, m0=x[13])
+                p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat,
+                           refine=self.refine_first if first else self.refine, eps=eps)
+                solve_time += p.solve_time
+                n_solves += p.n_solves
+                if p.traj is not None:
+                    break
+            if p.traj is not None:
+                ext, soft_used = dt_ext, soft
+                break
+        wall = time.perf_counter() - t0
+        ok = p is not None and p.traj is not None
+        info = dict(t=t, method='F', status=p.status if p is not None else 'infeasible', solve_time=solve_time,
+                    wall=wall, iters=n_solves, n_solves=n_solves, tf_ext=ext, continued=False,
+                    fuel_plan=p.fuel if ok else None, cert=ok, S=S, soft_td=soft_used)
+        if not ok:
+            return None, info      # keep flying the previous plan
+        if self.check:
+            c = check_limits(p, self.veh, self.cfg_replan, x[0:3], x[3:6], x[13], R0, w0, self.target, n=401,
+                             frame=False)
+            info['peaks'] = {k: c[k] for k in ('T_min', 'T_max', 'gimbal_cone_max_deg', 'gimbal_rate_max_dps',
+                                               'thrust_rate_max', 'tilt_max_deg')}
+            info['cert'] = bool(all(v for k, v in c['checks'].items() if not k.endswith('_plan')))
+            info['cert_detail'] = {k: bool(v) for k, v in c['checks'].items()}
+            if not info['cert'] and self.last is not None:
+                return None, info  # a replan that fails the limit check is not flown; the previous plan stays active
+        self.last, self.last_t0 = p, t
+        self.tf_abs = t + p.tf
+        return Reference.from_planF(p, t), info
