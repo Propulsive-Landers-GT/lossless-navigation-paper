@@ -338,6 +338,8 @@ class PlannerF:
                                                'thrust_rate_max', 'tilt_max_deg')}
             info['cert'] = bool(all(v for k, v in c['checks'].items() if not k.endswith('_plan')))
             info['cert_detail'] = {k: bool(v) for k, v in c['checks'].items()}
+            if not info['cert'] and self.last is not None:
+                return None, info  # a replan that fails the limit check is not flown; the previous plan stays active
         self.last, self.last_t0 = p, t
         self.tf_abs = t + p.tf
         return Reference.from_planF(p, t), info

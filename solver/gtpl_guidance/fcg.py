@@ -68,7 +68,7 @@ class FCG:
     """Flat convex guidance. Construct once per vehicle/config; call `plan`."""
 
     def __init__(self, veh, cfg, S=16, eps=None, samples_per_span=3, reg=1e-6, centre_gimbal_at_td=True,
-                 phi0=7.5, slew=True):
+                 phi0=7.5, slew=False):
         self.veh, self.cfg, self.S = veh, cfg, S
         self.eps = eps if eps is not None else veh.J_t / (veh.m_wet * veh.L)
         self.sps, self.reg, self.centre = samples_per_span, reg, centre_gimbal_at_td
@@ -147,6 +147,12 @@ class FCG:
         # thrust / mass upper bound sigma
         cons += [cp.norm(U, axis=1) <= sf]
         cons += [cp.norm(cp.vstack([sf + cp.multiply(eps / Lb, q), cp.multiply(eps / Lb, G)]), axis=0) <= sig]
+        if self.slew:
+            # slew surrogates (dominant terms only, NOT part of the guarantee; the certificate checks the true rates):
+            #   gimbal rate ~ eps |P u'''| / (f a) <= eps |u'''| / (2 phi p - phi^2),   throttle rate ~ m |f'| <= m0 |u'|
+            U3 = M5 @ c
+            cons += [eps * cp.norm(U3, axis=1) <= cfg.gimbal_rate_plan * (cp.multiply(2 * phi, p) - phi**2),
+                     cp.norm(U1, axis=1) <= cfg.thrust_rate_plan / m0]
 
         # ---- mass bounds: z_lo <= ln m <= z_up
         z0 = np.log(m0)

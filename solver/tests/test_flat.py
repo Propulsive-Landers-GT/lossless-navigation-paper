@@ -132,7 +132,7 @@ def test_open_loop_replay_lands_within_a_micrometre():
     r0, v0, R0, w0, tf = _problems()[1]
     p = F.plan(r0, v0, 80.0, R0, w0, TGT, tf, refine=0)
     xf = replay(p.traj, VEH, np.array(r0, float), np.array(v0, float), 80.0, R0, w0, model='cop')
-    assert np.linalg.norm(xf[0:3] - TGT) < 1e-5 and np.linalg.norm(xf[3:6]) < 1e-5
+    assert np.linalg.norm(xf[0:3] - TGT) < 1e-6 and np.linalg.norm(xf[3:6]) < 1e-6
     assert np.degrees(np.arccos(min(1.0, quat_to_R(xf[6:10])[2, 2]))) < 1e-3
 
 

@@ -37,9 +37,13 @@ def body_thrust(traj, frame, t):
     return R.T @ Tw
 
 
-def replay(traj, veh, r0, v0, m0, R0, w0, model='cop', L=None, rtol=1e-12, atol=1e-13, frame=None):
-    """Open-loop 6DOF replay. Returns the final 14-state."""
-    frame = frame or plan_frame(traj, R0)
+def replay(traj, veh, r0, v0, m0, R0, w0, model='cop', L=None, rtol=1e-13, atol=1e-14, frame=None):
+    """Open-loop 6DOF replay: the plan's throttle and gimbal commands are the only inputs. Returns the final 14-state.
+
+    The commands are body-frame quantities, so the plan's own body frame is integrated alongside the vehicle state
+    (4 extra states) instead of being interpolated, and the integration restarts at every spline knot, where the
+    commands have a kink. `frame` is accepted for backward compatibility and ignored.
+    """
     J0, L0 = veh.inertia_lever(m0)
     L = L if L is not None else veh.L
 
@@ -50,12 +54,24 @@ def replay(traj, veh, r0, v0, m0, R0, w0, model='cop', L=None, rtol=1e-12, atol=
             return J0, L0
         return veh.inertia_lever(m)
 
-    def f(t, x):
+    def f(t, X):
+        x, qp = X[:14], X[14:]
+        e = traj.eval(np.array([t]))
+        b, bd = e['b'][0], e['bd'][0]
+        w = np.cross(b, bd)                                        # planned world angular velocity
+        qw, qv = qp[0], qp[1:]
+        qpd = 0.5 * np.concatenate([[-qv @ w], qw * w - np.cross(qv, w)])
+        Rp = quat_to_R(qp / np.linalg.norm(qp))
+        Tb = Rp.T @ (e['Ta'][0] * b + e['Tlat_w'][0])              # commanded thrust in the planned body frame
         J, Lm = props(x[13])
-        return deriv(x, body_thrust(traj, frame, t), 0.0, J, veh.J_z, Lm, veh.alpha)
-    x0 = np.concatenate([r0, v0, R_to_quat(R0), [w0[0], w0[1], 0.0], [m0]])
-    sol = solve_ivp(f, (0.0, traj.tf), x0, method='DOP853', rtol=rtol, atol=atol)
-    return sol.y[:, -1]
+        return np.concatenate([deriv(x, Tb, 0.0, J, veh.J_z, Lm, veh.alpha), qpd])
+    q0 = R_to_quat(R0)
+    X = np.concatenate([r0, v0, q0, [w0[0], w0[1], 0.0], [m0], q0])
+    knots = np.linspace(0.0, traj.tf, traj.S + 1)
+    for ta, tb in zip(knots[:-1], knots[1:]):
+        sol = solve_ivp(f, (ta, tb), X, method='DOP853', rtol=rtol, atol=atol)
+        X = sol.y[:, -1]
+    return X[:14]
 
 
 def check_limits(plan, veh, cfg, r0, v0, m0, R0, w0, target, n=2001, frame=None):

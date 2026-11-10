@@ -70,12 +70,14 @@ def _solve(prob):
 
 def solve_3dof(r0, v0, m0, target, tf, N, veh, *, dyn='euler', T_bounds=None, pointing=np.radians(15.0),
                v_max=None, glide=None, rate=None, mass_bounds='taylor_rust', objective='fuel', fixed_sigma=None,
-               lin_obj=None):
+               lin_obj=None, dir0=None, dirN=None):
     """Generic 3DOF LCvx SOCP in the flight-code variables (x, v, w = ln m, u = T/m, sigma).
 
     rate: None or (D1, D2) bounds on ||u_{k+1}-u_k|| and ||u_{k+1}-2u_k+u_{k-1}|| (acceleration units).
     mass_bounds: 'taylor_rust' (flight code) or 'relax' (rigorous relaxation: tangent lower bound, secant upper bound).
     fixed_sigma / lin_obj: used by `purify`.
+    dir0 / dirN: optional unit vectors; the first / last thrust vector must be parallel to them ("thrust direction is
+    the attitude": start attitude and upright landing as linear constraints on the thrust vector).
     """
     r0, v0, target = map(np.asarray, (r0, v0, target))
     rho1, rho2 = T_bounds if T_bounds is not None else (veh.T_min, veh.T_max)
@@ -117,6 +119,10 @@ def solve_3dof(r0, v0, m0, target, tf, N, veh, *, dyn='euler', T_bounds=None, po
         c += [cp.norm(v[:N], axis=1) <= v_max]
     if glide is not None:
         c += [cp.norm(x[1:, :2] - target[None, :2], axis=1) <= (x[1:, 2] - target[2]) / np.tan(glide)]
+    for k_, d_ in ((0, dir0), (N - 1, dirN)):
+        if d_ is not None:
+            d_ = np.asarray(d_, float) / np.linalg.norm(d_)
+            c += [u[k_] == (u[k_] @ d_) * d_, u[k_] @ d_ >= 0]
     if rate is not None:
         D1, D2 = rate
         c += [cp.norm(u[1:] - u[:-1], axis=1) <= D1]
@@ -186,7 +192,7 @@ def size_rate_limits(rho, h, omega_allow, alpha_allow):
 
 
 def solve_candidate_C(r0, v0, m0, target, tf, veh, cfg, N=None, omega_allow=0.3, alpha_allow=None, sizing='sound',
-                      glide='cfg'):
+                      glide='cfg', dir0=None, dirN=None):
     """3DOF LCvx (ZOH-exact dynamics, planner throttle margins, 15 deg tilt cone) + thrust-vector rate limits.
 
     sizing='sound': D1, D2 from the chord bound for (omega_allow, alpha_allow) (guarantee if tight);
@@ -204,7 +210,8 @@ def solve_candidate_C(r0, v0, m0, target, tf, veh, cfg, N=None, omega_allow=0.3,
         D2 = rho_u * alpha_allow * h**2
     g = cfg.glide_slope if glide == 'cfg' else glide
     p = solve_3dof(r0, v0, m0, target, tf, N, veh, dyn='zoh', T_bounds=(cfg.T_min_plan, cfg.T_max_plan),
-                   pointing=cfg.tilt_max, v_max=None, glide=g, rate=(D1, D2), mass_bounds='taylor_rust')
+                   pointing=cfg.tilt_max, v_max=None, glide=g, rate=(D1, D2), mass_bounds='taylor_rust',
+                   dir0=dir0, dirN=dirN)
     p.info.update(D1=D1, D2=D2, omega_allow=omega_allow, alpha_allow=alpha_allow, sizing=sizing)
     return p
 
