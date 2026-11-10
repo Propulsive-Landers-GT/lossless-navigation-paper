@@ -34,6 +34,9 @@ lossless convexification for those problem classes either. tf = 7 s, the 100°/s
      given b(t), the problem is exactly convex with no relaxation needed (C-6).
    - **Per instance:** the nonconvexity is entirely the choice of attitude profile (C-U).
    - **Infinite-dimensional lifts:** occupation-measure LPs with point-mass data entry are exact (generic; not practical).
+   - **Sound single convex program (added 2026-11-10):** lossless means sound and complete. Dropping completeness, one SOCP in
+     centre-of-percussion coordinates returns only flyable plans for the pure-TVC vehicle (Theorem F, row F-SOUND below). This is
+     the recommended landing algorithm (`LANDING-ALGORITHM.md`).
    - **Tractable SDP lift (narrow 'possible'):** a degree-2 SDP lift is exact for every LINEAR objective (T2), and
      conjecturally (CSD2′: unbroken in ~4,500 solves, proved for an a-priori class and by an index theorem except a thin
      residual class) exact for fixed-thrust min-landing-error with a chattering gimbal. It is NOT exact with variable
@@ -103,7 +106,7 @@ convex program that contains both must contain their average.
 - **vs standard 6DOF SCvx** (baseline S, `solver/gtpl_guidance/scvx6dof.py`, same model/constraints/certificate; solver/RESULTS-SCVX.md): NUMERICAL. Open loop (16 problems): tie, B +0.006 % / S +0.004 % vs IPOPT, all certified. Hop map: both 20/20 agree with IPOPT. Closed loop: in-air B 100 % / S 100 % (median touchdown 0.20 / 0.13 m/s), hops B 97 % / S 100 %; S ≈ 2× B's solver time per replan (0.62 vs 0.33 s mean in-air). **B does not outperform standard SCvx**; its advantages are speed and anytime feasibility.
 - **Compute:** mean 0.37 s / max 1.33 s per replan (loaded Mac); flight port needs a hard time budget + fallback to last certified plan (solver/PORTING.md).
 - **Also fix regardless of guidance:** the flight MPC overstates angular authority ~4.6× (inertia/lever arm mismatch).
-- 15 pytest tests pass (orchestrator-verified). Solver's elementary claims N1–N7 **LEAN** (28 theorems, standard axioms; orchestrator-verified). Formalization caught one error: the documented standalone φ-axis gimbal-rate condition is FALSE (`LcvxSolver.phi_rate_heuristic_false`), but the constraint pair the planner actually imposes is proved sufficient (`gimbal_rate_pair`), so no code change was needed.
+- 15 pytest tests pass (orchestrator-verified; 27 as of 2026-11-10, with planner F's). Solver's elementary claims N1–N7 **LEAN** (28 theorems, standard axioms; orchestrator-verified). Formalization caught one error: the documented standalone φ-axis gimbal-rate condition is FALSE (`LcvxSolver.phi_rate_heuristic_false`), but the constraint pair the planner actually imposes is proved sufficient (`gimbal_rate_pair`), so no code change was needed.
 - **Pad hops:** the 3DOF relaxation reports 'optimal' at all 20 targets of a 4 s hop map, but neither B nor IPOPT finds
   any flyable plan at 11 of them (all 8 with v0z ≥ 6.5 m/s + 3 at 6 m offset): the nonconvexity showing up in practice
   ("no plan found" is numerical evidence, not a proof of infeasibility). Documented failure mode of B: one stall where IPOPT finds a plan.

@@ -1,4 +1,4 @@
-# Supplementary archive: impossibility of lossless convexification for 5-DOF / 6-DOF powered descent
+# Supplementary archive: impossibility of lossless convexification for 5-DOF / 6-DOF powered descent, and a sound single convex program
 
 This archive accompanies the paper `paper.pdf`. It contains everything needed to check the paper's
 machine-checked and computer-assisted results.
@@ -15,6 +15,11 @@ certificates/             computer-assisted proofs for the pure-TVC (gimbal-torq
   verify-tvc/             independent exact-arithmetic re-verification
   notes/                  derivation (06-pure-tvc.md) and verification log (verify-tvc-report.md)
   requirements.txt
+landing/                  the sound single convex program (paper Section 4.5, Section 6.3, Appendix E)
+  LANDING-ALGORITHM.md    the algorithm in plain terms, with the vehicle's constants
+  math/10-landing-proof.md  Theorem F and its proof, each lemma tied to a test
+  AUDIT-2026-11.md        audit of the impossibility result; mistakes found; follow-up questions
+  solver/                 code (gtpl_guidance/), tests, experiment scripts, results, RESULTS-FLAT.md
 ```
 
 ## 1. The machine-checked theorems (about 10 minutes)
@@ -64,3 +69,42 @@ their original paths.
 
 The paper tags every result as Lean-checked, proved (pen-and-paper), proved (computer-assisted),
 numerical evidence only, or open. Only the Lean-checked results are verified by step 1.
+
+## 3. The sound single convex program (optional)
+
+Theorem F of the paper (Section 4.5) is proved on paper in Appendix E and in `landing/math/10-landing-proof.md`. It is not
+machine-checked, apart from its first step (`TVC.cop_identity` in the Lean project). What can be checked here is that the
+code does what the theorem says, and the paper's benchmark numbers.
+
+```bash
+cd landing/solver
+```
+```bash
+python3 -m venv .venv && .venv/bin/pip install numpy scipy cvxpy clarabel ecos casadi matplotlib pytest
+```
+```bash
+OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q
+```
+```bash
+OMP_NUM_THREADS=1 .venv/bin/python scripts/example_landing.py
+```
+```bash
+OMP_NUM_THREADS=1 .venv/bin/python scripts/replay_flat.py
+```
+```bash
+OMP_NUM_THREADS=1 .venv/bin/python scripts/stress_flat.py
+```
+```bash
+.venv/bin/python scripts/report_flat.py
+```
+
+- `pytest`: 27 tests; `tests/test_flat.py` checks each lemma of the proof numerically.
+- `example_landing.py`: plans one descent with one SOCP and flies it closed loop with disturbances.
+- `replay_flat.py`: feeds the planned throttle and gimbal commands to the full rigid body with no feedback; the landing error
+  is at most a few tens of nanometres.
+- `stress_flat.py`: 300 random problems, every plan evaluated at 1201 instants against the planning limits; expects no violation.
+- `report_flat.py`: prints every table of `RESULTS-FLAT.md` (and of the paper's Section 6.3) from the stored results. The
+  commands that regenerate those results (about two hours on four cores) are listed at the top of `RESULTS-FLAT.md`.
+
+The paths inside `landing/` are those of the project repository with `solver/` kept as is; `LANDING-ALGORITHM.md` and
+`AUDIT-2026-11.md` refer to `math/`, `lean/` and `paper/` by their repository paths.

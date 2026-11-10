@@ -15,6 +15,7 @@ Coordinates: body +Z is the thrust axis (up through the nose), engine/gimbal at 
 6. **LCvx trajectories contain thrust-direction jumps the vehicle cannot follow** (Section 5.5): tilt 14.8 deg -> 0 deg in 24 ms, and an azimuth flip of 180 deg, in the ZOH solutions in `guidance/LosslessConvexification/lossless_compare/output/`.
 7. **The relaxation is not tight in the stored solutions:** delivered thrust m*||u|| is 296 N in the min-thrust arc although sigma*m = 400 N (Section 5.4).
 8. **MPC plant/model mismatch:** controller uses I = diag(6.65, 6.65, 2.3), lever arm 0.286 m; the simulator plant has I_xx of 40 to 64 kg m^2 and lever arm 0.54 to 0.59 m. The controller thinks it has ~4.6x more angular acceleration than the plant (Section 4).
+9. **The centre of percussion barely moves.** ε = I_xx/(m L) is 1.32 to 1.37 m across the whole mass table (Section 1). The recommended landing algorithm (`LANDING-ALGORITHM.md`, added 2026-11-10) relies on this.
 
 ## 1. Mass properties
 
@@ -50,6 +51,19 @@ L = |gimbal_z - com_z| = 0.24 + com_z (sim/rocket_dynamics.rs:419 passes `frame_
 
 **Inertia vs fuel.** Components: frame 6.65/6.65/2.3 (+ products 0.35, -0.02) (:289-291); N2 tank wet 1.0075 / dry 0.9275 about its own CoM (:292-297), interpolated by N2 fraction; N2O tank (dry) 1.31/1.31/0.21 (:299-302) plus the liquid; TVC module 0.84 wet / 0.64 dry (:304-309), interpolated by paraffin fraction. Total I_xx falls ~37% from wet to dry (63.6 -> 40.2) **[derived]**. The code does not add the liquid-N2O and pressurant cylinder inertias to the sum (computed at :644-646 but unused in `moi`, :657-661) and does not parallel-axis-shift the frame inertia to the combined CoM; both are small, but the wet I_xx is therefore approximate.
 Slosh model exists (`sloshing_sim.rs`, `SloshModel::default()`), not needed for guidance.
+
+**Centre of percussion (added 2026-11-10).** The landing algorithm (`LANDING-ALGORITHM.md`) plans the point a distance
+ε = I_xx/(m L) above the CoM on the body axis, and assumes ε stays constant as propellant burns. From the table above **[derived]**:
+
+| State | mass (kg) | ε = I_xx/(m L) (m) |
+|---|---|---|
+| Wet | 79.88 | 1.352 |
+| After ~24 s | 70.37 | 1.321 |
+| Propellant gone, N2 kept | 60.88 | 1.374 |
+| Fully dry | 55.88 | 1.325 |
+
+Over a descent (about 80 to 75 kg) ε moves by about 1 %; over the whole table by ±2 %. These come from the simulator's mass model,
+which the paragraph above says is approximate. Measured mass properties of the real vehicle are needed before flight.
 
 **Legacy, not the lander:** `monoprop-firmware/firmware/src/Loop/loopFirmware.cpp:44` (inertia 0.0094 kg m^2, m = 0.05 kg) and `simulations/DynamicsModel/FHL-DM/fhl-dyn-model.py:70-84` are small test-article models with TODO placeholders.
 

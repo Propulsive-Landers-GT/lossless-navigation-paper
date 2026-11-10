@@ -507,3 +507,55 @@ None found. Closest:
 - **Filippov–Ważewski complements Thm A.** No *pointwise* convexification of the (state-dependent) control set changes the closure of the reachable set. The nonconvexity in Thm B is intrinsic to the state-space geometry (b ∈ S², rate-limited), not to the control set.
 - **Positive route (Thm C).** Supported by [acikmese2013tcst, Lemma 3], [harris2021tac] (normality-based exact extreme-point relaxations with time-varying sets) and [malyuta2020ifac]. A time-varying cone axis b(t) needs the non-degeneracy condition "primer vector p(t) ≠ −α b(t) on a positive-measure set" to replace the analytic Lemma 2 of [acikmese2013tcst].
 - **Cost-based route.** Even if F_tf were convex in some regime (large t_f), a uniform lossless relaxation whose objective is jointly convex in (θ, y) also forces θ ↦ J*(θ) to be convex [fiacco1986jota]. A nonconvex fuel-optimal cost in (r₀, v₀) would also refute uniform LCvx.
+
+---
+
+## 7. Addendum, 2026-11-10: differential flatness and spline planning
+
+Added for the sound single convex program of `math/10-landing-proof.md` (paper Section 4.5). Every DOI below was resolved
+against the Crossref API on 2026-11-10; title, authors, venue, volume and pages matched. **All summaries are abstract-level
+or secondary**: IEEE Xplore returned an empty page and ScienceDirect returned HTTP 403, so no full text was read.
+
+**[fliess1995ijc]** Fliess, M., Lévine, J., Martin, P., Rouchon, P. "Flatness and defect of non-linear systems: introductory
+theory and examples." *Int. J. Control* 61(6):1327–1361, 1995. DOI 10.1080/00207179508921959.
+- The standard reference for differential flatness: a system is flat if its state and input are functions of an output and
+  finitely many of its derivatives.
+
+**[martin1996automatica]** Martin, P., Devasia, S., Paden, B. "A different look at output tracking: control of a VTOL aircraft."
+*Automatica* 32(1):101–107, 1996. DOI 10.1016/0005-1098(95)00099-2. *(abstract-level)*
+- Planar VTOL aircraft. A flat output is found and related to the Huygens centre of oscillation. The centre-of-percussion
+  point y = r + (J_t/(mL)) b of this project (claim FLAT) is the same point for the 3-D gimballed rigid body.
+- **Relevance:** the flatness of the planar thrust-vectored body is known. This project's claim is not the identity itself.
+
+**[mellinger2011icra]** Mellinger, D., Kumar, V. "Minimum snap trajectory generation and control for quadrotors." ICRA 2011,
+pp. 2520–2525. DOI 10.1109/ICRA.2011.5980409.
+- Planning polynomial flat outputs for a multirotor by a quadratic program; actuator limits are not guaranteed between nodes.
+
+**[desiderio2013tcst]** Desiderio, D., Lovera, M. "Guidance and control for planetary landing: flatness-based approach."
+*IEEE Trans. Control Syst. Technol.* 21(4):1280–1294, 2013. DOI 10.1109/TCST.2012.2202664. *(abstract-level; search summary)*
+- Flatness of the descent equations is used for trajectory generation and feedforward tracking in planetary landing. A search
+  summary describes an altitude-domain model and notes that the nonzero lower thrust bound makes the problem nonconvex.
+- **Relevance:** flatness-based landing guidance exists. From the abstract-level information it is not a single convex program
+  with a minimum-throttle guarantee for a gimballed rigid body. Full text needed to be sure.
+
+**[vanloock2015acc]** Van Loock, W., Pipeleers, G., Swevers, J. "Optimal motion planning for differentially flat systems with
+guaranteed constraint satisfaction." ACC 2015, pp. 4245–4250. DOI 10.1109/ACC.2015.7171996. *(abstract-level)*
+- Flat outputs parametrized as B-splines, with constraints imposed through the spline coefficients so that they hold at all
+  times and not only at grid points.
+- **Relevance:** the control-polygon device of Lemma 5 in `math/10` is this known technique.
+
+**[wang2026asr]** Wang, C., Chen, Z. "B-spline-based convex programming for fuel-optimal powered descent guidance."
+*Advances in Space Research* 78(4):3919–3934, 2026. DOI 10.1016/j.asr.2026.06.014. *(abstract-level; search summary)*
+- B-spline parametrization inside sequential convex programming for fuel-optimal powered descent; only part of the state is
+  parametrized and the rest follows from the dynamics.
+- **Relevance:** the closest recent powered-descent work found that uses B-splines. It iterates; no soundness claim was found.
+
+**What was searched and not found.** Extended web searches (2026-11-10) for flatness, thrust-vector control, centre of
+percussion or oscillation, rocket landing, convex optimization and B-spline convex-hull constraints, in combination, returned
+no paper that (i) uses the centre-of-percussion flat output of a gimballed lander for descent planning as one convex program,
+or (ii) proves that such a program returns only trajectories that meet the minimum-throttle and gimbal limits. This is a
+search result, not a proof of novelty: AIAA ARC and several publishers were not searchable in full text, and the
+flatness-based landing papers above were not read in full.
+
+**Effect on §0.** The verdict of §0 is unchanged: no LCvx theorem and no impossibility theorem for attitude-rate-limited
+descent was found. The addendum concerns sound convex restrictions, which §0 did not address.

@@ -20,7 +20,9 @@ powered-descent methods use sequential convex programming instead \cite{szmuk201
 and LCvx appears there only as an embedded relaxation of the thrust bounds \cite{malyuta2022csm}. A search of the
 literature through November 2026 found no LCvx theorem for a model in which the thrust direction is a
 rate-limited state, and no impossibility result for lossless convexification beyond the discrete-time counterexamples of
-\cite{luo2026automatica}.
+\cite{luo2026automatica}. A separate line of work plans in the flat outputs of a differentially flat system
+\cite{fliess1995ijc,martin1996automatica,mellinger2011icra,desiderio2013tcst}, with splines whose control points enforce constraints
+between nodes \cite{vanloock2015acc}; we use it in \cref{sec:F}.
 
 \paragraph{Why 5-DOF and 6-DOF matter.}
 On a gimballed (TVC) lander the thrust acts along an engine axis that can deflect by at most a gimbal angle $\delta$ from
@@ -40,7 +42,9 @@ tilt to the left and a maximal tilt to the right. The average of these two manoe
 program that contains both must also contain their average, provided the physical state is a decision variable and
 the boundary data enter affinely. That is exactly the LCvx situation. The rest of the paper makes this precise,
 removes the idealizations one by one (state constraints, minimum throttle, terminal attitude, final time, 6-DOF),
-quantifies the size of the obstruction, and describes what can still be convexified exactly.
+quantifies the size of the obstruction, and describes what can still be convexified exactly. It also shows what the impossibility
+leaves room for. A lossless program is sound and complete at once. A convex program that is only sound, returning nothing but
+flyable plans and refusing some landings that exist, is not excluded, and for a gimballed lander we construct one (\cref{thm:F}).
 
 \paragraph{Headline result.}
 The following statement is machine-checked in Lean~4 with Mathlib (\cref{sec:lean}). Its proof is Theorem~A combined with
@@ -90,12 +94,18 @@ tilt-capped class (constant mass, unlimited gimbal rate).
 \item \emph{Possibility} (\cref{sec:possibility}). LCvx is exact for any fixed attitude profile. For the
 gimbal-torque-coupled TVC body with constant mass the problem with a given attitude is exactly convex, with no relaxation. There is an
 exact subclass for the kinematic model. For degree-2 SDP lifts we give stress certificates and a certified-global
-coplanar subclass, together with counterexamples to exactness in general.
+coplanar subclass, together with counterexamples to exactness in general. Finally, for the pure-TVC body with depleting mass we give
+a single SOCP in centre-of-percussion coordinates, with the actuator limits as convex restrictions on B\'ezier control tuples, and
+prove that all its feasible points are trajectories of the model within the limits at every instant (\cref{thm:F}); by
+\cref{thm:A} it cannot also be complete (\cref{prop:F-inc}).
 \item \emph{Implications for guidance} (\cref{sec:practice}). A numerical study on the motivating vehicle confirms the theory's
 predictions: its 3-DOF guidance reports ``optimal'' for pad hops no flyable plan can reach, and lands $28\%$ of in-air closed-loop runs,
 while planners that iterate on the attitude (standard 6-DOF successive convexification, and a planner built directly on the exact
 convex inner problem) reach the 6-DOF optimum to within $0.03\%$ and land every in-air run. The exact inner problem does not make the
-latter better than standard successive convexification (numerical evidence).
+latter better than standard successive convexification. The single program of \cref{thm:F} uses $0.1\%$ more fuel at the operating
+point, needs 0.04--0.22~s more minimum flight time in the air (up to 0.4~s on hops), and solves in about 30~ms. With each planner's
+computation time counted it lands all 70 test cases, within 1.1~cm in the air against 18~cm for successive convexification; at equal
+replan rate and zero computation time lateral accuracy is a tie (numerical evidence).
 \item \emph{Numerics} (\cref{sec:numerics}). Gap laws, results beyond the proven regimes, and the size of the
 obstruction for a small lander: centimetre-scale for in-air descents, a metre-scale hole in the landing set for
 pad-launched hops.
@@ -104,7 +114,8 @@ kinematic 6-DOF, with free or upright terminal attitude) and its extensions to m
 quantitative gap and the vehicle's constants; Theorem~B with explicit mass depletion; the centre-of-percussion identity and the
 logical skeleton of the pure-TVC certificate; the abstract Theorem~D, the
 line-search lemma, the Wirtinger lemma and master inequality, Theorem~A-opt, and an explicit instance of Lemma~S with the resulting
-hard-landing Theorem~D are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}.
+hard-landing Theorem~D are machine-checked in Lean~4 with Mathlib \cite{demoura2021lean4,mathlib2020}. \Cref{thm:F} is not
+formalized beyond its first step, the centre-of-percussion identity.
 External theorems used on the positive side (the maximum principle and Aumann's theorem) enter only as explicit
 hypotheses.
 \end{enumerate}
@@ -113,8 +124,8 @@ hypotheses.
 The impossibility concerns the class of convex programs in which the physical state is a decision variable and the
 boundary data enter affinely. That covers every LCvx formulation in the literature that we know of (\cref{sec:scope}). It does not cover convex
 programs over measures with point-mass data entry, which are exact but infinite-dimensional and per instance, and it
-does not say that 5-DOF guidance is intractable. For the in-air descents of the motivating vehicle, the
-nonconvexity we can exhibit is real but thin. For the actual pure-TVC actuation with an upright terminal attitude, the
+does not say that 5-DOF guidance is intractable, and it does not exclude convex programs that are sound without being complete
+(\cref{sec:F}). For the in-air descents of the motivating vehicle, the nonconvexity we can exhibit is real but thin. For the actual pure-TVC actuation with an upright terminal attitude, the
 rigorous results cover $t_f=1,2$~s uncapped and $t_f=3,5$~s with a tilt cap, all with constant mass and unlimited gimbal rate
 (\cref{thm:TVC1}). Mass depletion, gimbal-rate limits, and longer uncapped horizons remain numerical.
 

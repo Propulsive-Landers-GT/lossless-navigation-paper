@@ -29,7 +29,7 @@ Against standard successive convexification, with each planner's computation tim
 | Whether any mistake here would rescue lossless convexification (no), and what was checked | [`AUDIT-2026-11.md`](AUDIT-2026-11.md) |
 | The impossibility answer and its exact scope, in two pages | [`FINAL-REPORT.md`](FINAL-REPORT.md) |
 | The status of every individual claim (Lean / proved / numerical / open) | [`SYNTHESIS.md`](SYNTHESIS.md) |
-| The paper (shareable version, 40 pages) | [`paper/main-share.pdf`](paper/main-share.pdf) |
+| The paper (shareable version, 48 pages; revision 7 includes the landing algorithm's theorem and benchmarks) | [`paper/main-share.pdf`](paper/main-share.pdf) |
 | To check the proofs yourself | [Checking the results](#checking-the-results) below |
 | The earlier planners (B, attitude-aware convex guidance; S, standard SCvx) | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md), [`solver/RESULTS-SCVX.md`](solver/RESULTS-SCVX.md) |
 | How the work was done, conversation included | [`session-transcript/`](session-transcript/) and [`comms/`](comms/) |
@@ -44,7 +44,7 @@ Against standard successive convexification, with each planner's computation tim
 | `FINAL-REPORT.md` | User-facing summary: the answer, what is possible, effect size for GTPL, practical algorithm, open problems. |
 | `SYNTHESIS.md` | Living results table. One row per claim with its model, scope, status and the file holding the proof. |
 | `context/vehicle.md` | GTPL vehicle parameters (mass, thrust, Isp, inertia, gimbal) and notes on the existing guidance stack, including the flight MPC's ~4.6x angular-authority mismatch. |
-| `literature/` | `review.md`: literature review of LCvx and 6-DOF guidance with verified sources. `refs.bib`: bibliography. |
+| `literature/` | `review.md`: literature review of LCvx and 6-DOF guidance with verified sources; §7 (added 2026-11-10) covers differential flatness and spline planning, the prior art of the landing algorithm. `refs.bib`: bibliography. |
 | `session-transcript/` | Export of the full Claude Code session that produced this work (see its README). |
 
 ### `paper/`: the paper
@@ -52,10 +52,10 @@ Against standard successive convexification, with each planner's computation tim
 |---|---|
 | `main-share.pdf` | **Shareable version.** Reader-facing status tags, a "how to check" box and a methods statement; no internal pointers. |
 | `main.pdf` | Internal draft: same content plus pointers to project files and referee status tags. |
-| `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility, 05 numerics, 055 practice (planner B), 06 formalization, 07 discussion; appendices A-D hold the proofs. |
+| `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility (4.5: the sound single convex program, Theorem F), 05 numerics, 055 practice (6.3: planner F against SCvx and B), 06 formalization, 07 discussion; appendices A-D hold the earlier proofs and E the proof of Theorem F. |
 | `Makefile` | `make draft` builds `main.pdf`; `make share` builds `main-share.pdf`. Edit `\paperauthors` in `main.tex` to set the author line. |
 | `CLAIMS-MAP.md` | Maps every theorem in the paper to its registry row, proof file and Lean name. |
-| `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code. |
+| `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code (2026-11-07), with an addendum listing what revision 7 added and how it was checked. |
 
 ### `lean/`: the machine-checked proofs
 | Path | Contents |
@@ -128,7 +128,9 @@ Key Lean files (all under `lean/LcvxObstruction/LcvxObstruction/`):
 
 ### `share/`: the supplementary archive for readers of the paper
 `share/make_bundle.sh` builds `share/dist/lcvx-impossibility-supplement.zip` (paper, Lean project with `Verify.lean`,
-TVC certificate scripts and notes, `README-bundle.md` as its README). `share/dist/` is not committed; rebuild it with the script.
+TVC certificate scripts and notes, the landing algorithm with its proof note, code, tests and results, and
+`README-bundle.md` as its README). It needs `latexmk`, `rsync`, `zip` and `perl`, and strips local absolute paths from the
+logs it copies. `share/dist/` is not committed; rebuild it with the script.
 
 ### `comms/`: how the agents coordinated
 The work was done by an orchestrator and a team of specialist subagents (27 final reports) (provers, adversaries, red teams, Lean
@@ -140,7 +142,7 @@ formalizers, numerics, referees, paper writer). Everything they said to each oth
 | `AGENTS.md` | Directory of agents and their roles. |
 | `CLAIMS.md` | The claims registry: every claim with status CLAIMED / CONFIRMED / FORMALIZED / BROKEN / OPEN. |
 | `BOARD.md` | Shared message board (append-only, signed posts). |
-| `LOG.md` | Orchestrator decision log. |
+| `LOG.md` | Orchestrator decision log, plus an entry for the 2026-11-10 follow-up session (audit, landing algorithm, paper revision 7). |
 | `threads/` | Focused discussions (6-DOF models, possibility, Theorem D). |
 | `briefs/` | The exact brief given to each subagent. |
 | `reports/` | Each subagent's final report. |
@@ -166,7 +168,8 @@ The full command list is in `math/verify-tvc-report.md`, sections 7 and 9-11.
 
 **Paper:** `cd paper && make share` (needs a TeX distribution with latexmk).
 
-**Planner:** `cd solver && pytest`.
+**Landing algorithm and planners:** `cd solver && pytest` (27 tests), then `scripts/example_landing.py`; the commands that
+regenerate every benchmark table are at the top of `solver/RESULTS-FLAT.md`.
 
 Python environments (`.venv/`) and Lean build caches (`.lake/`) are not committed; recreate them as above.
 
@@ -178,4 +181,5 @@ hop-ring hole at GTPL constants; the CSD2' residual class; convergence of planne
 For the landing algorithm: Theorem F is proved on paper and tested numerically but not formalised in Lean (only its
 first lemma is); gimbal and throttle slew limits are checked per plan, not guaranteed; the centre of percussion is
 assumed fixed in the body and that must be confirmed from measured mass properties; and nothing has been run on flight
-hardware or in the club's Rust simulator. The paper (`paper/`) predates the algorithm and does not describe it.
+hardware or in the club's Rust simulator. In the paper, Theorem F (Section 4.5, Appendix E) is tagged as proved but not
+refereed and not machine-checked; the rest of the paper is as audited on 2026-11-07 (`paper/AUDIT.md`).

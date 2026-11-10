@@ -1,4 +1,4 @@
-"""Closed-loop Monte Carlo of guidance options A (flight code), B (recommended), C (3DOF + rate limits),
+"""Closed-loop Monte Carlo of guidance options A (flight code), B (attitude-aware), C (3DOF + rate limits),
 S (standard 6DOF SCvx baseline; e.g. --methods B,S --tag _scvx).
 
 Usage: OMP_NUM_THREADS=1 .venv/bin/python scripts/run_montecarlo.py --scenario inair --n 40 --workers 2

@@ -1,0 +1,102 @@
+% ============================================================================
+\section{Proof of Theorem F}\label{app:F}
+% ============================================================================
+% CLAIMS: F-SOUND (PROVED on paper, numerically tested, not refereed, not formalized except Lemma cop) | Lean: TVC.cop_identity (first step only)
+We prove \cref{thm:F}. Notation is that of \cref{sec:F}: $u=\ddot y-g$, $\dot u=y^{(3)}$, $\ddot u=y^{(4)}$, $\Pi_b=I-bb^\top$,
+$f=\norm u$, and the flat map \eqref{eq:flatmap}. The project note \intshare{\texttt{math/10-landing-proof.md}}{``10-landing-proof''
+in the supplementary archive} gives the same proof with the test that checks each step numerically.
+
+\begin{lemma}[The flat map is the solution]\label{lem:F-flat}
+Let $y\in C^4([0,t_f];\R^3)$ with $u\ne0$ everywhere and let $b,\dot b,a,\ell,m,T_a,T_\perp$ be given by \eqref{eq:flatmap}. Under
+\cref{ass:cop}, $(r,b,m)$ with $r=y-\varepsilon b$ and $\Omega=b\times\dot b$ solves the equations of model PT with zero roll rate,
+\[
+m\ddot r=T_ab+T_\perp+mg,\qquad J_t\dot\Omega=(-Lb)\times(T_ab+T_\perp),\qquad \dot m=-\alpha\norm{T_ab+T_\perp},
+\]
+and it is the only solution with its initial values.
+\end{lemma}
+\begin{proof}
+Differentiating $u=fb$ gives $\dot u=\dot fb+f\dot b$ and $\ddot u=\ddot fb+2\dot f\dot b+f\ddot b$. Projecting, $\Pi_b\dot u=f\dot b$, so
+the $\dot b$ of \eqref{eq:flatmap} is the derivative of $b$, and
+\begin{equation}\label{eq:Pbdd}
+f\,\Pi_b\ddot b=\Pi_b\ddot u-2\dot f\,\dot b,\qquad \dot f=\ip b{\dot u}.
+\end{equation}
+With $\Omega=b\times\dot b$ we have $\Omega\perp b$, $\Omega\times b=\dot b$ and $\dot\Omega=b\times\ddot b=b\times\Pi_b\ddot b$.
+\emph{Rotation:} $(-Lb)\times(T_ab+T_\perp)=-Lb\times T_\perp=Lm\varepsilon\,b\times\Pi_b\ddot b=J_t\dot\Omega$, because
+$m\varepsilon L=J_t$. \emph{Translation:} $m\ddot r=m(\ddot y-\varepsilon\ddot b)=m(fb+g-\varepsilon\ddot b)$, and the thrust gives
+$T_ab+T_\perp+mg=m(f+\varepsilon\norm{\dot b}^2)b-m\varepsilon(\ddot b+\norm{\dot b}^2b)+mg$, the same thing (we used
+$\Pi_b\ddot b=\ddot b+\norm{\dot b}^2b$). \emph{Mass:} $\norm{T_ab+T_\perp}=m\tau$ and $\dot m=-\alpha\tau m$ by the definition of $m$.
+The thrust history is continuous in $t$ and the right-hand sides are locally Lipschitz in the state, so the solution is unique.
+\end{proof}
+
+\begin{lemma}[Boundary conditions]\label{lem:F-bc}
+If $y$ satisfies the boundary rows of \eqref{eq:PF} and rows (R1), (R2) at $t=0$ and $t=t_f$, and $\angle(b_0,\ez)\le\vartheta_{\max}$,
+then $b(0)=b_0$, $\dot b(0)=\dot b_0$, $\Pi_b\ddot b(0)=\beta_0$, $r(0)=r_0$, $\dot r(0)=v_0$, and at $t_f$: $r=0$, $\dot r=0$, $b=\ez$,
+$\dot b=0$, $T_\perp=0$.
+\end{lemma}
+\begin{proof}
+End control points of a B\'ezier polygon are values of the curve, so (R2) gives $u_z\ge\ell_b>0$ at both ends. At $t=0$, $u(0)=f_0b_0$
+with $u_z(0)>0$ and $(b_0)_z>0$ forces $f_0>0$, hence $f(0)=f_0$ and $b(0)=b_0$. The second row is $\Pi_{b_0}\dot u(0)=f_0\dot b_0$, so
+$\dot b(0)=\dot b_0$ and $\dot f(0)=\ip{b_0}{\dot u(0)}$. The third row and \eqref{eq:Pbdd} give $\Pi_b\ddot b(0)=\beta_0$. Then
+$r(0)=y(0)-\varepsilon b_0=r_0$ and $\dot r(0)=\dot y(0)-\varepsilon\dot b_0=v_0$. At $t_f$, $u_h=0$ and $u_z>0$ give $b=\ez$; then
+$\dot u_h=0$ gives $\dot b=0$, and with $\dot b=0$, $\ddot u_h=0$ gives $\Pi_b\ddot b=0$ by \eqref{eq:Pbdd}, i.e.\ $T_\perp=0$. Finally
+$r=y-\varepsilon\ez=0$ and $\dot r=\dot y-\varepsilon\dot b=0$.
+\end{proof}
+
+\begin{lemma}[Pointwise bounds]\label{lem:F-bounds}
+Fix an instant and let $p=u_z>0$. For all real $\eta,\kappa,k$, every $s\ge\sin\angle(b,\ez)$, every $0<\ell_b\le p$ and every $\phi$, put
+$x=\dot u-\eta u$ and let $q\ge\norm x^2/p$ and $G\ge\norm{\ddot u-2\eta\dot u-\kappa u-k\ez}+s|k|+q$. Then
+\begin{align*}
+&\text{(B1)}\ \ f\norm{\dot b}\le\norm x,\qquad
+\text{(B2)}\ \ f\norm{\dot b}^2\le q,\qquad
+\text{(B3)}\ \ f\norm{\Pi_b\ddot b}\le G,\\
+&\text{(B4)}\ \ p\ \le\ \tau\ \le\ \bigl\|\bigl(\norm u+\varepsilon q/\ell_b,\ \varepsilon G/\ell_b\bigr)\bigr\|,\qquad
+\text{(B5)}\ \ 2\phi p-\phi^2\le f^2 .
+\end{align*}
+\end{lemma}
+\begin{proof}
+Note $p\le f$. (B1): $f\dot b=\Pi_b\dot u=\Pi_bx$ since $\Pi_bu=0$. (B2): $f\norm{\dot b}^2=\norm{\Pi_bx}^2/f\le\norm x^2/p$.
+(B3): write $\dot f=\eta f+\ip bx$ in \eqref{eq:Pbdd}. Then $2\dot f\dot b=2\eta\Pi_b\dot u+2\ip bx\Pi_bx/f$ and
+\[
+f\,\Pi_b\ddot b=\Pi_b(\ddot u-2\eta\dot u)-2\ip bx\,\Pi_bx/f .
+\]
+For the first term, $\Pi_b(\ddot u-2\eta\dot u)=\Pi_b(\ddot u-2\eta\dot u-\kappa u-k\ez)+k\Pi_b\ez$ and $\norm{\Pi_b\ez}=\sin\angle(b,\ez)\le s$.
+For the second, $\ip bx$ and $\Pi_bx$ are the components of $x$ along and across $b$, so $2|\ip bx|\norm{\Pi_bx}\le\norm x^2$, and the
+term is at most $\norm x^2/f\le q$. (B4): $\tau\ge a\ge f\ge p$; and $a=f+\varepsilon\norm{\dot b}^2\le\norm u+\varepsilon q/\ell_b$ by (B2),
+$\norm\ell=\varepsilon\norm{\Pi_b\ddot b}\le\varepsilon G/\ell_b$ by (B3), using $f\ge\ell_b$. (B5): $f^2\ge p^2$ and $p^2-(2\phi p-\phi^2)=(p-\phi)^2\ge0$.
+\end{proof}
+
+\begin{lemma}[Every instant, and the mass]\label{lem:F-hull}
+Let $y$ be feasible for \eqref{eq:PF}. Then at every $t\in[0,t_f]$ there are numbers $e_1,q,k,g_2,s_f$ and $\sigma(t)=\sum_jB_j(t)\sigma^j$
+for which rows (R1)--(R6) hold with $(U,U_1,U_2)$ replaced by $(u,\dot u,\ddot u)(t)$. Moreover, with $z=\ln m$, on every span $s$
+\[
+z_{lo,s}\ \le\ z(t)\ \le\ z_{up,s},\qquad \rho_1\ \le\ m(t)\tau(t)\ \le\ \rho_2 ,
+\]
+and $m(t_f)\ge m_0\exp(-\alpha\tfrac h4\sum\sigma)\ge m_{dry}$.
+\end{lemma}
+\begin{proof}
+Rows (R1)--(R6) define a convex set of points $(U,U_1,U_2,\text{auxiliaries})$ whose parameters are constant on a span. By
+\eqref{eq:hull}, $((u,\dot u,\ddot u)(t),\sum_jB_j(t)\,\mathrm{aux}^j)$ is a convex combination of the four control tuples with their
+auxiliaries, so it lies in that set. By (R1) $\sin\angle(b,\ez)\le\sin\vartheta_{\max}$, so \cref{lem:F-bounds} applies at every instant and
+gives $p(t)\le\tau(t)\le\sigma(t)$. Since $\dot z=-\alpha\tau$ and $z$ decreases,
+$z(t)\le z(t_s)\le z_0-\alpha\int_0^{t_s}u_z=z_{up,s}$ and $z(t)\ge z(t_{s+1})\ge z_0-\alpha\int_0^{t_{s+1}}\sigma=z_{lo,s}$, using
+$\int_0^{t_s}u_z=\dot y_z(t_s)-\dot y_z(0)+g_0t_s$ and $\int_{\rm span}B_j=h/4$. The function $e^{-z}$ is decreasing and convex. A chord
+lies above it on the interval that (R7) confines $z_{lo,s}$ to, so $p(t)\ge\rho_1c_s(z_{lo,s})\ge\rho_1e^{-z(t)}$, i.e.\ $m\tau\ge mp\ge\rho_1$.
+A tangent lies below it, so $\sigma(t)\le\rho_2\tau_s(z_{up,s})\le\rho_2e^{-z(t)}$, i.e.\ $m\tau\le m\sigma\le\rho_2$. The last claim is
+$z(t_f)\ge z_{lo,S}$ and the dry-mass row.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:F}]
+By (R2) and \cref{lem:F-hull}, $u_z\ge\ell_b>0$ at every instant, so the flat map is defined. \Cref{lem:F-flat} gives the trajectory and
+its uniqueness. \Cref{lem:F-bc} gives the initial and terminal conditions. At every instant, (R1) is the tilt bound, and
+\[
+\varepsilon f\norm{\Pi_b\ddot b}\ \le\ \varepsilon G\ \le\ \tan\delta\,(2\phi p-\phi^2)\ \le\ \tan\delta\,f^2
+\]
+by (B3), (R5) and (B5), so $\norm\ell\le\tan\delta\,f\le\tan\delta\,a$, which is the gimbal bound $\tan\mu\le\tan\delta$. The thrust bounds
+and the fuel bound are \cref{lem:F-hull}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prop:F-inc}]
+The data $(r_0,v_0)$ enter \eqref{eq:PF} only through the right-hand sides of its first two boundary rows, so the feasible set in the
+joint space of data and variables is convex and its projection onto $(r_0,v_0)$ is convex. It is contained in the feasible
+boundary-data set by \cref{thm:F}. A convex set cannot equal a nonconvex one.
+\end{proof}

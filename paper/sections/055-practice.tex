@@ -1,21 +1,24 @@
 % ============================================================================
 \section{Implications for guidance: a numerical study}\label{sec:practice}
 % ============================================================================
-\emph{This section reports numerical evidence. Its theorem-level ingredients are \cref{thm:A}, \cref{thm:CU}, \cref{thm:C6}
-and the elementary claims listed below. No planner's convergence is proved.}
+\emph{This section reports numerical evidence. Its theorem-level ingredients are \cref{thm:A}, \cref{thm:CU}, \cref{thm:C6},
+\cref{thm:F} and the elementary claims listed below. No planner's convergence is proved.}
 
-The theory makes three predictions for a real attitude-rate-limited lander.
+The theory makes four predictions for a real attitude-rate-limited lander.
 \begin{enumerate}[leftmargin=*,itemsep=2pt,label=(P\arabic*)]
 \item \emph{False feasibility.} A uniform convex relaxation that contains every flyable trajectory also accepts boundary data
 from which no flyable trajectory lands (\cref{thm:A,thm:Bstar}). A 3-DOF guidance program will therefore report ``optimal'' for
 some landings the vehicle cannot fly.
 \item \emph{Where the difficulty lives.} The nonconvexity lies entirely in the choice of attitude profile (\cref{thm:CU}).
-Any planner that iterates on the attitude can, in principle, reach the 6-DOF optimum; no single convex program can.
+Any planner that iterates on the attitude can, in principle, reach the 6-DOF optimum; no single convex program of the class of
+\cref{thm:A} can do so for all boundary data.
 \item \emph{Exactness given the attitude.} For a pure-TVC vehicle with a fixed attitude profile, the remaining problem is exactly
 convex, with no relaxation (\cref{thm:C6}).
+\item \emph{Soundness without iteration.} For a pure-TVC vehicle one SOCP in centre-of-percussion coordinates returns only flyable
+plans (\cref{thm:F}), and by \cref{prop:F-inc} it must give up some fuel and some feasible landings in exchange.
 \end{enumerate}
 We test these on the motivating vehicle (80~kg, 400--1000~N, $\pm15^\circ$ box gimbal at $100^\circ$/s, inertia and lever arm
-from the club simulator's mass table) with four planners \pnote{solver/README.md, RESULTS.md, RESULTS-SCVX.md, CLAIMS.md}.
+from the club simulator's mass table) with five planners \pnote{solver/README.md, RESULTS.md, RESULTS-SCVX.md, RESULTS-FLAT.md, CLAIMS.md}.
 
 \subsection{Planners compared}
 \begin{itemize}[leftmargin=*,itemsep=2pt]
@@ -32,15 +35,21 @@ $\alpha$, and the torque balance of \cref{thm:C6} fixes the lateral thrust, $T_x
 fixed $\alpha$ the problem in the axial thrust $T_a(t)$ is an exact SOCP. B alternates a convex trust-region step in
 $(\alpha,T_a)$, linearizing only the effect of the attitude change on the thrust direction, with an exact re-solve of this SOCP, and
 accepts a step only if the exact merit decreases. Every accepted iterate is therefore an exact trajectory of the planning model.
+\item \textbf{F}: the program \eqref{eq:PF} of \cref{sec:F}, with $S=16$ spans (63 spline coefficients) and the fixed references of
+\cref{rem:F-refs}. One SOCP per plan: no initial trajectory, no linearization, no trust region, and nothing carried from one plan to
+the next. Its time of flight is the smallest $t_f$ at which \eqref{eq:PF} is feasible, found by bisection (about ten SOCPs), plus
+0.25~s. If a replan is infeasible or fails the slew-rate check of \cref{rem:F-scope}, the previous plan is kept. By default F adds
+the terminal row $u_z(t_f)=g_0$ (arrive in hover) and drops it when that makes the program infeasible.
 \item \textbf{D} (reference): IPOPT on the full quaternion rigid body, multistart. \textbf{LB}: the 3-DOF relaxation at the same
 $t_f$, a lower bound on the fuel of any flyable plan, up to its discretization.
 \end{itemize}
-S, B and D share the model, the function class (first-order-hold body thrust, $N=35$), and the constraints: planned throttle
+S, B and D share the model (inertia and lever arm frozen at their initial values), the function class (first-order-hold body thrust, $N=35$), and the constraints: planned throttle
 440--920~N inside the physical range, gimbal $|T_x|,|T_y|\le\tan10^\circ\,T_z$, linear sufficient conditions for gimbal-rate and
 throttle-slew limits, tilt $\le20^\circ$, $10^\circ$ glide slope, upright at rest on the pad, and a gimbal that starts at its current
 deflection. Every plan from S and B is judged by the same a~posteriori certificate. It checks the physical limits on an $8\times$
 finer grid, then replays the planned body-frame thrust open loop through the full quaternion rigid body, which must land within
-5~cm. Neither planner was tuned per scenario.
+5~cm. Neither planner was tuned per scenario. F uses the same planning limits (with the $10^\circ$ gimbal limit as a cone) and
+\cref{ass:cop} in place of frozen inertia; its plans are checked on a dense grid and replayed in the same way.
 
 \paragraph{Machine-checked ingredients.}
 % CLAIMS: solver/CLAIMS.md N1-N7 -- FORMALIZED (28 theorems, lean/SOLVER.md; build verified by orchestrator) | Lean: LcvxSolver.*
@@ -104,9 +113,72 @@ A is omitted because its plans are not flyable. Numerical.}\label{fig:openloop}
 fall in the same region as B's (median 0.13~m/s and 3~cm, worst 0.37~m/s and 10~cm). Numerical.}\label{fig:mcinair}
 \end{figure}
 
-\paragraph{What this shows and does not show.} The evidence is consistent with all three predictions. 3-DOF guidance produces
+
+\subsection{A sound single convex program in the loop}\label{sec:practiceF}
+This subsection tests prediction (P4) \pnote{solver/RESULTS-FLAT.md}. B and S were re-run alongside F on a second machine, so solver
+times here are not comparable with the table above; their success rates reproduce.
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \emph{Open loop.} On the 8 in-air scenarios at B's minimum $t_f+0.5$~s, one solve of \eqref{eq:PF} uses $0.10\%$ more fuel than the
+better of B and S on average and $0.28\%$ at most. It takes one SOCP and a median 0.046~s of solver time, against 9--37 SOCPs and
+0.79~s for B and 25--35 SOCPs and 1.30~s for S. F's shortest feasible $t_f$ is 0.04--0.22~s later than B's, with $0.5$--$2.5\%$ more
+fuel there.
+\item \emph{Exactness.} Fed only F's throttle and gimbal commands, with no feedback, the quaternion rigid body with depleting mass
+under \cref{ass:cop} lands within 23~nm and 12~nm/s of the target (16 replays, half starting tilted $3^\circ$ and rotating). This is
+\cref{lem:F-flat} seen numerically; the error is integration error.
+\item \emph{Model error.} Each planner is exact in its own model. Replayed open loop against the simulator's mass table instead, plans
+of B and S miss by a median 0.43 and 0.45~m and plans of F by 0.03~m: the table keeps $\varepsilon$ within $1\%$ over a descent, while
+frozen inertia lets $J_t/(mL)$ drift by $6\%$.
+\item \emph{Soundness and completeness on the hop grid.} On the 20 pad-hop targets of (P1), F is infeasible at all 11 targets where no
+flyable plan was found, and at 5 of the 9 where one exists; those 5 it reaches with 0.06--0.41~s more flight time. 3-DOF LCvx accepts
+all 20. In 600 solves of 300 random problems (default and random references), 458 were feasible and none violated a planning limit at
+any of 1201 instants.
+\item \emph{The obstruction on this model.} With these planning limits, a 4~s hop launched vertically at 6.3~m/s can land 1, 2 or
+3~m away, but IPOPT finds no plan that lands on the launch point, from symmetric starts or from nine asymmetric ones. The landable
+set has a hole, as \cref{thm:TVC1} leads one to expect; this instance is numerical evidence, not a proof.
+\item \emph{Closed loop, with computation time counted.} The earlier runs applied each plan at the instant its state was sampled.
+Here a plan computed from the state at time $t$ becomes active at $t$ plus its solver time, and each planner replans as soon as it can:
+B and S at most every 0.5~s, F every 0.1~s. Same plant, tracker, cases and seeds as above.
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}\toprule
+ & B & S (SCvx) & F \\\midrule
+\multicolumn{4}{@{}l}{\emph{In-air descents (40 runs)}}\\
+landed within limits & 36 & 40 & 40 \\
+lateral error, median / worst & 5.5 / 39.5~cm & 5.9 / 18.3~cm & 0.2 / 1.1~cm \\
+touchdown speed, median / worst & 0.23 / 1.65~m/s & 0.23 / 0.58~m/s & 0.19 / 0.29~m/s \\
+solver time per replan, mean / worst & 0.70 / 2.5~s & 1.05 / 4.9~s & 0.031 / 0.39~s \\
+gimbal travel per flight, mean & $141^\circ$ & $156^\circ$ & $45^\circ$ \\
+\multicolumn{4}{@{}l}{\emph{Pad hops (30 runs)}}\\
+landed within limits & 28 & 30 & 30 \\
+lateral error, median / worst & 2.9 / 11.1~cm & 3.9 / 8.2~cm & 0.4 / 2.0~cm \\
+touchdown speed, median / worst & 0.32 / 1.11~m/s & 0.54 / 0.88~m/s & 0.14 / 0.23~m/s \\
+fuel at $t_f$, mean & 1.69~kg & 1.46~kg & 1.54~kg \\\bottomrule
+\end{tabular}
+\end{center}
+With every solver time multiplied by four, S loses 4 of 30 hops and F, replanning every 0.2~s, loses none (\cref{fig:mcflat}).
+\item \emph{Same replan rate, zero computation time.} Under the protocol of the previous subsection (1~Hz, plans applied instantly,
+all at B's $t_f$) lateral accuracy is a tie: median 3.1~cm for S and F in the air, 2.4~cm for both on hops. F touches down slower on
+hops (0.23 against 0.51~m/s) and never extends the final time in the air, where S does in 32 of 40 runs. The accuracy gain in the table
+therefore comes from replan rate, which F's solver time permits and the others' does not.
+\item \emph{Ablations.} Giving S the same arrive-in-hover terminal condition does not close the gap (hops: touchdown 0.52~m/s, lateral
+4.0~cm). Taking F's references from its previous plan (\cref{rem:F-refs}) lowers in-air touchdown speed to 0.13~m/s and raises
+lateral error to 0.8~cm. With references and without the hover condition, F's in-air touchdown speed is 0.25~m/s.
+\item \emph{Where F is worse.} Pad-hop fuel ($+5\%$ against S); minimum flight time; and, with zero computation time, in-air
+touchdown speed against S in 27 of 40 cases. Slew limits are outside \cref{thm:F}: under $1\%$ of replans failed the check and were
+not flown.
+\end{itemize}
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/mc_flat_touchdown.png}
+\caption{Closed-loop touchdowns with each plan applied after its solver time: standard SCvx (S), planner B and planner F, 40 in-air
+descents and 30 pad hops. Vertical lines mark median lateral error. Numerical.}\label{fig:mcflat}
+\end{figure}
+
+\paragraph{What this shows and does not show.} The evidence is consistent with all four predictions. 3-DOF guidance produces
 plans the vehicle cannot fly and claims landings it cannot reach. Planners that iterate on the attitude reach the 6-DOF optimum and
 land reliably. The exactness of \cref{thm:C6} can be built into such a planner directly. It does not, on these tests, make B better
-than standard successive convexification. B's distinguishing properties are speed and that every accepted iterate is flyable, which
-matters only when a replan must stop at a hard deadline. Not shown: convergence of either planner, global optimality (only the
-gap to LB is bounded), timing on flight hardware, and robustness beyond the Monte Carlo cases.
+than standard successive convexification. Iteration is not necessary for flyable plans: the single program \eqref{eq:PF} gives up
+$0.1\%$ of fuel at the operating point and a few tenths of a second of minimum flight time, never returned an unflyable plan, and,
+because it is fast enough to replan ten times a second, landed more accurately than either iterative planner once computation time was
+counted. Not shown: convergence of B or S, global optimality (only the gap to LB is bounded), timing on flight hardware, actuator lag
+and state-estimation error, a vehicle whose centre of percussion moves by more than the $1\%$ of the simulator's mass table, and
+robustness beyond the Monte Carlo cases.
