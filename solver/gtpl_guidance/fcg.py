@@ -1,4 +1,4 @@
-"""Planner F: flat convex guidance (single convex program in centre-of-percussion coordinates).
+"""Planner F: the convex program of the GTPL landing algorithm (LANDING-ALGORITHM.md).
 
 The decision variable is the trajectory y(t) of the centre of percussion, a quintic B-spline. In y the pure-TVC
 vehicle is exactly a point whose acceleration is along the body axis (flat.py), so
@@ -11,21 +11,22 @@ vehicle is exactly a point whose acceleration is along the body axis (flat.py), 
     approximation, never a relaxation) on the Bezier control tuples of (u, u', u''), which by the convex-hull
     property makes it hold at every instant of the flight, not only at nodes.
 
-Hence every feasible point of the SOCP is a trajectory the planning model can fly exactly: soundness is by
-construction and needs no losslessness theorem. What is given up is completeness (the restriction can reject or
-over-charge some flyable plans); Theorem A/B* (math/02) shows that some loss of this kind is unavoidable for any
-convex program. The restriction uses per-span scalar references (thrust level phi, throttle log-rate rho, and kappa);
-they affect only how tight it is, never whether the result is flyable. A previous plan (or one refinement pass)
-supplies them.
+Hence every feasible point of the SOCP is a trajectory the planning model can fly exactly (Theorem F,
+math/10-landing-proof.md). What is given up is completeness: the restriction rejects or over-charges some flyable
+plans, and Theorems A / B* (math/02) show some loss of this kind is unavoidable for any convex program.
 
-Restriction, per control tuple (U, U1, U2) = (u, u', u'') with p = e3.U  (derivation and proofs: solver/FLAT.md):
+Restriction, per control tuple (U, U1, U2) = (u, u', u'') with p = e3.U; rows R1..R7 of the proof:
     tilt          ||U_xy|| <= tan(tilt_max) p                                              (exact)
-    min throttle  p >= T_min e^{-z_lo}                 [ T/m >= f >= p ]
+    min throttle  p >= Lb,  p >= T_min e^{-z_lo}       [ T/m >= f >= p ]
     rate term     e1 >= ||U1 - rho U||,  q >= e1^2 / p [ f |b'| <= e1,  f |b'|^2 <= q ]
-    torque term   G  = ||U2 - 2 rho U1 - kappa U|| + 2 q            [ f |P b''| <= G ]
+    torque term   G  = ||U2 - 2 rho U1 - kappa U - k e3|| + sin(tilt_max) |k| + q     [ f |P b''| <= G ]
     gimbal        eps G <= tan(gimbal) (2 phi p - phi^2)            [ eps |P b''| <= tan(gimbal) f ]
     max throttle  sigma >= ||( ||U|| + eps q / Lb ,  eps G / Lb )||,  sigma <= T_max e^{-z_up}   [ T/m <= sigma ]
-with p >= Lb enforced, z_lo <= ln m <= z_up affine in the variables, and fuel <= alpha * integral(sigma).
+with z_lo <= ln m <= z_up affine in the variables and fuel <= alpha * integral(sigma).
+
+rho, kappa, phi, Lb are per-span constants (FlatRef). ANY values give a sound program; they only move how tight it is.
+The shipped algorithm uses fixed defaults (rho = kappa = 0, phi = 7.5, Lb = T_min/m0). Optionally they can be taken
+from a previous plan (ref_from_traj).
 """
 from dataclasses import dataclass, field
 import time
@@ -238,16 +239,18 @@ class FCG:
         eps = self.eps if eps is None else eps
         best, best_info, total, n = None, None, 0.0, 0
         hist = []
-        for k in range(refine + 1):
+        passes, retried = 0, False
+        while passes <= refine:
             c, info = self.solve(r0, v0, m0, R0, w0, target, tf, ref=ref, T_lat0=T_lat0, eps=eps)
             total += info['solve_time']
             n += 1
             if c is None:
                 hist.append(dict(status=info['status']))
-                if best is None and k == 0 and ref is not None:
-                    ref = None          # a stale reference made the restriction infeasible: fall back to the default
+                if best is None and ref is not None and not retried:
+                    ref, retried = None, True   # a stale reference made the restriction infeasible: use the default
                     continue
                 break
+            passes += 1
             traj = FlatTrajectory(c, tf, eps, m0, self.veh.alpha)
             fuel = float(m0 - traj.eval(np.array([tf]))['m'][0])
             hist.append(dict(status=info['status'], fuel=fuel, bound=info['fuel_bound'], slack=info['slack']))

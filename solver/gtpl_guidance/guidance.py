@@ -266,26 +266,32 @@ def min_tf_F(r0, v0, m0, R0, w0, target, veh, cfg, lo=None, S=16, tol=0.05):
 class PlannerF:
     """Closed-loop wrapper of planner F (flat convex guidance): fixed absolute final time, shrinking horizon.
 
-    Each replan is ONE convex program. The previous plan supplies only the scalar tightness references (never a
-    linearisation point), so a replan cannot diverge and needs no iteration budget, continuation or trust region.
-    Fallbacks, in order: default references; final-time extension; keep flying the previous plan.
+    Each replan solves the SAME convex program with new numbers (state, time to go). Nothing is carried over from the
+    previous plan by default, so there is no iteration, no warm start, no trust region and nothing that can diverge.
+    Fallbacks, in order: drop the arrive-in-hover condition; extend the final time; keep flying the previous plan.
+
+    Options: use_refs=True takes the tightness references (FlatRef) from the previous plan instead of the fixed
+    defaults, and refine_first=k re-solves the first plan k times with its own references. Both only tighten the
+    restriction (math/10-landing-proof.md); neither is needed.
     """
 
-    def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=1, refine=0,
-                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True, soft_td=1):
+    def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=0, refine=0,
+                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True, soft_td=1,
+                 use_refs=False):
         self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
         dlo, dhi = replan_margin_use
         self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
         self.S, self.span_min, self.S_min = S, span_min, S_min
         self.refine_first, self.refine = refine_first, refine
         self.extensions, self.tf_cap, self.check, self.soft_td = extensions, tf_cap, check, soft_td
+        self.use_refs = use_refs     # False: every solve uses the fixed default references (the simplest form)
         self.last, self.last_t0 = None, None
         self._planners = {}
 
-    def _planner(self, S, first):
-        key = (S, first)
+    def _planner(self, S, first, soft):
+        key = (S, first, soft)
         if key not in self._planners:
-            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S, soft_td=self.soft_td)
+            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S, soft_td=soft)
         return self._planners[key]
 
     def __call__(self, t, x, prev_ref, act=(0.0, 0.0, None)):
@@ -310,25 +316,30 @@ class PlannerF:
         J, L = self.veh.inertia_lever(x[13])
         eps = J / (x[13] * L)          # centre-of-percussion offset at the current mass
         p = None
+        soft_used = 0
         for dt_ext in (0.0,) + tuple(self.extensions):
             if tf + dt_ext > self.tf_cap:
                 break
-            F = self._planner(S, first)
-            ref = None
-            if self.last is not None:
-                ref = F.ref_from_traj(self.last.traj, t0=t - self.last_t0, tf_new=tf + dt_ext, S=S, m0=x[13])
-            p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat, refine=self.refine_first if first else self.refine,
-                       eps=eps)
-            solve_time += p.solve_time
-            n_solves += p.n_solves
+            # the arrive-in-hover terminal condition is used when it is feasible and dropped before t_f is extended
+            for soft in ((self.soft_td, 0) if self.soft_td else (0,)):
+                F = self._planner(S, first, soft)
+                ref = None
+                if self.last is not None and self.use_refs:
+                    ref = F.ref_from_traj(self.last.traj, t0=t - self.last_t0, tf_new=tf + dt_ext, S=S, m0=x[13])
+                p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat,
+                           refine=self.refine_first if first else self.refine, eps=eps)
+                solve_time += p.solve_time
+                n_solves += p.n_solves
+                if p.traj is not None:
+                    break
             if p.traj is not None:
-                ext = dt_ext
+                ext, soft_used = dt_ext, soft
                 break
         wall = time.perf_counter() - t0
         ok = p is not None and p.traj is not None
         info = dict(t=t, method='F', status=p.status if p is not None else 'infeasible', solve_time=solve_time,
                     wall=wall, iters=n_solves, n_solves=n_solves, tf_ext=ext, continued=False,
-                    fuel_plan=p.fuel if ok else None, cert=ok, S=S)
+                    fuel_plan=p.fuel if ok else None, cert=ok, S=S, soft_td=soft_used)
         if not ok:
             return None, info      # keep flying the previous plan
         if self.check:

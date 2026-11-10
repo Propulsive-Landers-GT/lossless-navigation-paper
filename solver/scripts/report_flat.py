@@ -7,16 +7,24 @@ import numpy as np
 
 HERE = os.path.dirname(__file__)
 R = lambda name: json.load(open(os.path.join(HERE, '..', 'results', name)))
-NAMES = {'B': 'B', 'S': 'S (SCvx)', 'Sh': 'S + hover arrival', 'F0': 'F without hover arrival', 'F': 'F',
-         'Blat': 'B', 'Slat': 'S (SCvx)', 'Shlat': 'S + hover arrival', 'F10hard': 'F without hover arrival, 10 Hz',
-         'F10': 'F, 10 Hz', 'F10own': 'F, 10 Hz, own t_f (+0.5 s)', 'F10own25': 'F, 10 Hz, own t_f (+0.25 s)',
-         'Slat4': 'S (SCvx)', 'F5x4': 'F, 5 Hz'}
-GROUPS = (('Repo protocol: 1 Hz replans, plans applied instantly, same t_f', ['B', 'S', 'Sh', 'F0', 'F']),
+NAMES = {'B': 'B', 'S': 'S (SCvx)', 'Fplain': '**F (landing algorithm)**',
+         'Blat': 'B', 'Slat': 'S (SCvx)', 'F10plainown': '**F (landing algorithm), 10 Hz, own t_f**',
+         'Slat4': 'S (SCvx)', 'F5x4plainown': '**F (landing algorithm), 5 Hz, own t_f**',
+         'F10plain': 'F at B\'s t_f + 0.5 s', 'F10own25': 'F + references, own t_f', 'F10own': 'F + references, own t_f + 0.5 s',
+         'F10': 'F + references, at B\'s t_f + 0.5 s', 'F10hard': 'F + references, no hover arrival, at B\'s t_f + 0.5 s',
+         'F5x4': 'F + references, 5 Hz, 4x slower computer', 'F': 'F + references (1 Hz, instant)',
+         'F0': 'F + references, no hover arrival (1 Hz, instant)',
+         'Sh': 'S + hover arrival (1 Hz, instant)', 'Shlat': 'S + hover arrival'}
+GROUPS = (('Repo protocol: 1 Hz replans, plans applied instantly, t_f = B\'s minimum + 0.5 s for all', ['B', 'S', 'Fplain']),
           ('Realistic compute: plans applied after their solver time, each planner at its sustainable rate',
-           ['Blat', 'Slat', 'Shlat', 'F10hard', 'F10', 'F10own', 'F10own25']),
-          ('Four times slower computer: every solver time multiplied by 4', ['Slat4', 'F5x4']))
-PAIRS = (('F', 'S'), ('F', 'Sh'), ('F10', 'Slat'), ('F10', 'Shlat'), ('F10', 'S'), ('F10own25', 'Slat'), ('F5x4', 'Slat4'))
+           ['Blat', 'Slat', 'F10plainown']),
+          ('Four times slower computer: every solver time multiplied by 4', ['Slat4', 'F5x4plainown']),
+          ('Options and ablations (realistic compute unless marked)',
+           ['F10plain', 'F10own25', 'F10', 'F10hard', 'Shlat', 'Sh', 'F', 'F0']))
+PAIRS = (('Fplain', 'S'), ('F10plainown', 'Slat'), ('F10plainown', 'Shlat'), ('F10plainown', 'S'), ('F5x4plainown', 'Slat4'),
+         ('F10plainown', 'F10own25'))
 LAT = ('Blat', 'Slat', 'Shlat', 'Slat4')
+OWN = ('F10plainown', 'F5x4plainown', 'F10own', 'F10own25')
 
 
 def q(a, f='{:.2f}'):
@@ -102,7 +110,7 @@ def mc(scen, title):
         if not any(x['method'] in meths for x in d):
             continue
         print(f'**{group}**\n')
-        print('| planner | success | lateral error [cm] median / p95 / max | touchdown speed [m/s] median / p95 / max | tilt [deg] median / p95 / max | fuel at t_f [kg] mean | solver time per replan [ms] mean / max | SOCPs per replan mean / max | replans kept previous plan | t_f extended (runs) |')
+        print('| planner | success | lateral error [cm] median / p95 / max | touchdown speed [m/s] median / p95 / max | tilt [deg] median / p95 / max | fuel at t_f [kg] mean | solver time per replan [ms] mean / max | SOCPs per plan, mean (max in one replan) | replans kept previous plan | t_f extended (runs) |')
         print('|---|---|---|---|---|---|---|---|---|---|')
         for m in meths:
             rr = [r for r in d if r['method'] == m]
@@ -115,18 +123,18 @@ def mc(scen, title):
             print(f"| {NAMES[m]} | {ns}/{len(rr)} | {q([100 * r['pos_err'] for r in ok], '{:.1f}')} | {q([r['speed'] for r in ok])} | "
                   f"{q([r['tilt_deg'] for r in ok])} | {np.mean([r['fuel_tf'] for r in ok]):.3f} | "
                   f"{1e3 * np.average([r['solve_replan_mean'] for r in rep], weights=[r['n_replans'] - 1 for r in rep]):.0f} / {1e3 * max(r['solve_replan_max'] for r in rep):.0f} | "
-                  f"{(sum(r['n_socp'] for r in ok) - 0) / sum(r['n_replans'] for r in ok):.1f} / {max(r['n_socp_replan_max'] for r in ok)} | "
+                  f"{sum(r['n_socp'] for r in ok) / sum(r['n_replans'] for r in ok):.1f} ({max(r['n_socp_replan_max'] for r in ok)}) | "
                   f"{sum(r['n_kept_previous'] for r in ok)}/{nrep} | {sum(r['tf_ext'] > 0 for r in ok)} |")
         print()
     print('**Actuator use and first plan**\n')
     print('| planner | gimbal travel [deg] mean | gimbal RMS [deg] mean | throttle travel [N] mean | throttle saturated (time) | gimbal saturated (time) | first plan: solver time [s] mean / max | time-of-flight search [s] mean |')
     print('|---|---|---|---|---|---|---|---|')
-    for m in [x for _, g in GROUPS for x in g]:
+    for m in [x for _, g in GROUPS[:3] for x in g]:
         ok = [r for r in d if r['method'] == m and 'failed' not in r]
         if not ok:
             continue
-        ts = np.mean([(r['t_tfF'] if m.startswith('F10own') else r['t_tfB']) or np.nan for r in ok])
-        lab = NAMES[m] + (' (latency)' if m in LAT else '') + (' (4x slower computer)' if m in ('Slat4', 'F5x4') else '')
+        ts = np.mean([(r['t_tfF'] if m in OWN else r['t_tfB']) or np.nan for r in ok])
+        lab = NAMES[m] + (' (latency)' if m in LAT else '') + (' (4x slower computer)' if m in ('Slat4', 'F5x4plainown') else '')
         print(f"| {lab} | {np.mean([r['gimbal_travel_deg'] for r in ok]):.0f} | {np.mean([r['gimbal_rms_deg'] for r in ok]):.2f} | "
               f"{np.mean([r['thrust_travel'] for r in ok]):.0f} | {100 * np.mean([r['thrust_sat_frac'] for r in ok]):.1f} % | "
               f"{100 * np.mean([r['gimbal_sat_frac'] for r in ok]):.1f} % | {np.mean([r['solve_first'] for r in ok]):.2f} / {max(r['solve_first'] for r in ok):.2f} | {ts:.1f} |")
@@ -141,15 +149,15 @@ def mc(scen, title):
         df = np.mean([100 * (x['fuel_tf'] / y['fuel_tf'] - 1) for x, y in pairs])
         print(f"\nPaired, {NAMES[a]} vs {NAMES[b]}{' (latency)' if b in LAT else ''}: smaller lateral error in {w_e}/{len(pairs)} cases, "
               f"lower touchdown speed in {w_v}/{len(pairs)}, fuel {df:+.2f} % on average.")
-    fails = [(r['case'], r['method'], round(r.get('speed', -1), 2), round(r.get('pos_err', -1), 2), round(r.get('tilt_deg', -1), 1), r.get('failed'))
+    fails = [(r['case'], NAMES.get(r['method'], r['method']) + (' (latency)' if r['method'] in LAT else ''), round(r.get('speed', -1), 2), round(r.get('pos_err', -1), 2), round(r.get('tilt_deg', -1), 1), r.get('failed'))
              for r in d if not r.get('success')]
     print('\nFailures (case, method, speed, lateral, tilt, note):', fails)
-    pk = [r['plan_peaks'] for r in d if r['method'].startswith('F') and r.get('plan_peaks')]
+    pk = [r['plan_peaks'] for r in d if r['method'] in ('Fplain', 'F10plainown', 'F5x4plainown') and r.get('plan_peaks')]
     if pk:
         print(f"F plan peaks over all replans: gimbal cone {max(p['gimbal_cone_max_deg'] for p in pk):.1f} deg, gimbal rate "
               f"{max(p['gimbal_rate_max_dps'] for p in pk):.0f} deg/s, throttle rate {max(p['thrust_rate_max'] for p in pk):.0f} N/s, "
               f"T in [{min(p['T_min'] for p in pk):.0f}, {max(p['T_max'] for p in pk):.0f}] N.")
-    cr = [r['cert_rate'] for r in d if r['method'].startswith('F') and 'failed' not in r]
+    cr = [r['cert_rate'] for r in d if r['method'] in ('Fplain', 'F10plainown', 'F5x4plainown') and 'failed' not in r]
     if cr:
         print(f"F: share of replans that returned a plan and passed the dense-grid limit check: {100 * np.mean(cr):.1f} %.")
 

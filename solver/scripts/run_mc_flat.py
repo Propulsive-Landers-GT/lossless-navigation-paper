@@ -1,23 +1,27 @@
-"""Closed-loop Monte Carlo: planner F (flat convex guidance) against planner B and standard 6DOF SCvx (S).
+"""Closed-loop Monte Carlo: the landing algorithm (planner F) against planner B and standard 6DOF SCvx (S).
 
-Same plant, disturbances, tracker, cases and seeds as run_montecarlo.py. Variants (comma-separated --methods):
+Same plant, disturbances, tracker, cases and seeds as run_montecarlo.py. Methods (comma-separated --methods):
 
-  repo protocol (1 Hz replans, replans stop 1.5 s before touchdown, plans applied instantly; all at t_f = tfB + 0.5):
-      B, S, F          the three planners under identical conditions
+  repo protocol (1 Hz replans, replans stop 1.5 s before touchdown, plans applied instantly; t_f = tfB + 0.5 s):
+      B, S             planner B and standard SCvx
+      Fplain           the landing algorithm as shipped (one fixed SOCP per plan)
   realistic compute (a plan computed from the state at time t is applied at t + its conic-solver time; each planner
   replans as fast as it can sustain):
       Blat, Slat       B / S, at most every 0.5 s, t_lock 1.5 s
-      F10              F every 0.1 s, t_lock 0.6 s, t_f = tfB + 0.5
-      F10own           the same with F's own time of flight (min_tf_F + 0.5 s): no dependence on B at all
-      F10own25         the same with a 0.25 s margin
-  further variants:
-      Sh, Shlat        S with the arrive-in-hover terminal condition planner F uses by default (same treatment)
-      F0, F10hard      F / F10 without that terminal condition (ablation)
-      Slat4, F5x4      four times slower flight computer (solver times x4): S, and F replanning every 0.2 s
+      F10plainown      the landing algorithm as shipped: every 0.1 s, t_lock 0.6 s, its own t_f (min_tf_F + 0.25 s)
+      F10plain         the same at t_f = tfB + 0.5 s
+  options and ablations of planner F:
+      F, F10           with tightness references from the previous plan and one refinement of the first plan
+      F10own, F10own25 the same with F's own t_f (+0.5 s, +0.25 s)
+      F0, F10hard      F / F10 without the arrive-in-hover terminal condition
+  same treatment for the baseline:
+      Sh, Shlat        S with the arrive-in-hover terminal condition
+  four times slower flight computer (solver times x4):
+      Slat4, F5x4plainown (and F5x4 with references)
 
-Planner F runs use the current code; --merge replaces those methods in the existing results file and keeps the rest.
+--merge replaces the listed methods in the existing results file and keeps the rest. tfB is reused from that file.
 
-Usage: OMP_NUM_THREADS=1 .venv/bin/python scripts/run_mc_flat.py --scenario inair --n 40 --workers 3
+Usage: OMP_NUM_THREADS=1 .venv/bin/python scripts/run_mc_flat.py --scenario inair --n 40 --workers 3 --merge
 Writes results/mc_<scenario>_flat.json.
 """
 import argparse
@@ -48,11 +52,14 @@ SIM = {
     'F10': dict(latency=True, replan_dt=0.1, t_lock=0.6), 'F10own': dict(latency=True, replan_dt=0.1, t_lock=0.6),
     'F10hard': dict(latency=True, replan_dt=0.1, t_lock=0.6),
     'F10own25': dict(latency=True, replan_dt=0.1, t_lock=0.6),
+    'F10plain': dict(latency=True, replan_dt=0.1, t_lock=0.6), 'F10plainown': dict(latency=True, replan_dt=0.1, t_lock=0.6),
     # four times slower flight computer: every solver time is multiplied by 4
     'Slat4': dict(latency=True, latency_scale=4.0, replan_dt=0.5),
     'F5x4': dict(latency=True, latency_scale=4.0, replan_dt=0.2, t_lock=0.8),
+    'F5x4plainown': dict(latency=True, latency_scale=4.0, replan_dt=0.2, t_lock=0.8), 'Fplain': {},
 }
-NEEDS_TFB = lambda m: not m.startswith('F10own')
+NEEDS_TFB = lambda m: not (m.startswith('F10own') or m.endswith('plainown'))
+REFS = dict(use_refs=True, refine_first=1)
 
 
 _STORED = {}
@@ -93,7 +100,7 @@ def run_case(args):
     t_tfF = time.time() - tt
     for meth in methods:
         tm = time.time()
-        if (NEEDS_TFB(meth) and tfB is None) or (meth.startswith('F10own') and tfF is None):
+        if (NEEDS_TFB(meth) and tfB is None) or (not NEEDS_TFB(meth) and tfF is None):
             recs.append(dict(case=i, method=meth, failed='no feasible tf'))
             continue
         if meth.startswith('B'):
@@ -102,14 +109,18 @@ def run_case(args):
             pl = PlannerS(veh, cfg, target, tfB + TF_MARGIN, hover_td=True)
         elif meth.startswith('S'):
             pl = PlannerS(veh, cfg, target, tfB + TF_MARGIN)
-        elif meth == 'F10own':
-            pl = PlannerF(veh, cfg, target, tfF + TF_MARGIN)
-        elif meth == 'F10own25':         # F's own time of flight with half the margin
-            pl = PlannerF(veh, cfg, target, tfF + 0.25)
-        elif meth in ('F0', 'F10hard'):  # ablation: planner F without the arrive-in-hover terminal condition
-            pl = PlannerF(veh, cfg, target, tfB + TF_MARGIN, soft_td=0)
-        else:
+        elif meth in ('Fplain', 'F10plain'):      # the landing algorithm as shipped, at B's time of flight
             pl = PlannerF(veh, cfg, target, tfB + TF_MARGIN)
+        elif meth in ('F10plainown', 'F5x4plainown'):   # the landing algorithm as shipped, with its own time of flight
+            pl = PlannerF(veh, cfg, target, tfF + 0.25)
+        elif meth == 'F10own':           # options: references from the previous plan, first plan refined once
+            pl = PlannerF(veh, cfg, target, tfF + TF_MARGIN, **REFS)
+        elif meth == 'F10own25':
+            pl = PlannerF(veh, cfg, target, tfF + 0.25, **REFS)
+        elif meth in ('F0', 'F10hard'):  # ablation: no arrive-in-hover terminal condition
+            pl = PlannerF(veh, cfg, target, tfB + TF_MARGIN, soft_td=0, **REFS)
+        else:                            # F, F10, F5x4: with references, at B's time of flight
+            pl = PlannerF(veh, cfg, target, tfB + TF_MARGIN, **REFS)
         out = simulate(x0, target, pl, veh, replace(opts, **SIM[meth]))
         infos = out.pop('infos')
         if 'failed' in out:
@@ -147,7 +158,7 @@ def main():
     ap.add_argument('--n', type=int, default=40)
     ap.add_argument('--start', type=int, default=0)
     ap.add_argument('--workers', type=int, default=3)
-    ap.add_argument('--methods', default='B,S,F,Blat,Slat,F10,F10own')
+    ap.add_argument('--methods', default='B,S,Fplain,Blat,Slat,F10plainown,F10plain')
     ap.add_argument('--tag', default='_flat')
     ap.add_argument('--merge', action='store_true')
     a = ap.parse_args()

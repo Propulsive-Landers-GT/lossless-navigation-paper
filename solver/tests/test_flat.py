@@ -83,7 +83,7 @@ def test_centre_of_percussion_identity_with_flat_controls():
         assert np.isclose(dx[13], -VEH.alpha * m * fm['tau'][0])
 
 
-# ---------------------------------------------------------------- the inequalities behind the restriction (FLAT.md)
+# ---------------------------------------------------------------- the inequalities behind the restriction (math/10, Lemma 4)
 def test_pointwise_bounds_used_by_the_restriction():
     rng = np.random.default_rng(3)
     for _ in range(4000):
@@ -168,13 +168,29 @@ def test_infeasible_request_is_refused_not_faked():
     assert p.traj is None and p.status == 'infeasible'
 
 
+def test_landing_guidance_entry_point():
+    """The one-call interface: picks its own time of flight, plans with one SOCP, returns a closed-form reference."""
+    from gtpl_guidance.landing import LandingGuidance
+    r0, v0, R0, w0, _ = _problems()[1]
+    x0 = np.concatenate([r0, v0, R_to_quat(R0), w0, [79.0]])
+    guide = LandingGuidance(TGT)
+    assert guide.update(0.0, x0)
+    assert guide.plan.n_solves == 1 and guide.n_tf_solves <= 16
+    a, z = guide.reference(0.0), guide.reference(guide.tf_abs)
+    assert np.allclose(a['position'], r0, atol=1e-8) and np.allclose(a['body_axis'], R0[:, 2], atol=1e-8)
+    assert np.allclose(z['position'], TGT, atol=1e-8) and np.allclose(z['velocity'], 0, atol=1e-8)
+    assert np.allclose(z['body_axis'], [0, 0, 1], atol=1e-9) and abs(z['gimbal_angle']) < 1e-9
+    assert abs(z['throttle'] - z['mass'] * G0) < 1e-6          # arrives in hover: thrust equals weight
+
+
 @pytest.mark.slow
 def test_closed_loop_lands():
-    from gtpl_guidance.guidance import PlannerF
+    """Wind, gusts, thrust noise, Isp error, gimbal bias; 10 Hz replans, each applied after its solver time."""
+    from gtpl_guidance.landing import LandingGuidance
     from gtpl_guidance.sim6dof import simulate, SimOptions
-    r0, v0, R0, w0, tf = _problems()[1]
+    r0, v0, R0, w0, _ = _problems()[1]
     x0 = np.concatenate([r0, v0, R_to_quat(R0), w0, [79.0]])
     opts = SimOptions(wind=(2.0, 1.0, 0.0), gust_sigma=0.5, thrust_noise=0.02, isp_error=0.05,
                       gimbal_bias=(0.003, -0.002), seed=1, replan_dt=0.1, t_lock=0.6, latency=True)
-    out = simulate(x0, TGT, PlannerF(VEH, CFG, TGT, tf), VEH, opts)
+    out = simulate(x0, TGT, LandingGuidance(TGT), VEH, opts)
     assert out['success'] and out['pos_err'] < 0.05 and out['speed'] < 0.5

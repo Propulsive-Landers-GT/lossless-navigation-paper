@@ -125,7 +125,7 @@ def flat_map(u, u1, u2, u3, eps):
     a_dot = fd + 2 * eps * bd_bdd
     lvec = -eps * Pbdd
     # d/dt of lvec projected on the plane perpendicular to b (= rate of change of its body-frame components, since
-    # the roll rate is zero): P d/dt(P b'') = P b''' + |b'|^2 b' ... derived in solver/FLAT.md
+    # the roll rate is zero): P d/dt(P b'') = P b''' + |b'|^2 b'  (since P P' b'' = |b'|^2 b')
     Pbddd = bddd - np.sum(b * bddd, axis=1)[:, None] * b
     lvec_dot_perp = -eps * (Pbddd + w2[:, None] * bd)
     tau = np.sqrt(a * a + np.sum(lvec * lvec, axis=1))

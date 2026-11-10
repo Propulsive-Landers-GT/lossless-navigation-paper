@@ -130,7 +130,7 @@ afford about 0.6 s average and 1.7 s worst-case per replan, standard SCvx is the
 
 **Correction (November 2026).** This section used to end: "the research result, that exact lossless convexification
 is impossible and every practical method must iterate on the attitude, applies to both." The first half is right.
-The second half does not follow from the theorem and is false: planner F ([FLAT.md](FLAT.md)) is a single convex
+The second half does not follow from the theorem and is false: planner F ([`../LANDING-ALGORITHM.md`](../LANDING-ALGORITHM.md)) is a single convex
 program whose plans are all flyable, with no iteration on the attitude. It was compared with B and S on the same
 cases in [RESULTS-FLAT.md](RESULTS-FLAT.md), which also adds computation time to the closed loop. The numbers above
 give every planner zero computation time; see `../AUDIT-2026-11.md` §4.
