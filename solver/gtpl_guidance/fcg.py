@@ -101,9 +101,10 @@ class FCG:
         return FlatRef(rho, kap, phi, Lb)
 
     # ------------------------------------------------------------------ the convex program
-    def solve(self, r0, v0, m0, R0, w0, target, tf, ref=None, T_lat0=(0.0, 0.0), soft_terminal=False):
+    def solve(self, r0, v0, m0, R0, w0, target, tf, ref=None, T_lat0=(0.0, 0.0), soft_terminal=False, eps=None):
         """One SOCP. Returns (c, info) with c the (n,3) spline coefficients or None."""
-        veh, cfg, S, eps = self.veh, self.cfg, self.S, self.eps
+        veh, cfg, S = self.veh, self.cfg, self.S
+        eps = self.eps if eps is None else eps
         bs = self.basis
         n = bs.n
         ref = ref or self.default_ref(m0)
@@ -220,14 +221,15 @@ class FCG:
         return c.value, info
 
     # ------------------------------------------------------------------ plan = solve (+ optional refinement passes)
-    def plan(self, r0, v0, m0, R0, w0, target, tf, ref=None, T_lat0=(0.0, 0.0), refine=2, tol=2e-4):
+    def plan(self, r0, v0, m0, R0, w0, target, tf, ref=None, T_lat0=(0.0, 0.0), refine=2, tol=2e-4, eps=None):
         """Solve, then `refine` passes that re-solve with the references taken from the best plan so far. Every pass
         returns a flyable plan; the best (lowest fuel) one is kept."""
         t_wall = time.perf_counter()
+        eps = self.eps if eps is None else eps
         best, best_info, total, n = None, None, 0.0, 0
         hist = []
         for k in range(refine + 1):
-            c, info = self.solve(r0, v0, m0, R0, w0, target, tf, ref=ref, T_lat0=T_lat0)
+            c, info = self.solve(r0, v0, m0, R0, w0, target, tf, ref=ref, T_lat0=T_lat0, eps=eps)
             total += info['solve_time']
             n += 1
             if c is None:
@@ -236,7 +238,7 @@ class FCG:
                     ref = None          # a stale reference made the restriction infeasible: fall back to the default
                     continue
                 break
-            traj = FlatTrajectory(c, tf, self.eps, m0, self.veh.alpha)
+            traj = FlatTrajectory(c, tf, eps, m0, self.veh.alpha)
             fuel = float(m0 - traj.eval(np.array([tf]))['m'][0])
             hist.append(dict(status=info['status'], fuel=fuel, bound=info['fuel_bound'], slack=info['slack']))
             if best is None or fuel < best.fuel - 1e-9:

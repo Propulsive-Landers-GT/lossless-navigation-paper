@@ -176,6 +176,7 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
     max_tilt = 0.0
     sat_g = sat_T = 0
     n_ctrl = 0
+    gim_travel = thr_travel = gim_sq = 0.0      # actuator effort: total gimbal travel [rad], throttle travel [N]
     min_glide_margin = np.inf
     t_end = ref.tf_abs + opts.t_extra
     touchdown = None
@@ -216,9 +217,14 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
         ph_c = np.clip(ph_c, -veh.gimbal_max, veh.gimbal_max)
         T_c = np.clip(T_c, veh.T_min, veh.T_max)
         dg = veh.gimbal_rate * opts.dt
-        th_a += np.clip(th_c - th_a, -dg, dg)
-        ph_a += np.clip(ph_c - ph_a, -dg, dg)
-        T_a += np.clip(T_c - T_a, -veh.thrust_rate * opts.dt, veh.thrust_rate * opts.dt)
+        d_th, d_ph = np.clip(th_c - th_a, -dg, dg), np.clip(ph_c - ph_a, -dg, dg)
+        d_T = np.clip(T_c - T_a, -veh.thrust_rate * opts.dt, veh.thrust_rate * opts.dt)
+        th_a += d_th
+        ph_a += d_ph
+        T_a += d_T
+        gim_travel += abs(d_th) + abs(d_ph)
+        thr_travel += abs(d_T)
+        gim_sq += (th_a**2 + ph_a**2) * opts.dt
         Tb = T_a * noise * gimbal_dir(th_a + opts.gimbal_bias[0], ph_a + opts.gimbal_bias[1])
         vrel = x[3:6] - (np.array(opts.wind) + gust)
         F_drag = -0.5 * 1.225 * opts.drag_CdA * np.linalg.norm(vrel) * vrel
@@ -250,7 +256,9 @@ def simulate(x0, target, planner, veh, opts=SimOptions(), controller=None):
                rate=float(np.linalg.norm(x[10:12])), fuel=float(x0[13] - x[13]),
                fuel_tf=fuel_tf if fuel_tf is not None else float(x0[13] - x[13]), tf_final=float(ref.tf_abs), max_tilt_deg=float(np.degrees(max_tilt)),
                gimbal_sat_frac=sat_g / max(n_ctrl, 1), thrust_sat_frac=sat_T / max(n_ctrl, 1),
-               min_alt_margin=float(min_glide_margin), infos=infos)
+               min_alt_margin=float(min_glide_margin), infos=infos,
+               gimbal_travel_deg=float(np.degrees(gim_travel)), thrust_travel=float(thr_travel),
+               gimbal_rms_deg=float(np.degrees(np.sqrt(gim_sq / max(t, 1e-9)))))
     out['success'] = bool(out['touched'] and out['speed'] <= 1.0 and out['pos_err'] <= 1.0 and out['tilt_deg'] <= 5.0)
     if opts.log:
         out['log'] = np.array(log)

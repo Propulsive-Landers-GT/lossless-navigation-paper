@@ -272,7 +272,7 @@ class PlannerF:
     """
 
     def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=1, refine=0,
-                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=False):
+                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=True):
         self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
         dlo, dhi = replan_margin_use
         self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
@@ -307,6 +307,8 @@ class PlannerF:
         t0 = time.perf_counter()
         solve_time, n_solves, ext = 0.0, 0, 0.0
         args = (x[0:3], x[3:6], x[13], R0, w0, self.target)
+        J, L = self.veh.inertia_lever(x[13])
+        eps = J / (x[13] * L)          # centre-of-percussion offset at the current mass
         p = None
         for dt_ext in (0.0,) + tuple(self.extensions):
             if tf + dt_ext > self.tf_cap:
@@ -315,7 +317,8 @@ class PlannerF:
             ref = None
             if self.last is not None:
                 ref = F.ref_from_traj(self.last.traj, t0=t - self.last_t0, tf_new=tf + dt_ext, S=S, m0=x[13])
-            p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat, refine=self.refine_first if first else self.refine)
+            p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat, refine=self.refine_first if first else self.refine,
+                       eps=eps)
             solve_time += p.solve_time
             n_solves += p.n_solves
             if p.traj is not None:
@@ -329,7 +332,10 @@ class PlannerF:
         if not ok:
             return None, info      # keep flying the previous plan
         if self.check:
-            c = check_limits(p, self.veh, self.cfg_replan, x[0:3], x[3:6], x[13], R0, w0, self.target, n=401)
+            c = check_limits(p, self.veh, self.cfg_replan, x[0:3], x[3:6], x[13], R0, w0, self.target, n=401,
+                             frame=False)
+            info['peaks'] = {k: c[k] for k in ('T_min', 'T_max', 'gimbal_cone_max_deg', 'gimbal_rate_max_dps',
+                                               'thrust_rate_max', 'tilt_max_deg')}
             info['cert'] = bool(all(v for k, v in c['checks'].items() if not k.endswith('_plan')))
             info['cert_detail'] = {k: bool(v) for k, v in c['checks'].items()}
         self.last, self.last_t0 = p, t

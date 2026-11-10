@@ -62,9 +62,12 @@ def check_limits(plan, veh, cfg, r0, v0, m0, R0, w0, target, n=2001, frame=None)
     traj = plan.traj
     t = np.linspace(0.0, traj.tf, n)
     e = traj.eval(t)
-    frame = frame or plan_frame(traj, R0)
-    Tb = np.array([body_thrust(traj, frame, ti) for ti in t[::10]])
-    ang = np.array([gimbal_angles(tb) for tb in Tb])
+    if frame is False:      # cheap check: the gimbal cone angle bounds both flight-convention angles (claim N1)
+        ang = np.arctan(e['gim_tan'])
+    else:
+        frame = frame or plan_frame(traj, R0)
+        Tb = np.array([body_thrust(traj, frame, ti) for ti in t[::10]])
+        ang = np.array([gimbal_angles(tb) for tb in Tb])
     tilt = np.arccos(np.clip(e['b'][:, 2], -1, 1))
     rz = e['r'][:, 2] - target[2]
     lat = np.linalg.norm(e['r'][:, :2] - target[None, :2], axis=1)
