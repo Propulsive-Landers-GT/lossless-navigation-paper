@@ -9,6 +9,8 @@ from .certify import certify_B, certify_3dof
 from .lcvx3dof import tf_search_A, solve_candidate_C, solve_3dof_relaxation
 from .rotations import quat_to_R, gimbal_dir
 from .sim6dof import Reference
+from .fcg import FCG
+from .flatcert import check_limits
 
 
 def bisect_min_tf(feasible, lo, hi, tol=0.1, hi_max=25.0):
@@ -251,3 +253,85 @@ class PlannerS:
         self.last, self.last_t0 = p, t
         self.tf_abs = t + p.tf
         return Reference.from_planB(p, t), info
+
+
+def min_tf_F(r0, v0, m0, R0, w0, target, veh, cfg, lo=None, S=16, tol=0.05):
+    """Smallest final time at which planner F's single convex program is feasible (bisection, one SOCP per probe)."""
+    F = FCG(veh, cfg, S=S)
+    lo = lo or min_tf_3dof(r0, v0, m0, target, veh, cfg)
+    f = lambda tf: F.solve(r0, v0, m0, R0, w0, target, tf)[0] is not None
+    return bisect_min_tf(f, lo, lo + 2.0, tol=tol)
+
+
+class PlannerF:
+    """Closed-loop wrapper of planner F (flat convex guidance): fixed absolute final time, shrinking horizon.
+
+    Each replan is ONE convex program. The previous plan supplies only the scalar tightness references (never a
+    linearisation point), so a replan cannot diverge and needs no iteration budget, continuation or trust region.
+    Fallbacks, in order: default references; final-time extension; keep flying the previous plan.
+    """
+
+    def __init__(self, veh, cfg, target, tf_abs, S=16, span_min=0.3, S_min=6, refine_first=1, refine=0,
+                 extensions=(0.25, 0.5, 1.0), tf_cap=20.0, replan_margin_use=(20.0, 40.0), check=False):
+        self.veh, self.cfg, self.target, self.tf_abs = veh, cfg, np.asarray(target, float), tf_abs
+        dlo, dhi = replan_margin_use
+        self.cfg_replan = replace(cfg, T_min_plan=cfg.T_min_plan - dlo, T_max_plan=cfg.T_max_plan + dhi)
+        self.S, self.span_min, self.S_min = S, span_min, S_min
+        self.refine_first, self.refine = refine_first, refine
+        self.extensions, self.tf_cap, self.check = extensions, tf_cap, check
+        self.last, self.last_t0 = None, None
+        self._planners = {}
+
+    def _planner(self, S, first):
+        key = (S, first)
+        if key not in self._planners:
+            self._planners[key] = FCG(self.veh, self.cfg if first else self.cfg_replan, S=S)
+        return self._planners[key]
+
+    def __call__(self, t, x, prev_ref, act=(0.0, 0.0, None)):
+        tf = self.tf_abs - t
+        R0, w0 = quat_to_R(x[6:10]), x[10:13]
+        first = self.last is None
+        if act[2] is None:
+            Tlat = np.zeros(2)
+        else:
+            Tb = act[2] * gimbal_dir(act[0], act[1])
+            lim = 0.95 * np.tan(self.cfg.gimbal_plan) * Tb[2]
+            Tlat = np.clip(Tb[:2], -lim, lim)
+        if first:
+            self.tf_first = tf
+            S = self.S
+        else:   # keep the span length roughly constant as the horizon shrinks
+            S = int(round(self.S * tf / self.tf_first))
+            S = max(self.S_min, min(S, self.S, max(int(tf / self.span_min), 1)))
+        t0 = time.perf_counter()
+        solve_time, n_solves, ext = 0.0, 0, 0.0
+        args = (x[0:3], x[3:6], x[13], R0, w0, self.target)
+        p = None
+        for dt_ext in (0.0,) + tuple(self.extensions):
+            if tf + dt_ext > self.tf_cap:
+                break
+            F = self._planner(S, first)
+            ref = None
+            if self.last is not None:
+                ref = F.ref_from_traj(self.last.traj, t0=t - self.last_t0, tf_new=tf + dt_ext, S=S, m0=x[13])
+            p = F.plan(*args, tf + dt_ext, ref=ref, T_lat0=Tlat, refine=self.refine_first if first else self.refine)
+            solve_time += p.solve_time
+            n_solves += p.n_solves
+            if p.traj is not None:
+                ext = dt_ext
+                break
+        wall = time.perf_counter() - t0
+        ok = p is not None and p.traj is not None
+        info = dict(t=t, method='F', status=p.status if p is not None else 'infeasible', solve_time=solve_time,
+                    wall=wall, iters=n_solves, n_solves=n_solves, tf_ext=ext, continued=False,
+                    fuel_plan=p.fuel if ok else None, cert=ok, S=S)
+        if not ok:
+            return None, info      # keep flying the previous plan
+        if self.check:
+            c = check_limits(p, self.veh, self.cfg_replan, x[0:3], x[3:6], x[13], R0, w0, self.target, n=401)
+            info['cert'] = bool(all(v for k, v in c['checks'].items() if not k.endswith('_plan')))
+            info['cert_detail'] = {k: bool(v) for k, v in c['checks'].items()}
+        self.last, self.last_t0 = p, t
+        self.tf_abs = t + p.tf
+        return Reference.from_planF(p, t), info
