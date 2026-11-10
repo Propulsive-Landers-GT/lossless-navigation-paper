@@ -276,18 +276,30 @@ coarse fixed-time version of the same vehicle, `N = 10`, `t_f = 7.5`, written so
 is at most quadratic. The attitude is a rotation matrix stepped with the Cayley map. It then takes
 Shor's relaxation: each product `x_i x_j` becomes an entry of a PSD matrix, one per pair of
 neighbouring nodes. If every matrix came out rank one, the answer would be the proven global
-optimum. It doesn't:
+optimum. It doesn't.
 
-| | final mass `m_N` |
-|---|---|
-| SDP upper bound | 1.557 |
-| IPOPT local optimum on the same discrete problem | 1.316 |
-| trivial bound from `Γ ≥ T_min` | 1.625 |
+`solver/sdp_relaxation_5dof.py` poses the same discrete problem without roll. The vehicle is
+axisymmetric and the engine makes no roll torque, so the thrust axis `b = R e₁` and the inertial
+rate `R ω` can replace the rotation matrix. `solver/check_5dof_reduction.py` checks the reduction.
+The two models agree to RK4 error, which shrinks 4,000× from 8 to 64 substeps. Mapping the 6-DOF
+optimum into the 5-DOF variables satisfies every 5-DOF equality to 2e-15.
 
-No block is close to rank one: `λ₂/λ₁` is 0.25 to 0.51 in every block. The bound barely improves
-on the trivial one. Holding the mass constant leaves it just as loose, so the attitude coupling is
-the cause, not the mass. The next level of the moment hierarchy would need 1770×1770 PSD blocks per
-pair of nodes.
+| final mass `m_N` | 6-DOF | 5-DOF (no roll) |
+|---|---|---|
+| SDP upper bound | 1.557 | 1.547 |
+| IPOPT local optimum, same discrete problem | 1.316 | 1.316 |
+| trivial bound from `Γ ≥ T_min` | 1.625 | 1.625 |
+| SDP solve time | 63 s | 7 s |
+
+No block is close to rank one: `λ₂/λ₁` is 0.24 to 0.51 in every block of either version. The
+bound barely improves on the trivial one. Holding the mass constant leaves the 6-DOF version just
+as loose, and removing roll barely helps. So the looseness comes from coupling the thrust direction
+to the attitude, not from the mass or the full rotation group. The next level of the moment
+hierarchy would need 1770×1770 PSD blocks per pair of nodes in 6-DOF.
+
+At this fixed `t_f`, IPOPT's optimum is lossy at nodes 1, 5 and 6: `Γ = T_min` but `‖T‖` is 0.29,
+0.0001 and 0.27. That doesn't contradict the theorem. Three nodes give 9 thrust components, fewer
+than the 10 terminal rows, so they can't steer.
 
 This matches the GTPL `lossless-work` repo, which proves in Lean that no convex program whose
 initial position and velocity enter convexly can be lossless for every initial condition of the
@@ -346,3 +358,5 @@ cd solver && ../.venv/Scripts/python check_lossless.py
 - `solver/sixdof_lcvx.py`: model, exact RK4 Jacobians, PTR solver.
 - `solver/check_lossless.py`: cases and checks.
 - `solver/sdp_relaxation.py`: the one-shot SDP attempt above, checked against IPOPT.
+- `solver/sdp_relaxation_5dof.py`, `solver/check_5dof_reduction.py`: the roll-free version and
+  its check against the 6-DOF model.

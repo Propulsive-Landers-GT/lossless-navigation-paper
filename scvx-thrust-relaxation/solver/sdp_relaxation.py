@@ -236,8 +236,10 @@ def solve_sdp(L: Lander, **solver_opts):
     cons += [affine(L.eq + L.eq_r + rlt) == 0, affine(L.ge + L.ge_r) >= 0]
     cons += [cp.SOC(affine([t])[0], affine(vs)) for t, vs in L.soc]
     prob = cp.Problem(cp.Maximize(affine([L.objective])[0]), cons)
-    # Default regularization stalls with NumericalError at N = 10.
-    prob.solve(**({"solver": "CLARABEL", "static_regularization_constant": 1e-6} | solver_opts))
+    opts = {"solver": "CLARABEL"} | solver_opts
+    if opts["solver"] == "CLARABEL":  # its default regularization stalls with NumericalError at N = 10
+        opts.setdefault("static_regularization_constant", 1e-6)
+    prob.solve(**opts)
 
     yv = np.concatenate([z.value.ravel(order="F") for z in Z] + [xp.value])
     xhat = np.array([yv[col(i)] for i in range(L.n)])
