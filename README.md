@@ -30,7 +30,7 @@ Against standard successive convexification, with each planner's computation tim
 | The impossibility answer and its exact scope, in two pages | [`FINAL-REPORT.md`](FINAL-REPORT.md) |
 | The status of every individual claim (Lean / proved / numerical / open) | [`SYNTHESIS.md`](SYNTHESIS.md) |
 | The comprehensive paper (shareable version, 50 pages; revision 8 holds every result in this repository) | [`paper/main-share.pdf`](paper/main-share.pdf) |
-| The two standalone 10-page papers in AIAA format, and what else could be published | [`PAPERS.md`](PAPERS.md), [`paper/aiaa-student/`](paper/aiaa-student/) |
+| The AIAA-format papers (one combined 11-page paper, or two separate 10-page papers), and what else could be published | [`PAPERS.md`](PAPERS.md), [`paper/aiaa-student/`](paper/aiaa-student/) |
 | What of LCvx survives inside successive convexification (thrust slack, with its own Lean proof) | [`scvx-thrust-relaxation/README.md`](scvx-thrust-relaxation/README.md) |
 | An independent second look at the impossibility proofs | [`numerics/independent-check/README.md`](numerics/independent-check/README.md) |
 | To check the proofs yourself | [Checking the results](#checking-the-results) below |
@@ -59,7 +59,7 @@ Against standard successive convexification, with each planner's computation tim
 | `main.pdf` | Internal draft: same content plus pointers to project files and referee status tags. |
 | `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility (4.5: the sound single convex program, Theorem F; 4.7: the thrust slack inside successive convexification), 05 numerics, 055 practice (6.3: planner F against SCvx and B), 06 formalization, 07 discussion; appendices A-D hold the earlier proofs and E the proof of Theorem F. |
 | `Makefile` | `make draft` builds `main.pdf`; `make share` builds `main-share.pdf`. Edit `\paperauthors` in `main.tex` to set the author line. |
-| `aiaa-student/` | Two standalone 10-page papers for the AIAA Regional Student Conferences (11-page limit, AIAA meeting-paper format); neither cites the other. `impossibility/`: the proof that no exact convex program exists for attitude-rate-limited descent. `algorithm/`: the landing algorithm, its soundness proof, and the benchmark against SCvx. `make student` builds both. Its `README.md` explains the split, lists the conference rules, and says what the authors must settle before submitting, including whether AI-produced work is eligible. |
+| `aiaa-student/` | Standalone papers for the AIAA Regional Student Conferences (11-page limit, AIAA meeting-paper format). `combined/`: the impossibility theorem and the landing algorithm in one 11-page paper. `impossibility/` and `algorithm/`: the same material as two 10-page papers with more detail in each. `make student` builds all three. Its `README.md` explains the choice, lists the conference rules, and says what the authors must settle before submitting, including whether AI-produced work is eligible. |
 | `CLAIMS-MAP.md` | Maps every theorem in the paper to its registry row, proof file and Lean name. |
 | `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code (2026-11-07), with addenda listing what revisions 7, 7.1 and 8 changed and how each was checked. |
 

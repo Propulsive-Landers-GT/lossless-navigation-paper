@@ -10,9 +10,10 @@ lives, how solid its evidence is, and what it still needs. For the results thems
 | 0 | Comprehensive paper: every result in the repository | `paper/main.pdf` (internal), `paper/main-share.pdf` (shareable) | 50 pages | Written, revision 8. Not peer reviewed. |
 | 1 | Lossless Convexification Is Impossible for Attitude-Rate-Limited Powered Descent | `paper/aiaa-student/impossibility/` | 10 pages, AIAA format | Written as a draft for the authors to take over. Standalone. |
 | 2 | A Sound Single Convex Program for Powered-Descent Guidance of a Gimbaled Lander | `paper/aiaa-student/algorithm/` | 10 pages, AIAA format | Written as a draft for the authors to take over. Standalone. |
+| 1+2 | Powered-Descent Guidance with Attitude Coupling: An Impossibility Theorem and a Sound Single Convex Program | `paper/aiaa-student/combined/` | 11 pages, AIAA format | Written as a draft. Standalone. The single-paper alternative to 1 and 2; do not enter it alongside them. |
 | 3 | The LCvx thrust slack inside 6-DOF successive convexification | `scvx-thrust-relaxation/` (results and Lean proof); Section 4.7 of paper 0 | Not written as a paper | Candidate. The work is complete enough to write up. |
 
-Papers 1 and 2 do not cite each other or paper 0. Each cites only the public repository, for the Lean sources, the
+Papers 1, 2 and the combined paper do not cite each other or paper 0. Each cites only the public repository, for the Lean sources, the
 certificates and the software.
 
 ## Paper 0: the comprehensive paper
@@ -48,6 +49,14 @@ certificates and the software.
   worse than successive convexification on hop fuel and on minimum flight time.
 - **Still needs.** An independent check of the theorem, in the style of `numerics/independent-check/`; confirmation
   from measured mass properties that the center of percussion stays put; ideally hardware or flight data.
+
+## The combined paper (1+2)
+
+- **Claim.** Both of the above, as one argument: exactness is impossible, soundness is attainable, and here is the program.
+- **Evidence and limits.** Those of papers 1 and 2. Its Limitations section states both sets.
+- **Trade-off.** It is at the 11-page limit. Compared with the separate papers it omits the proof of the distance bound,
+  the Lean and certificate tables, the vehicle schematic, the example plan and the open-loop table.
+- **Sources.** Its program and soundness proof are taken from paper 2's source by a script, so the two stay identical.
 
 ## Paper 3 (candidate): the thrust slack inside successive convexification
 
