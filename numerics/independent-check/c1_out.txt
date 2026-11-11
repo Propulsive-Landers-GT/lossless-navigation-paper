@@ -1,0 +1,41 @@
+=== A big-gap demo: delta=40.0 deg, omega=1.0, s*=0.5000, a in [6.0,20.0], tf=1.5, glide=30 deg, cells=10+14
+  hypotheses: S1 w s*<=delta: True | delta+w s*<=90deg: True | S2: True | S3: True
+  witness  theta* = r0 [0.6391 0.     9.3462] v0 [-2.4117 -0.     -7.0164]
+  midpoint theta_m = r0 [0.     0.     9.3462] v0 [ 0.      0.     -7.0164]
+  ODE landing miss of witness: |r(tf)|=2.60e-14, |v(tf)|=1.18e-14
+  min altitude along path: 2.569e-14   min (r_z - tan(gamma)|r_h|): 2.354e-14
+  max gimbal angle used: 40.00 deg (limit 40.00)
+  l(theta*) = 5.83793686   V*+kappa = 5.83793686   (paper: these are equal, and it is the max over F)
+  [sanity: land from witness data theta*   ] closest approach over 8 starts: best 4.629e-04, median 1.129e-02, worst 2.817e-01
+  [sanity: land from a random feasible datum] closest approach over 8 starts: best 1.572e-11, median 7.674e-11, worst 7.815e-10
+  [ATTACK: land from midpoint theta_m       ] closest approach over 42 starts: best 4.152e-02, median 7.118e-02, worst 1.342e-01
+  paper's proved lower bound on dist(theta_m, F): 6.444e-04   -> search found 4.152e-02  (CONSISTENT)
+  best competitor: l deficit V*+kappa-l = 4.632e-02, its data offset from theta_m = [-0.00177 -0.00095 -0.03668 -0.00157 -0.00066 -0.01928]
+
+=== A refined grid: delta=40.0 deg, omega=1.0, s*=0.5000, a in [6.0,20.0], tf=1.5, glide=30 deg, cells=20+28
+  hypotheses: S1 w s*<=delta: True | delta+w s*<=90deg: True | S2: True | S3: True
+  witness  theta* = r0 [0.6391 0.     9.3462] v0 [-2.4117 -0.     -7.0164]
+  midpoint theta_m = r0 [0.     0.     9.3462] v0 [ 0.      0.     -7.0164]
+  ODE landing miss of witness: |r(tf)|=1.94e-14, |v(tf)|=1.53e-14
+  min altitude along path: 1.868e-14   min (r_z - tan(gamma)|r_h|): 1.562e-14
+  max gimbal angle used: 40.00 deg (limit 40.00)
+  l(theta*) = 5.83793686   V*+kappa = 5.83793686   (paper: these are equal, and it is the max over F)
+  [sanity: land from witness data theta*   ] closest approach over 8 starts: best 3.528e-04, median 8.412e-03, worst 1.836e-01
+  [sanity: land from a random feasible datum] closest approach over 8 starts: best 2.906e-12, median 1.444e-11, worst 3.980e-10
+  [ATTACK: land from midpoint theta_m       ] closest approach over 22 starts: best 4.277e-02, median 5.854e-02, worst 1.375e-01
+  paper's proved lower bound on dist(theta_m, F): 6.444e-04   -> search found 4.277e-02  (CONSISTENT)
+  best competitor: l deficit V*+kappa-l = 4.777e-02, its data offset from theta_m = [-0.00151  0.00032 -0.03786 -0.00092  0.0006  -0.01981]
+
+=== B vehicle-like (const mass): delta=15.0 deg, omega=0.4, s*=0.6545, a in [5.0,12.5], tf=4.0, glide=30 deg, cells=10+20
+  hypotheses: S1 w s*<=delta: True | delta+w s*<=90deg: True | S2: True | S3: True
+  witness  theta* = r0 [ 0.4518  0.     19.8114] v0 [-1.2488 -0.     -5.5935]
+  midpoint theta_m = r0 [ 0.      0.     19.8114] v0 [ 0.      0.     -5.5935]
+  ODE landing miss of witness: |r(tf)|=5.50e-12, |v(tf)|=1.59e-12
+  min altitude along path: 5.253e-12   min (r_z - tan(gamma)|r_h|): 4.307e-12
+  max gimbal angle used: 15.00 deg (limit 15.00)
+  l(theta*) = 16.15046817   V*+kappa = 16.15046817   (paper: these are equal, and it is the max over F)
+  [sanity: land from witness data theta*   ] closest approach over 8 starts: best 2.387e-03, median 1.879e-02, worst 4.695e-02
+  [sanity: land from a random feasible datum] closest approach over 8 starts: best 4.275e-12, median 5.437e-11, worst 2.721e-09
+  [ATTACK: land from midpoint theta_m       ] closest approach over 32 starts: best 2.002e-02, median 3.176e-02, worst 8.533e-02
+  paper's proved lower bound on dist(theta_m, F): 3.813e-05   -> search found 2.002e-02  (CONSISTENT)
+  best competitor: l deficit V*+kappa-l = 2.389e-02, its data offset from theta_m = [-2.500e-04  1.000e-04 -1.625e-02 -4.400e-04  8.000e-05 -1.168e-02]

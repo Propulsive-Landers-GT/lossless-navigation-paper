@@ -1,0 +1,4 @@
+extreme arcs: P = (+-6.7524, 6.7524) m/s ; midpoint M = (0, 6.7524)
+paper's proved lower bound Gamma_F = 1.8093 m/s ; paper's numerical distance 2.18-2.23 m/s
+N=16: extreme arc gives I=(6.7524,6.7524); closest approach to M over 30 starts: best 2.1469, median 2.4568  -> consistent with bound
+N=32: extreme arc gives I=(6.7524,6.7524); closest approach to M over 30 starts: best 2.1407, median 2.5069  -> consistent with bound

@@ -1,0 +1,15 @@
+  cells=21 start  0 (witness      ): offset 2.3184 m, landing-constraint violation 2.4e-08
+  cells=21 start  1 (witness+noise): offset 2.3179 m, landing-constraint violation 2.7e-08
+  cells=21 start  2 (random       ): offset 2.3174 m, landing-constraint violation 2.2e-08
+  cells=21 start  3 (coning       ): offset 2.3181 m, landing-constraint violation 2.4e-08
+  cells=21 start  4 (witness+noise): offset 2.3177 m, landing-constraint violation 1.7e-05
+  cells=21 start  5 (random       ): offset 2.3188 m, landing-constraint violation 2.4e-08
+  cells=21 start  6 (coning       ): offset 2.3192 m, landing-constraint violation 2.8e-07
+  cells=21 start  7 (witness+noise): offset 2.3186 m, landing-constraint violation 2.6e-08
+  cells=21 start  8 (random       ): offset 2.3391 m, landing-constraint violation 8.4e-09
+  cells=21 start  9 (coning       ): offset 2.3182 m, landing-constraint violation 6.3e-08
+  cells=21 start 10 (witness+noise): offset 2.3194 m, landing-constraint violation 2.2e-08
+  cells=21 start 11 (random       ): offset 2.3415 m, landing-constraint violation 9.5e-09
+  cells=21 start 12 (coning       ): offset 2.3183 m, landing-constraint violation 3.5e-08
+  cells=21 start 13 (witness+noise): offset 2.3177 m, landing-constraint violation 2.4e-08
+cells=21: witness offset 2.3481 m; smallest offset over 13 valid landings: 2.3174 m (from a 'random' start); Lean bound >= 1 m, paper's r_S ~ 1.38 m -> consistent   [848 s]
