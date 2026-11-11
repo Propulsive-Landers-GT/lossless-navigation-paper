@@ -54,6 +54,7 @@ Against standard successive convexification, with each planner's computation tim
 | `main.pdf` | Internal draft: same content plus pointers to project files and referee status tags. |
 | `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility (4.5: the sound single convex program, Theorem F), 05 numerics, 055 practice (6.3: planner F against SCvx and B), 06 formalization, 07 discussion; appendices A-D hold the earlier proofs and E the proof of Theorem F. |
 | `Makefile` | `make draft` builds `main.pdf`; `make share` builds `main-share.pdf`. Edit `\paperauthors` in `main.tex` to set the author line. |
+| `aiaa-student/` | A 9-page version for the AIAA Regional Student Conferences (11-page limit, AIAA meeting-paper format): the landing algorithm, its soundness proof, and the benchmark against SCvx. `make student` builds it. Its `README.md` lists the conference rules, what the authors must fill in, and an eligibility question about AI-produced work to settle before submitting. |
 | `CLAIMS-MAP.md` | Maps every theorem in the paper to its registry row, proof file and Lean name. |
 | `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code (2026-11-07), with an addendum listing what revision 7 added and how it was checked. |
 
