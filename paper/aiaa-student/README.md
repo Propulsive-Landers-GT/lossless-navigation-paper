@@ -154,6 +154,18 @@ latexmk -pdf main.tex
 `impossibility/make_figures.py` computes Fig. 1 from the closed-form witness of Theorem 2 and reads
 `solver/results/audit_hop_ring.json` for Fig. 2.
 
+## Review feedback on the first draft, and what was changed
+
+An external review of the first algorithm draft (2026-11-11) raised four points. All three papers were revised.
+
+| Point raised | Change |
+|---|---|
+| A closely related quadcopter paper (Freire and Xu, IEEE TCST 2023) was missing; "flatness, splines and one SOCP" is not new | Cited and compared in the introduction of `algorithm/` and `combined/`. The novelty claim is now the convex restrictions for the gimbal-angle limit and for throttle limits with depleting mass on the gimbaled body, with their proof. The two devices taken from that paper are named. |
+| The impossibility result was delegated to an unpublished report | Both papers are standalone. `algorithm/` gives the argument in Sec. IV, states exactly what is proved, certified and only observed, and presents the result as motivation: its guarantee does not depend on it. `combined/` contains the proof. |
+| "Every feasible plan is flyable" needs its assumptions | The abstract and conclusion now state them: a model with a constant center-of-percussion offset; throttle, gimbal-angle and tilt limits only; slew rates checked per plan; path constraints at sampled instants. The text no longer says the assumption "holds to 1%"; it says the guarantee does not extend to that variation. |
+| The landing accuracy is practical evidence, not theory, and equals SCvx at matched rates | The abstract and conclusion now say the accuracy gain comes from the replanning rate and vanishes when rates, delay and flight time are matched. |
+| Results need independent verification | Cannot be fixed by editing. The limitations now say the proof and experiments have not been reproduced and point to the public code, tests, result files and scripts. |
+
 ## Where the numbers in `impossibility/` come from
 
 | Statement | Source |

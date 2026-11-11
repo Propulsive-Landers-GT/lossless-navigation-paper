@@ -216,3 +216,10 @@ What was checked, by the session that wrote the section:
 - **Prior work.** The two comparisons cite entries already in `refs.bib` (`blackmore2012scl`, `luo2026automatica`). The
   folder's README also cites an arXiv paper (2607.12109) that was not checked and is not cited in the paper.
 - **Build.** `make draft` and `make share`: 50 pages, no errors, no undefined references.
+
+## Addendum, revision 8.1 (2026-11-11)
+
+An external reviewer of the first AIAA draft pointed out that Freire and Xu (IEEE TCST 2023, arXiv:2111.00951) was missing.
+The preprint was read in full and the bibliographic data were checked against Crossref. The paper now cites it in Sections 1
+and 4.5 and no longer claims the combination of flatness, splines and a single SOCP as new (`literature/review.md` §7 has the
+comparison). 50 pages; no theorem, table or number changes.

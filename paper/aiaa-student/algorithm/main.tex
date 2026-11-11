@@ -28,15 +28,18 @@ Aerospace Engineering], AIAA University Student Member and Contributing Student 
 \begin{aiaaabstract}
 Lossless convexification solves three-degree-of-freedom powered-descent guidance as one convex program, but it treats the
 thrust direction as a free control. On a lander steered by a single gimbaled engine, the thrust direction is tied to a body
-that the same gimbal must rotate. We first explain why no convex program of the lossless type can be exact for such a vehicle:
-the set of initial states from which a landing exists is not convex. We then show what remains possible. The center of
-percussion of the vehicle is not accelerated by the lateral force of the gimbal, so its path determines the attitude, the
-gimbal angle, and the throttle algebraically. Planning that path as a quintic B-spline, with the actuator limits imposed as
-convex restrictions on its B\'ezier control points, gives one second-order cone program with 63 unknown coefficients. We prove
-that every feasible point of this program is a trajectory of the rigid-body model that meets the throttle, gimbal, and tilt
-limits at every instant. The program gives up 0.1\% of fuel at equal flight time and at most 0.4~s of minimum flight time.
-In closed-loop simulation of an 80-kg lander with each planner's computation time counted, it replans ten times per second and
-lands within 1.1~cm in all 40 in-air descents, whereas six-degree-of-freedom successive convexification lands within 18.3~cm.
+that the same gimbal must rotate, and guidance is normally done by successive convexification. This paper presents a
+conservative planner for that vehicle that needs one convex solve. The center of percussion of the vehicle is not accelerated
+by the lateral force of the gimbal, so its path determines the attitude, the gimbal angle, and the throttle algebraically. We
+plan that path as a quintic B-spline and impose the throttle, gimbal-angle, and tilt limits as convex restrictions on its
+B\'ezier control points, with depleting mass, which gives one second-order cone program with 63 unknown coefficients. For a
+rigid-body model with a constant center-of-percussion offset, we prove that every feasible point of the program is a
+trajectory that meets those three limits at every instant. Actuator slew rates are outside the guarantee and are checked on
+each plan, and altitude and glide-slope constraints hold at sampled instants. The program is sound but not complete: it gives
+up 0.1\% of fuel at equal flight time and at most 0.4~s of minimum flight time. In closed-loop simulation of an 80-kg lander
+with each planner's computation time counted, it replans ten times per second and lands within 1.1~cm in all 40 in-air
+descents, against 18.3~cm for six-degree-of-freedom successive convexification. That difference comes from the replanning
+rate that the shorter solve permits: at equal replanning rate, delay, and flight time the two are equally accurate.
 \end{aiaaabstract}
 
 \section{Nomenclature}
@@ -71,24 +74,32 @@ uses successive convexification (SCvx): the dynamics are linearized about a tria
 a trust region, and the process is repeated \cite{mao2016,szmuk2018,szmuk2020}. SCvx handles general constraints, but it needs
 an initial trajectory, penalty weights, and an iteration budget, and its iterates satisfy the true dynamics only at convergence.
 
-This paper asks what a single convex program can do for a gimbaled lander, and gives two answers. The first is negative. A
-program is \emph{sound} if it is feasible only when a landing exists and \emph{complete} if it is feasible whenever one exists;
-LCvx is both. We explain in Sec.~\ref{sec:imposs} why no convex program that takes the initial position and velocity as LCvx
-does can be both for a vehicle whose thrust direction turns at a finite rate. The second answer is positive, and it is the main
-contribution: soundness alone is attainable with one SOCP. The construction rests on a classical fact. The center of percussion
-of the vehicle is not accelerated by the lateral force of the gimbal, so in that point's coordinates the gimbaled rigid body is
-differentially flat \cite{fliess1995}. The same point is the flat output of the planar vertical-takeoff aircraft
-\cite{martin1996}. Planning in flat outputs is standard for multirotors \cite{mellinger2011} and has been proposed for planetary
-landing \cite{desiderio2013}; imposing constraints on spline control points so that they hold between grid points is also
-established \cite{vanloock2015}, and B-splines have been used inside sequential convex programming for powered descent
-\cite{wang2026}. We did not find these ingredients combined as they are here: the center-of-percussion output of the
-three-dimensional gimbaled body, with the minimum-throttle and gimbal limits imposed as convex restrictions, in one SOCP that
-is proved to return only flyable trajectories.
+This paper presents a conservative planner for a gimbaled lander that needs one convex solve, and it states what that
+planner guarantees and what it does not. A program is \emph{sound} if it is feasible only when a landing exists and
+\emph{complete} if it is feasible whenever one exists; LCvx is both. Section~\ref{sec:imposs} explains why a convex program that
+takes the initial position and velocity as LCvx does cannot be both once the thrust direction turns at a finite rate. That
+result is proved for a simplified attitude model and, for the gimbaled rigid body, only in special cases; it is the motivation
+for this paper and not its contribution. The contribution is that soundness alone is attainable with one SOCP.
 
-The contributions are 1) a single SOCP for the gimbaled lander with depleting mass (Sec.~\ref{sec:program}); 2) a proof that
-each of its feasible points satisfies the dynamics exactly and the actuator limits at every instant, and a proof that it cannot
-also be complete (Sec.~\ref{sec:proof}); and 3) a simulation study against 6-DOF SCvx in which the time each planner takes to
-compute is charged to it (Sec.~\ref{sec:results}).
+Most of the ingredients exist. The center of percussion of the vehicle is not accelerated by the lateral force of the gimbal,
+so in that point's coordinates the gimbaled rigid body is differentially flat \cite{fliess1995}; the same point is the flat
+output of the planar vertical-takeoff aircraft \cite{martin1996}. Planning in flat outputs is standard for multirotors
+\cite{mellinger2011} and has been proposed for planetary landing \cite{desiderio2013}. Constraints imposed on spline control
+points hold between grid points \cite{vanloock2015}, and B-splines have been used inside sequential convex programming for
+powered descent \cite{wang2026}. Closest to this work, Freire and Xu \cite{freire2023} plan quadcopter trajectories in flat
+outputs with B-splines as a single SOCP whose thrust, tilt, and body-rate limits hold in continuous time. Their lower thrust
+bound is imposed conservatively on the vertical acceleration, and their rate bound divides a bound on the jerk by a bound on
+the thrust; we use the first device and a form of the second in which the thrust bound is a variable. Flatness, splines, and a single SOCP are therefore not what is new here.
+
+What differs is the vehicle, and with it the constraints. A quadcopter has independent torques, a thrust fixed along its body
+axis, and constant mass. A gimbaled lander produces its torque by deflecting its thrust. Its binding limit is then the gimbal
+angle, which constrains the fourth derivative of the flat output relative to the thrust; its thrust magnitude includes the
+lateral part and a centripetal term; and its thrust limits are forces, whereas the mass depletes. The contributions are
+1) convex restrictions for the gimbal-angle limit and for the throttle limits with depleting mass on the gimbaled rigid
+body (Sec.~\ref{sec:program}); 2) a proof that every feasible point satisfies the rigid-body dynamics exactly and the
+throttle, gimbal-angle, and tilt limits at every instant, with the observation that such a program cannot also be complete
+(Sec.~\ref{sec:proof}); and 3) a simulation study against 6-DOF SCvx in which the time each planner takes to compute is
+charged to it (Sec.~\ref{sec:results}).
 
 \section{Vehicle Model and the Center of Percussion}\label{sec:model}
 The vehicle is a rigid axisymmetric body with mass $m$, transverse inertia $J_t$, and unit body axis $b$ (Fig.~\ref{fig:schematic}).
@@ -134,15 +145,17 @@ that the point $y=r+\varepsilon b$, the center of percussion, obeys
 provided $\varepsilon$ is constant. The lateral thrust does not appear. Seen from $y$, the gimbaled vehicle is a point mass
 whose thrust is locked to the body axis. We assume throughout that $\varepsilon$ is constant along the flight. For constant mass
 this holds exactly; with depleting mass it requires $J_t$ to scale with $mL$. The mass-property table of the vehicle's
-simulator gives $\varepsilon=1.352$, 1.340, and 1.321~m at 79.9, 75, and 70.4~kg, so the assumption holds to 1\% over a descent.
+simulator gives $\varepsilon=1.352$, 1.340, and 1.321~m at 79.9, 75, and 70.4~kg, so the assumption is in error by about 1\% over a descent.
+The guarantee of Sec.~\ref{sec:proof} is exact for the model with constant $\varepsilon$ and does not extend to that variation;
+its effect is measured in Sec.~\ref{sec:results} and is left to feedback.
 
-\section{Why an Exact Convex Formulation Does Not Exist}\label{sec:imposs}
+\section{Limits of an Exact Convex Formulation}\label{sec:imposs}
 Let $F$ be the set of initial positions and velocities $(r_0,v_0)$ from which the vehicle can land within its limits at a given
 final time. A convex program that receives $(r_0,v_0)$ as LCvx does, through affine constraints, has a feasible set that is
 convex jointly in the data and the variables. Its projection onto the data is then convex. If the program were both sound and
 complete, that projection would equal $F$, so $F$ would be convex. For 3-DOF descent $F$ is convex, because a thrust direction
 that can switch instantly can realize any average of two maneuvers \cite{aumann1965}. For a body that turns at a finite rate it
-is not: with a minimum throttle, the only way to shed vertical impulse is to tilt, and tilting at the limit commits the vehicle
+need not be: with a minimum throttle, the only way to shed vertical impulse is to tilt, and tilting at the limit commits the vehicle
 to one direction, so a maneuver that tilts left and its mirror image are both flyable whereas their average is not.
 
 This can be made precise. Consider first the simplest vehicle in which attitude matters: the body axis $b$ turns at a rate
@@ -171,8 +184,12 @@ same conclusion is proved by computer-assisted certificates at final times of 1 
 \cite{ipopt} finds landings 1, 2, and 3~m from the launch point of a 4-s hop launched vertically at 6.3~m/s but none on the
 launch point itself, which is numerical evidence that the set of reachable landing points has a hole.
 
-The conclusion is narrower than it may seem. Exactness, which is soundness and completeness together, is impossible. Soundness
-alone is not, and Eq.~\eqref{eq:cop} makes it inexpensive.
+The status of the result should be stated exactly. The projection argument is elementary and unconditional. The
+nonconvexity of $F$ is proved, and machine-checked, for the simplified model above; for the gimbaled rigid body it is certified
+in four special cases and is otherwise an observation, since a solver that finds no landing does not prove that none exists.
+This paper does not claim more. Its guarantee (Theorem~\ref{thm:sound}) does not depend on the nonconvexity of $F$, and the
+statement that the program cannot be complete (Proposition~\ref{prop:inc}) is conditional on it. What the argument does
+establish is that soundness and completeness cannot both be expected, and Eq.~\eqref{eq:cop} makes soundness inexpensive.
 
 \section{A Sound Convex Program}\label{sec:program}
 \subsection{Flat Map}
@@ -422,19 +439,25 @@ given zero computation time, the touchdown speed in the air (S is lower in 27 of
 Theorem~\ref{thm:sound}; fewer than 1\% of replans failed the check and were not flown. The worst replan took 0.39~s, when every
 fallback was tried, and a flight implementation should bound that chain. Theorem~\ref{thm:sound} is proved here and tested
 numerically but is not machine-checked, apart from Eq.~\eqref{eq:cop}, which is machine-checked for constant mass \cite{repo}. The assumption of constant
-$\varepsilon$ must be confirmed from measured mass properties. Nothing here has been run on flight hardware, with actuator lag, or
-with state-estimation error, and the SCvx baseline was not retuned or reimplemented for speed.
+$\varepsilon$ must be confirmed from measured mass properties, and a guarantee that tolerates a bounded variation of
+$\varepsilon$ is not available. Nothing here has been run on flight hardware, with actuator lag, or
+with state-estimation error, and the SCvx baseline was not retuned or reimplemented for speed. The proof of
+Theorem~\ref{thm:sound} and the experiments have not been reproduced independently; the software, its tests, the result
+files, and the scripts that regenerate each table are public for that purpose \cite{repo}.
 
 \section{Conclusion}
-For a lander steered by one gimbaled engine, a convex program cannot accept exactly the landings that are flyable, but it can
-accept only flyable ones. Writing the problem for the center of percussion removes the coupling between steering and
-translation, makes the dynamics linear, and leaves the actuator limits as the only nonconvex part; restricting those limits,
-instead of relaxing them, yields a single second-order cone program whose plans are flyable at every instant by proof. The
-program costs a tenth of a percent of fuel and a few tenths of a second of minimum flight time. Its practical value is its
-speed and its lack of tuning: it has no initial guess, trust region, or iteration count, and it solves fast enough to replan at
-the rate of the control system, which in our simulations mattered more for touchdown accuracy than the last fraction of a
-percent of optimality. Future work is to bring the slew-rate limits inside the guarantee, to bound the loss of feasible
-landings, to formalize the proof, and to fly it.
+This paper gave a conservative single-SOCP planner for a gimbaled-lander model, with guarantees on thrust magnitude, gimbal
+angle, and tilt that hold at every instant. Writing the problem for the center of percussion removes the coupling between
+steering and translation, makes the dynamics linear, and leaves the actuator limits as the only nonconvex part; restricting
+those limits, instead of relaxing them, yields one second-order cone program whose feasible points satisfy the model and the
+three limits by proof. The guarantee is for a constant center-of-percussion offset and does not cover slew rates or path
+constraints between samples. The program is conservative: on the cases studied it costs a tenth of a percent of fuel and a few
+tenths of a second of minimum flight time, and a convex program of this kind cannot be expected to be exact. Its practical
+value is its speed and its lack of tuning. It has no initial guess, trust region, or iteration count, and it solves fast enough
+to replan at the rate of the control system; in our simulations the gain in touchdown accuracy over successive convexification
+came from that rate and vanished when the rates were matched. Future work is to extend the guarantee to a varying
+center-of-percussion offset and to slew rates, to bound the loss of feasible landings, to formalize the proof, to have the
+results reproduced independently, and to fly it.
 
 \section*{Acknowledgments}
 % AIAA policy (Ethical Standards, Sec. 3) requires a description of AI use here and a disclosure at submission.
@@ -476,6 +499,9 @@ Theory and Examples,'' \emph{International Journal of Control}, Vol.~61, No.~6, 
 Guaranteed Constraint Satisfaction,'' \emph{2015 American Control Conference}, IEEE, 2015, pp.~4245--4250. \url{https://doi.org/10.1109/ACC.2015.7171996}.
 \bibitem{wang2026} Wang, C., and Chen, Z., ``B-Spline-Based Convex Programming for Fuel-Optimal Powered Descent Guidance,''
 \emph{Advances in Space Research}, Vol.~78, No.~4, 2026, pp.~3919--3934. \url{https://doi.org/10.1016/j.asr.2026.06.014}.
+\bibitem{freire2023} Freire, V., and Xu, X., ``Flatness-Based Quadcopter Trajectory Planning and Tracking with Continuous-Time
+Safety Guarantees,'' \emph{IEEE Transactions on Control Systems Technology}, Vol.~31, No.~6, 2023, pp.~2319--2334.
+\url{https://doi.org/10.1109/TCST.2023.3250954}.
 \bibitem{aumann1965} Aumann, R. J., ``Integrals of Set-Valued Functions,'' \emph{Journal of Mathematical Analysis and Applications},
 Vol.~12, No.~1, 1965, pp.~1--12. \url{https://doi.org/10.1016/0022-247X(65)90049-1}.
 \bibitem{lean4} de Moura, L., and Ullrich, S., ``The Lean 4 Theorem Prover and Programming Language,'' \emph{Automated Deduction --

@@ -480,7 +480,7 @@ thrust, so the body axis is the direction of $\ddot y+g_0\ez$, and the attitude,
 algebraic functions of $y$ and its first four derivatives. Planning $y$ as a spline makes the dynamics and the boundary
 conditions linear, and the actuator limits can be imposed as second-order cone restrictions on the control points of the
 spline that imply the true limits at every instant. The result is one second-order cone program, each feasible point of
-which is a trajectory of the rigid body within its limits \cite{repo}. On the cases we studied it gives up about 0.1\% of
+which is a trajectory of the rigid-body model within its throttle, gimbal-angle, and tilt limits \cite{repo}. On the cases we studied it gives up about 0.1\% of
 fuel and at most 0.4~s of minimum flight time. In the experiment of Fig.~\ref{fig:ring} it is infeasible in all 20
 cells: it never reports a landing that does not exist, and at this final time it also gives up the 15 that do.
 
