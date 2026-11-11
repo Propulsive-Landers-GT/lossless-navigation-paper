@@ -29,7 +29,10 @@ Against standard successive convexification, with each planner's computation tim
 | Whether any mistake here would rescue lossless convexification (no), and what was checked | [`AUDIT-2026-11.md`](AUDIT-2026-11.md) |
 | The impossibility answer and its exact scope, in two pages | [`FINAL-REPORT.md`](FINAL-REPORT.md) |
 | The status of every individual claim (Lean / proved / numerical / open) | [`SYNTHESIS.md`](SYNTHESIS.md) |
-| The paper (shareable version, 48 pages; revision 7 includes the landing algorithm's theorem and benchmarks) | [`paper/main-share.pdf`](paper/main-share.pdf) |
+| The comprehensive paper (shareable version, 50 pages; revision 8 holds every result in this repository) | [`paper/main-share.pdf`](paper/main-share.pdf) |
+| The two standalone 10-page papers in AIAA format, and what else could be published | [`PAPERS.md`](PAPERS.md), [`paper/aiaa-student/`](paper/aiaa-student/) |
+| What of LCvx survives inside successive convexification (thrust slack, with its own Lean proof) | [`scvx-thrust-relaxation/README.md`](scvx-thrust-relaxation/README.md) |
+| An independent second look at the impossibility proofs | [`numerics/independent-check/README.md`](numerics/independent-check/README.md) |
 | To check the proofs yourself | [Checking the results](#checking-the-results) below |
 | The earlier planners (B, attitude-aware convex guidance; S, standard SCvx) | [`solver/README.md`](solver/README.md), [`solver/RESULTS.md`](solver/RESULTS.md), [`solver/RESULTS-SCVX.md`](solver/RESULTS-SCVX.md) |
 | How the work was done, conversation included | [`session-transcript/`](session-transcript/) and [`comms/`](comms/) |
@@ -45,6 +48,8 @@ Against standard successive convexification, with each planner's computation tim
 | `SYNTHESIS.md` | Living results table. One row per claim with its model, scope, status and the file holding the proof. |
 | `context/vehicle.md` | GTPL vehicle parameters (mass, thrust, Isp, inertia, gimbal) and notes on the existing guidance stack, including the flight MPC's ~4.6x angular-authority mismatch. |
 | `literature/` | `review.md`: literature review of LCvx and 6-DOF guidance with verified sources; §7 (added 2026-11-10) covers differential flatness and spline planning, the prior art of the landing algorithm. `refs.bib`: bibliography. |
+| `PAPERS.md` | What can be published from this repository: the comprehensive paper, the two standalone AIAA papers, a candidate third paper, and what each still needs. |
+| `scvx-thrust-relaxation/` | Self-contained study: the LCvx thrust slack kept as exact constraints inside 6-DOF successive convexification. Its own Lean project (`lean/`, library `LCvx`), a 6-DOF solver with checks and interval-arithmetic rank certificates (`solver/`), and a one-shot SDP attempt that is not tight. Start with its `README.md`. |
 | `session-transcript/` | Export of the full Claude Code session that produced this work (see its README). |
 
 ### `paper/`: the paper
@@ -52,11 +57,11 @@ Against standard successive convexification, with each planner's computation tim
 |---|---|
 | `main-share.pdf` | **Shareable version.** Reader-facing status tags, a "how to check" box and a methods statement; no internal pointers. |
 | `main.pdf` | Internal draft: same content plus pointers to project files and referee status tags. |
-| `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility (4.5: the sound single convex program, Theorem F), 05 numerics, 055 practice (6.3: planner F against SCvx and B), 06 formalization, 07 discussion; appendices A-D hold the earlier proofs and E the proof of Theorem F. |
+| `main.tex`, `sections/*.tex`, `refs.bib`, `figures/` | LaTeX sources. Sections: 01 introduction, 02 formulation, 03 impossibility, 04 possibility (4.5: the sound single convex program, Theorem F; 4.7: the thrust slack inside successive convexification), 05 numerics, 055 practice (6.3: planner F against SCvx and B), 06 formalization, 07 discussion; appendices A-D hold the earlier proofs and E the proof of Theorem F. |
 | `Makefile` | `make draft` builds `main.pdf`; `make share` builds `main-share.pdf`. Edit `\paperauthors` in `main.tex` to set the author line. |
-| `aiaa-student/` | Two 9-page papers for the AIAA Regional Student Conferences (11-page limit, AIAA meeting-paper format). `impossibility/`: the proof that no exact convex program exists for attitude-rate-limited descent. `algorithm/`: the landing algorithm, its soundness proof, and the benchmark against SCvx. `make student` builds both. Its `README.md` explains the split, lists the conference rules, and says what the authors must settle before submitting, including whether AI-produced work is eligible. |
+| `aiaa-student/` | Two standalone 10-page papers for the AIAA Regional Student Conferences (11-page limit, AIAA meeting-paper format); neither cites the other. `impossibility/`: the proof that no exact convex program exists for attitude-rate-limited descent. `algorithm/`: the landing algorithm, its soundness proof, and the benchmark against SCvx. `make student` builds both. Its `README.md` explains the split, lists the conference rules, and says what the authors must settle before submitting, including whether AI-produced work is eligible. |
 | `CLAIMS-MAP.md` | Maps every theorem in the paper to its registry row, proof file and Lean name. |
-| `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code (2026-11-07), with an addendum listing what revision 7 added and how it was checked. |
+| `AUDIT.md` | Final independent audit of the paper against the proofs and the Lean code (2026-11-07), with addenda listing what revisions 7, 7.1 and 8 changed and how each was checked. |
 
 ### `lean/`: the machine-checked proofs
 | Path | Contents |
@@ -114,6 +119,7 @@ Key Lean files (all under `lean/LcvxObstruction/LcvxObstruction/`):
 | `redteam-lift/`, `redteam-reform/` | Numerics for the attempts to make LCvx work. |
 | `proof/`, `proof-s/`, `proof-sdp/`, `proof-csd2p/`, `possibility-rho0/`, `positive/` | Numerics supporting the corresponding math notes. |
 | `verify-imp/`, `verify-pos6/`, `verify-sdp2/`, `verifier-sdp/` | Referees' independent re-computations. |
+| `independent-check/` | A second reader's check of the impossibility result from the PDF alone: an independent simulator, four scripts that try to break Theorems B*, B and Lemma S, and the finding that corrected condition (S1) of Theorem B*. |
 
 ### `solver/`: the landing algorithm (planner F) and the earlier planners B and S
 | Path | Contents |
@@ -143,7 +149,7 @@ formalizers, numerics, referees, paper writer). Everything they said to each oth
 | `AGENTS.md` | Directory of agents and their roles. |
 | `CLAIMS.md` | The claims registry: every claim with status CLAIMED / CONFIRMED / FORMALIZED / BROKEN / OPEN. |
 | `BOARD.md` | Shared message board (append-only, signed posts). |
-| `LOG.md` | Orchestrator decision log, plus an entry for the 2026-11-10 follow-up session (audit, landing algorithm, paper revision 7). |
+| `LOG.md` | Orchestrator decision log, plus entries for the follow-up sessions of 2026-11-10 and 2026-11-11 (audit, landing algorithm, paper revisions 7 to 8, the AIAA papers, merged contributions). |
 | `threads/` | Focused discussions (6-DOF models, possibility, Theorem D). |
 | `briefs/` | The exact brief given to each subagent. |
 | `reports/` | Each subagent's final report. |
@@ -178,6 +184,9 @@ Python environments (`.venv/`) and Lean build caches (`.lake/`) are not committe
 Machine-checked, proved, numerical and open results are listed claim by claim in `SYNTHESIS.md`. The main open items:
 pure TVC at 7 s, with the 100 deg/s gimbal-rate limit and with mass depletion (nonconvex numerically, unproved); the
 hop-ring hole at GTPL constants; the CSD2' residual class; convergence of planner B. The paper has not been peer reviewed.
+An independent reader has checked the impossibility proofs, corrected one hypothesis of Theorem B* (the conclusion and
+the Lean statements were unaffected) and rebuilt the main Lean project on a fresh clone. The second Lean project
+(`scvx-thrust-relaxation/lean`) was built by its author only.
 
 For the landing algorithm: Theorem F is proved on paper and tested numerically but not formalised in Lean (only its
 first lemma is); gimbal and throttle slew limits are checked per plan, not guaranteed; the centre of percussion is

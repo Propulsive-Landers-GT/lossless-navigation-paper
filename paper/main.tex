@@ -87,7 +87,7 @@
 Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent,\\
 and a Sound Single Convex Program for Gimballed Landers}
 \author{\intshare{\paperauthors\thanks{Author names to be filled in.}}{\paperauthors}}
-\date{\intshare{Draft of 11 November 2026}{11 November 2026}}
+\date{\intshare{Draft of 11 November 2026 (revision 8)}{11 November 2026}}
 
 \setlength{\emergencystretch}{3em}
 \begin{document}
@@ -130,7 +130,9 @@ program with the actuator limits imposed as convex restrictions. We prove that e
 model, with depleting mass, that meets the throttle, gimbal and tilt limits at every instant (not machine-checked). In simulation this
 single program costs $0.1\%$ of fuel at the operating point, never returned an unflyable plan, and, replanning ten times a second,
 landed within 1.1~cm in every in-air case, against 18~cm for successive convexification once each planner's computation time is
-counted.
+counted. Where iteration is used, the LCvx thrust slack can still replace the linearized lower thrust bound: at a local minimum of
+the discrete 6-DOF problem the nodes at which the slack is not tight cannot steer the terminal conditions, which bounds their
+number (machine-checked in a separate Lean project).
 \end{abstract}
 
 \ifshare

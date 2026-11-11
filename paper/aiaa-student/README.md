@@ -4,11 +4,13 @@ The project is split into two short papers, each written to the rules of the AIA
 
 | Folder | Title | Pages | What it claims |
 |---|---|---|---|
-| `impossibility/` | Lossless Convexification Is Impossible for Attitude-Rate-Limited Powered Descent | 9 | No convex program of the kind LCvx belongs to can be exact once the thrust direction is tied to a body that turns at a finite rate. Proved, and machine-checked in Lean. |
-| `algorithm/` | A Sound Single Convex Program for Powered-Descent Guidance of a Gimbaled Lander | 9 | A single convex program that returns only flyable trajectories for a gimbaled lander, with its proof and a benchmark against successive convexification. |
+| `impossibility/` | Lossless Convexification Is Impossible for Attitude-Rate-Limited Powered Descent | 10 | No convex program of the kind LCvx belongs to can be exact once the thrust direction is tied to a body that turns at a finite rate. Proved, and machine-checked in Lean. |
+| `algorithm/` | A Sound Single Convex Program for Powered-Descent Guidance of a Gimbaled Lander | 10 | A single convex program that returns only flyable trajectories for a gimbaled lander, with its proof and a benchmark against successive convexification. |
 
-Both are short versions of `../main.pdf` (48 pages), which stays in the repository as the unpublished report that holds
-the full proofs. `aiaa-format.tex` is the page format they share.
+Both are short versions of the comprehensive paper `../main.pdf` (50 pages). **Each is standalone:** neither cites the other
+or the comprehensive paper, and each carries the proofs and context it needs. The only project reference in either is
+the public repository, cited for the Lean sources, the certificates and the software. `aiaa-format.tex` is the page
+format they share.
 
 **They are drafts for the authors to take over, not finished submissions.** Read "Before you submit" below first.
 
@@ -22,9 +24,13 @@ the full proofs. `aiaa-format.tex` is the page format they share.
 - **They do not contradict each other, and each says so.** The first proves that no convex program is *exact* (feasible
   at exactly the landings that exist). The second gives a program that is *sound but not exact*: everything it returns is
   flyable, and it rejects some landings that exist. Do not describe the second as "convexifying" the problem.
-- **Each cites the other as a companion paper** and repeats the one paragraph it needs, so either can be read alone. The
-  center-of-percussion identity appears in both: the first cites its machine-checked proof, the second derives it in
-  three lines because the algorithm is built on it.
+- **Neither depends on the other.** The impossibility paper outlines the sound program in one paragraph (Sec. IX); the
+  algorithm paper gives the dive-then-brake argument for nonconvexity in full (Sec. IV). The center-of-percussion
+  identity appears in both. A reader, or a judge, needs only the paper in hand.
+- **What each proves inside its page limit.** `impossibility/`: Theorems 1 and 2 with complete proofs, the proof of the
+  distance bound, the derivation of the closed-form gap, and the method of the gimbal-only certificates (the
+  certificates themselves are computer-assisted and live in the repository). `algorithm/`: the flat map, the convex
+  program, the soundness theorem with its five-step proof, and the incompleteness proposition.
 
 Where the long paper's sections went:
 
@@ -35,7 +41,7 @@ Where the long paper's sections went:
 | Section 7 (Lean formalization) | `impossibility/`, one section and a table |
 | Section 4.5 and Appendix E (the sound convex program and its proof) | `algorithm/` |
 | Section 6 (planner comparison, closed loop) | `algorithm/` |
-| Section 4.1 to 4.4 and 4.6 (exactness for a fixed attitude, exact subclasses, semidefinite lifts), Theorem Q, the certificates behind the pure-TVC table | Stay in the long paper; cited from `impossibility/` |
+| Section 4.1 to 4.4 and 4.6 (exactness for a fixed attitude, exact subclasses, semidefinite lifts), Section 4.7 (the thrust slack inside successive convexification), the certificates behind the pure-TVC table | Stay in the comprehensive paper only |
 
 ## Who can be an author on which paper
 
@@ -53,7 +59,7 @@ From the AIAA Regional Student Conference Rules (version dated June 2026) and AI
 
 | Rule | Status here |
 |---|---|
-| At most 11 pages, single column, 8.5 x 11 in, including acknowledgments, references and appendices | 9 pages each |
+| At most 11 pages, single column, 8.5 x 11 in, including acknowledgments, references and appendices | 10 pages each |
 | AIAA Meeting Paper format ("Use the Word Template"); deviations may disqualify | Format reproduced in LaTeX from the published instructions (see "Format" below). **Not built from AIAA's own template file.** |
 | Every author identified in the first-page footnote by status, role (Contributing Student Author or Mentor Author) and AIAA membership | Placeholders in brackets |
 | Undergraduate and Graduate categories: at most two Contributing Student Authors. Team category: three or more, at least half undergraduates. Up to two Mentor Authors, listed after the students. No industry co-authors | Two student placeholders and one mentor placeholder in each paper; edit to your category |
@@ -93,7 +99,7 @@ Your region's call for papers may add its own deadlines and requirements; check 
    the person who found the missing condition in Theorem 2. Under the rules they are a contributor to acknowledge, or an
    author if they meet the authorship rules and the category allows it. That is for you and them to decide.
 5. **Fill in the brackets:** author names, statuses, department, AIAA membership, mentor, the sentence in each
-   Acknowledgments that says what the students did, and the authors and year in each paper's reference to its companion.
+   Acknowledgments that says what the students did.
 6. **Template.** The rules name the Word template. AIAA states that the formatting requirements are identical for Word and
    LaTeX and that submissions are PDFs, but if your region insists on the Word file, the content has to be moved into it.
    To use AIAA's own LaTeX class, open the Overleaf template linked above, download it as a zip, and follow the comment at
