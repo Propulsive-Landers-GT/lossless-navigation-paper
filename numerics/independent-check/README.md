@@ -1,7 +1,8 @@
 # numerics/independent-check: a second look at the impossibility result
 
-November 2026. I read `paper/main-share.pdf` on its own, re-derived the proofs by hand, and tried to break the
-theorems with a simulator written from the PDF alone (`m1.py`). Only after that did I open this repository,
+November 2026. I read the shared 40-page PDF of the paper (dated 7 November 2026, an earlier build than the
+committed `paper/main-share.pdf`) on its own, re-derived the proofs by hand, and tried to break the theorems with
+a simulator written from that PDF alone (`m1.py`). Only after that did I open this repository,
 build the Lean project and compare its statements with the printed ones.
 
 The headline result held. One hypothesis was missing from the printed Theorem B*.
