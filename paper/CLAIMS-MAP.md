@@ -1,5 +1,7 @@
 # CLAIMS map: paper statement → registry row → status → proof file → Lean name
 
+Revision 8.1, 2026-11-11: prior work corrected after external feedback on the AIAA draft: Freire and Xu (2023) cited in Sections 1 and 4.5, and the novelty claim of Section 4.5 narrowed from "the combination" to the convex restrictions for the gimbal-angle limit and for throttle limits under mass depletion on the gimballed body. No theorem or number changes.
+
 Revision 8, 2026-11-11: adds Section 4.7 (Theorem 4.15 and Table 1: the LCvx thrust slack inside 6-DOF successive convexification; the rigid-body Shor experiment), one abstract sentence and a paragraph in Section 7. Registry rows SCVX-SLACK, SCVX-NUM, SDP-6DOF. Lean: the separate project `scvx-thrust-relaxation/lean` (`LCvx.SixDOF.sixDOF_free_time`, `sixDOF_fixed_time`, `sixDOF_tail`, `sixDOF_fold`, `sixDOF_ptr_*`, `LCvx.Problem.card_lossy_lt`, `isMinOn_original`), not built for this revision.
 
 Revision 7.1, 2026-11-11: (S1) of Theorem B* corrected to ωs* ≤ min(δ, π/2 − δ) (comms/CLAIMS.md CORR-2; the Lean statements already had δ + ωs* ≤ π/2), and the Section 5.1 distance restated as an upper bound with the independent 2.14 m/s. No status changes.

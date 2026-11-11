@@ -40,8 +40,11 @@ certificates and the software.
 
 ## Paper 2: the landing algorithm
 
-- **Claim.** One second-order cone program, in center-of-percussion coordinates, returns only flyable trajectories for
-  a gimbaled lander, and it is fast enough to replan at the control rate.
+- **Claim.** A conservative single-SOCP planner for a specified gimbaled-lander model, with guarantees on thrust
+  magnitude, gimbal angle and tilt that hold at every instant, fast enough to replan at the control rate.
+- **What is new and what is not.** Flatness, splines and a single SOCP with continuous-time guarantees exist for
+  quadcopters (Freire and Xu, 2023). New here are the convex restrictions for the gimbal-angle limit and for throttle
+  limits with depleting mass on a vehicle that turns itself by deflecting its thrust, and their proof.
 - **Evidence.** Proved on paper (`math/10-landing-proof.md`), tested numerically (27 tests, replays, a 600-solve stress
   test), benchmarked in simulation against successive convexification.
 - **Honest limits, stated in the paper.** The soundness theorem has had no independent reader and is machine-checked

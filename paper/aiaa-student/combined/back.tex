@@ -53,8 +53,9 @@ F is worse than S in fuel on short hops and in minimum flight time. The slew-rat
 Theorem~\ref{thm:sound}; fewer than 1\% of replans failed the check and were not flown. Theorem~\ref{thm:sound} is proved here
 and tested numerically but is not machine-checked, apart from Eq.~\eqref{eq:cop} for constant mass, and it has not had an
 independent reader as Theorem~\ref{thm:Bstar} has. The assumption of constant $\varepsilon$ must be confirmed from measured mass
-properties. Nothing here has been run on flight hardware, with actuator lag, or with state-estimation error, and the SCvx
-baseline was not retuned for speed. On the impossibility side, the proved gap is small for descents that begin in the air, and
+properties, and the guarantee does not extend to a varying $\varepsilon$. Nothing here has been run on flight hardware, with actuator lag, or with state-estimation error, and the SCvx
+baseline was not retuned for speed. The experiments have not been reproduced independently; the software, tests, result
+files, and scripts are public for that purpose \cite{repo}. On the impossibility side, the proved gap is small for descents that begin in the air, and
 for the gimbaled rigid body the result is certified only at four final times under simplifying assumptions.
 
 \section{Conclusion}
@@ -63,10 +64,12 @@ cannot be exact: an exact program would make the set of landable initial states 
 brake, together with its mirror image, shows that the set is not convex at any final time. This is machine-checked. What a
 single convex program can still be is sound. For a lander steered by one gimbaled engine, writing the problem for the center
 of percussion removes the coupling between steering and translation and leaves the actuator limits as the only nonconvex
-part; restricting those limits, instead of relaxing them, yields one second-order cone program whose plans are flyable at
-every instant by proof. It costs a tenth of a percent of fuel and a few tenths of a second of minimum flight time, has no
-initial guess, trust region, or iteration count, and solves fast enough to replan at the rate of the control system, which in
-our simulations mattered more for touchdown accuracy than the last fraction of a percent of optimality. Future work is a
+part; restricting those limits, instead of relaxing them, yields one second-order cone program whose feasible points
+satisfy the model and its throttle, gimbal-angle, and tilt limits at every instant by proof, for a constant
+center-of-percussion offset and without slew-rate limits. It costs a tenth of a percent of fuel and a few tenths of a second
+of minimum flight time, has no initial guess, trust region, or iteration count, and solves fast enough to replan at the rate
+of the control system; in our simulations the gain in touchdown accuracy came from that rate and vanished when the rates were
+matched. Future work is a
 certificate of nonconvexity that accounts for the gimbal-rate limit and depleting mass, an independent check and
 formalization of the soundness proof, slew-rate limits inside the guarantee, and flight.
 

@@ -108,8 +108,12 @@ centre of oscillation \cite{martin1996automatica}; flat outputs underlie minimum
 \cite{mellinger2011icra} and have been used for planetary-landing guidance \cite{desiderio2013tcst}; and planning a flat output as a
 B-spline, with constraints imposed on control points so that they hold between nodes, is established for differentially flat systems
 \cite{vanloock2015acc}. B-spline parametrizations also appear in sequential convex programming for powered descent
-\cite{wang2026asr}. We did not find the combination used here: the centre-of-percussion output of the gimballed rigid body, with the
-minimum-throttle and gimbal limits imposed as convex restrictions, giving one SOCP with a soundness guarantee.
+\cite{wang2026asr}. The closest work is for quadcopters \cite{freire2023tcst}: flat outputs, B-splines and a single SOCP whose thrust,
+tilt and body-rate limits hold in continuous time, with the lower thrust bound imposed conservatively on the vertical acceleration,
+a device we also use. Flatness, splines and a single SOCP are therefore not new. What we did not find is their extension to a vehicle
+that produces its torque by deflecting its thrust: the centre-of-percussion output of the gimballed rigid body, with convex
+restrictions for the gimbal-angle limit (which constrains the fourth derivative of the flat output relative to the thrust) and for
+the throttle limits under mass depletion, and a proof that they hold at every instant.
 
 \paragraph{Setting.} Model PT with zero roll rate and mass depletion $\dot m=-\alpha\norm T$, thrust $T=T_ab+T_\perp$ ($T_\perp\perp b$),
 limits $\rho_1\le\norm T\le\rho_2$, gimbal angle $\mu\le\delta$ ($\tan\mu=\norm{T_\perp}/T_a$) and tilt $\angle(b,\ez)\le\vartheta_{\max}<\pi/2$.

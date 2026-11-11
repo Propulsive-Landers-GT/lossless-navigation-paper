@@ -37,14 +37,16 @@ treats the thrust direction as a free control. This paper settles what a single 
 direction is tied to a body that turns at a finite rate. First, exactness is impossible. A convex program that receives the
 initial position and velocity through affine constraints and is feasible exactly when a landing exists forces the set of
 landable initial states to be convex, and we prove that it is not, for any final time, under altitude and glide-slope
-constraints: a maneuver that dives to one side and then brakes can land, as can its mirror image, but nothing lands from the
+constraints, for a model with a rate-limited body axis: a maneuver that dives to one side and then brakes can land, as can its mirror image, but nothing lands from the
 average of their initial states. The proof is checked by the Lean~4 proof assistant. Second, soundness is attainable. The
 center of percussion of a gimbaled lander is not accelerated by the lateral force of the gimbal, so its path determines the
 attitude, gimbal angle, and throttle algebraically. Planning that path as a spline, with the actuator limits imposed as
-convex restrictions, gives one second-order cone program, and we prove that each of its feasible points is a trajectory of
-the rigid body within its limits at every instant. In closed-loop simulation of an 80-kg lander with computation time
-counted, it replans ten times per second and lands within 1.1~cm in all 40 in-air descents, against 18.3~cm for
-six-degree-of-freedom successive convexification.
+convex restrictions, gives one second-order cone program. For a rigid-body model with a constant center-of-percussion
+offset, we prove that each of its feasible points is a trajectory that meets the throttle, gimbal-angle, and tilt limits at
+every instant; slew rates are checked on each plan, outside the guarantee. In closed-loop simulation of an 80-kg lander with
+computation time counted, it replans ten times per second and lands within 1.1~cm in all 40 in-air descents, against
+18.3~cm for six-degree-of-freedom successive convexification, a difference that comes from the replanning rate and vanishes
+when the rates are matched.
 \end{aiaaabstract}
 
 \section{Nomenclature}
@@ -88,8 +90,12 @@ rigid body is differentially flat \cite{fliess1995}; the same point is the flat 
 aircraft \cite{martin1996}. Planning in flat outputs is standard for multirotors \cite{mellinger2011} and has been proposed
 for planetary landing \cite{desiderio2013}, constraints imposed on spline control points are known to hold between grid
 points \cite{vanloock2015}, and B-splines have been used inside sequential convex programming for powered descent
-\cite{wang2026}. We did not find these ingredients combined into a single SOCP that is proved to return only flyable
-trajectories of a gimbaled body. The Lean sources, the certificates, and the software behind every number are public
+\cite{wang2026}. Closest to this work, Freire and Xu \cite{freire2023} plan quadcopter trajectories in flat outputs with
+B-splines as a single SOCP whose thrust, tilt, and body-rate limits hold in continuous time; we use their device for the
+lower thrust bound and a variant of their rate bound. Flatness, splines, and a single SOCP are therefore not new. What is new on the positive
+side is the treatment of a vehicle that produces its torque by deflecting its thrust: convex restrictions for the
+gimbal-angle limit, which constrains the fourth derivative of the flat output, and for throttle limits with depleting mass,
+with a proof that they hold at every instant. The Lean sources, the certificates, and the software behind every number are public
 \cite{repo}.
 
 \section{Problem Statement}\label{sec:problem}

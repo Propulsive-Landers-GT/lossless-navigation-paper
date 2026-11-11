@@ -544,6 +544,21 @@ guaranteed constraint satisfaction." ACC 2015, pp. 4245–4250. DOI 10.1109/ACC.
   times and not only at grid points.
 - **Relevance:** the control-polygon device of Lemma 5 in `math/10` is this known technique.
 
+**[freire2023tcst]** Freire, V., Xu, X. "Flatness-based quadcopter trajectory planning and tracking with continuous-time
+safety guarantees." *IEEE Transactions on Control Systems Technology* 31(6):2319–2334, 2023. DOI 10.1109/TCST.2023.3250954;
+arXiv:2111.00951. *(preprint read in full, 2026-11-11; pointed out by an external reviewer of the AIAA draft)*
+- Quadcopter with thrust and body rates as inputs, constant mass, yaw fixed. The position is planned as a B-spline and one SOCP
+  is solved; constraints on "virtual control points" hold in continuous time by the convex-hull property (their Theorem 1).
+- Tilt limit: a second-order cone on the acceleration (their Lemma 3). Upper thrust: a ball on acceleration plus gravity. Lower
+  thrust: imposed on the vertical acceleration only, which they note sacrifices part of the feasible region (Lemma 5, Remark 2).
+  Body rates: a bound on the jerk divided by a per-segment lower bound on thrust (Lemma 6).
+- **Relevance: the closest prior work found, and it was missing from the first drafts.** It already has flatness, B-splines, a
+  single SOCP, continuous-time thrust and attitude guarantees, and the vertical-component lower thrust bound that our program
+  also uses. It means "flatness + splines + one SOCP" cannot be claimed as new.
+- **What it does not contain** (our contribution, as now stated in the papers): a vehicle whose torque comes from deflecting
+  the thrust, hence the centre-of-percussion output; the gimbal-angle limit, which involves the fourth derivative of the flat
+  output relative to the thrust; the centripetal and lateral terms in the thrust magnitude; and force limits with depleting mass.
+
 **[wang2026asr]** Wang, C., Chen, Z. "B-spline-based convex programming for fuel-optimal powered descent guidance."
 *Advances in Space Research* 78(4):3919–3934, 2026. DOI 10.1016/j.asr.2026.06.014. *(abstract-level; search summary)*
 - B-spline parametrization inside sequential convex programming for fuel-optimal powered descent; only part of the state is
