@@ -1,5 +1,7 @@
 # CLAIMS map: paper statement → registry row → status → proof file → Lean name
 
+Revision 7.1, 2026-11-11: (S1) of Theorem B* corrected to ωs* ≤ min(δ, π/2 − δ) (comms/CLAIMS.md CORR-2; the Lean statements already had δ + ωs* ≤ π/2), and the Section 5.1 distance restated as an upper bound with the independent 2.14 m/s. No status changes.
+
 Revision 7, 2026-11-10: adds the sound single convex program (Section 4.5, Section 6.3, Appendix E); see the section "Revision 7" below. Everything above that section is revision 6 as audited.
 
 Maintained by [paper-writer]. Revision 6, 2026-11-07 (revision 6: Lean B* with mass depletion, free-time windows, quantitative B*, GTPL instance, CoP identity, TVC-1 skeleton; revision 5: TVC-2/3/5 added on top of the audited version eee6e5f; earlier: revision 4; final audit corrections by [final-auditor] (see paper/AUDIT.md: scope fixes to abstract/intro, Thm 3.20 D* regime, Thm 3.22 pivot/float caveats, C-3D tag, bibliography; all 101 cited Lean names re-checked, axioms clean at ef5ad1b) (revision 3 added TVC-1, CSD2′ partial theorems and the practical section; revision 4 fills the last placeholders and updates the pure-TVC status). Sources:

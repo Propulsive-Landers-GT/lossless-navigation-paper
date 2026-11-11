@@ -175,3 +175,23 @@ What was checked for revision 7, by the session that wrote it:
 
 Not re-audited: Sections 2 to 5 and Appendices A to D, which are unchanged apart from the cross-references listed above. The Lean
 project is unchanged (126 cited declarations); it was not rebuilt for this revision.
+
+## Addendum, revision 7.1 (2026-11-11)
+
+An independent reader worked from the shared PDF alone, then compared it with this repository
+(`numerics/independent-check/README.md`, merged as pull request aneesh-iyer29/lossless-work#2).
+
+- **Theorem B\* (Thm 3.7), hypothesis (S1).** The printed condition ωs\* ≤ δ did not give δ + ωs\* ≤ π/2 for δ > π/4, which
+  Steps 4 and 5 of Appendix B use. (S1) is now ωs\* ≤ min(δ, π/2 − δ), Step 1 of Appendix B cites it, and the remark on the
+  envelope version names the condition it drops. The statement-by-statement check above passed the old (S1); that was a miss.
+  The Lean statements already carried the hypothesis, so no formal result changes.
+- **Section 5.1.** The quoted distance 2.18 to 2.23 m/s is an upper bound that was still falling with the grid. The
+  independent search reaches 2.14 m/s; the sentence now says so and gives the proved lower bound.
+- **Lean.** That reader reports `lake build` and `lake env lean Verify.lean` passing on a fresh clone with Lean v4.36.0-rc2
+  (126 cited declarations). It has not been rebuilt in the environment that produced this revision.
+- **Build.** `make draft` and `make share` rebuilt after these edits.
+- **Checked here.** The δ = 80° example was re-derived with a separate script and matches; `c2` and `c3` reproduce the recorded
+  outputs exactly; `c4` reaches the same conclusion with small numerical differences (2.3177 m against 2.3174 m); `c1` was not
+  rerun.
+- **Not covered by the independent check** (its own list): the pure-TVC certificates, the theorems printed as sketches, and
+  everything about the planners, including Theorem F.

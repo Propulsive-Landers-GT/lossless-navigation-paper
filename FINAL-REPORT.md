@@ -4,7 +4,11 @@
 
 1. **The impossibility result was audited and stands** ([`AUDIT-2026-11.md`](AUDIT-2026-11.md)). The obstruction was
    reproduced independently on the planner's own model: launched upward at 6.3 m/s on a 4 s hop, the vehicle can land
-   1, 2 or 3 m away but not straight back down. The Lean build was not re-run in that audit.
+   1, 2 or 3 m away but not straight back down. The Lean build was not re-run in that audit. An independent check on 2026-11-11
+   ([`numerics/independent-check/`](numerics/independent-check/README.md)) rebuilt it on a fresh clone, tried and failed to break
+   Theorems B\*, B and Lemma S numerically, and found one hypothesis missing from the printed Theorem B\*
+   ($\delta+\omega s^*\le\pi/2$, which the Lean statement already had). The text is corrected; the conclusion and the
+   vehicle instance are unaffected.
 2. **One conclusion below was wrong.** "Every practical method must iterate on the attitude" does not follow from the
    theorem. Lossless means sound and complete; a single convex program can still be sound.
 3. **There is now a recommended landing algorithm** ([`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md)). It plans the path

@@ -141,3 +141,4 @@
 - Benchmarks re-run for B and S alongside F, with computation latency modelled (solver/RESULTS-FLAT.md). Finding: with latency, B drops to 36/40 in-air; F at 10 Hz lands 70/70.
 - PR aneesh-iyer29/lossless-work#1 merged.
 - Paper revision 7 (48 pp): Section 4.5, Section 6.3, Appendix E, six verified references; CLAIMS-MAP revision 7; AUDIT addendum. Share bundle now includes the landing algorithm.
+- 2026-11-11: PR aneesh-iyer29/lossless-work#2 merged (independent check of the impossibility result). CORR-2: (S1) of Theorem B* corrected; carried into math/02, comms/CLAIMS.md, paper Sec. 5.1 and the audits. Lean rebuilt by that check on a fresh clone.
