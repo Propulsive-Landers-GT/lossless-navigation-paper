@@ -115,7 +115,7 @@ the trajectory above ground.
 Model M1 with $\rho_1>0$, $0<\omega<\infty$, $0<\delta<\pi/2$, $\alpha\ge0$, $A_b:=\rho_2/m_0-g_0>0$, and the state constraint
 \eqref{eq:X}. Let $s^*\in(0,t_f)$ satisfy
 \[
-\text{(S1) }\omega s^*\le\delta,\qquad \text{(S2) }g_0s^*<A_b(t_f-s^*),\qquad
+\text{(S1) }\omega s^*\le\min(\delta,\tfrac\pi2-\delta),\qquad \text{(S2) }g_0s^*<A_b(t_f-s^*),\qquad
 \text{(S3) }\tan\gamma_{gs}\,a_{\max}s^{*2}\le A_b(t_f-s^*)^2 .
 \]
 Then there are $\theta^*\in\FX$ and its rotation $R_\pi\theta^*\in\FX$ by $\pi$ about $\ez$ whose midpoint $\theta_m$
@@ -166,7 +166,7 @@ $\R^3\times\R^3$, so its constant reads $\eta_0/(1+s^*)$. The instances at the v
 For the motivating vehicle ($\rho_1=400$~N, $\rho_2=1000$~N, $m_0=80$~kg, $\delta=15^\circ$, $\omega=0.4$~rad/s,
 $\gamma_{gs}=30^\circ$, $s^*=\delta/\omega$, $t_f=7$~s), $\gamma_X=0.087$~m but $\eta_0\approx1.3\times10^{-5}$~m. This
 is not slack in the proof. A competitor can cancel the dive's lateral moment by tilting slightly during the long
-brake, at a cost quadratic in the tilt, of order $\norm{X_h}^2/(2W_b)$. Dropping (S1) gives an envelope version
+brake, at a cost quadratic in the tilt, of order $\norm{X_h}^2/(2W_b)$. Dropping $\omega s^*\le\delta$ gives an envelope version
 (Theorem B$^*$-env\intshare{, \pnote{math/02 \S10.6}; refereed}{}) whose heuristic gap is at most about 1~cm.
 Numerically the B$^*$ face gap is about 1~cm/s (\cref{sec:numerics}). \emph{So the nonconvexity of the real constrained
 problem is proved, but a practically significant $\varepsilon$-impossibility for in-air descents of this vehicle is not.}

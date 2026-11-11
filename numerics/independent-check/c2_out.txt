@@ -1,0 +1,5 @@
+S1: True  S2: True (13.697 < 13.729)  S3 (altitude only, gamma=0): True   delta + w s* = 160 deg
+face value with paper's 'rho1 then rho2' throttle: 7.1977
+face value with the actual maximising throttle  : 15.3768   <- V*; the written witness does not attain it
+actual face maximiser: min altitude -4.824 m at t=0.000 s ; start state z0=-4.824 m, vz0=+19.692 m/s
+paper's rho1-then-rho2: min altitude +0.000 m at t=2.076 s ; start state z0=+13.639 m, vz0=+0.611 m/s
