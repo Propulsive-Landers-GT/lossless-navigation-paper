@@ -29,8 +29,16 @@
    It is worse on pad-hop fuel (+5 %) and on the shortest possible flight time (up to 0.4 s longer on hops). With
    zero computation time and equal replan rates, lateral accuracy is a tie.
 
-5. **The paper is updated** (revision 7, 48 pages): Section 4.5 states the program and Theorem F, Appendix E proves it,
+5. **The paper is updated** (revision 8, 50 pages): Section 4.5 states the program and Theorem F, Appendix E proves it,
    Section 6.3 reports the benchmarks. Theorem F is tagged as proved but not refereed and not machine-checked.
+6. **Something of LCvx survives inside successive convexification**
+   ([`scvx-thrust-relaxation/`](scvx-thrust-relaxation/README.md), paper Section 4.7). The thrust slack can replace the
+   linearized lower thrust bound in 6-DOF SCvx: at a local minimum, nodes where the slack is not tight cannot steer the
+   terminal conditions, so there are at most three of them when every four nodes can steer. It has its own Lean proof
+   (not rebuilt in the session that integrated it) and no lossy node appeared in four solved cases. A single
+   semidefinite program for the same rigid-body problem came out far from tight, as the impossibility result suggests.
+7. **What can be published** is laid out in [`PAPERS.md`](PAPERS.md): the comprehensive paper, and two standalone
+   10-page papers in AIAA format (`paper/aiaa-student/`).
 
 The sections below are the original report. "The practical algorithm" describes planner B, which the landing
 algorithm supersedes as the recommendation.

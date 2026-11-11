@@ -144,3 +144,6 @@
 - 2026-11-11: PR aneesh-iyer29/lossless-work#2 merged (independent check of the impossibility result). CORR-2: (S1) of Theorem B* corrected; carried into math/02, comms/CLAIMS.md, paper Sec. 5.1 and the audits. Lean rebuilt by that check on a fresh clone.
 - 2026-11-11: PR #3 merged (paper revision 7 and 7.1, first AIAA student version). Repository moved to Propulsive-Landers-GT/lossless-navigation-paper; earlier entries keep the old name.
 - 2026-11-11: AIAA student submission split into two papers, paper/aiaa-student/impossibility and paper/aiaa-student/algorithm, each citing the other as its companion.
+- 2026-11-11: PR #4 merged (two AIAA papers). Both made standalone afterwards: no companion or report citations, proofs inline, 10 pages each.
+- 2026-11-11: PR #5 merged (joseph/scvx-thrust-relaxation): LCvx thrust slack inside 6-DOF SCvx, separate Lean project, rigid-body SDP experiment. Reviewed (README, core lemma, stored results; three scripts re-run). Rows SCVX-SLACK, SCVX-NUM, SDP-6DOF. Paper revision 8 (50 pp): Section 4.7.
+- 2026-11-11: PAPERS.md added: what can be published from this repository and what each piece still needs.

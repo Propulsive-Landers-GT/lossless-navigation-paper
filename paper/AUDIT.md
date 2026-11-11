@@ -195,3 +195,24 @@ An independent reader worked from the shared PDF alone, then compared it with th
   rerun.
 - **Not covered by the independent check** (its own list): the pure-TVC certificates, the theorems printed as sketches, and
   everything about the planners, including Theorem F.
+
+## Addendum, revision 8 (2026-11-11)
+
+Revision 8 adds one result that was contributed separately (`scvx-thrust-relaxation/`, merged as pull request
+Propulsive-Landers-GT/lossless-navigation-paper#5): Section 4.7 with Theorem 4.15 and Table 1, one sentence in the
+abstract, and a paragraph in Section 7. Nothing else changes; the paper is 50 pages.
+
+What was checked, by the session that wrote the section:
+
+- **Statement.** Theorem 4.15 paraphrases `sixDOF_free_time`, `sixDOF_fixed_time`, `card_lossy_lt` and `isMinOn_original`
+  as described in the folder's README and as declared in `lean/LCvx/SixDOF.lean` and `Basic.lean`. The core lemma
+  (`lean/LCvx/Core.lean`) was read line by line; the rest of the Lean was not.
+- **Lean.** Sources scanned: no `sorry`, `axiom`, `admit` or `native_decide`. **Not built** (no toolchain here). The tag
+  on the theorem says so. These declarations are outside the 126 audited by `Verify.lean`.
+- **Table 1.** Every entry was compared with `scvx-thrust-relaxation/solver/results/*.json`. One case (`loose_rate`)
+  was re-run and reproduced to nine digits; the 5-DOF reduction check was re-run and reproduced; one interval rank
+  certificate was re-run. The other three cases, the full certificates and the two SDP scripts were not re-run, so the
+  SDP figures in the last paragraph are quoted from the folder's README.
+- **Prior work.** The two comparisons cite entries already in `refs.bib` (`blackmore2012scl`, `luo2026automatica`). The
+  folder's README also cites an arXiv paper (2607.12109) that was not checked and is not cited in the paper.
+- **Build.** `make draft` and `make share`: 50 pages, no errors, no undefined references.

@@ -306,3 +306,79 @@ positive value certifies that exact landing is infeasible. Exactness is certifie
 stress test of \cref{thm:stress}, a~priori in the coplanar case of \cref{thm:coplanar}, or (for every linear objective of the
 terminal readout) by T2. In the tests, it was exact on every realistic in-air target for our vehicle. It is a certificate, not a lossless convexification. It does not handle minimum
 fuel: fuel is constant for fixed thrust, and the natural variable-throttle lift is lossy.
+
+\subsection{The thrust relaxation inside successive convexification}\label{sec:scvxslack}
+% CLAIMS: SCVX-SLACK, SCVX-NUM, SDP-6DOF | Lean: separate project scvx-thrust-relaxation/lean (LCvx.SixDOF.sixDOF_free_time, sixDOF_fixed_time, sixDOF_tail, sixDOF_fold, sixDOF_ptr_*, LCvx.Problem.card_lossy_lt, LCvx.Problem.isMinOn_original)
+The impossibility results concern a single convex program for the whole problem. They leave open how much of LCvx survives
+\emph{inside} an iterative method. Standard 6-DOF successive convexification linearizes the lower thrust bound
+$\norm{T}\ge T_{\min}$ about the previous iterate \cite{szmuk2020jgcd}. This subsection shows that it need not: the LCvx slack
+$\norm{T}\le\Gamma$, $T_{\min}\le\Gamma\le T_{\max}$, with propellant burned at the rate $\alpha\Gamma$, can be kept as exact convex
+constraints while the iteration handles only the dynamics. The result and its formal proof are in the folder
+\texttt{scvx-thrust-relaxation/} of the repository; they were contributed after revision 7 and use a rigid-body model with
+quaternion kinematics and the gyroscopic term, discretized by the Runge--Kutta scheme the solver uses.
+
+\emph{Setting.} The flight is divided into $N$ intervals. On interval $k$ the body-frame thrust $u_k\in\R^3$ and the slack $\Gamma_k$
+are constant, with $\norm{u_k}\le\Gamma_k$, $T_{\min}\le\Gamma_k\le T_{\max}$ and a gimbal cone. The terminal map $F$ integrates the
+6-DOF dynamics and returns the ten terminal conditions (position, velocity, upright attitude, pitch and yaw rate). The cost is the
+propellant used. Node $k$ is \emph{lossy} if $\norm{u_k}<\Gamma_k$: the real engine could not produce that thrust.
+
+\begin{theorem}[Lossy nodes cannot steer {\pnote{scvx-thrust-relaxation/README.md; lean/LCvx/SixDOF.lean}}]\label{thm:slack}
+Let $z$ be a local minimum of the relaxed discrete 6-DOF problem with free final time, $\alpha>0$, $T_{\min}>0$, the time of flight
+strictly inside its bounds, positive mass at every node, and the remaining path constraints (glide slope, tilt, angular rate, dry
+mass) inactive at $z$. Let $L$ be any set of lossy nodes at which the gimbal limit is inactive. Then the derivative of $F$ at $z$,
+restricted to the thrusts at the nodes of $L$, is not surjective. In particular, if every set of four nodes can steer the ten
+terminal conditions to first order, at most three gimbal-inactive nodes are lossy. With a fixed final time the conclusion is
+weaker: if the lossy thrusts can steer, every $\Gamma_k$ equals $T_{\min}$. A lossless optimum of the relaxed problem is an optimum of
+the original nonconvex problem.\Sleanpart{separate project \texttt{scvx-thrust-relaxation/lean}; sources scanned for \texttt{sorry}, not rebuilt for this revision}
+\end{theorem}
+\begin{proof}[Proof idea]
+Suppose the lossy thrusts could steer the terminal state in every direction. Each of them lies strictly inside its ball
+$\norm{u}\le\Gamma$ and inside the gimbal cone, and the cost does not depend on it. Land slightly sooner, which saves propellant,
+and use the lossy thrusts to restore the terminal conditions; this is the surjective-derivative form of the open mapping theorem and
+needs only that the dynamics are continuously differentiable. The result is a cheaper feasible point arbitrarily close to $z$, a
+contradiction. With a fixed final time the same argument lowers a slack instead, which is possible unless every slack is at
+$T_{\min}$.
+\end{proof}
+Three extensions are formalized as well. (i) \emph{Active path constraints.} A thrust at node $j$ cannot change the state at an
+earlier node, so if the last active path constraint is at node $m$ the argument runs on the nodes from $m$ on. Alternatively an
+active constraint can be held as an equality and added to $F$, at the price that the lossy thrusts must steer it too.
+(ii) \emph{Converged iterates.} A converged penalized-trust-region iterate solves its own convex subproblem, whose trust-region
+penalty has zero gradient at its own centre; it is therefore a minimizer of the linearized relaxed problem, and the theorem applies
+with the derivative of the true terminal map. (iii) \emph{Sharpness.} Three small examples show that the fixed-time degenerate
+case occurs, and that neither the steering hypothesis nor slack in the path constraints can be dropped.
+
+\emph{Numerical check.} On the test vehicle of \cite{szmuk2020jgcd}, with 25 nodes, no lossy node appeared in any of four cases
+(\cref{tab:slack}), although at 17 to 22 nodes the slack sits at $T_{\min}$ and the relaxed problem was free to thrust below it.
+The steering hypothesis was proved for the reported solutions by interval arithmetic, for every set of four nodes in the range
+the theorem covers. Where the angular-rate limit is active late in the flight, as in the baseline case, the theorem guarantees
+little and losslessness is observed rather than proved.\Snum\ (the table; one case was re-run for this revision and reproduced to
+nine digits)
+
+\begin{table}[t]\centering\small
+\caption{The LCvx slack inside 6-DOF successive convexification, 25 nodes\pnote{scvx-thrust-relaxation/solver/results}. ``Covered''
+is the range of nodes in which the theorem allows at most three lossy nodes.}\label{tab:slack}
+\begin{tabular}{@{}lccccc@{}}\toprule
+Case & $t_f$ & Largest $\Gamma-\norm T$ & Nodes at $T_{\min}$ & Active path constraints & Covered \\\midrule
+Baseline, free $t_f$ & 6.869 & $1.3\times10^{-9}$ & 18 & rate limit, 16 nodes & none \\
+Loose rate limit, free $t_f$ & 5.568 & $7.9\times10^{-9}$ & 17 & none & whole flight \\
+$t_f$ fixed at 7.5 & 7.5 & $2.7\times10^{-9}$ & 19 & rate limit, 4 nodes & nodes 5 to 24 \\
+$t_f$ fixed at 12 & 12 & $1.0\times10^{-9}$ & 22 & rate limit, 1 node & nodes 2 to 24 \\\bottomrule
+\end{tabular}
+\end{table}
+
+\emph{Relation to earlier work.} That the slack survives nonlinear dynamics is known in continuous time
+\cite{blackmore2012scl}, under an observability condition that must hold along every feasible trajectory and that has been
+verified only for structures with about as many controls as states. The closest discrete-time result covers linear
+time-invariant dynamics \cite{luo2026automatica}. The statement here is in discrete time, holds at local minima and at converged
+iterates, and replaces the global condition by a rank test at the solution; in return it bounds the number of lossy nodes
+instead of excluding them.
+
+\emph{Relation to the impossibility.} There is no conflict. \Cref{thm:slack} is about one constraint inside a nonconvex problem
+that is still solved iteratively, and it says nothing about which local minimum the iteration reaches. The same folder also
+tries the alternative that \cref{thm:A} discourages: one semidefinite program for a coarse fixed-time version of the rigid-body
+problem (Shor relaxation, 10 nodes). It is far from tight. The bound on the landed mass is 1.557 against a local optimum of 1.316
+and a trivial bound of 1.625, and no block is near rank one; removing roll (a 5-DOF model, checked against the 6-DOF one) gives
+1.547. Unlike the fixed-thrust kinematic lift of \cref{sec:sdp}, which was exact on the in-air targets tried, this lift carries
+the variable throttle, the mass and the torque dynamics, and the looseness comes from the coupling between thrust direction and
+attitude.\Snum
+

@@ -40,7 +40,7 @@ extends to depleting mass, upright touchdown, six-degree-of-freedom attitude kin
 windows, and these statements are checked by the Lean~4 proof assistant. We also bound the size of the effect, which is small
 for descents that begin in the air, and report what is proved and what is only observed numerically when the gimbal is the
 sole source of torque. The result excludes exactness and nothing else: a convex program that returns only flyable
-trajectories remains possible and is the subject of a companion paper.
+trajectories remains possible, and we outline one.
 \end{aiaaabstract}
 
 \section{Nomenclature}
@@ -97,9 +97,9 @@ distance from the set to a point of its convex hull, show that it is small for a
 and separate what is proved from what is observed numerically for a vehicle whose only torque comes from its gimbal.
 
 The result is about exactness. It does not say that attitude-coupled guidance must be iterative, and Sec.~\ref{sec:possible}
-explains what remains possible. A companion paper \cite{companion} constructs a single convex program for a gimbaled lander
-that returns only flyable trajectories and gives up a small set of feasible landings, which is the best outcome the present
-result allows.
+explains what remains possible, including a single convex program for a gimbaled lander that returns only flyable
+trajectories and gives up a small set of feasible landings, which is the best outcome the present result allows. The Lean
+sources, the certificates, and the software behind every number in this paper are public \cite{repo}.
 
 \section{Problem Statement}\label{sec:problem}
 \subsection{Vehicle Model}
@@ -330,7 +330,7 @@ be added, for example a tilt limit of at least $\omega s^*$.
 The obstruction is short, but it is easy to misstate: how the data enter, the terminal attitude, the state constraints, and
 the sign conventions all matter. Its core was therefore formalized in Lean~4 with the Mathlib library
 \cite{lean4,mathlib}. Table~\ref{tab:lean} lists the main statements. The project contains no unproved step, and each of
-the 126 declarations cited here and in Ref.~\cite{report} depends only on the three standard axioms of classical Lean
+the 126 declarations audited by its verification script depends only on the three standard axioms of classical Lean
 mathematics. The formal
 statement of Theorem~\ref{thm:Bstar} assumes constant bounds $0<a_{\min}\le a\le a_{\max}$ on the thrust acceleration, or
 explicit mass depletion with $0<\rho_1<\rho_2$ and $\alpha>0$; it assumes $\omega s^*\le\delta$ and
@@ -375,22 +375,36 @@ be made quantitative without the equality case. For $\delta\le\pi/4$,
 (1+c_1)\,\eta_0+\sqrt{2W_b\,\eta_0}=\gamma_X ,
 \end{equation}
 with $\gamma_X=\tfrac5{32}(\rho_1/m_0)\sin\delta\,s^{*2}$, $c_1=4a_{\max}m_0/(\omega\rho_1\sin\delta\,s^*)$, and
-$W_b=\tfrac12a_{\max}(t_f-s^*)^2$. The proof bounds the lateral moment of the dive from below with a support function of the
-set of admissible thrust directions and bounds what tilting during the brake can cancel with the Cauchy--Schwarz inequality;
-it is given in Ref.~\cite{report} and is among the statements of Table~\ref{tab:lean}.
+$W_b=\tfrac12a_{\max}(t_f-s^*)^2$. The proof runs as follows. Let $c$ land from any $\theta\in\F$, let $\eta=V^*-W_z(c)\ge0$ be its deficit
+in Eq.~\eqref{eq:V}, and split $W=-D+B$ into the dive integral $D=\int_0^{s^*}(s^*-s)\,a\,d\,\mathrm ds$ and the brake
+integral $B$. First, let $\tau=\vartheta s^*$ with $\vartheta=\rho_1\sin\delta/(4m_0a_{\max})\le\tfrac14$. Lemma~\ref{lem:tri}
+with $z=b(\tau)$ gives $\ip{D}{b(\tau)}\ge G:=\int_0^{s^*}(s^*-s)\,a_T\cos(\delta+\omega\lvert s-\tau\rvert)\,\mathrm ds$, whereas
+$D_z$ exceeds $Z_0=\int_0^{s^*}(s^*-s)\,a_T\cos(\delta+\omega s)\,\mathrm ds$ by at most $\eta$. Because $b(\tau)$ is tilted by at
+most $\omega\tau$, it follows that $\omega\tau\norm{D_h}\ge G-Z_0-\eta$, and the mean value theorem, with all angles in
+$[\delta,\pi/2]$, gives $G-Z_0\ge\omega\tau\,\gamma_X$. Hence $\norm{D_h}\ge\gamma_X-c_1\eta$ with $c_1=1/(\omega\tau)$: a
+control that nearly attains $V^*$ has nearly the lateral moment of a witness. Second, on the brake
+$\norm{d_h}\le\sqrt{2(1-d_z)}$, and the Cauchy--Schwarz inequality gives $\norm{B_h}\le\sqrt{2W_b\eta}$: tilting during the
+brake cancels lateral moment only at a cost in $\eta$. Third, $\Lambda(\theta)-\Lambda(\theta_m)$ has the horizontal part
+$W_h(c)$, of norm at least $\gamma_X-c_1\eta-\sqrt{2W_b\eta}$, and the vertical part $-\eta$, so its norm is at least $\eta_0$
+whether $\eta$ is above or below $\eta_0$; and the linear map $\Lambda$ has norm $\sqrt{1+s^{*2}}$. The maximum-norm form of
+this bound is among the statements of Table~\ref{tab:lean}.
 
 For an 80-kg lander with a thrust range of 400 to 1000~N, $\delta=15$~deg, $\omega=0.4$~rad/s, $s^*=\delta/\omega$, and
 $t_f=7$~s, the lateral moment of the dive is $\gamma_X=0.087$~m, but $\eta_0=1.3\times10^{-5}$~m. For the case of
 Fig.~\ref{fig:witness} the bound of Eq.~\eqref{eq:eta} is $3.8\times10^{-5}$, against the 0.020 reached by the search of
 Sec.~\ref{sec:lean}. This is not slack in the proof. A competitor can cancel the lateral
 moment of a short dive by tilting slightly during the long brake, at a cost that is quadratic in the tilt, so the true
-distance is small as well; numerical estimates put it near 1~cm/s in velocity for this vehicle \cite{report}. The honest
+distance is small as well; our numerical estimates put it near 1~cm/s in velocity for this vehicle \cite{repo}. The honest
 summary is that the nonconvexity of the constrained landing set is proved, but a practically significant gap for descents
 that begin in the air is not.
 
 The gap is not always small. Without state constraints, a maneuver that tilts at the full rate for the whole flight and its
-mirror image give a midpoint whose distance from the set of reachable velocity changes has the closed-form lower bound
-$(4\rho_1/(m_0\omega))\sin(\delta+\omega t_f/2)\sin^2(\omega t_f/4)$ at constant mass \cite{report}. For $t_f=2$~s,
+mirror image give a midpoint $M_z\ez$ of their velocity changes, with
+$M_z=\int_0^{t_f}(\rho_1/m_0)\cos(\delta+\omega s)\,\mathrm ds$ at constant mass. If $\delta+\omega t_f/2\le\pi/2$,
+Lemma~\ref{lem:tri} with $z=b(t_f/2)$ shows that every admissible thrust direction satisfies
+$\ip{d(s)}{b(t_f/2)}\ge\cos(\delta+\omega\lvert s-t_f/2\rvert)\ge0$, so every reachable velocity change has norm at least
+$G=\int_0^{t_f}(\rho_1/m_0)\cos(\delta+\omega\lvert s-t_f/2\rvert)\,\mathrm ds$. The midpoint is therefore at a distance of at
+least $G-M_z=(4\rho_1/(m_0\omega))\sin(\delta+\omega t_f/2)\sin^2(\omega t_f/4)$ from every reachable one. For $t_f=2$~s,
 $\omega=30$~deg/s, and $\delta=15$~deg the bound is 1.81~m/s, and searches over admissible controls reach 2.14~m/s. Those
 witnesses hold minimum throttle and start below the ground for a vehicle that cannot hover at minimum throttle, so they do
 not apply to a descent; they do show that the obstruction grows with $\omega t_f$ and is first felt on short, aggressive
@@ -406,14 +420,18 @@ does not apply. The situation is as follows.
 $\varepsilon=J_t/(mL)$ above the center of mass, the center of percussion, is not accelerated by the lateral force of the
 gimbal ($J_t$ is the transverse inertia and $L$ the distance from the pivot to the center of mass). This identity, which is
 machine-checked for constant mass, turns the problem into one with zero gimbal angle and a bounded angular acceleration for
-that point. With it, Ref.~\cite{report} proves nonconvexity of the landing set with upright touchdown at rest and $r_z\ge0$
-at four final times, by computer-assisted certificates whose margins were verified in exact arithmetic by an independent
-implementation (Table~\ref{tab:tvc}). The assumptions are constant mass, an unlimited gimbal rate, a cone gimbal, and held
+that point. With it, we proved nonconvexity of the landing set with upright touchdown at rest and $r_z\ge0$
+at four final times by computer-assisted certificates (Table~\ref{tab:tvc}). The functional $\Lambda_z$ is written exactly
+in terms of the horizontal tilt of the body, and pointwise inequalities give a quadratic upper bound on the gain of every
+competitor that has zero lateral data, as $\theta_m$ does; the torque limit enters through a multiplier. The bound is
+shown to lie below the gain of an explicit witness by a semidefinite program at 1~s and by a backward Riccati recursion
+at 2, 3, and 5~s. The margins were verified in exact rational and interval arithmetic by an independent implementation
+\cite{repo}. The assumptions are constant mass, an unlimited gimbal rate, a cone gimbal, and held
 roll, with the constants of an 80-kg lander. The certified distances are between $10^{-6}$ and $10^{-4}$~m, small for the
 reason given in Sec.~\ref{sec:size}.
 
 \begin{table}[t]\centering
-\caption{Certified nonconvexity when torque comes only from the gimbal (constant mass, unlimited gimbal rate) \cite{report}}\label{tab:tvc}
+\caption{Certified nonconvexity when torque comes only from the gimbal (constant mass, unlimited gimbal rate)}\label{tab:tvc}
 \small
 \begin{tabular}{@{}llll@{}}\toprule
 Final time, s & Switch time, s & Class of trajectories & Distance from midpoint to landing set, m \\\midrule
@@ -428,8 +446,8 @@ Final time, s & Switch time, s & Class of trajectories & Distance from midpoint 
 Table~\ref{tab:tvc}; at 7~s the method fails by 4.8\%. For the realistic vehicle the statement that the landing set is not
 convex rests on numerical evidence.
 
-\emph{Numerical evidence.} Figure~\ref{fig:ring} shows an experiment on the rigid-body model and planning limits of the
-companion paper \cite{companion}: thrust between 440 and 920~N, a 10-deg gimbal cone, a 20-deg tilt limit, and no glide
+\emph{Numerical evidence.} Figure~\ref{fig:ring} shows an experiment on the gimbaled rigid-body model of an 80-kg lander
+with conservative planning limits: thrust between 440 and 920~N, a 10-deg gimbal cone, a 20-deg tilt limit, and no glide
 slope. The vehicle leaves a point 1.5~m above the pad moving straight up and must come to rest at the same height 4~s later.
 Landings were sought with a nonconvex solver \cite{ipopt} from several initial guesses. Launched at 6.3~m/s, the vehicle can
 land 1, 2, or 3~m away, but no landing on the launch point was found, from symmetric guesses or from nine asymmetric ones
@@ -451,16 +469,20 @@ Theorem~\ref{thm:A} excludes a program that is sound and complete. Each weaker g
 
 \emph{A fixed attitude history.} If the body-axis history $b(t)$ is chosen in advance, what remains is a 3-DOF problem with a
 pointing cone about a time-varying axis, and the argument of Ref.~\cite{acikmese2013} applies to it: by Aumann's theorem the
-relaxed and original problems have the same feasible data \cite{report}. The nonconvexity is entirely in the choice of the attitude.
+relaxed and original problems have the same feasible data. The nonconvexity is entirely in the choice of the attitude.
 Successive convexification can be read as a search over that choice.
 
 \emph{Soundness without completeness.} A convex program may be feasible only at landable data, and return a landing there,
 without being feasible at all of them. Theorem~\ref{thm:A} does not constrain such a program, since its projection is a
-convex subset of $\F$ and need not equal it. The companion paper \cite{companion} constructs one for the gimbaled rigid body
-of Sec.~\ref{sec:tvc}, by planning the path of the center of percussion, and measures what it gives up: about 0.1\% of fuel
-and at most 0.4~s of minimum flight time on the cases studied. In the experiment of Fig.~\ref{fig:ring} that program is
-infeasible in all 20 cells: it never reports a landing that does not exist, and at this final time it also gives up the 15
-that do. On hops of this kind it needs up to 0.4~s more flight time than the vehicle does \cite{companion}.
+convex subset of $\F$ and need not equal it. One exists for the gimbaled rigid body of Sec.~\ref{sec:tvc}. The center of
+percussion $y=r+\varepsilon b$ obeys $\ddot y=(T_a/m-\varepsilon\norm{\dot b}^2)\,b-g_0\ez$, where $T_a$ is the axial
+thrust, so the body axis is the direction of $\ddot y+g_0\ez$, and the attitude, the gimbal angle, and the throttle are
+algebraic functions of $y$ and its first four derivatives. Planning $y$ as a spline makes the dynamics and the boundary
+conditions linear, and the actuator limits can be imposed as second-order cone restrictions on the control points of the
+spline that imply the true limits at every instant. The result is one second-order cone program, each feasible point of
+which is a trajectory of the rigid body within its limits \cite{repo}. On the cases we studied it gives up about 0.1\% of
+fuel and at most 0.4~s of minimum flight time. In the experiment of Fig.~\ref{fig:ring} it is infeasible in all 20
+cells: it never reports a landing that does not exist, and at this final time it also gives up the 15 that do.
 
 \emph{Completeness without soundness.} A relaxation such as 3-DOF LCvx with added attitude constraints is complete, and it
 is useful as a bound and as an initial guess. Its solutions must be checked, because it is feasible on the whole convex hull
@@ -519,15 +541,13 @@ Dynamics}, Vol.~43, No.~8, 2020, pp.~1399--1413. \url{https://doi.org/10.2514/1.
 CADE 28}, Lecture Notes in Computer Science, Vol.~12699, Springer, Cham, 2021, pp.~625--635. \url{https://doi.org/10.1007/978-3-030-79876-5_37}.
 \bibitem{mathlib} The mathlib Community, ``The Lean Mathematical Library,'' \emph{Proceedings of the 9th ACM SIGPLAN International
 Conference on Certified Programs and Proofs}, ACM, New York, 2020, pp.~367--381. \url{https://doi.org/10.1145/3372885.3373824}.
-\bibitem{companion} [Authors of the companion paper], ``A Sound Single Convex Program for Powered-Descent Guidance of a Gimbaled
-Lander,'' companion paper submitted to the same conference, [year].
+\bibitem{repo} Propulsive Landers at Georgia Tech, ``lossless-navigation-paper: Lean Proofs, Certificates, and Guidance Software for
+Powered Descent,'' software and data repository, 2026. \url{https://github.com/Propulsive-Landers-GT/lossless-navigation-paper}.
 \bibitem{lasserre2008} Lasserre, J. B., Henrion, D., Prieur, C., and Tr\'elat, E., ``Nonlinear Optimal Control via Occupation Measures
 and LMI-Relaxations,'' \emph{SIAM Journal on Control and Optimization}, Vol.~47, No.~4, 2008, pp.~1643--1666.
 \url{https://doi.org/10.1137/070685051}.
 \bibitem{aumann1965} Aumann, R. J., ``Integrals of Set-Valued Functions,'' \emph{Journal of Mathematical Analysis and Applications},
 Vol.~12, No.~1, 1965, pp.~1--12. \url{https://doi.org/10.1016/0022-247X(65)90049-1}.
-\bibitem{report} Propulsive Landers at Georgia Tech, ``On the Impossibility of Lossless Convexification for Attitude-Rate-Limited
-(5-DOF and 6-DOF) Powered Descent, and a Sound Single Convex Program for Gimballed Landers,'' unpublished report with full proofs and Lean sources, Nov. 2026.
 \bibitem{ipopt} W\"achter, A., and Biegler, L. T., ``On the Implementation of an Interior-Point Filter Line-Search Algorithm for
 Large-Scale Nonlinear Programming,'' \emph{Mathematical Programming}, Vol.~106, No.~1, 2006, pp.~25--57. \url{https://doi.org/10.1007/s10107-004-0559-y}.
 \end{thebibliography}

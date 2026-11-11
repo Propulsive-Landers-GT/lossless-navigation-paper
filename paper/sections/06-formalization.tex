@@ -97,6 +97,13 @@ feasibility; C-E is discrete-time; and C-W is constant-mass and unconstrained.
 
 
 
+\paragraph{A second project.} The result of \cref{sec:scvxslack} is formalized separately, in \texttt{scvx-thrust-relaxation/lean}
+(same toolchain; library \texttt{LCvx}). Its file \texttt{AxiomsCheck.lean} prints the axioms of 26 declarations, among them
+\lean{LCvx.SixDOF.sixDOF\_free\_time}, \lean{sixDOF\_fixed\_time}, \lean{sixDOF\_tail}, \lean{sixDOF\_fold}, their versions for
+converged iterates, and \lean{LCvx.Problem.card\_lossy\_lt}. These are not among the 126 declarations audited by
+\texttt{Verify.lean}. For this revision the sources of the second project were read and scanned for \texttt{sorry} and
+\texttt{axiom} (none), but it was not built.
+
 \subsection{What is not formalized}
 \Cref{thm:F} and \cref{prop:F-inc}: only the first step of the proof, the centre-of-percussion identity (\lean{TVC.cop\_identity}),
 is in Lean, and there with constant mass; the flat map, the boundary equivalences, the pointwise bounds, the control-polygon argument

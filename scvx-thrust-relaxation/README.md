@@ -3,7 +3,7 @@
 ## Background
 
 Lossless convexification (LCvx) is what makes the 3-DOF solver in
-`guidance/LosslessConvexification` work. The engine can't throttle below `T_min`, so the allowed
+`LosslessConvexification` of the GTPL `guidance` repository work. The engine can't throttle below `T_min`, so the allowed
 thrust vectors form a hollow shell, `T_min ≤ ‖T‖ ≤ T_max`, which is not convex. LCvx replaces it
 with `‖T‖ ≤ Γ` and `T_min ≤ Γ ≤ T_max`, and burns propellant at `αΓ` instead of `α‖T‖`. That
 problem is convex, and Açıkmeşe and Ploen proved that, under mild conditions, its optimum has
@@ -301,7 +301,7 @@ At this fixed `t_f`, IPOPT's optimum is lossy at nodes 1, 5 and 6: `Γ = T_min` 
 0.0001 and 0.27. That doesn't contradict the theorem. Three nodes give 9 thrust components, fewer
 than the 10 terminal rows, so they can't steer.
 
-This matches the GTPL `lossless-work` repo, which proves in Lean that no convex program whose
+This matches the main result of this repository (`../lean/LcvxObstruction`), which proves in Lean that no convex program whose
 initial position and velocity enter convexly can be lossless for every initial condition of the
 5-DOF or kinematic 6-DOF lander. That proof does not rule out a relaxation that happens to be
 tight for one particular initial condition, which is what this experiment looked for.
