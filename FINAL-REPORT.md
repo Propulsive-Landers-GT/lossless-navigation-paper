@@ -139,6 +139,7 @@ tried, but not yet proved.
 | Full session transcript (conversation + every subagent) | `session-transcript/session-export.zip` |
 | Complete map of the repository | `README.md` |
 
-(Written 2026-11-07, before the repository was published. It has since been pushed to GitHub as `aneesh-iyer29/lossless-work`.)
+(Written 2026-11-07, before the repository was published. It has since been pushed to GitHub as `aneesh-iyer29/lossless-work`, and was moved to
+`Propulsive-Landers-GT/lossless-navigation-paper` on 2026-11-11; pull-request numbers are unchanged by the move.)
 At the time of writing nothing was pushed anywhere and everything was committed in the local git repo `GTPL/lcvx-5dof-research`. No sibling GTPL
 repo was modified.

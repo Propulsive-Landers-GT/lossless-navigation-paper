@@ -142,3 +142,5 @@
 - PR aneesh-iyer29/lossless-work#1 merged.
 - Paper revision 7 (48 pp): Section 4.5, Section 6.3, Appendix E, six verified references; CLAIMS-MAP revision 7; AUDIT addendum. Share bundle now includes the landing algorithm.
 - 2026-11-11: PR aneesh-iyer29/lossless-work#2 merged (independent check of the impossibility result). CORR-2: (S1) of Theorem B* corrected; carried into math/02, comms/CLAIMS.md, paper Sec. 5.1 and the audits. Lean rebuilt by that check on a fresh clone.
+- 2026-11-11: PR #3 merged (paper revision 7 and 7.1, first AIAA student version). Repository moved to Propulsive-Landers-GT/lossless-navigation-paper; earlier entries keep the old name.
+- 2026-11-11: AIAA student submission split into two papers, paper/aiaa-student/impossibility and paper/aiaa-student/algorithm, each citing the other as its companion.
