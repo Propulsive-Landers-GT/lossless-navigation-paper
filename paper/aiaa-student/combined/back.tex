@@ -41,10 +41,12 @@ state at time $t$ becomes active at $t$ plus its solver time, and each planner r
 0.5~s and F every 0.1~s. Table~\ref{tab:closed} and Fig.~\ref{fig:td} give the results. Both planners land every case. F is more accurate
 laterally by more than an order of magnitude, touches down more slowly, and moves the gimbal a third as far. On hops it uses
 5\% more fuel, because it flies them slightly longer. With every solver time multiplied by four, to represent a slower flight
-computer, S fails four of the 30 hops, and F, replanning every 0.2~s, fails none. The source of the advantage should be
-stated carefully: when both planners replan at 1~Hz, plans are applied instantly, and both fly the same final time, the
-lateral accuracy is the same (medians of 3.1~cm in the air and 2.4~cm on hops for each). The accuracy in
-Table~\ref{tab:closed} comes from the replanning rate, which a solver time of 30~ms permits and a solver time of 1~s does not.
+computer, S fails four of the 30 hops, and F, replanning every 0.2~s, fails none. The mechanism is
+the cost of a plan. A plan of F is as good as a plan of S: given the same 1-Hz replanning rate, zero computation delay, and
+the same final time, the two are equally accurate laterally (medians of 3.1~cm in the air and 2.4~cm on hops for each). What
+F adds is that a plan costs 30~ms instead of 1~s, so the vehicle is corrected five to ten times as often from a state that
+is tens of milliseconds old. That is the accuracy in Table~\ref{tab:closed}, it is the relevant comparison for a flight
+computer, where computation is never free, and its margin widens as the processor slows.
 
 %%CLOSEDTABLE%%
 %%TDFIG%%
@@ -68,8 +70,8 @@ part; restricting those limits, instead of relaxing them, yields one second-orde
 satisfy the model and its throttle, gimbal-angle, and tilt limits at every instant by proof, for a constant
 center-of-percussion offset and without slew-rate limits. It costs a tenth of a percent of fuel and a few tenths of a second
 of minimum flight time, has no initial guess, trust region, or iteration count, and solves fast enough to replan at the rate
-of the control system; in our simulations the gain in touchdown accuracy came from that rate and vanished when the rates were
-matched. Future work is a
+of the control system. That speed is what produced the order-of-magnitude gain in touchdown accuracy in our simulations, and it matters
+most where computation is scarce. Future work is a
 certificate of nonconvexity that accounts for the gimbal-rate limit and depleting mass, an independent check and
 formalization of the soundness proof, slew-rate limits inside the guarantee, and flight.
 

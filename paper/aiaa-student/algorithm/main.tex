@@ -38,8 +38,9 @@ trajectory that meets those three limits at every instant. Actuator slew rates a
 each plan, and altitude and glide-slope constraints hold at sampled instants. The program is sound but not complete: it gives
 up 0.1\% of fuel at equal flight time and at most 0.4~s of minimum flight time. In closed-loop simulation of an 80-kg lander
 with each planner's computation time counted, it replans ten times per second and lands within 1.1~cm in all 40 in-air
-descents, against 18.3~cm for six-degree-of-freedom successive convexification. That difference comes from the replanning
-rate that the shorter solve permits: at equal replanning rate, delay, and flight time the two are equally accurate.
+descents, against 18.3~cm for six-degree-of-freedom successive convexification. The accuracy is a direct benefit of the low computational cost: a plan takes about 40~ms instead of about 1~s, so corrections
+are frequent and current. The benefit grows on slower hardware; with every solver time multiplied by four, successive
+convexification fails 4 of 30 hops and the present planner none.
 \end{aiaaabstract}
 
 \section{Nomenclature}
@@ -426,11 +427,14 @@ Gimbal travel per flight, mean, deg & 156 & 45 & 182 & 62 \\\bottomrule
 \caption{Touchdown accuracy with computation time counted: a) 40 in-air descents and b) 30 pad hops.}\label{fig:td}
 \end{figure}
 
-The source of the advantage should be stated carefully. When both planners replan at 1~Hz, plans are applied instantly, and
-both fly the same final time, the lateral accuracy is the same: a median of 3.1~cm for each in the air and 2.4~cm for each on
-hops. F then still touches down more slowly on hops (0.23 against 0.51~m/s) and never needs to extend the final time in the
-air, which S does in 32 of 40 runs. The accuracy in Table~\ref{tab:closed} therefore comes from the replanning rate, which a
-solver time of 30~ms permits and a solver time of 1~s does not. Giving S the arrival-in-hover condition does not change this
+The mechanism behind this advantage is the cost of a plan. A plan of F is as good as a plan of S: when both planners are
+artificially given the same 1-Hz replanning rate, zero computation delay, and the same final time, the lateral accuracy is the
+same, a median of 3.1~cm for each in the air and 2.4~cm for each on hops (F then still touches down more slowly on hops, 0.23
+against 0.51~m/s, and never needs to extend the final time in the air, which S does in 32 of 40 runs). What F adds is that a
+plan costs 30~ms instead of 1~s, so the vehicle is corrected five to ten times as often from a state that is tens of
+milliseconds old instead of a second old. That is the accuracy in Table~\ref{tab:closed}, and it is the relevant comparison
+for a flight computer, where computation is never free. The margin widens as the processor slows, as the fourfold test shows:
+the iterative planner runs out of time first. Giving S the arrival-in-hover condition does not change this
 (hops: 0.52~m/s and 4.0~cm).
 
 \subsection{Limitations}
@@ -454,8 +458,9 @@ three limits by proof. The guarantee is for a constant center-of-percussion offs
 constraints between samples. The program is conservative: on the cases studied it costs a tenth of a percent of fuel and a few
 tenths of a second of minimum flight time, and a convex program of this kind cannot be expected to be exact. Its practical
 value is its speed and its lack of tuning. It has no initial guess, trust region, or iteration count, and it solves fast enough
-to replan at the rate of the control system; in our simulations the gain in touchdown accuracy over successive convexification
-came from that rate and vanished when the rates were matched. Future work is to extend the guarantee to a varying
+to replan at the rate of the control system. That speed is what produced the order-of-magnitude gain in touchdown accuracy over successive
+convexification in our simulations, and it matters most where computation is scarce: on a processor four times slower the
+iterative planner began to fail landings and this one did not. Future work is to extend the guarantee to a varying
 center-of-percussion offset and to slew rates, to bound the loss of feasible landings, to formalize the proof, to have the
 results reproduced independently, and to fly it.
 
