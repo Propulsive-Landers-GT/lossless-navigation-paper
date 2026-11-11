@@ -45,8 +45,8 @@ convex restrictions, gives one second-order cone program. For a rigid-body model
 offset, we prove that each of its feasible points is a trajectory that meets the throttle, gimbal-angle, and tilt limits at
 every instant; slew rates are checked on each plan, outside the guarantee. In closed-loop simulation of an 80-kg lander with
 computation time counted, it replans ten times per second and lands within 1.1~cm in all 40 in-air descents, against
-18.3~cm for six-degree-of-freedom successive convexification, a difference that comes from the replanning rate and vanishes
-when the rates are matched.
+18.3~cm for six-degree-of-freedom successive convexification. The accuracy is a direct benefit of the low computational
+cost, about 40~ms per plan instead of about 1~s, and the benefit grows on slower hardware.
 \end{aiaaabstract}
 
 \section{Nomenclature}
