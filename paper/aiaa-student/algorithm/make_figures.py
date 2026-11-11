@@ -3,8 +3,8 @@
 AIAA figure rules followed here: no background, borders or outlines; no caption inside the figure; axis labels in words
 with units after a comma; all text at least 8 pt at the printed size (figures are saved at their printed size).
 
-Usage (from this directory):  ../../solver/.venv/bin/python make_figures.py
-Reads ../../solver/results/mc_{inair,hop}_flat.json and plans one example with the solver package.
+Usage (from this directory):  ../../../solver/.venv/bin/python make_figures.py
+Reads ../../../solver/results/mc_{inair,hop}_flat.json and plans one example with the solver package.
 """
 import json
 import os
@@ -18,7 +18,7 @@ from matplotlib.patches import Polygon, FancyArrowPatch
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SOLVER = os.path.join(HERE, '..', '..', 'solver')
+SOLVER = os.path.join(HERE, '..', '..', '..', 'solver')
 sys.path.insert(0, SOLVER)
 warnings.filterwarnings('ignore')
 

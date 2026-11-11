@@ -1,55 +1,7 @@
-% AIAA student-conference version (11-page limit) of the project paper.
-% Format: AIAA Meeting Paper (conference) format, reproduced from the published instructions
-% ("Preparation of Papers for AIAA Technical Conferences"): letter paper, 1 in margins, Times 10 pt, single column,
-% single spaced; title bold 24 pt; abstract bold, indented 0.5 in each side; section headings bold 11 pt, centered,
-% Roman numerals; subsections bold flush left with capital letters; sub-subsections italic with arabic numerals;
-% captions bold ("Fig. 1" below figures, "Table 1" above tables); footnote symbols; numbered references.
-% To use AIAA's own class instead, replace everything between the two "FORMAT" markers by
-%     \documentclass[conf]{new-aiaa}  plus the packages and macros marked KEEP,
-% and move the title, authors and abstract into that class's \title, \author, \affil and abstract commands.
-% Build: latexmk -pdf main.tex
-% ----------------------------------------------------------------------------------------------- FORMAT (begin)
-\documentclass[10pt,letterpaper]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath,amsthm}            % KEEP
-\usepackage{txfonts}                   % Times text and math
-\usepackage{graphicx,booktabs,array}   % KEEP
-\usepackage{enumitem}                  % KEEP
-\usepackage{titlesec}
-\usepackage[labelfont=bf,textfont=bf,labelsep=quad,justification=centering,skip=6pt]{caption}
-\usepackage{lettrine}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage[hidelinks]{hyperref}
-\urlstyle{same}
-\renewcommand{\figurename}{Fig.}
-\captionsetup[table]{position=above}
-\titleformat{\section}{\normalfont\fontsize{11}{13}\selectfont\bfseries\centering}{\Roman{section}.}{0.5em}{}
-\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\Alph{subsection}.}{0.5em}{}
-\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\arabic{subsubsection}.}{0.5em}{}
-\titlespacing*{\section}{0pt}{12pt plus 2pt minus 2pt}{6pt}
-\titlespacing*{\subsection}{0pt}{9pt plus 2pt minus 1pt}{3pt}
-\titlespacing*{\subsubsection}{0pt}{6pt plus 1pt minus 1pt}{2pt}
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
-\setlength{\parindent}{0.2in}
-\setlength{\parskip}{0pt}
-\setlength{\bibsep}{2.5pt}
-\renewcommand{\bibfont}{\small}
-\makeatletter
-\renewcommand{\@biblabel}[1]{[#1]}
-\makeatother
-\newenvironment{aiaaabstract}{\begin{list}{}{\setlength{\leftmargin}{0.5in}\setlength{\rightmargin}{0.5in}%
-  \setlength{\listparindent}{0.2in}\setlength{\itemindent}{0.2in}\setlength{\topsep}{10pt}}\item\bfseries}{\end{list}}
-% ------------------------------------------------------------------------------------------------- FORMAT (end)
-% KEEP: theorem environments and notation
-\newtheoremstyle{aiaa}{4pt}{4pt}{\itshape}{}{\bfseries}{.}{0.5em}{}
-\theoremstyle{aiaa}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
-\newcommand{\norm}[1]{\lVert #1\rVert}
-\newcommand{\ip}[2]{\langle #1,#2\rangle}
-\newcommand{\ez}{e_z}
+% AIAA student-conference paper 2 of 2: the landing algorithm (11-page limit).
+% Companion: ../impossibility/main.tex. Shared format: ../aiaa-format.tex.
+% Build: latexmk -pdf main.tex   (from this directory)
+\input{../aiaa-format}
 \newcommand{\Pib}{\Pi_b}
 \newcommand{\Tmin}{T_{\min}}
 \newcommand{\Tmax}{T_{\max}}
@@ -193,13 +145,12 @@ that can switch instantly can realize any average of two maneuvers \cite{aumann1
 is not: with a minimum throttle, the only way to shed vertical impulse is to tilt, and tilting at the limit commits the vehicle
 to one direction, so a maneuver that tilts left and its mirror image are both flyable whereas their average is not.
 
-A companion report \cite{report} makes this precise. For a model with a rate-limited body axis and a gimbal cone, with altitude
+A companion paper \cite{companion} makes this precise. For a model with a rate-limited body axis and a gimbal cone, with altitude
 and glide-slope constraints, any final time, and upright landing, it proves that $F$ is not convex, and the proof is checked by
-the Lean~4 proof assistant \cite{lean4,mathlib}. For the gimbaled rigid body of Sec.~\ref{sec:model} it gives computer-assisted
-proofs at final times of 1 to 5~s under simplifying assumptions (constant mass and an unlimited gimbal rate). We reproduced the obstruction numerically on the model and planning limits of this paper with
-a nonconvex solver \cite{ipopt}: on a 4-s hop launched vertically at 6.3~m/s, plans exist that land 1, 2, and 3~m from the
-launch point, but none was found that lands on it, from symmetric initial guesses or from nine asymmetric ones. The set of
-reachable landing points has a hole. This is numerical evidence, not a proof of infeasibility.
+the Lean~4 proof assistant \cite{lean4,mathlib}. For the gimbaled rigid body of Sec.~\ref{sec:model} it reports computer-assisted
+proofs at final times of 1 to 5~s under simplifying assumptions (constant mass and an unlimited gimbal rate). On the model and planning limits of this paper, a
+nonconvex solver \cite{ipopt} finds landings 1, 2, and 3~m from the launch point of a 4-s hop launched vertically at 6.3~m/s but
+none on the launch point itself \cite{companion}, which is numerical evidence that the set of reachable landing points has a hole.
 
 The conclusion is narrower than it may seem. Exactness, which is soundness and completeness together, is impossible. Soundness
 alone is not, and Eq.~\eqref{eq:cop} makes it inexpensive.
@@ -368,7 +319,7 @@ impulse, and gimbal misalignment. One tracking controller, a linear-quadratic re
 running at 50~Hz, is used for both planners. A landing is counted as successful if the touchdown speed is at most 1~m/s, the
 lateral error at most 1~m, and the tilt at most 5~deg. The test set is 40 in-air descents (initial altitude 40 to 60~m, offset
 up to 21~m, initial tilt up to 3~deg) and 30 hops launched from the pad at 5 to 6~m/s toward a point up to 4~m away. The final
-time for S is 0.5~s above the minimum final time found for an iterative planner of the companion report \cite{report}. For
+time for S is 0.5~s above the minimum final time found for an iterative planner of an earlier project report \cite{report}. For
 reference, the 3-DOF LCvx guidance currently used on the vehicle, which plans thrust directions the body cannot follow, landed
 11 of the 40 in-air cases and none of the hops in that report.
 
@@ -451,7 +402,7 @@ F is worse than S in three respects: fuel on short hops, the minimum flight time
 given zero computation time, the touchdown speed in the air (S is lower in 27 of 40 cases). The slew-rate limits are outside
 Theorem~\ref{thm:sound}; fewer than 1\% of replans failed the check and were not flown. The worst replan took 0.39~s, when every
 fallback was tried, and a flight implementation should bound that chain. Theorem~\ref{thm:sound} is proved here and tested
-numerically but is not machine-checked, apart from Eq.~\eqref{eq:cop}, which is machine-checked for constant mass \cite{report}. The assumption of constant
+numerically but is not machine-checked, apart from Eq.~\eqref{eq:cop}, which is machine-checked for constant mass \cite{companion}. The assumption of constant
 $\varepsilon$ must be confirmed from measured mass properties. Nothing here has been run on flight hardware, with actuator lag, or
 with state-estimation error, and the SCvx baseline was not retuned or reimplemented for speed.
 
@@ -508,14 +459,15 @@ Guaranteed Constraint Satisfaction,'' \emph{2015 American Control Conference}, I
 \emph{Advances in Space Research}, Vol.~78, No.~4, 2026, pp.~3919--3934. \url{https://doi.org/10.1016/j.asr.2026.06.014}.
 \bibitem{aumann1965} Aumann, R. J., ``Integrals of Set-Valued Functions,'' \emph{Journal of Mathematical Analysis and Applications},
 Vol.~12, No.~1, 1965, pp.~1--12. \url{https://doi.org/10.1016/0022-247X(65)90049-1}.
-\bibitem{report} Propulsive Landers at Georgia Tech, ``On the Impossibility of Lossless Convexification for Attitude-Rate-Limited
-(5-DOF and 6-DOF) Powered Descent, and a Sound Single Convex Program for Gimballed Landers,'' Georgia Institute of Technology,
-Atlanta, GA, Nov. 2026 (unpublished).
+\bibitem{companion} [Authors of the companion paper], ``Lossless Convexification Is Impossible for Attitude-Rate-Limited Powered
+Descent,'' companion paper submitted to the same conference, [year].
 \bibitem{lean4} de Moura, L., and Ullrich, S., ``The Lean 4 Theorem Prover and Programming Language,'' \emph{Automated Deduction --
 CADE 28}, Lecture Notes in Computer Science, Vol.~12699, Springer, Cham, 2021, pp.~625--635. \url{https://doi.org/10.1007/978-3-030-79876-5_37}.
 \bibitem{mathlib} The mathlib Community, ``The Lean Mathematical Library,'' \emph{Proceedings of the 9th ACM SIGPLAN International
 Conference on Certified Programs and Proofs}, ACM, New York, 2020, pp.~367--381. \url{https://doi.org/10.1145/3372885.3373824}.
 \bibitem{ipopt} W\"achter, A., and Biegler, L. T., ``On the Implementation of an Interior-Point Filter Line-Search Algorithm for
 Large-Scale Nonlinear Programming,'' \emph{Mathematical Programming}, Vol.~106, No.~1, 2006, pp.~25--57. \url{https://doi.org/10.1007/s10107-004-0559-y}.
+\bibitem{report} Propulsive Landers at Georgia Tech, ``On the Impossibility of Lossless Convexification for Attitude-Rate-Limited
+(5-DOF and 6-DOF) Powered Descent, and a Sound Single Convex Program for Gimballed Landers,'' unpublished report, Nov. 2026.
 \end{thebibliography}
 \end{document}

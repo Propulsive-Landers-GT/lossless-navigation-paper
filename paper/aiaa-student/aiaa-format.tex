@@ -1,0 +1,52 @@
+% Shared format for the two AIAA student-conference papers in this folder (impossibility/ and algorithm/).
+% AIAA Meeting Paper (conference) format, reproduced from the published instructions
+% ("Preparation of Papers for AIAA Technical Conferences"): letter paper, 1 in margins, Times 10 pt, single column,
+% single spaced; title bold 24 pt; abstract bold, indented 0.5 in each side; section headings bold 11 pt, centered,
+% Roman numerals; subsections bold flush left with capital letters; sub-subsections italic with arabic numerals;
+% captions bold ("Fig. 1" below figures, "Table 1" above tables); footnote symbols; numbered references.
+% To use AIAA's own class instead, replace everything between the two "FORMAT" markers by
+%     \documentclass[conf]{new-aiaa}  plus the packages and macros marked KEEP,
+% and move the title, authors and abstract into that class's \title, \author, \affil and abstract commands.
+% ----------------------------------------------------------------------------------------------- FORMAT (begin)
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm}            % KEEP
+\usepackage{txfonts}                   % Times text and math
+\usepackage{graphicx,booktabs,array}   % KEEP
+\usepackage{enumitem}                  % KEEP
+\usepackage{titlesec}
+\usepackage[labelfont=bf,textfont=bf,labelsep=quad,justification=centering,skip=6pt]{caption}
+\usepackage{lettrine}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
+\renewcommand{\figurename}{Fig.}
+\captionsetup[table]{position=above}
+\titleformat{\section}{\normalfont\fontsize{11}{13}\selectfont\bfseries\centering}{\Roman{section}.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\Alph{subsection}.}{0.5em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\arabic{subsubsection}.}{0.5em}{}
+\titlespacing*{\section}{0pt}{12pt plus 2pt minus 2pt}{6pt}
+\titlespacing*{\subsection}{0pt}{9pt plus 2pt minus 1pt}{3pt}
+\titlespacing*{\subsubsection}{0pt}{6pt plus 1pt minus 1pt}{2pt}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\setlength{\parindent}{0.2in}
+\setlength{\parskip}{0pt}
+\setlength{\bibsep}{2.5pt}
+\renewcommand{\bibfont}{\small}
+\makeatletter
+\renewcommand{\@biblabel}[1]{[#1]}
+\makeatother
+\newenvironment{aiaaabstract}{\begin{list}{}{\setlength{\leftmargin}{0.5in}\setlength{\rightmargin}{0.5in}%
+  \setlength{\listparindent}{0.2in}\setlength{\itemindent}{0.2in}\setlength{\topsep}{10pt}}\item\bfseries}{\end{list}}
+% ------------------------------------------------------------------------------------------------- FORMAT (end)
+% KEEP: theorem environments and notation
+\newtheoremstyle{aiaa}{4pt}{4pt}{\itshape}{}{\bfseries}{.}{0.5em}{}
+\theoremstyle{aiaa}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\ez}{e_z}
+\newtheorem{corollary}{Corollary}
