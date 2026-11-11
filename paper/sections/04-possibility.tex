@@ -3,7 +3,9 @@
 % ============================================================================
 The impossibility results identify the obstruction precisely: the \emph{choice} of a rate-limited attitude profile. Once
 that choice is removed, convexification works again, and in the pure-TVC case it works without any relaxation. This
-section collects the positive results. Aumann's theorem \cite{aumann1965} is the one external theorem used without proof.
+section collects the positive results. They are of two kinds: exact statements once the attitude profile is fixed
+(\cref{sec:C} to \cref{thm:C6}), and a single convex program for the pure-TVC body that is sound without being complete
+(\cref{sec:F}). Aumann's theorem \cite{aumann1965} is the one external theorem used without proof.
 The Pontryagin maximum principle \cite{pontryagin1962,vinter2000book} enters only as a labelled hypothesis (H-PMP).
 
 \subsection{LCvx is exact for any fixed attitude profile}\label{sec:C}
@@ -95,6 +97,109 @@ rates in an interval of length at most $2\delta\mu_c/\sinh(\mu_ct_f)$, $\mu_c^2=
 this is $3.5\times10^{-6}$~rad/s at $\rho_1=400$~N ($1.8\times10^{-5}$~rad/s at the flight-code value $\rho_1=300$~N). So a 3-DOF
 LCvx optimum is essentially never exactly 6-DOF-optimal (Claim C-Y, \Sproved). In M1, by contrast, $V_5=V_3$ iff some
 3-DOF optimum is $\delta$-trackable by an admissible attitude, with a closed-form primer-arc certificate (Claim C-3D)\Spending.
+
+\subsection{A sound single convex program for pure TVC}\label{sec:F}
+\Cref{thm:A} excludes a convex program that is \emph{sound} (feasible only at data from which a landing exists) and
+\emph{complete} (feasible at all such data). It does not exclude a program that is only sound. \Cref{prop:X5} is one, but its
+feasible set is small: the body never has to turn. For the pure-TVC model the centre-of-percussion identity gives a much larger one,
+because in the coordinates $y=r+\varepsilon b$ of \cref{lem:cop} the dynamics are linear and the attitude is not a separate unknown.
+This is differential flatness \cite{fliess1995ijc}. For the planar VTOL aircraft the flat output is the same point, the Huygens
+centre of oscillation \cite{martin1996automatica}; flat outputs underlie minimum-snap planning for multirotors
+\cite{mellinger2011icra} and have been used for planetary-landing guidance \cite{desiderio2013tcst}; and planning a flat output as a
+B-spline, with constraints imposed on control points so that they hold between nodes, is established for differentially flat systems
+\cite{vanloock2015acc}. B-spline parametrizations also appear in sequential convex programming for powered descent
+\cite{wang2026asr}. We did not find the combination used here: the centre-of-percussion output of the gimballed rigid body, with the
+minimum-throttle and gimbal limits imposed as convex restrictions, giving one SOCP with a soundness guarantee.
+
+\paragraph{Setting.} Model PT with zero roll rate and mass depletion $\dot m=-\alpha\norm T$, thrust $T=T_ab+T_\perp$ ($T_\perp\perp b$),
+limits $\rho_1\le\norm T\le\rho_2$, gimbal angle $\mu\le\delta$ ($\tan\mu=\norm{T_\perp}/T_a$) and tilt $\angle(b,\ez)\le\vartheta_{\max}<\pi/2$.
+\begin{assumption}[Fixed centre of percussion]\label{ass:cop}
+$\varepsilon=J_t/(mL)$ is constant along the flight.
+\end{assumption}
+\noindent With constant mass this is automatic. With depleting mass it says that $J_t$ scales as $mL$; for the motivating vehicle the
+simulator's mass table gives $\varepsilon=1.352$, $1.340$ and $1.321$~m at $79.9$, $75$ and $70.4$~kg.
+
+\paragraph{The flat map.} For $y\in C^4$ put $u=\ddot y-g$ and $f=\norm u$. Wherever $u\ne0$ define
+\begin{equation}\label{eq:flatmap}
+\begin{gathered}
+b=\frac uf,\qquad \dot b=\frac{\Pi_b\dot u}{f},\qquad \Pi_b\ddot b=\frac{\Pi_b\bigl(\ddot u-2(\dot f/f)\dot u\bigr)}{f},\quad \dot f=\ip b{\dot u},\\
+a=f+\varepsilon\norm{\dot b}^2,\qquad \ell=-\varepsilon\,\Pi_b\ddot b,\qquad \tau=\sqrt{a^2+\norm\ell^2},\\
+m(t)=m_0\exp\Bigl(-\alpha\!\int_0^t\!\tau\Bigr),\qquad T_a=ma,\qquad T_\perp=m\ell,\qquad r=y-\varepsilon b .
+\end{gathered}
+\end{equation}
+So the whole state and both controls are algebraic in $y$ and its first four derivatives, and the mass is a quadrature.
+
+\paragraph{The program.} The unknown is $y$, a clamped quintic B-spline with $S$ uniform spans of length $h=t_f/S$. On a span,
+$u,\dot u,\ddot u$ are polynomials of degree $3,2,1$. Raising their B\'ezier control points to degree $3$ gives four \emph{control
+tuples} $(U^j,U_1^j,U_2^j)$, linear in the spline coefficients, with
+\begin{equation}\label{eq:hull}
+(u,\dot u,\ddot u)(t)=\sum_{j=0}^3B_j(t)\,(U^j,U_1^j,U_2^j),\qquad B_j\ge0,\quad \sum_jB_j=1,\quad \int_{\rm span}B_j=\frac h4 .
+\end{equation}
+The data are $r_0$, $v_0$, the current body axis $b_0$, its rate $\dot b_0$, the transverse angular acceleration $\beta_0$ that the
+gimbal's current deflection produces, and $m_0$. On each span fix four numbers $\eta,\kappa\in\R$, $\phi>0$, $\ell_b>0$ (the
+\emph{references}; any values are allowed). With $p=\ip U\ez$, $f_0=\ip{b_0}{u(0)}$ and auxiliary scalars $e_1,q,k,g_2,s_f,\sigma$ per tuple, the
+program is
+\begin{equation}\label{eq:PF}
+\begin{aligned}
+\min\ & \tfrac h4\textstyle\sum\sigma\\
+\text{s.t.}\ \ & y(0)=r_0+\varepsilon b_0,\quad \dot y(0)=v_0+\varepsilon\dot b_0,\quad u(0)=f_0b_0,\quad \Pi_{b_0}\dot u(0)=f_0\dot b_0,\\
+& \Pi_{b_0}\ddot u(0)=f_0\beta_0+2\ip{b_0}{\dot u(0)}\dot b_0,\qquad y(t_f)=\varepsilon\ez,\quad \dot y(t_f)=0,\quad u_h=\dot u_h=\ddot u_h=0\ \text{at }t_f,\\
+\text{(R1)}\ \ & \norm{U_h}\le\tan\vartheta_{\max}\,p, \qquad\text{(R2)}\ \ p\ge\ell_b,\\
+\text{(R3)}\ \ & \norm{U_1-\eta U}\le e_1,\quad e_1^2\le q\,p,\\
+\text{(R4)}\ \ & \norm{U_2-2\eta U_1-\kappa U-k\ez}+\sin\vartheta_{\max}\,|k|\le g_2,\qquad G:=g_2+q,\\
+\text{(R5)}\ \ & \varepsilon\,G\le\tan\delta\,(2\phi p-\phi^2),\\
+\text{(R6)}\ \ & \norm U\le s_f,\quad \bigl\|\bigl(s_f+\varepsilon q/\ell_b,\ \varepsilon G/\ell_b\bigr)\bigr\|\le\sigma,\\
+\text{(R7)}\ \ & p\ge\rho_1\,c_s(z_{lo,s}),\quad \sigma\le\rho_2\,\tau_s(z_{up,s}),\quad z_{lo,s}\in[z^{\min}_s,z^{\max}_s],\quad z_{lo,S}\ge\ln m_{dry}.
+\end{aligned}
+\end{equation}
+Here $z_{up,s}=\ln m_0-\alpha(\dot y_z(t_s)-\dot y_z(0)+g_0t_s)$ at the start $t_s$ of span $s$ and
+$z_{lo,s}=\ln m_0-\alpha\tfrac h4\sum_{\text{spans}\le s}\sum_j\sigma^j$ are affine in the unknowns, $c_s$ is the chord of $e^{-z}$ on a fixed
+interval $[z^{\min}_s,z^{\max}_s]$ and $\tau_s$ is a tangent of $e^{-z}$. Every row is linear or second-order-cone, so \eqref{eq:PF} is an SOCP;
+the boundary rows are linear because $f_0$ and $\ip{b_0}{\dot u(0)}$ are linear in the coefficients. $(r_0,v_0)$ enter affinely, exactly as
+in LCvx.
+
+\begin{theorem}[Theorem F: soundness {\pnote{math/10-landing-proof.md}}]\label{thm:F}
+% CLAIMS: F-SOUND (SYNTHESIS row; PROVED on paper, numerically tested; not refereed; not formalized beyond lem:cop) | Lean: TVC.cop_identity (Lemma 1 only)
+Under \cref{ass:cop}, let $y$ be feasible for \eqref{eq:PF}, with $\angle(b_0,\ez)\le\vartheta_{\max}$. Then model PT, started from
+$(r_0,v_0,b_0,\dot b_0,m_0)$ and driven by the thrust $T=T_ab+T_\perp$ of \eqref{eq:flatmap}, has the unique solution $r=y-\varepsilon b$ with
+body axis $b$ and mass $m$, and this solution
+\begin{enumerate}[leftmargin=*,itemsep=1pt,label=(\roman*)]
+\item starts with the gimbal where it is: $T_\perp(0)=-m_0\varepsilon\beta_0$;
+\item lands at rest, upright, with zero body rate and a centred gimbal: $r=\dot r=0$, $b=\ez$, $\dot b=0$, $T_\perp=0$ at $t_f$;
+\item satisfies $\rho_1\le\norm T\le\rho_2$, $\mu\le\delta$ and $\angle(b,\ez)\le\vartheta_{\max}$ at \emph{every} $t\in[0,t_f]$;
+\item burns at most $m_0\bigl(1-\exp(-\alpha\tfrac h4\sum\sigma)\bigr)$ and ends above $m_{dry}$.
+\end{enumerate}
+\Sunref
+\end{theorem}
+The proof is in \cref{app:F}. Its steps: \cref{lem:cop} removes the gimbal force; the flat map is the unique solution
+(\cref{lem:F-flat}); the boundary rows are equivalent to the stated initial and terminal conditions (\cref{lem:F-bc}); five pointwise
+bounds turn (R2)--(R6) into the actuator limits (\cref{lem:F-bounds}); and by \eqref{eq:hull} a constraint that is jointly convex in
+$(u,\dot u,\ddot u)$ and imposed on the control tuples holds at every instant (\cref{lem:F-hull}). No relaxation is used, so there is
+no tightness to establish.
+
+\begin{proposition}[The price: incompleteness]\label{prop:F-inc}
+% CLAIMS: F-INC (PROVED from Theorem A; size NUMERICAL) | Lean: follows from theoremA, not instantiated
+For fixed $b_0,\dot b_0,\beta_0,m_0,t_f$ and references, the set of $(r_0,v_0)$ at which \eqref{eq:PF} is feasible is convex and is
+contained in the feasible boundary-data set of the model with these limits. Whenever the latter is not convex, the containment is
+strict.\Sunref
+\end{proposition}
+The feasible set of the pure-TVC model is nonconvex in the cases of \cref{thm:TVC1}, and numerically at the planning limits used in
+\cref{sec:practice}, so \eqref{eq:PF} must refuse some landings that exist. The loss has three sources. Rows (R2) and (R7) bound the
+thrust from below by its vertical component, so the program never plans to shed thrust by tilting, which is the manoeuvre the
+obstruction of \cref{thm:Bstar} is built from. Row (R4) bounds the interaction of throttle changes with rotation instead of computing
+it. And control polygons contain the curves they bound. \Cref{sec:practice} measures the size.
+
+\begin{remark}[References]\label{rem:F-refs}
+The numbers $\eta,\kappa,\phi,\ell_b$ change how much of the feasible set \eqref{eq:PF} keeps, never whether its points are flyable:
+\cref{thm:F} holds for any values. The restriction is tightest at $\eta=\dot f/f$, $\kappa=(\ddot f-2\eta\dot f)/f-\norm{\dot b}^2$, $\phi=p$.
+The experiments of \cref{sec:practice} use the fixed values $\eta=\kappa=0$, $\phi=7.5~\mathrm{m/s^2}$, $\ell_b=\rho_1/m_0$ unless stated.
+\end{remark}
+\begin{remark}[What the theorem does not cover]\label{rem:F-scope}
+Gimbal and throttle slew rates depend on $y^{(5)}$ and are not constrained by \eqref{eq:PF}; in the experiments they are evaluated
+exactly on every plan and a plan that violates them is not flown. Altitude and glide-slope constraints on $r$ are imposed at sampled
+instants only. \Cref{ass:cop} is a modelling assumption. The theorem is proved on paper and tested numerically (458 feasible random
+plans, each evaluated at 1201 instants, no violation; open-loop replays through the rigid body within 23~nm); it is not formalized.
+\end{remark}
 
 \subsection{Semidefinite lifts}\label{sec:sdp}
 Occupation-measure linear programs with point-mass data entry are exact but infinite-dimensional and per instance

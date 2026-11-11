@@ -1,5 +1,9 @@
 # Results: A vs B vs C vs D (and the 3DOF lower bound)
 
+> Historical (2026-11-07). "Recommended" below meant planner B at the time. The current recommendation is the landing
+> algorithm, planner F: [`../LANDING-ALGORITHM.md`](../LANDING-ALGORITHM.md), benchmarks in [RESULTS-FLAT.md](RESULTS-FLAT.md).
+> The closed-loop numbers here give every planner zero computation time.
+
 Generated 2026-11-07 by `scripts/run_openloop.py`, `scripts/run_hop.py`, `scripts/run_montecarlo.py` and
 `scripts/make_report.py`. Raw data: `results/*.json`. Machine: development Mac under a load average of about 15–25
 (other agents), single-threaded BLAS. Solver times are Clarabel's internal times, i.e. the Rust solver.
@@ -213,7 +217,7 @@ Initial conditions:
 
 ## 4. Summary for the recommendation
 
-| | A (flight) | B (recommended) | C | D (reference) |
+| | A (flight) | B (recommended at the time) | C | D (reference) |
 |---|---|---|---|---|
 | plan flyable by the TVC vehicle | no (lossy min-thrust arc, direction jumps) | **yes, certified per plan** | no (approximately trackable only, C-Y) | yes, but nonconvex, slow, no certificate of convergence |
 | fuel vs 6DOF optimum | not comparable (infeasible plans) | **+0.01 % vs IPOPT; ≤ 0.85 % above a rigorous lower bound** | +4 to +13 % (its own min t_f) | reference |

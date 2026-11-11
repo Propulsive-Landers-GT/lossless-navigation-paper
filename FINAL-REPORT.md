@@ -4,7 +4,11 @@
 
 1. **The impossibility result was audited and stands** ([`AUDIT-2026-11.md`](AUDIT-2026-11.md)). The obstruction was
    reproduced independently on the planner's own model: launched upward at 6.3 m/s on a 4 s hop, the vehicle can land
-   1, 2 or 3 m away but not straight back down. The Lean build was not re-run in that audit.
+   1, 2 or 3 m away but not straight back down. The Lean build was not re-run in that audit. An independent check on 2026-11-11
+   ([`numerics/independent-check/`](numerics/independent-check/README.md)) rebuilt it on a fresh clone, tried and failed to break
+   Theorems B\*, B and Lemma S numerically, and found one hypothesis missing from the printed Theorem B\*
+   ($\delta+\omega s^*\le\pi/2$, which the Lean statement already had). The text is corrected; the conclusion and the
+   vehicle instance are unaffected.
 2. **One conclusion below was wrong.** "Every practical method must iterate on the attitude" does not follow from the
    theorem. Lossless means sound and complete; a single convex program can still be sound.
 3. **There is now a recommended landing algorithm** ([`LANDING-ALGORITHM.md`](LANDING-ALGORITHM.md)). It plans the path
@@ -24,6 +28,9 @@
 
    It is worse on pad-hop fuel (+5 %) and on the shortest possible flight time (up to 0.4 s longer on hops). With
    zero computation time and equal replan rates, lateral accuracy is a tie.
+
+5. **The paper is updated** (revision 7, 48 pages): Section 4.5 states the program and Theorem F, Appendix E proves it,
+   Section 6.3 reports the benchmarks. Theorem F is tagged as proved but not refereed and not machine-checked.
 
 The sections below are the original report. "The practical algorithm" describes planner B, which the landing
 algorithm supersedes as the recommendation.
@@ -87,7 +94,7 @@ tried, but not yet proved.
 - **Open loop:** within 0.012% of the best nonconvex 6DOF optimum, and ≤0.85% above a provable lower bound.
 - **Closed-loop 6DOF Monte Carlo** (wind, noise, Isp error): in-air success 100% (current flight guidance 28%); pad hops
   97% (current 0%).
-- **Tests and Lean:** 15 pytest tests pass. The algorithm's 7 elementary math claims are Lean-checked. Formalizing them
+- **Tests and Lean:** 15 pytest tests pass (27 as of 2026-11-10, with planner F's). The algorithm's 7 elementary math claims are Lean-checked. Formalizing them
   caught one wrong documented condition; the code was already correct.
 - **Compared with standard 6DOF successive convexification** (`solver/RESULTS-SCVX.md`): planner B does **not** beat
   it. They tie on fuel (both within 0.03 % of IPOPT) and every plan from both is certified flyable. In closed loop
@@ -121,6 +128,8 @@ tried, but not yet proved.
 | What | Where |
 |---|---|
 | One-page status of every claim | `SYNTHESIS.md` |
+| **The landing algorithm, its proof, its benchmarks** | `LANDING-ALGORITHM.md`, `math/10-landing-proof.md`, `solver/RESULTS-FLAT.md` |
+| November 2026 audit | `AUDIT-2026-11.md` |
 | Paper draft (LaTeX + PDF) | `paper/main.pdf`, `paper/CLAIMS-MAP.md`, `paper/AUDIT.md` |
 | **Shareable paper + proof archive** | `paper/main-share.pdf`; `share/make_bundle.sh` builds `share/dist/lcvx-impossibility-supplement.zip` (paper, Lean project with `Verify.lean`, TVC certificates) |
 | Lean formalization | `lean/LcvxObstruction/` (`lean/MODEL.md`, `POSITIVE.md`, `SLICE.md`, `SOLVER.md`) |
@@ -130,5 +139,6 @@ tried, but not yet proved.
 | Full session transcript (conversation + every subagent) | `session-transcript/session-export.zip` |
 | Complete map of the repository | `README.md` |
 
-Nothing was pushed anywhere. Everything is committed in the local git repo `GTPL/lcvx-5dof-research`. No sibling GTPL
+(Written 2026-11-07, before the repository was published. It has since been pushed to GitHub as `aneesh-iyer29/lossless-work`.)
+At the time of writing nothing was pushed anywhere and everything was committed in the local git repo `GTPL/lcvx-5dof-research`. No sibling GTPL
 repo was modified.

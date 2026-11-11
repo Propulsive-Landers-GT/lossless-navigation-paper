@@ -8,7 +8,8 @@
 physical state with affine data entry, exactness is impossible, and this cannot be fixed by adding slacks, cuts, lifted
 variables, discretization or a line search over $t_f$ (\cref{thm:A,thm:Bstar,lem:LS,thm:D}); the state-constrained core of this statement is machine-checked. Any such program, if it contains all
 genuine trajectories, accepts boundary data that no flyable trajectory can land from. The flight software then has no way to
-detect infeasibility from the convex program alone.
+detect infeasibility from the convex program alone. The statement is about exactness. It does not say that a single SOCP cannot be
+\emph{sound}; see item~3.
 \item \emph{Outer attitude loop, exact convex inner problem.} The nonconvexity lies entirely in the choice of attitude profile
 (\cref{thm:CU}). For a fixed attitude profile, the time-varying-cone LCvx is exact (\cref{thm:CW,thm:CS}). On a pure-TVC vehicle the
 problem given the attitude is \emph{exactly} convex, with no relaxation (\cref{thm:C6}). A natural architecture is therefore an
@@ -17,12 +18,23 @@ problem. Every inner solution is then genuinely flyable, and the inner problem c
 \Cref{sec:practice} implements this architecture and evaluates it numerically. Standard successive convexification, which
 linearizes the attitude together with everything else, performed as well, so the architecture's value is speed and flyable
 intermediate iterates rather than better plans.
+\item \emph{Or no loop at all: a sound single SOCP.} On a pure-TVC vehicle the outer loop exists only because the problem is posed
+in centre-of-mass coordinates, where attitude and thrust multiply. In centre-of-percussion coordinates the dynamics are linear, and
+restricting the actuator limits instead of relaxing them gives one SOCP whose plans are all flyable at every instant (\cref{thm:F}).
+What it gives up is measured in \cref{sec:practiceF}: $0.1\%$ of fuel at the operating point and a few tenths of a second of
+minimum flight time, concentrated in manoeuvres that tilt in order to shed thrust. Because it needs no initial trajectory, trust
+region or iteration budget and solves in tens of milliseconds, it can replan at the control system's own time scale, and in our
+simulations that mattered more for touchdown accuracy than the last fraction of a percent of optimality. For a new gimballed vehicle
+we would start here and keep successive convexification for the manoeuvres this program refuses.
+\item \emph{Count computation time.} Closed-loop comparisons that apply each plan at the instant its state was sampled favour slow
+planners. With plans applied after their solver time, the planner built on \cref{thm:C6} lost 4 of 40 in-air landings it had made
+before, and the lateral error of successive convexification roughly doubled.
 \item \emph{Certificates.} The degree-2 SDP lift gives a rigorous lower bound on the minimum landing error and certifies
 infeasibility of exact landing when positive. Its global optimality can be certified a~posteriori (rank 3, stress test), and
 a~priori for coplanar targets (\cref{thm:stress,thm:coplanar}). It is a useful companion to a local or sequential solver, not a
 replacement.
 \item \emph{How much does it matter?} For in-air descents of a small lander, the exhibited nonconvexity is centimetre-scale, and
-3-DOF guidance with an attitude-aware outer loop may lose little in value. The large effects are elsewhere. First, near
+a sound convex program loses little in value ($0.1\%$ of fuel in \cref{sec:practiceF}). The large effects are elsewhere. First, near
 lift-off (pad-launched hops) the landing set can have a metre-scale hole. Second, 3-DOF LCvx solutions ask for thrust-direction
 changes far beyond the vehicle's angular acceleration (\cref{sec:numerics}). Third, on a pure-TVC vehicle the 3-DOF optimum is
 essentially never exactly flyable. The ``upright body plus pointing cone'' 3-DOF model has effective cone zero.
@@ -52,12 +64,20 @@ question, and numerics show no violation. A positive answer would still not give
 nonconvexity persists for all horizons in the tent variant, and at faces with long capped plateaus, is open.
 \item \emph{Quantitative state-constrained gaps.} The rigorous B$^*$ gap ($\sim10^{-5}$~m) is far below the numerical one
 ($\sim10^{-2}$). A sharp quantitative version would settle how much a guidance designer actually loses.
+\item \emph{The sound program of \cref{thm:F}.} (a) Formalize it; every lemma is elementary. (b) Bring the gimbal and throttle slew
+limits inside the guarantee: bounds with worst-case constants are valid but too loose to be useful, and a restriction with
+reference parameters, as in rows (R3)--(R5), is the natural route. (c) Bound the loss: \cref{prop:F-inc} says the program is
+incomplete, and the experiments say by how much on one vehicle, but there is no theorem bounding the fuel or flight-time penalty.
+(d) Remove \cref{ass:cop}: with $\varepsilon$ varying along the flight the output $y$ is no longer flat, and an extra term
+$2\dot\varepsilon\dot b$ appears in $\ddot y$. (e) Is there a larger convex sound set, for instance one that allows tilting to shed
+thrust in a fixed direction?
 \end{enumerate}
 
 \paragraph{Reproducibility.} \intshare{Proof notes (\texttt{math/}), the Lean project (\texttt{lean/}), numerical scripts and outputs
-(\texttt{numerics/}) and the claims registry (\texttt{comms/CLAIMS.md}) are kept in the project repository. \texttt{paper/CLAIMS-MAP.md}
+(\texttt{numerics/}), the planners and their benchmarks (\texttt{solver/}) and the claims registry (\texttt{comms/CLAIMS.md}) are kept
+in the project repository. \texttt{paper/CLAIMS-MAP.md}
 maps every theorem of this paper to its proof file, registry row and Lean name.}{The supplementary archive contains the Lean project
 (\texttt{lean/}: sources, \texttt{Verify.lean}, and the notes \texttt{MODEL.md}, \texttt{POSITIVE.md}, \texttt{SLICE.md},
 \texttt{SOLVER.md} and \texttt{TVC.md}, which map each Lean definition to its mathematical meaning) and the scripts, data and
-derivation notes of the computer-assisted pure-TVC certificates (\texttt{certificates/}). Its \texttt{README} gives the commands
-that reproduce every check.}
+derivation notes of the computer-assisted pure-TVC certificates (\texttt{certificates/}), and the code, tests and proof note of the
+sound single convex program of \cref{sec:F} (\texttt{landing/}). Its \texttt{README} gives the commands that reproduce every check.}

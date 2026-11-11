@@ -4,7 +4,9 @@ This note proves that the landing algorithm of [`LANDING-ALGORITHM.md`](../LANDI
 `solver/gtpl_guidance/fcg.py`) returns only trajectories the vehicle model can fly. It is self-contained: every step
 is elementary, and each lemma lists the test that checks it numerically.
 
-**What is proved.** One theorem (soundness, §3) and one proposition (the price, §9).
+**What is proved.** One theorem (soundness, §3) and one proposition (the price, §9). The paper states them as Theorem 4.7 and
+Proposition 4.8 and proves them in Appendix E, with the reference symbols renamed (ρ, φ, L_b here are η, φ, ℓ_b there, because
+the paper uses ρ₁, ρ₂ for the thrust bounds; T_min, T_max here are ρ₁, ρ₂ there).
 **What is not proved** is listed in §10. Nothing here is a "lossless" result; no relaxation is used anywhere.
 
 ## 1. Model

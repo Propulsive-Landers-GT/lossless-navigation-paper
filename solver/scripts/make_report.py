@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 HERE = os.path.dirname(__file__)
 RES = os.path.join(HERE, '..', 'results')
 COL = {'B': '#2a78d6', 'A': '#eb6834', 'C': '#1baf7a', 'D': '#eda100', 'LB': '#8a8985'}
-NAME = {'A': 'A: flight 3DOF LCvx', 'B': 'B: attitude-aware (recommended)', 'C': 'C: 3DOF + rate limits'}
+NAME = {'A': 'A: flight 3DOF LCvx', 'B': 'B: attitude-aware', 'C': 'C: 3DOF + rate limits'}
 plt.rcParams.update({'font.size': 9, 'axes.spines.top': False, 'axes.spines.right': False, 'axes.grid': True,
                      'grid.color': '#e4e3df', 'grid.linewidth': 0.6, 'axes.edgecolor': '#8a8985',
                      'axes.labelcolor': '#52514e', 'xtick.color': '#52514e', 'ytick.color': '#52514e'})

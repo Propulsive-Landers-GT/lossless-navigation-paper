@@ -132,3 +132,13 @@
 - 03:39 proof-tvc FINAL: Riccati/DP certificates TVC-2 (tf=2 uncapped), TVC-3, TVC-5 (capped) — orchestrator confirmed verify-tvc independently re-certified each in exact arithmetic (report §9–11, riccati_exact.py). tf=7 fails by 4.8%.
 - 04:04 lean-tvc DONE: FLAT identity, TVC-1 skeleton, B* with mass depletion (all tf), free-tf windows, quantitative B*, GTPL-constant instance. ORCHESTRATOR VERIFIED build + axioms (gtpl_no_lossless_upright_6dof_mass, gtpl_no_lossless_freeTime_mass, …_5dof_mass, cop_identity_E3, tvc1_main).
 - 04:07 ALL AGENTS DONE. Final check: full lake build green (44 files, 11k lines), 0 sorry/axiom, paper/main.pdf 40 pp, working tree clean (103 commits). Nothing pushed; no sibling repo modified.
+
+## 2026-11-10: follow-up session (single agent, after the repository was pushed)
+- Audit requested: is there a mistake that would rescue LCvx for our vehicle? None found. Obstruction reproduced on the solver's planning model (RING-TVC). Lean build NOT re-run (toolchain install blocked in that environment). AUDIT-2026-11.md.
+- A quoted "6-DoF as a single convex program" construction examined: sound-but-incomplete restriction for the rate limits plus an unproven relaxation, for a fixed-engine model. On our 70 cases, infeasible in 12/40 in-air and 30/30 hops at the flown t_f (solver/scripts/audit_single_convex.py).
+- CORR-1: the conclusion "every practical method must iterate on the attitude" withdrawn.
+- New result F-SOUND (Theorem F) and planner F (solver/gtpl_guidance/fcg.py, flat.py, flatcert.py, landing.py): one SOCP in centre-of-percussion coordinates. Recommended landing algorithm: LANDING-ALGORITHM.md.
+- Benchmarks re-run for B and S alongside F, with computation latency modelled (solver/RESULTS-FLAT.md). Finding: with latency, B drops to 36/40 in-air; F at 10 Hz lands 70/70.
+- PR aneesh-iyer29/lossless-work#1 merged.
+- Paper revision 7 (48 pp): Section 4.5, Section 6.3, Appendix E, six verified references; CLAIMS-MAP revision 7; AUDIT addendum. Share bundle now includes the landing algorithm.
+- 2026-11-11: PR aneesh-iyer29/lossless-work#2 merged (independent check of the impossibility result). CORR-2: (S1) of Theorem B* corrected; carried into math/02, comms/CLAIMS.md, paper Sec. 5.1 and the audits. Lean rebuilt by that check on a fresh clone.

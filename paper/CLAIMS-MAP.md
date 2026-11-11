@@ -1,5 +1,9 @@
 # CLAIMS map: paper statement → registry row → status → proof file → Lean name
 
+Revision 7.1, 2026-11-11: (S1) of Theorem B* corrected to ωs* ≤ min(δ, π/2 − δ) (comms/CLAIMS.md CORR-2; the Lean statements already had δ + ωs* ≤ π/2), and the Section 5.1 distance restated as an upper bound with the independent 2.14 m/s. No status changes.
+
+Revision 7, 2026-11-10: adds the sound single convex program (Section 4.5, Section 6.3, Appendix E); see the section "Revision 7" below. Everything above that section is revision 6 as audited.
+
 Maintained by [paper-writer]. Revision 6, 2026-11-07 (revision 6: Lean B* with mass depletion, free-time windows, quantitative B*, GTPL instance, CoP identity, TVC-1 skeleton; revision 5: TVC-2/3/5 added on top of the audited version eee6e5f; earlier: revision 4; final audit corrections by [final-auditor] (see paper/AUDIT.md: scope fixes to abstract/intro, Thm 3.20 D* regime, Thm 3.22 pivot/float caveats, C-3D tag, bibliography; all 101 cited Lean names re-checked, axioms clean at ef5ad1b) (revision 3 added TVC-1, CSD2′ partial theorems and the practical section; revision 4 fills the last placeholders and updates the pure-TVC status). Sources:
 - comms/CLAIMS.md;
 - the referee reports math/verify-imp-report.md and math/verify-pos6-report.md (no claim BROKEN);
@@ -64,6 +68,21 @@ Paper tags:
 | Lem A.4 | support bound | P-Q | CONFIRMED | — | math/02 Lemma 5.1 | — |
 | Prop C.1 (prop:master) | master inequality | S-M | CONFIRMED + FORMALIZED (constant mass) | — | math/07 Prop M | `Slice.master_inequality` |
 | §5 (all) | numerics | HOP, S-HOP, S-GTPL, S-LH, B6-E | NUMERICAL | — | numerics/README.md | — |
+
+## Revision 7 (2026-11-10): the sound single convex program
+
+Added after the referee passes and the final audit; none of these rows was refereed.
+
+| Paper | Registry row | Status | Proof file | Lean |
+|---|---|---|---|---|
+| Assumption 4.6 (fixed centre of percussion) | F-SOUND | modelling assumption; sim mass table gives ε within 1 % over a descent | math/10-landing-proof.md §1, §10 | none |
+| Theorem 4.7 (Theorem F: soundness of program (8)) | F-SOUND | PROVED on paper; numerically tested (`solver/tests/test_flat.py`, `scripts/stress_flat.py`, `scripts/replay_flat.py`); not refereed; not formalized | math/10-landing-proof.md §3 to §8; paper Appendix E | first step only: `TVC.cop_identity` (constant mass) |
+| Lemmas E.1 to E.4 | F-SOUND | as above | math/10 Lemmas 2 to 6 | none |
+| Proposition 4.8 (incompleteness) | F-INC | PROVED (one line from Theorem A and Theorem F) | math/10 §9 | follows from `theoremA`; not instantiated |
+| Section 6.3 (numerical study of planner F; comparison with B and S under computation latency) | F-NUM | NUMERICAL | solver/RESULTS-FLAT.md | none |
+| Section 6.3, hop launched at 6.3 m/s lands 1 to 3 m away but not on the launch point | RING-TVC | NUMERICAL (IPOPT; not a proof of infeasibility) | AUDIT-2026-11.md §2 | none |
+
+New paper tag: `[proved in Appendix E; not independently refereed, not machine-checked]`, used for Theorem 4.7 and Proposition 4.8 only.
 
 ## Remaining placeholders
 None. CSD2′ and CSD2″ are stated as an open conjecture and an open problem, not as placeholders.

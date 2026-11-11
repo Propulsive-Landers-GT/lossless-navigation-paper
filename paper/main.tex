@@ -39,6 +39,7 @@
 \newcommand{\Sproved}{\stag{MidnightBlue}{\intshare{proved; independently refereed}{proved; not machine-checked}}}
 \newcommand{\Srep}{\stag{MidnightBlue}{\intshare{proved; refereed, statement as repaired}{proved; not machine-checked}}}
 \newcommand{\Spending}{\stag{BurntOrange}{\intshare{proved in project notes; registry status CLAIMED}{proof sketch only}}}
+\newcommand{\Sunref}{\stag{MidnightBlue}{proved in \cref{app:F}; not independently refereed, not machine-checked}}
 \newcommand{\Snum}{\stag{Plum}{numerical evidence only}}
 \newcommand{\Sopen}{\stag{BrickRed}{open}}
 
@@ -83,9 +84,10 @@
 \newcommand{\pnote}[1]{\ifshowpointers\,{\footnotesize[\texttt{#1}]}\fi}
 
 \title{On the Impossibility of Lossless Convexification for\\
-Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent}
+Attitude-Rate-Limited (5-DOF and 6-DOF) Powered Descent,\\
+and a Sound Single Convex Program for Gimballed Landers}
 \author{\intshare{\paperauthors\thanks{Author names to be filled in.}}{\paperauthors}}
-\date{\intshare{Draft of 7 November 2026}{7 November 2026}}
+\date{\intshare{Draft of 11 November 2026}{11 November 2026}}
 
 \setlength{\emergencystretch}{3em}
 \begin{document}
@@ -122,7 +124,13 @@ tilt-capped class; constant mass, unlimited gimbal rate).
 Numerically, the obstruction is thin for in-air descents of a small lander (centimetre scale), but reaches metre scale for
 pad-launched hops. In simulation, the vehicle's 3-DOF guidance claims landings no flyable plan reaches, while planners that iterate on
 the attitude (standard successive convexification, or one built on the exact convex inner problem) reach the 6-DOF optimum and land
-reliably.
+reliably. Finally, the impossibility concerns programs that are both sound and complete. Giving up completeness, we plan the path of
+the vehicle's centre of percussion, in whose coordinates the gimballed rigid body is differentially flat, as one second-order cone
+program with the actuator limits imposed as convex restrictions. We prove that every feasible point is a trajectory of the pure-TVC
+model, with depleting mass, that meets the throttle, gimbal and tilt limits at every instant (not machine-checked). In simulation this
+single program costs $0.1\%$ of fuel at the operating point, never returned an unflyable plan, and, replanning ten times a second,
+landed within 1.1~cm in every in-air case, against 18~cm for successive convexification once each planner's computation time is
+counted.
 \end{abstract}
 
 \ifshare
@@ -131,6 +139,8 @@ reliably.
 \textcolor{ForestGreen}{\textsf{[Lean-checked]}} machine-checked in Lean~4/Mathlib (no \texttt{sorry}; axioms \texttt{propext},
 \texttt{Classical.choice}, \texttt{Quot.sound} only);
 \textcolor{MidnightBlue}{\textsf{[proved; not machine-checked]}} pen-and-paper proof;
+\textcolor{MidnightBlue}{\textsf{[proved in Appendix~E; not independently refereed, not machine-checked]}} full proof given here, checked
+numerically but by no second reader (\cref{thm:F} only);
 \textcolor{MidnightBlue}{\textsf{[proved, computer-assisted]}} proof by certificate checked in exact (rational and ball) arithmetic;
 \textcolor{BurntOrange}{\textsf{[proof sketch only]}};
 \textcolor{Plum}{\textsf{[numerical evidence only]}}; \textcolor{BrickRed}{\textsf{[open]}}.
@@ -143,7 +153,8 @@ data of the computer-assisted certificates of \cref{sec:6dof}.
 \textbf{Statement on methods.} This work was carried out with extensive use of an AI system (Claude, Anthropic), which drafted the
 proofs, the Lean formalization, the numerical experiments and the text under the authors' direction. The Lean-checked results do
 not depend on trusting that process. The pen-and-paper proofs and the computer-assisted certificates were cross-checked by
-independent verification passes, but this paper has not yet been peer reviewed.
+independent verification passes, with the exception of \cref{thm:F}, which was added later and is tagged accordingly. This paper has
+not yet been peer reviewed.
 \end{tcolorbox}
 \else\ifshowstatus
 \begin{tcolorbox}[colback=gray!5,colframe=gray!60,title={\sffamily Internal draft conventions (remove before submission)}]
@@ -156,6 +167,8 @@ independent verification passes, but this paper has not yet been peer reviewed.
 added hypothesis or corrected wording), and the statement printed here is the repaired one;
 \textcolor{BurntOrange}{\textsf{[proved in project notes; registry status CLAIMED]}} a written proof exists but has not been
 refereed (only two minor remarks and the side claim C-3D remain in this state);
+\textcolor{MidnightBlue}{\textsf{[proved in Appendix~E; not independently refereed, not machine-checked]}} \cref{thm:F} and
+\cref{prop:F-inc}, added on 10 November 2026 after the referee passes (\texttt{math/10-landing-proof.md});
 \textcolor{Plum}{\textsf{[numerical evidence only]}}; \textcolor{BrickRed}{\textsf{[open]}}.
 The mapping theorem $\to$ registry row $\to$ proof file $\to$ Lean name is in \texttt{paper/CLAIMS-MAP.md}.
 Toggle with \texttt{\textbackslash showstatusfalse}.
@@ -179,5 +192,6 @@ Toggle with \texttt{\textbackslash showstatusfalse}.
 \input{sections/B-proof-Bstar}
 \input{sections/C-proof-S}
 \input{sections/D-proofs-other}
+\input{sections/E-proof-F}
 
 \end{document}

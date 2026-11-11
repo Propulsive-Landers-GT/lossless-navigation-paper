@@ -54,8 +54,9 @@ $\varepsilon:=J_t/(mL)$. The point $y=r+\varepsilon b$ satisfies
 With zero roll rate the lateral gimbal force cancels exactly: $y$ is driven by a thrust along $b$ (effective gimbal
 $0$) whose magnitude is reduced by the centripetal term.\Sproved\ \Sleanpart{zero roll rate and with roll rate; constant $\varepsilon$}
 \end{lemma}
-For the motivating vehicle, $\varepsilon\approx1.35$~m. The identity is the basis of both the pure-TVC obstruction
-(\cref{sec:tvc}) and the pure-TVC positive result (\cref{thm:C6}).
+For the motivating vehicle, $\varepsilon\approx1.35$~m. The identity is the basis of the pure-TVC obstruction
+(\cref{sec:tvc}), of the pure-TVC positive result (\cref{thm:C6}), and of the sound single convex program of \cref{sec:F}, where
+$y$ is used as a flat output.
 
 \subsection{Boundary data and feasible sets}
 The boundary data are $\theta=(r_0,v_0)\in\R^6$. The mass $m_0$, the initial attitude (and initial rate in torque models),
@@ -146,6 +147,10 @@ mixtures these average the error instead of evaluating it at the mean readout.
 \item \emph{Per-instance restrictions} such as a fixed attitude profile. These violate the embedding property of
 \cref{def:statelinear}, and they are the positive side of the story (\cref{sec:possibility}).
 \end{enumerate}
+One kind of program is \emph{inside} the class and still useful: a uniform convex \emph{restriction}, which is feasible only at data
+in $F$ but not at all of it. \Cref{def:lossless}(a) asks for both directions, soundness and completeness, and \cref{thm:A} shows the
+two cannot hold together when $F$ is nonconvex. Soundness alone is compatible with it. \Cref{sec:F} constructs such a program for
+model PT.
 
 \begin{proposition}[Trivial exact convex reformulation {\pnote{math/02, Prop.~11.3}}]\label{prop:triv}
 % CLAIMS: TRIV | Lean: none

@@ -31,7 +31,7 @@ Tasks 3 and 4 of the brief (3DOF-LCvx attitude-rate demand statistics, 5DOF-awar
 ## Results (details and numbers in the BOARD posts signed [numerics])
 
 ### 1. Theorem B (M1, state-unconstrained) is confirmed. `t1_thmB.py`, `bounds.py`
-- GTPL, tf = 2 s, ω = 30°/s (δ+ωtf = 75°): |P_x| = 6.77 and M_z = 6.77 m/s, and dist(M, R) = 2.18–2.23 m/s.
+- GTPL, tf = 2 s, ω = 30°/s (δ+ωtf = 75°): |P_x| = 6.77 and M_z = 6.77 m/s, and dist(M, R) = 2.18–2.23 m/s (upper bounds, still falling in N; an independent search with exactly admissible controls and constant mass reaches 2.14 m/s, `independent-check/c3_out.txt`; proved lower bound 1.81 m/s).
   Discretization check: planar N = 10/20/40/80 gives 2.38/2.27/2.21/2.18; 3D N = 10/20/40/60 gives 2.38/2.26/2.21/2.19.
   The nearest point sits about 2.2 m/s above M, close to the axis. 3D controls gain essentially nothing over planar ones.
   Plots: `results/t1_R_section.png`, `results/t1_N_convergence.png`.

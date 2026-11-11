@@ -7,6 +7,7 @@ how to run it. Everything else in the repository is background.
 | | |
 |---|---|
 | Proof | [`math/10-landing-proof.md`](math/10-landing-proof.md) |
+| In the paper | [`paper/main-share.pdf`](paper/main-share.pdf): Section 4.5 (the program and Theorem F), Section 6.3 (benchmarks), Appendix E (proof) |
 | Code | [`solver/gtpl_guidance/landing.py`](solver/gtpl_guidance/landing.py) (entry point), `fcg.py` (the program), `flat.py` (the formulas) |
 | Benchmarks against successive convexification | [`solver/RESULTS-FLAT.md`](solver/RESULTS-FLAT.md) |
 | Why exact lossless convexification is still impossible | [`AUDIT-2026-11.md`](AUDIT-2026-11.md) |

@@ -98,7 +98,10 @@ feasibility; C-E is discrete-time; and C-W is constant-mass and unconstrained.
 
 
 \subsection{What is not formalized}
-The tent variant (T) of the unconstrained Theorem B; the envelope version B$^*$-env; unbounded free final time, and the
+\Cref{thm:F} and \cref{prop:F-inc}: only the first step of the proof, the centre-of-percussion identity (\lean{TVC.cop\_identity}),
+is in Lean, and there with constant mass; the flat map, the boundary equivalences, the pointwise bounds, the control-polygon argument
+and the mass bracket (\cref{lem:F-flat,lem:F-bc,lem:F-bounds,lem:F-hull}) are proved on paper and tested numerically. They are
+elementary and would be a natural next formalization target. Also not formalized: the tent variant (T) of the unconstrained Theorem B; the envelope version B$^*$-env; unbounded free final time, and the
 instantiation of the line-search lemma from B$^*$; the ball bound \cref{thm:Q} and $\varepsilon$-losslessness; torque-limited 6-DOF models; the
 pure-TVC certificates themselves (the analytic reduction, the witnesses and the exact-arithmetic numerics enter \lean{tvc1\_main} as
 hypotheses) and a trajectory-level pure-TVC landing set with varying $\varepsilon(m)$; $\rho_1=0$; the SDP results; Cor.~D.1; Lemma S beyond the single explicit fixed-thrust instance (throttle, gimbal $\delta>0$, mass depletion, glide slope), and the
