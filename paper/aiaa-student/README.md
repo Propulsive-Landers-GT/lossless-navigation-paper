@@ -1,18 +1,34 @@
-# Two papers for the AIAA Regional Student Conferences
+# Papers for the AIAA Regional Student Conferences
 
-The project is split into two short papers, each written to the rules of the AIAA Regional Student Conferences.
+Three papers written to the rules of the AIAA Regional Student Conferences. **Enter either the combined paper or the two
+separate ones, not all three:** the combined paper overlaps both of the others almost entirely.
 
 | Folder | Title | Pages | What it claims |
 |---|---|---|---|
 | `impossibility/` | Lossless Convexification Is Impossible for Attitude-Rate-Limited Powered Descent | 10 | No convex program of the kind LCvx belongs to can be exact once the thrust direction is tied to a body that turns at a finite rate. Proved, and machine-checked in Lean. |
 | `algorithm/` | A Sound Single Convex Program for Powered-Descent Guidance of a Gimbaled Lander | 10 | A single convex program that returns only flyable trajectories for a gimbaled lander, with its proof and a benchmark against successive convexification. |
+| `combined/` | Powered-Descent Guidance with Attitude Coupling: An Impossibility Theorem and a Sound Single Convex Program | 11 | Both results in one paper: the impossibility theorem with its proof, then the sound convex program with its proof and the closed-loop benchmark. |
 
-Both are short versions of the comprehensive paper `../main.pdf` (50 pages). **Each is standalone:** neither cites the other
+All are short versions of the comprehensive paper `../main.pdf` (50 pages). **Each is standalone:** none cites another
 or the comprehensive paper, and each carries the proofs and context it needs. The only project reference in either is
 the public repository, cited for the Lean sources, the certificates and the software. `aiaa-format.tex` is the page
 format they share.
 
 **They are drafts for the authors to take over, not finished submissions.** Read "Before you submit" below first.
+
+## One paper or two
+
+- **`combined/`** tells the whole story in one place: exactness is impossible, soundness is not, and here is the sound
+  program. It is exactly at the 11-page limit, so anything added must displace something. To fit, it gives the proof of
+  the nonconvexity theorem in five compact steps, states the distance bound without its proof, summarizes the Lean
+  formalization in a paragraph instead of a table, drops the vehicle schematic and the example plan, and reports the
+  open-loop results in prose. The convex program, the soundness theorem and its five-step proof are complete.
+- **`impossibility/` and `algorithm/`** have room for more (10 pages each): the proof of the distance bound, the table of
+  Lean declarations, the certificate table, the example plan, the open-loop table.
+- `combined/main.tex` is generated. Edit `combined/front.tex` and `combined/back.tex` for the impossibility half, the
+  results and the conclusion; the model, the program and the soundness proof are taken from `algorithm/main.tex` by
+  `combined/assemble.py`, so those cannot drift apart between the two papers. In the combined paper the thrust per unit
+  mass is `τ` and the horizontal unit vector is `n`, to avoid clashing with the algorithm's symbols.
 
 ## Why two papers, and how they fit together
 
@@ -59,7 +75,7 @@ From the AIAA Regional Student Conference Rules (version dated June 2026) and AI
 
 | Rule | Status here |
 |---|---|
-| At most 11 pages, single column, 8.5 x 11 in, including acknowledgments, references and appendices | 10 pages each |
+| At most 11 pages, single column, 8.5 x 11 in, including acknowledgments, references and appendices | 10, 10 and 11 pages |
 | AIAA Meeting Paper format ("Use the Word Template"); deviations may disqualify | Format reproduced in LaTeX from the published instructions (see "Format" below). **Not built from AIAA's own template file.** |
 | Every author identified in the first-page footnote by status, role (Contributing Student Author or Mentor Author) and AIAA membership | Placeholders in brackets |
 | Undergraduate and Graduate categories: at most two Contributing Student Authors. Team category: three or more, at least half undergraduates. Up to two Mentor Authors, listed after the students. No industry co-authors | Two student placeholders and one mentor placeholder in each paper; edit to your category |
@@ -118,7 +134,7 @@ differences from the official class are possible, for example in the exact title
 
 ## Build
 
-From `paper/`:
+From `paper/` (builds all three; the combined paper is assembled first):
 
 ```bash
 make student

@@ -147,3 +147,4 @@
 - 2026-11-11: PR #4 merged (two AIAA papers). Both made standalone afterwards: no companion or report citations, proofs inline, 10 pages each.
 - 2026-11-11: PR #5 merged (joseph/scvx-thrust-relaxation): LCvx thrust slack inside 6-DOF SCvx, separate Lean project, rigid-body SDP experiment. Reviewed (README, core lemma, stored results; three scripts re-run). Rows SCVX-SLACK, SCVX-NUM, SDP-6DOF. Paper revision 8 (50 pp): Section 4.7.
 - 2026-11-11: PAPERS.md added: what can be published from this repository and what each piece still needs.
+- 2026-11-11: paper/aiaa-student/combined added: one 11-page AIAA paper with both the impossibility theorem and the landing algorithm, assembled from front.tex, back.tex and the algorithm paper's source.
